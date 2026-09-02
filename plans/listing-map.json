@@ -1,0 +1,8 @@
+{
+  "_schema": {
+    "description": "L6. Etsy listing to Shopify handle. Below confidence threshold, needsHuman=true.",
+    "row": {"etsyListingId":0,"shopifyHandle":"string","confidence":0.0,"needsHuman":false}
+  },
+  "generatedAt": null,
+  "rows": []
+}

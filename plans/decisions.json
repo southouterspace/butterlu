@@ -1,0 +1,15 @@
+{
+  "_schema": {
+    "description": "GATE G2 — A HUMAN FILLS THIS IN. Read clusters.json, then record which product survives each cluster and what happens to the rest. Consolidation, L1 and L2 all block on this file. Do not generate it automatically.",
+    "row": {
+      "clusterId": "matches clusters.json",
+      "keep": "handle",
+      "archive": ["handle"],
+      "redirectTo": "handle — usually same as keep",
+      "note": "optional human note"
+    }
+  },
+  "decidedBy": null,
+  "decidedAt": null,
+  "rows": []
+}

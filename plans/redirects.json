@@ -1,0 +1,8 @@
+{
+  "_schema": {
+    "description": "L2. Fed by BOTH the archive audit and consolidation. urlRedirects is currently completely empty.",
+    "row": {"path":"/products/old-handle","target":"/products/new-handle","applied":false}
+  },
+  "generatedAt": null,
+  "rows": []
+}

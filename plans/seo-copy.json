@@ -1,0 +1,8 @@
+{
+  "_schema": {
+    "description": "L1. Proposed SEO fields. seo.title and seo.description are null on all 243 products.",
+    "row": {"handle":"string","seoTitle":"<60 chars","seoDescription":"<155 chars","applied":false}
+  },
+  "generatedAt": null,
+  "rows": []
+}

@@ -1,0 +1,24 @@
+{
+  "_schema": {
+    "description": "Snapshot of all 243 products. Produced by Wave 0. descriptionHtml is NOT stored here (too large) — only its length and a sha256 hash, so duplicates are detectable.",
+    "row": {
+      "id": "gid://shopify/Product/...",
+      "handle": "string",
+      "title": "string",
+      "status": "ACTIVE | DRAFT | ARCHIVED",
+      "publishedAt": "iso8601 | null",
+      "productType": "string",
+      "tags": ["string"],
+      "variantsCount": "integer",
+      "options": [{ "name": "string", "valueCount": "integer" }],
+      "seoTitle": "string | null",
+      "seoDescription": "string | null",
+      "descriptionLength": "integer",
+      "descriptionSha256": "string",
+      "featuredImageAlt": "string | null",
+      "collections": ["handle"]
+    }
+  },
+  "generatedAt": null,
+  "rows": []
+}

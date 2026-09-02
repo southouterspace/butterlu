@@ -1,0 +1,15 @@
+{
+  "_schema": {
+    "description": "Duplicate and near-duplicate product groups. Produced by Wave 0. A RECOMMENDATION for a human to rule on — nothing here is acted upon automatically.",
+    "row": {
+      "clusterId": "string",
+      "matchType": "identical-title | near-title | identical-description",
+      "members": [{ "handle": "string", "status": "string", "variantsCount": "integer", "collections": "integer" }],
+      "sharedTitle": "string | null",
+      "suggestedSurvivor": "handle",
+      "rationale": "one line"
+    }
+  },
+  "generatedAt": null,
+  "rows": []
+}

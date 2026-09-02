@@ -1,0 +1,8 @@
+{
+  "_schema": {
+    "description": "L3. DESTRUCTIVE — backup must be populated before any write.",
+    "row": {"handle":"string","backup":"original descriptionHtml — WRITTEN BEFORE MUTATION","cleaned":"string","applied":false}
+  },
+  "generatedAt": null,
+  "rows": []
+}

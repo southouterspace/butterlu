@@ -1,0 +1,8 @@
+{
+  "_schema": {
+    "description": "L6/L7. BLOCKED pending gate G5 — see docs/06. etsyTransactionId is the dedupe key.",
+    "row": {"etsyTransactionId":0,"etsyListingId":0,"rating":0,"body":"string","photoUrl":"string|null","reviewedAt":"iso8601","applied":false}
+  },
+  "generatedAt": null,
+  "rows": []
+}

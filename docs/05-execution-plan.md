@@ -18,7 +18,7 @@ the graph order wrong.
 
 | ID | Gate | Owner | Status | Blocks |
 |---|---|---|---|---|
-| G1 | Enable checkout (leave "Pause and Build") | Human | **OPEN** | All revenue; blocks no task |
+| G1 | Enable checkout (leave "Pause and Build") | Human | **DONE** 2026-10-10 (plan "Basic"); live test order pending | All revenue; blocks no task |
 | G2 | Consolidation decisions — keep/kill per cluster | Human | **OPEN** | **Both chains** |
 | G3 | Etsy app credentials | Human | **DONE** | Review chain |
 | G4 | Cloudflare connector authorised | Human | **DONE** | Deploy |
@@ -107,7 +107,7 @@ Worker: webhook verify, replay guard · `order.delivered` subscription · nightl
 monitoring · collection copy, blog posts
 
 **G1 sits outside this ordering entirely.** Nothing depends on it — but nothing earns
-until it is done. Parallel and urgent, not a step.
+until a live test order confirms checkout works. Parallel and urgent, not a step.
 
 ## Failure and resume
 

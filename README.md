@@ -17,8 +17,8 @@ fresh session needs no prior context.
 | Sales | **75,903** | **0, all time** |
 | Products | 635 listings | 243 (99 live) |
 
-The successful business is on Etsy. The website is a broken photocopy of it — checkout is
-disabled at the plan level, so it has never taken an order. Closing that gap is what this
+The successful business is on Etsy. The website is a broken photocopy of it — checkout was
+disabled at the plan level (now on "Basic", live as of 2026-10-10), and it has never taken an order. Closing that gap is what this
 repo is for.
 
 ## Layout

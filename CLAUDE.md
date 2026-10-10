@@ -31,9 +31,13 @@ Established via the Shopify Admin API and ShopifyQL. Trust these:
 
 - **243 products**: 99 active, 15 draft, **129 archived**. Published 99 / unpublished 144.
 - **0 orders, all time.** Conversion 0.0% every month on record.
-- Store is on the **"Pause and Build" plan, which disables checkout.** Since Apr-2026,
-  58 cart additions produced **zero** checkout sessions. Before Apr-2026 they reached
-  checkout normally.
+- **Plan history (audit time):** store was on **"Pause and Build"**, which disabled
+  checkout. Apr-2026 onward, 58 cart additions produced **zero** checkout sessions.
+- **Current (2026-10-10, via Shopify connector):** plan reads **"Basic"** and the shop is
+  switched on. Still **0 sales**. A live test order has NOT been placed, so checkout is
+  unconfirmed end to end.
+- **Traffic is bot-dominated** (owner agrees): the 20,126 "direct" sessions are crawlers.
+  Treat real traffic as ~200 sessions/year.
 - **`urlRedirects` is completely empty.** No 301 has ever been created on this store, so
   all 129 archived products are hard 404s.
 - **`seo.title` and `seo.description` are null on all 243 products.** The theme falls back
@@ -88,13 +92,13 @@ Established via the Shopify Admin API and ShopifyQL. Trust these:
 
 | Gate | What | Owner | Status |
 |---|---|---|---|
-| **G1** | Enable checkout (leave "Pause and Build") | Human | **OPEN** — blocks all revenue |
+| **G1** | Enable checkout (leave "Pause and Build") | Human | **DONE** (plan now "Basic", shop on) — pending one live test order to confirm |
 | **G2** | Consolidation decisions (keep/kill per duplicate cluster) | Human | **OPEN** — needs Wave 0 output first |
 | **G3** | Etsy app credentials | Human | **DONE** — keystring + shared secret obtained |
 | **G4** | Cloudflare connector authorised | Human | **DONE** |
 | **G5** | Etsy's answer on review republishing | Etsy | **OPEN** — email DRAFTED, not confirmed sent (see docs/06) |
 
-G1 blocks no other task but nothing earns until it is done. G2 is the hinge — it blocks
+G1 is done pending a live test order; nothing earns until that order confirms checkout. G2 is the hinge — it blocks
 both the catalog chain and the review chain.
 
 ---
@@ -103,7 +107,7 @@ both the catalog chain and the review chain.
 
 **Wave 0 is ready and unblocked.** Use `prompts/wave-0-kickoff.md` verbatim. It is
 read-only apart from one single-product write test, and that test answers the question
-everything else depends on: **does the paused plan permit Admin API writes at all?**
+everything else depends on: **does the store permit Admin API writes at all?** (plan is now "Basic", no longer paused)
 
 Do not start Wave 1 until a human has filled in `plans/decisions.json`.
 Do not start Wave 2 or 3 until G5 resolves.
@@ -137,7 +141,7 @@ Loops are `L1`–`L8`, gates `G1`–`G5`. Use the same identifiers in manifests,
 
 ## 7. Unverified — do not assume either way
 
-- **Whether the "Pause and Build" plan permits Admin API writes.** Wave 0's write test
+- **Whether the store permits Admin API writes** (plan was "Pause and Build", now "Basic"). Wave 0's write test
   settles this. Everything downstream assumes yes.
 - **Whether the live theme already emits Product JSON-LD.** If it does, adding review
   markup will collide. The crawler used for the audit strips `<script>` tags, so this was

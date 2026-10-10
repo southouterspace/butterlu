@@ -34,6 +34,7 @@ Plan reads `Pause and Build`. Cart adds by month: Apr 4, Jun 30, Jul 25, Aug 3 �
 **0** sessions reaching checkout in each. Through Mar-2026 they reached checkout normally.
 ~60 people since April showed purchase intent and hit a wall.
 **Fix:** move to a plan that enables checkout, then place one live test order.
+**Status 2026-10-10:** plan now reads `Basic`, shop is on. Live test order still to do.
 
 ### 02 · A custom-frame store with nowhere to enter the customisation
 `CRITICAL` · effort: low

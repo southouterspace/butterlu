@@ -45,7 +45,7 @@ Pick ONE low-stakes ACTIVE product — not one of the five top performers, not a
 member. Set only its `seo.description` to a sensible <=155-character summary via
 `productUpdate`. Read it back to confirm it persisted.
 
-This establishes whether the "Pause and Build" plan permits Admin API writes at all —
+This establishes whether the store (formerly "Pause and Build", now "Basic") permits Admin API writes at all —
 which every subsequent loop assumes. If it fails, capture the exact error verbatim and
 stop. Do not try workarounds.
 

@@ -152,6 +152,8 @@ separate from the Shopify waves above and changes nothing on the live store.
   session's SessionStart hook installs Node 24 and the dependencies.
 - New behavior ships with a test in `site/tests/`. New SEO rules go in
   `site/scripts/lint-dist.mjs`.
+- Open setup items and first runs are in `TODO.md`. Until its owner items are done, a
+  push reports `deploy-setup-blocked`: report it, never work around it.
 
 ## 7. Unverified — do not assume either way
 

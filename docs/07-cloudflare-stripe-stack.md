@@ -219,7 +219,7 @@ Guardrails that make the loop safe to run unattended:
 - A post-build lint over `dist/` checks what schemas cannot: rendered `<title>` length
   including the suffix, valid JSON-LD, one canonical, OG tags, and that every survivor
   handle has its HTML file. It only works because every public page is prerendered.
-- Astro and its integrations are pinned to exact versions. Astro 6 and 7 removed the
+- Astro and its integrations are pinned to the exact versions in the baseline table below. Astro 6 and 7 removed the
   APIs agents reach for from memory (`Astro.locals.runtime`, `Astro.glob`,
   `getEntryBySlug`, `ViewTransitions`, legacy collections), and one of them fails at
   request time rather than at build. A CI grep fails the build on any of them, and the
@@ -259,6 +259,39 @@ Conditions that reverse the verdict:
 
 Still unverified: whether a content-collection `reference()` rejects a missing entry at
 build time. Test it before relying on it for the survivor-list rule.
+
+## Pinned baseline, checked 2026-10-11
+
+Every version below is the newest stable release on the npm registry on 2026-10-11, or
+the newest the rest of the stack allows. The first scaffold pins these exactly. Bumps
+arrive as their own pull requests, each with the preview crawl and lint green.
+
+| Package | Pin | Published | Note |
+|---|---|---|---|
+| Node.js | 24 (`.nvmrc`) | | Workers Builds defaults to 24.18.0 since 2026-07-30. Astro needs 22.12 or later. |
+| `astro` | 7.3.8 | 2026-10-08 | 7.4 is in beta. No adapter. |
+| `@astrojs/react` | 7.0.1 | 2026-10-06 | |
+| `@astrojs/mdx` | 8.0.3 | 2026-10-06 | Needs `astro` 7.2.10 or later and the Sätteri Markdown package. |
+| `@astrojs/sitemap` | 3.7.4 | 2026-08-31 | |
+| `@astrojs/check` | 0.9.10 | 2026-07-27 | Runs in the build script. |
+| `typescript` | 6.0.3 | 2026-04-16 | Not 7.0.2. `@astrojs/check` accepts TypeScript 5 or 6 only. Revisit when it accepts 7. |
+| `react`, `react-dom` | 19.3.0 | 2026-09-09 | |
+| `nanostores` | 1.5.5 | 2026-10-06 | Cart state shared between islands. |
+| `@nanostores/react` | 2.0.1 | 2026-09-02 | |
+| `react-easy-crop` | 6.2.4 | 2026-10-06 | Photo crop in the editor. Swap freely; it is one component. |
+| `hono` | 4.13.13 | 2026-10-04 | Not the 5.0 release candidate. |
+| `stripe` | 23.0.0 | 2026-10-01 | New major on 2026-10-01. Pin the API version in the client too. |
+| `zod` | 4.6.5 | 2026-09-13 | Shared schemas for `Product`, `Design` and the checkout request. |
+| `wrangler` | 4.149.0 | 2026-10-08 | |
+| `@cloudflare/workers-types` | 5.20261011.1 | 2026-10-11 | Date-stamped. Bump with Wrangler. |
+| `vitest` | 5.0.3 | 2026-09-30 | |
+| `@cloudflare/vitest-plugin` | 1.4.0 | 2026-10-08 | Accepts Vitest 4.1 or 5. The old `vitest-pool-workers` package is deprecated and renamed to this. |
+| `@playwright/test` | 1.64.0 | 2026-10-07 | Against the preview URL. |
+| `resend` | 6.32.1 | 2026-10-06 | If Resend is chosen over Cloudflare Email Service. |
+
+Two packages the doc names but does not install: `@astrojs/cloudflare` (14.3.4, with a
+15.0 beta out) is the adapter this design leaves out, and `sharp` (0.35.5) arrives as
+Astro's build-time image dependency without being pinned directly.
 
 ## What does not change
 

@@ -35,6 +35,7 @@ repo is for.
 │   └── 07-cloudflare-stripe-stack.md  # should the .com leave Shopify for Cloudflare + Stripe
 ├── plans/         # manifests — loops read work lists and checkpoint here
 ├── prompts/       # runnable session prompts
+├── site/          # Cloudflare storefront skeleton; per-PR previews (see site/README.md)
 └── .env.example   # required environment variables (no secrets)
 ```
 

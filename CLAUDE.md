@@ -139,6 +139,19 @@ Loops are `L1`–`L8`, gates `G1`–`G5`. Use the same identifiers in manifests,
 
 ---
 
+## 6a. The site and the PR loop
+
+`site/` is the Cloudflare storefront from `docs/07`, currently a walking skeleton. It is
+separate from the Shopify waves above and changes nothing on the live store.
+
+- Every PR gets a Cloudflare Preview URL, posted as one PR comment, and an e2e run
+  against it. Production deploys only on merge to `main`. Never deploy from a session.
+- Before calling a site change done, follow `.claude/skills/verify/SKILL.md`. In short:
+  `cd site && npm run validate`. A cloud session's SessionStart hook installs Node 24 and
+  the dependencies.
+- New behavior ships with a test in `site/tests/`. New SEO rules go in
+  `site/scripts/lint-dist.mjs`.
+
 ## 7. Unverified — do not assume either way
 
 - **Whether the store permits Admin API writes** (plan was "Pause and Build", now "Basic"). Wave 0's write test

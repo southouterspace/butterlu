@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "e2e": {
+      "command": "npm",
+      "args": ["exec", "--prefix", "site", "--", "e2e", "mcp", "--config", "site/e2e.config.ts"]
+    }
+  }
+}

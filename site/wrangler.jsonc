@@ -12,5 +12,8 @@
     "not_found_handling": "404-page",
     "run_worker_first": ["/api/*"]
   },
-  "observability": { "enabled": true }
+  "observability": { "enabled": true },
+  // Previews inherit the top-level config; bindings that must not touch
+  // production data get overridden here (docs/07: previews get their own D1).
+  "previews": {}
 }

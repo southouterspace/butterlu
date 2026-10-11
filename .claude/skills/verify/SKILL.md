@@ -55,7 +55,7 @@ Pushing to a PR runs `.github/workflows/site.yml`:
 | Job | Does |
 | --- | --- |
 | `check` | Steps 1 and 2 above in CI |
-| `preview` | `wrangler preview --name pr-<number>`, waits for `/api/health`, runs the e2e suite against the Preview URL, and edits one PR comment marked `butterlu-preview` with the URL and the e2e outcome |
+| `preview` | `wrangler preview --name pr-<number>`, waits for `/api/health`, runs the e2e suite against the Preview URL, and keeps two PR comments current: one marked `butterlu-preview` with the URL and the e2e outcome, and the e2e reporter's per-test results |
 | `cleanup` | Deletes the Preview when the PR closes |
 
 The Preview URL stays the same for the life of the PR. Read it from that

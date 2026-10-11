@@ -95,7 +95,7 @@ Established via the Shopify Admin API and ShopifyQL. Trust these:
 | **G1** | Enable checkout (leave "Pause and Build") | Human | **DONE** (plan now "Basic", shop on) — pending one live test order to confirm |
 | **G2** | Consolidation decisions (keep/kill per duplicate cluster) | Human | **OPEN** — needs Wave 0 output first |
 | **G3** | Etsy app credentials | Human | **DONE** — keystring + shared secret obtained |
-| **G4** | Cloudflare connector authorised | Human | **DONE** |
+| **G4** | Cloudflare connector authorised | Human | **DONE** — reaches the Butterlu account (`5fa93654…`), the only account Butterlu deploys to |
 | **G5** | Etsy's answer on review republishing | Etsy | **OPEN** — email DRAFTED, not confirmed sent (see docs/06) |
 
 G1 is done pending a live test order; nothing earns until that order confirms checkout. G2 is the hinge — it blocks
@@ -138,6 +138,22 @@ Loops are `L1`–`L8`, gates `G1`–`G5`. Use the same identifiers in manifests,
 `run-log.jsonl`.
 
 ---
+
+## 6a. The site and the PR loop
+
+`site/` is the Cloudflare storefront from `docs/07`, currently a walking skeleton. It is
+separate from the Shopify waves above and changes nothing on the live store.
+
+- Three environments. Each pushed branch gets a Preview. Stage is `main`, deployed with
+  `npm run deploy:stage`. Production ships only when a human publishes a GitHub Release.
+- CI runs in the session, not GitHub Actions. A hook validates before any push that
+  changes `site/` and blocks it on failure, then deploys the Preview and e2e-tests it.
+- Before calling a site change done, follow `.claude/skills/verify/SKILL.md`. A cloud
+  session's SessionStart hook installs Node 24 and the dependencies.
+- New behavior ships with a test in `site/tests/`. New SEO rules go in
+  `site/scripts/lint-dist.mjs`.
+- Open setup items and first runs are in `TODO.md`. Until its owner items are done, a
+  push reports `deploy-setup-blocked`: report it, never work around it.
 
 ## 7. Unverified — do not assume either way
 

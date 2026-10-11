@@ -1,0 +1,35 @@
+{
+  "name": "butterlu-site",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.8.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build && node scripts/lint-dist.mjs",
+    "check:worker": "tsc --noEmit -p worker",
+    "serve": "wrangler dev --port 8787 --ip 127.0.0.1",
+    "test:e2e": "e2e run",
+    "validate": "npm run build && npm run check:worker && npm run test:e2e",
+    "deploy:preview": "node scripts/deploy.mjs preview",
+    "deploy:stage": "node scripts/deploy.mjs stage",
+    "deploy:production": "node scripts/deploy.mjs production"
+  },
+  "dependencies": {
+    "astro": "7.3.8"
+  },
+  "devDependencies": {
+    "@ai-sdk/anthropic": "4.0.78",
+    "@astrojs/check": "0.9.10",
+    "@cloudflare/workers-types": "5.20261011.1",
+    "@e2e-dev/web": "0.14.0",
+    "@types/node": "24.19.2",
+    "ai": "7.0.137",
+    "e2e": "0.19.0",
+    "playwright": "1.64.0",
+    "typescript": "6.0.3",
+    "wrangler": "4.149.0",
+    "zod": "4.6.5"
+  }
+}

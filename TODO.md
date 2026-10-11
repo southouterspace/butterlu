@@ -58,10 +58,10 @@ tool can write Claude environment variables, GitHub secrets or rulesets.
 
 None of these has run against the Butterlu account yet.
 
-- [ ] **First Preview.** In the new environment, push any branch that changes
-  `site/`. Expect a `deploy-summary` with `health: ok` and `e2e: passed` on
-  `<branch>-butterlu-site-stage.butterlu.workers.dev`. This also proves a
-  per-Worker Editor token can create Previews, which is not yet verified.
+- [x] **First Preview.** Done 2026-10-11 from branch `claude/first-preview`
+  (commit `6b5cfcf`): `health: ok`, `e2e: passed` on
+  https://claude-first-preview-butterlu-site-stage.butterlu.workers.dev. The
+  environment's token can create Previews.
 - [ ] **First stage deploy.** After the merge, from a clean `main`:
   `cd site && npm run deploy:stage`. Never run yet.
 - [ ] **First release.** The owner publishes `v0.1.0` on `main`. Check that

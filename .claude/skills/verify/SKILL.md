@@ -1,12 +1,12 @@
 ---
 name: verify
-description: Prove a change to the butterlu.com site (site/) works before calling it done. Covers the local build and dist lint, the e2e suite against wrangler dev, driving the live site over the e2e MCP server, and reading the per-PR Cloudflare Preview and its e2e results. Use after any change under site/ or .github/, before opening or updating a PR, and when a PR's site check is red.
+description: Prove a change to the butterlu.com site (site/) works. Covers the local build and dist lint, the e2e suite against wrangler dev, driving the site over the e2e MCP server, the push gate and automatic per-branch Cloudflare Preview, and deploying stage. Use after any change under site/, before opening or updating a PR, when a push is blocked, and after a merge to main.
 ---
 
 # Verify a site change
 
-The site is Astro (static HTML) plus one Worker for `/api/*`, deployed to
-Cloudflare. Every pull request gets a Preview URL and an e2e run against it.
+The site is Astro (static HTML) plus one Worker for `/api/*`, on Cloudflare.
+Every pushed branch gets a Preview URL and an e2e run against it.
 Prove a change on the real artifact, in this order, and stop at the first
 failure.
 
@@ -48,29 +48,42 @@ The `e2e` MCP server in `.mcp.json` drives the same site the suite does.
 `call {tool: "screenshot"}` for pixels, and `call {tool: "locate"}` to check a
 locator before writing it into a test. Close the session when done.
 
-## 4. The Preview
+## 4. Push: the gate and the Preview
 
-Pushing to a PR runs `.github/workflows/site.yml`:
+CI runs in your session. `git push` triggers `.claude/hooks/site-gate.sh`.
+Before the push, when the branch changes `site/` or `.nvmrc`, it runs
+`npm run validate` and blocks the push on failure with the failing output.
 
-| Job | Does |
-| --- | --- |
-| `check` | Steps 1 and 2 above in CI |
-| `preview` | `wrangler preview --name pr-<number>`, waits for `/api/health`, runs the e2e suite against the Preview URL, and keeps two PR comments current: one marked `butterlu-preview` with the URL and the e2e outcome, and the e2e reporter's per-test results |
-| `cleanup` | Deletes the Preview when the PR closes |
+After the push lands, the hook runs `npm run deploy:preview`: build, deploy a
+Preview named after the branch on the `butterlu-site-stage` Worker, wait for
+`/api/health`, run the e2e suite against the Preview URL. The result comes back
+as a `deploy-summary` line with `url`, `commit`, `health` and `e2e`.
 
-The Preview URL stays the same for the life of the PR. Read it from that
-comment or the job summary with the GitHub MCP tools.
-The cloud sandbox may not reach `*.workers.dev`. If a request to it gets a
-proxy 502, rely on the CI e2e results and say so; do not report the
-Preview as checked.
+- Post the URL and the e2e result on the branch's PR as one comment, and edit
+  that comment on later pushes. The owner reviews UX on that URL.
+- `e2e: failed` means the change is not done. Read
+  `site/.e2e/results/<test>/trace.md`, fix, push again.
+- `health: unreachable` means the sandbox got no HTTP response from
+  `*.workers.dev`. Say the Preview was not e2e-tested from here.
+- No Preview because `CLOUDFLARE_API_TOKEN` is unset: report it once. Only
+  the owner can add it.
 
-A red `preview` job that says to set `CLOUDFLARE_API_TOKEN` is a missing
-repository secret. Only a human can fix it. Report it once; do not try to work
-around it.
+## 5. Stage and production
+
+| Environment | Worker | Deployed by |
+| --- | --- | --- |
+| Preview, per branch | `butterlu-site-stage` Previews | The push hook |
+| Stage | `butterlu-site-stage` | `npm run deploy:stage` from a clean `main` equal to `origin/main` |
+| Production | `butterlu-site` | `.github/workflows/release.yml`, when the owner publishes a GitHub Release |
+
+`deploy:stage` runs `npm run validate`, deploys, then runs e2e against the
+stage URL. After a branch merges, delete its Preview:
+`npx wrangler preview delete --name <preview name> --skip-confirmation`.
 
 ## Never
 
-- Deploy from a session. Production deploys only from a merge to `main`
-  (`.github/workflows/deploy.yml`).
+- Run `wrangler deploy`, `wrangler preview`, `wrangler versions` or
+  `wrangler rollback` directly. The hook blocks them; use the `deploy:*` scripts.
+- Deploy production. It ships only from a published release.
 - Skip, disable, or loosen a test or a lint rule to get green.
 - Report a change as verified on the strength of a build alone.

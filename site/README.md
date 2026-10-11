@@ -2,16 +2,47 @@
 
 The butterlu.com storefront from `docs/07`: Astro as a static generator, one
 Worker for `/api/*`, served from Cloudflare. This is the walking skeleton. It
-exists so every pull request gets a Preview URL and an e2e run before any
-store feature lands.
+exists so every branch gets a Preview URL, stage tracks `main`, and production
+ships only from a release, before any store feature lands.
 
 | Path | What |
 | --- | --- |
 | `src/` | Astro pages. Every public page is prerendered into `dist/`. |
 | `worker/index.ts` | The Worker. `/api/*` runs here; everything else is a static asset. |
-| `wrangler.jsonc` | Worker `butterlu-site`, assets from `dist/`, trailing-slash handling for URL continuity. |
+| `wrangler.jsonc` | Top level is the stage Worker and its Previews. `env.production` is the production Worker. |
+| `scripts/deploy.mjs` | The only deploy path. One table entry per environment, each with its precondition. |
 | `scripts/lint-dist.mjs` | Checks the built HTML: title length, description, canonical, `lang`. |
-| `e2e.config.ts`, `tests/` | The [e2e](https://github.com/tester-army/e2e) suite. Runs against `wrangler dev`, or a deployed Preview when `E2E_BASE_URL` is set. |
+| `e2e.config.ts`, `tests/` | The [e2e](https://github.com/tester-army/e2e) suite. Runs against `wrangler dev`, or a deployed URL when `E2E_BASE_URL` is set. |
+
+## Environments
+
+| Environment | Worker | Deployed by | Trigger |
+| --- | --- | --- | --- |
+| Preview, one per branch | `butterlu-site-stage` (Previews) | Agent session | Every `git push` of a branch that changes `site/` |
+| Stage | `butterlu-site-stage` | Agent session | `npm run deploy:stage` on a clean, up-to-date `main` |
+| Production | `butterlu-site` | `.github/workflows/release.yml` | A human publishes a GitHub Release whose commit is on `main` |
+
+Every deploy builds and checks first (`build` for a Preview, the full
+`validate` for stage and production), waits for `/api/health`, runs the e2e
+suite against the deployed URL, and prints one `deploy-summary` JSON line.
+
+Production is out of an agent's reach in three layers. The production token
+exists only as a GitHub environment secret. `deploy.mjs` refuses production
+outside a release workflow. The session hook blocks direct `wrangler deploy`.
+The first layer is the one that holds; the other two give an early, clear error.
+
+## CI runs in agent sessions
+
+`.claude/hooks/site-gate.sh` runs on every Bash call in a Claude Code session:
+
+- Before `git push`, when the branch changes `site/` or `.nvmrc`, it runs
+  `npm run validate` and blocks the push if it fails.
+- After the push lands, it runs `npm run deploy:preview` and hands the URL and
+  e2e result back to the agent to post on the PR.
+- It blocks `wrangler deploy`, `preview`, `versions`, `rollback`, `delete` and
+  `secret`, so deploys go through `deploy.mjs`. `wrangler preview delete` stays allowed.
+
+GitHub Actions runs only `release.yml`, once per release.
 
 ## Commands
 
@@ -19,25 +50,39 @@ Node 24 (`/.nvmrc`). From `site/`:
 
 ```bash
 npm install
-npm run build        # astro check + build + lint-dist
+npm run build             # astro check + build + lint-dist
 npm run check:worker
-npm run test:e2e     # serves dist/ through wrangler dev and runs tests/
-npm run validate     # all of the above
+npm run test:e2e          # serves dist/ through wrangler dev and runs tests/
+npm run validate          # all of the above
+npm run deploy:preview    # this branch's Preview, then e2e against it
+npm run deploy:stage      # main only
 ```
 
-## Previews and deploys
+## One-time setup (a human)
 
-`.github/workflows/site.yml` builds and tests every pull request, then
-creates a Cloudflare [Preview](https://developers.cloudflare.com/workers/previews/)
-named `pr-<number>`, runs the e2e suite against it, and posts the URL as one
-comment that updates on each push. The Preview is deleted when the PR closes.
-`.github/workflows/deploy.yml` deploys to production on merge to `main`. That
-updates the `workers.dev` host only; butterlu.com DNS still points at Shopify.
+Per-Worker tokens can only name Workers that exist, so create both first.
 
-### One-time setup (a human)
+1. **Workers.** `butterlu-site-stage` already exists; an agent session created it with
+   the first Preview. Create `butterlu-site` once from the Cloudflare dashboard
+   (Workers & Pages, Create, Hello World, name `butterlu-site`). The first release
+   replaces its code.
+2. **Agent token.** In Cloudflare, Manage Account, Account API Tokens, create a
+   token scoped to **Specified Workers: `butterlu-site-stage`** with role
+   **Editor**. Put it in the Claude environment as `CLOUDFLARE_API_TOKEN`, with
+   `CLOUDFLARE_ACCOUNT_ID`. The token there today is account-wide: it can
+   deploy every Worker in the account, production included.
+3. **Production token.** Create a second token scoped to **Specified Workers:
+   `butterlu-site`**, role **Editor**. In GitHub, Settings, Environments, create
+   `production` and add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as
+   *environment* secrets, not repository secrets. Restrict the environment's
+   deployment refs to tags.
+4. **Optional.** Add `ANTHROPIC_API_KEY` to the Claude environment and to the
+   `production` environment to run the agent steps in `tests/agentic.e2e.ts`.
 
-1. Create a Cloudflare API token with **Workers Scripts: Edit** on the account.
-2. Add repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`.
-3. Optional: add `ANTHROPIC_API_KEY` to run the agent steps in `tests/agentic.e2e.ts`.
-   Without it they skip and the deterministic tests still run.
-4. Optional: in GitHub, give the `production` environment a required reviewer.
+## Releasing
+
+Publish a GitHub Release with a new tag (for example `v0.1.0`) on a `main`
+commit. `release.yml` checks the commit is on `main`, validates, deploys
+`butterlu-site`, and runs e2e against it. To roll back, publish a release of
+the previous tag, or run `npx wrangler rollback --env production` from your
+own machine.

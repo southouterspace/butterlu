@@ -80,32 +80,66 @@ L3 and L8 stop being work at all.
 
 ## What C looks like
 
+### Three layers
+
+Astro renders, React edits, a Worker charges. One repo, one build, one deployment,
+three layers with a hard boundary between each.
+
+| Layer | Owns | Runs |
+|---|---|---|
+| Astro, static generator only, no Cloudflare adapter | Every public page: products, collections, blog, sitemap, feeds, JSON-LD | At build time. The output is plain HTML in `dist/`, served as static assets. |
+| React island on the product page | The personalisation editor: live frame preview, name and date, photo upload with crop, colour and layout | In the browser only, mounted with `client:only`. One island covers the whole purchase column. |
+| Hand-written Worker, Hono or plain `fetch` | `/api/*` and `/admin/*`: create checkout, Stripe webhook, design save, photo upload URL, review submit, order list | Per request, routed before static assets with `run_worker_first`. Tests call it directly. |
+
+The adapter is left out on purpose. It had three major versions in nineteen months, a
+v15 beta out as of October 2026, and a June 2026 fix for builds that exited 0 while
+emitting truncated HTML. It also provisions KV and Images bindings on deploy unless told
+not to. None of the site's dynamic parts need it. Without it, every SEO page is a file in
+`dist/` that a script can check before anyone opens a preview, and the money path is
+ordinary Worker code that never changes when Astro does.
+
 ### Data shape first
 
-Everything else follows from three types. They live in one TypeScript file and every
+Everything else follows from four types. They live in one TypeScript file and every
 other module imports from it.
 
 ```
-Product
+Product                     # a file in git
   handle            string   # URL slug, kept identical to the Shopify handle
   title, seoTitle, seoDescription
   collections       string[]
   options           Option[] # e.g. colour: [walnut, black, white]
   personalisation   Field[]  # e.g. { key: "name", label: "Name on frame", max: 40, required: true }
   price             integer  # cents, at Etsy parity
-  images            ImageRef[]  # R2 keys
+  images            ImageRef[]  # { key: R2 key, width, height, alt } all four required
   body              markdown
 
-Order                       # written only by the Stripe webhook
-  id, stripeSessionId, email, shipping, items[], personalisation per item, status
+Design                      # a row in D1, photo in R2, written by the editor's save route
+  id, productHandle, options, text fields, photo key, crop, layout, createdAt
 
-Review                      # written only by the signed post-delivery link
-  orderId, productHandle, rating, body, createdAt
+Order                       # written only by the Stripe webhook
+  id, stripeSessionId, email, shipping, items[] each with a designId, status
+
+Review                      # written by the signed post-delivery link, then landed in git
+  orderId, productHandle, rating, body, createdAt, status
 ```
 
-`Product` is a file in git. `Order` and `Review` are rows in D1. That split is the
-design. The catalog changes through pull requests the owner can read. Orders and reviews
-change at runtime through two write paths, each with one caller.
+`Product` is a file in git. `Design`, `Order` and `Review` are rows in D1. The catalog
+changes through pull requests the owner can read. The other three change at runtime
+through write paths with one caller each.
+
+Two consequences of this shape that the first draft got wrong:
+
+- **Personalisation does not travel in Stripe metadata.** Stripe caps metadata at 50
+  keys of 500 characters, and a design with a photo crop and layout overflows it. The
+  editor saves a `Design` row first and Checkout carries only the `designId`. The render
+  spec (fonts, coordinates, layout) is one pure module shared by the live preview in the
+  island and the fulfilment proof in admin, so what the customer saw is what gets made.
+- **Reviews must land in git to reach a static page.** `aggregateRating` has to be in the
+  first HTML a crawler sees, and a static page cannot read D1 at request time. Astro's
+  server islands load after the page and need the adapter, so they do not help. A
+  scheduled job opens a pull request that adds approved `Review` rows to a content
+  collection. Merging rebuilds the site. The owner gets moderation for free.
 
 The catalog is born from the consolidated list, not from the 243 products as they are.
 Run the Wave 0 snapshot, make the G2 keep/kill decisions, and export only the survivors.
@@ -116,27 +150,39 @@ stack would faithfully reproduce if imported wholesale.
 
 | Need | Cloudflare or Stripe piece | Note |
 |---|---|---|
-| Pages | Astro, built as a Worker with static assets | Static where possible, server-rendered where a cart needs it |
-| Catalog, collections, blog | Astro content collections, Markdown and JSON in git | The product schema is validated at build; a bad file fails the build |
-| Images | R2 for storage, Images transformations for sizes | Re-host once from Etsy's CDN. 5,000 unique transformations a month are free. |
-| Cart and checkout | A Worker route creates a Stripe Checkout Session with `price_data` line items and the personalisation in session metadata | Stripe's own custom fields are capped at three, so collect personalisation on the product page, not in Checkout |
+| Pages | Astro as a static generator, output served as Worker static assets | `output` left at the static default. Only API routes live in the Worker. |
+| Catalog, collections, blog | Astro content collections, Markdown and JSON in git | Schemas validate text fields at build and a bad file fails the build. They do not validate R2 keys, so `ImageRef` requires width, height and alt, and CI HEADs every key. |
+| Images | R2 for storage, Astro's build-time image pipeline or `/cdn-cgi/image/` URLs over R2 | Re-host once from Etsy's CDN. Measure the first full build against the 5,000 free transformations a month. About 100 products with 5 photos at 3 widths in 2 formats is roughly 3,000 before blog and collection images. |
+| Editor | React island, `client:only`, one island for the purchase column | Cart state shared through a nanostore, not React context, which does not cross islands. Saves a `Design` through the Worker. |
+| Cart and checkout | Worker route validates the cart against the catalog, then creates a Stripe Checkout Session with `price_data` line items and the `designId` | Stripe's own custom fields are capped at three, so collect everything on the product page. The cart itself is client-side. No sessions, no KV. |
 | Tax, shipping options, wallets | Stripe Tax, Checkout `shipping_options`, Link, Apple Pay, Google Pay | All inside hosted Checkout |
 | Orders | `checkout.session.completed` webhook writes one row to D1 and sends two emails | Idempotent on the session id |
 | Email | Resend (already connected) or Cloudflare Email Service (public beta) | Order confirmation, owner notification, post-delivery review request |
-| Reviews | Signed link in the review email, Worker route validates and writes D1 | Verified purchase by construction |
-| Admin | One page behind Cloudflare Access listing orders and personalisation | Enough to fulfil by hand at this volume |
-| Product feeds | Worker routes emitting Google Merchant Center and Pinterest feeds, and Stripe's catalog CSV | Replaces the Google and Facebook channel apps |
+| Reviews | Signed link in the review email, Worker route validates and writes D1; a scheduled job opens the moderation pull request | Verified purchase by construction |
+| Admin | One Worker page behind Cloudflare Access listing orders and designs | The Worker verifies the Access token itself; static-assets Workers do not get it for free |
+| Product feeds | Prerendered static endpoints for Google Merchant Center and Pinterest; Stripe's catalog CSV | Replaces the Google and Facebook channel apps. No Worker needed. |
 | Bots and analytics | Cloudflare Web Analytics with bot filtering | Fixes `docs/01` finding 9 for free |
-| CI | Vitest with the Workers pool, Playwright against the preview URL | The preview URL is posted to the pull request by Workers Builds |
+| CI | `astro check && astro build`, Cloudflare's Vitest plugin for the Worker, a post-build lint over `dist/`, Playwright against the preview URL | The preview URL is posted to the pull request by Workers Builds |
 | Deploy | Workers Builds on merge to main | The merge is the one irreversible click. The owner holds it. |
 
 ### URL continuity
 
 Keep `/products/<handle>` and `/collections/<handle>` exactly. The one page that ranks,
 `/collections/aunt-uncle-frames` at #7 on a six-word query, must answer at the same path.
-`plans/redirects.json` still drives the 301s for the 129 archived handles and the merged
-duplicates; it just becomes a static map served by the Worker instead of Shopify
-`urlRedirects`. Cut DNS over only when a crawl of the preview matches the live sitemap.
+Two defaults break that promise and both are fixed in config:
+
+- Astro writes `/products/p1/index.html` by default and Workers static assets then
+  answer `/products/p1` with a 307 to `/products/p1/`. Measured on Astro 7.3.8. Set
+  `trailingSlash: 'never'`, `build.format: 'file'`, and `html_handling:
+  "drop-trailing-slash"` in the Wrangler assets block. After that the slash-less path
+  returns 200.
+- Astro's own `redirects` setting emits a meta-refresh page without an adapter, not a
+  301. Generate `public/_redirects` from `plans/redirects.json` with explicit 301s. The
+  static-assets layer applies it, with a limit of 2,000 rules. It does not apply to paths
+  the Worker serves.
+
+CI crawls the sitemap on the preview and fails on any 3xx, and checks that every archived
+handle returns a 301. Cut DNS over only when that crawl matches the live sitemap.
 
 ## The agentic loop
 
@@ -164,12 +210,55 @@ job in this design. The loop also cannot earn links. Nobody has built the lever 
 Guardrails that make the loop safe to run unattended:
 
 - Stripe stays in test mode until the owner places one live order. CI places a test-card
-  order on every pull request that touches checkout.
+  order on every pull request that touches checkout, against a preview bound to its own
+  D1 and R2. Previews share production bindings by default, so this binding is explicit.
 - Deploy happens only on merge. No agent deploys from a session.
 - The `Product` schema rejects a title over 60 characters, a missing SEO description, a
-  price below Etsy parity, or a handle not in the survivor list. The build fails instead
-  of a loop halting at 10%.
+  price below Etsy parity, a handle not in the survivor list, or an image without width,
+  height and alt. The build fails instead of a loop halting at 10%.
+- A post-build lint over `dist/` checks what schemas cannot: rendered `<title>` length
+  including the suffix, valid JSON-LD, one canonical, OG tags, and that every survivor
+  handle has its HTML file. It only works because every public page is prerendered.
+- Astro and its integrations are pinned to exact versions. Astro 6 and 7 removed the
+  APIs agents reach for from memory (`Astro.locals.runtime`, `Astro.glob`,
+  `getEntryBySlug`, `ViewTransitions`, legacy collections), and one of them fails at
+  request time rather than at build. A CI grep fails the build on any of them, and the
+  repo's agent guide names the replacements.
+- `compressHTML` is set explicitly. Astro 7's default can delete the space between
+  adjacent inline elements, which no test catches. Rendered-text snapshots over `dist/`
+  cover the rest.
 - Secrets are Worker bindings. The repo keeps `.env.example` as it does now.
+
+## Framework decision record
+
+Astro was challenged on 2026-10-11 by two independent adversarial reviews, one reading
+docs and the npm registry, one building a 100-product probe on Astro 7.3.8 and
+measuring. TanStack Start and a Vite React single-page app were the named alternatives,
+raised because of the editor. Both reviews kept Astro, for one reason. The site is about
+300 content pages and one editor route. Astro ships zero JavaScript on the content pages
+and mounts the editor as an ordinary React app in one island. TanStack Start, still
+labelled release candidate in its own docs and without content collections, an image
+component, a sitemap or a redirect map, would make every content page pay React
+hydration to help one route. A single-page app costs the traffic goal directly, since
+Pinterest, Facebook and TikTok crawlers read the first HTML and Cloudflare's SPA mode
+would turn the 129 archived 404s into soft 404s.
+
+The reviews changed this document in six places: the adapter is gone, the money path is
+a plain Worker, reviews land in git, personalisation is a `Design` row rather than Stripe
+metadata, the trailing-slash and redirect defaults are overridden, and previews get their
+own database.
+
+Conditions that reverse the verdict:
+
+- The editor grows to three or more client-routed screens with shared state, or
+  accounts and saved designs arrive. Even then the first move is a client-routed React
+  app mounted under one Astro path, not a framework switch.
+- The image spike shows R2 plus Images cannot be driven reliably from the Astro build.
+- Astro 7's Markdown processor change breaks the blog pipeline and cannot be pinned
+  around.
+
+Still unverified: whether a content-collection `reference()` rejects a missing entry at
+build time. Test it before relying on it for the survivor-list rule.
 
 ## What does not change
 
@@ -201,8 +290,8 @@ Guardrails that make the loop safe to run unattended:
 | Shipping labels | Shopify Shipping rates | Bought by hand (Pirate Ship or similar) until volume justifies an integration |
 
 Effort is a guess, since nothing has been built. Expect one to two weeks of agent sessions for
-the storefront, checkout, webhook, order list and feeds, with the owner reviewing
-previews daily. Content is a programme, not a build, and runs for as long as traffic is
+the storefront, editor, checkout, webhook, order list and feeds, with the owner reviewing
+previews daily. Spend the first hour on the image pipeline against a real R2 bucket. Content is a programme, not a build, and runs for as long as traffic is
 the goal.
 
 ## The Etsy caveat on the biggest traffic lever
@@ -227,3 +316,7 @@ is the only traffic source in this document that does not depend on Google.
   vendors' own pages.
 - Etsy off-site linking: an Etsy community thread quoting the fee-avoidance rule and a
   2014 Etsy staff clarification reported by EcommerceBytes.
+- Two adversarial reviews of the Astro choice, checked against Astro's v6 and v7 upgrade
+  guides, the Cloudflare adapter changelog and docs, the npm registry, Cloudflare's
+  static-assets routing, redirects and previews docs, Stripe's metadata limits, TanStack
+  Start's docs and Cloudflare's TanStack guide, and a probe project built on Astro 7.3.8.

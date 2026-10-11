@@ -1,7 +1,9 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  // The account also hosts fourfold* and rps-worker; keep this name distinct.
-  "name": "butterlu-site",
+  // Top level is stage, so a bare wrangler command can never reach production.
+  // Production is env.production, deployed only by .github/workflows/release.yml.
+  // The account also hosts fourfold* and rps-worker; keep these names distinct.
+  "name": "butterlu-site-stage",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",
   "workers_dev": true,
@@ -13,7 +15,12 @@
     "run_worker_first": ["/api/*"]
   },
   "observability": { "enabled": true },
-  // Previews inherit the top-level config; bindings that must not touch
-  // production data get overridden here (docs/07: previews get their own D1).
-  "previews": {}
+  // Previews belong to the stage Worker. Bindings that must not touch stage
+  // data get overridden here (docs/07: previews get their own D1).
+  "previews": {},
+  "env": {
+    "production": {
+      "name": "butterlu-site"
+    }
+  }
 }

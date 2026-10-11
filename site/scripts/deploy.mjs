@@ -1,0 +1,116 @@
+// The one way any environment gets deployed: node scripts/deploy.mjs <env>.
+// Each run builds, checks, deploys, waits for /api/health, then runs the e2e
+// suite against the deployed URL, and prints one JSON summary line.
+import { execFileSync, spawnSync } from 'node:child_process';
+import { mkdtempSync, readFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+const git = (...args) => execFileSync('git', args, { encoding: 'utf8' }).trim();
+
+function run(cmd, args, extraEnv = {}) {
+  const res = spawnSync(cmd, args, { stdio: 'inherit', env: { ...process.env, ...extraEnv } });
+  if (res.status !== 0) fail(`${cmd} ${args.join(' ')} exited ${res.status}`);
+}
+
+function fail(reason) {
+  console.error(`deploy: ${reason}`);
+  process.exit(1);
+}
+
+function onCleanSyncedMain() {
+  if (git('rev-parse', '--abbrev-ref', 'HEAD') !== 'main') return 'stage deploys only from main';
+  if (git('status', '--porcelain')) return 'working tree is dirty';
+  git('fetch', '--quiet', 'origin', 'main');
+  if (git('rev-parse', 'HEAD') !== git('rev-parse', 'origin/main')) return 'HEAD is not origin/main';
+  return null;
+}
+
+function previewName() {
+  const branch = git('rev-parse', '--abbrev-ref', 'HEAD');
+  return branch
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .slice(0, 40)
+    .replace(/^-+|-+$/g, '');
+}
+
+function wranglerDeploy(envArg) {
+  const out = join(mkdtempSync(join(tmpdir(), 'wrangler-')), 'out.ndjson');
+  run('npx', ['wrangler', 'deploy', envArg, '--message', git('rev-parse', '--short', 'HEAD')], {
+    WRANGLER_OUTPUT_FILE_PATH: out,
+  });
+  const entry = readFileSync(out, 'utf8')
+    .split('\n')
+    .filter(Boolean)
+    .map((line) => JSON.parse(line))
+    .find((e) => e.type === 'deploy');
+  return entry?.targets?.find((t) => t.includes('workers.dev')) ?? entry?.targets?.[0];
+}
+
+const ENVIRONMENTS = {
+  preview: {
+    precondition: () => (git('rev-parse', '--abbrev-ref', 'HEAD') === 'main' ? 'preview a branch, not main' : null),
+    check: 'build',
+    deploy() {
+      const res = spawnSync(
+        'npx',
+        ['wrangler', 'preview', '--name', previewName(), '--message', git('rev-parse', '--short', 'HEAD'), '--json'],
+        { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] },
+      );
+      if (res.status !== 0) fail(`wrangler preview exited ${res.status}\n${res.stdout}`);
+      return JSON.parse(res.stdout).preview.urls[0];
+    },
+  },
+  stage: {
+    precondition: onCleanSyncedMain,
+    check: 'validate',
+    deploy: () => wranglerDeploy('--env='),
+  },
+  production: {
+    precondition: () =>
+      process.env.GITHUB_ACTIONS === 'true' && process.env.GITHUB_EVENT_NAME === 'release'
+        ? null
+        : 'production deploys only from .github/workflows/release.yml on a published release',
+    check: 'validate',
+    mustReach: true,
+    deploy: () => wranglerDeploy('--env=production'),
+  },
+};
+
+// "unreachable" means no HTTP response at all: the Claude sandbox blocks
+// *.workers.dev unless the environment's network policy allows it.
+async function healthy(url) {
+  let answered = false;
+  for (let i = 0; i < 15; i++) {
+    try {
+      const res = await fetch(new URL('/api/health', url));
+      answered = true;
+      if (res.ok) return 'ok';
+    } catch {}
+    await new Promise((r) => setTimeout(r, 2000));
+  }
+  return answered ? 'unhealthy' : 'unreachable';
+}
+
+const name = process.argv[2];
+const env = ENVIRONMENTS[name];
+if (!env) fail(`usage: node scripts/deploy.mjs <${Object.keys(ENVIRONMENTS).join('|')}>`);
+if (!process.env.CLOUDFLARE_API_TOKEN) fail('CLOUDFLARE_API_TOKEN is not set (see site/README.md, one-time setup)');
+const blocked = env.precondition();
+if (blocked) fail(blocked);
+
+run('npm', ['run', env.check]);
+const url = env.deploy();
+if (!url) fail('wrangler reported no URL');
+
+const health = await healthy(url);
+let e2e = 'skipped';
+if (health === 'ok') {
+  const res = spawnSync('npx', ['e2e', 'run'], { stdio: 'inherit', env: { ...process.env, E2E_BASE_URL: url } });
+  e2e = res.status === 0 ? 'passed' : 'failed';
+}
+
+const summary = { env: name, url, commit: git('rev-parse', '--short', 'HEAD'), health, e2e };
+console.log(`deploy-summary ${JSON.stringify(summary)}`);
+if (health === 'unhealthy' || e2e === 'failed' || (env.mustReach && health !== 'ok')) process.exit(1);

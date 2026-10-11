@@ -43,7 +43,7 @@ if [ "$phase" = pre ]; then
   if is_push && site_changed; then
     # Validate what is pushed, not what is on disk.
     if [ -n "$(git status --porcelain -- site .nvmrc)" ]; then
-      echo "Push blocked: site/ has uncommitted changes. Commit or stash them so validation runs on what you push." >&2
+      echo "Push blocked: site/ has uncommitted changes. Commit or stash them so validation runs on what you push. This check runs before the whole command, so commit in one command and push in the next." >&2
       exit 2
     fi
     if ! out="$(cd site && "../${node[0]}" npm run validate 2>&1)"; then
@@ -75,6 +75,8 @@ else
   if [ -n "$summary" ]; then
     git rev-parse HEAD > "$stamp"
     msg="Preview deployed for $branch: $summary. Post the url and e2e result on this branch's PR (one comment, edited on later pushes). health=unreachable means the sandbox cannot reach *.workers.dev; say the Preview was not e2e-tested from here."
+  elif blocked="$(sed -n 's/^deploy-setup-blocked: //p' <<<"$out")" && [ -n "$blocked" ]; then
+    msg="No Preview: $blocked. This is owner setup. Tell the user once and do not work around it: never pin, borrow or switch to another project's Cloudflare account or token."
   else
     msg="$(printf 'Preview deploy failed for %s. Fix it before asking for review. Last output:\n%s' "$branch" "$(tail -n 30 <<<"$out")")"
   fi

@@ -19,6 +19,16 @@ function fail(reason) {
   process.exit(1);
 }
 
+// Missing setup only the owner can do. The session hook relays these lines
+// to the agent as "report it, do not work around it".
+function setupBlocked(reason) {
+  console.error(`deploy-setup-blocked: ${reason}`);
+  process.exit(1);
+}
+
+// The shared account that hosts Quote Goat. Butterlu must never deploy there.
+const FORBIDDEN_ACCOUNTS = new Set(['d85e596fe8902fb82e35f754fac9ffb8']);
+
 // Butterlu deploys only to its own Cloudflare account, pinned in wrangler.jsonc.
 // CLOUDFLARE_ACCOUNT_ID overrides the config in wrangler, so a token for any
 // other account (the shared one that hosts Quote Goat) must be refused here.
@@ -113,9 +123,10 @@ async function healthy(url) {
 const name = process.argv[2];
 const env = ENVIRONMENTS[name];
 if (!env) fail(`usage: node scripts/deploy.mjs <${Object.keys(ENVIRONMENTS).join('|')}>`);
-if (!process.env.CLOUDFLARE_API_TOKEN) fail('CLOUDFLARE_API_TOKEN is not set (see site/README.md, one-time setup)');
+if (!process.env.CLOUDFLARE_API_TOKEN) setupBlocked('CLOUDFLARE_API_TOKEN is not set (see site/README.md, one-time setup)');
 const account = pinnedAccount();
-if (account.blocked) fail(account.blocked);
+if (account.blocked) setupBlocked(account.blocked);
+if (FORBIDDEN_ACCOUNTS.has(account.pinned)) setupBlocked(`account ${account.pinned} belongs to another project; Butterlu needs its own`);
 process.env.CLOUDFLARE_ACCOUNT_ID = account.pinned;
 const blocked = env.precondition();
 if (blocked) fail(blocked);

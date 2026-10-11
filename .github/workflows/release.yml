@@ -18,6 +18,7 @@ permissions:
 
 jobs:
   deploy:
+    if: ${{ !github.event.release.prerelease }}
     runs-on: ubuntu-latest
     environment:
       name: production

@@ -26,10 +26,13 @@ Every deploy builds and checks first (`build` for a Preview, the full
 `validate` for stage and production), waits for `/api/health`, runs the e2e
 suite against the deployed URL, and prints one `deploy-summary` JSON line.
 
-Production is out of an agent's reach in three layers. The production token
-exists only as a GitHub environment secret. `deploy.mjs` refuses production
-outside a release workflow. The session hook blocks direct `wrangler deploy`.
-The first layer is the one that holds; the other two give an early, clear error.
+Production is meant to be out of an agent's reach in three layers. The
+production token exists only as a GitHub environment secret, and the agent's
+token cannot touch the production Worker. `deploy.mjs` refuses production
+outside a release workflow. The session hook blocks direct `wrangler` deploys.
+Only the first layer is a real boundary; the other two are early, clear errors
+that a determined command can get around. **The first layer does not exist
+until step 2 of the one-time setup is done.**
 
 ## CI runs in agent sessions
 
@@ -66,16 +69,20 @@ Per-Worker tokens can only name Workers that exist, so create both first.
    the first Preview. Create `butterlu-site` once from the Cloudflare dashboard
    (Workers & Pages, Create, Hello World, name `butterlu-site`). The first release
    replaces its code.
-2. **Agent token.** In Cloudflare, Manage Account, Account API Tokens, create a
-   token scoped to **Specified Workers: `butterlu-site-stage`** with role
-   **Editor**. Put it in the Claude environment as `CLOUDFLARE_API_TOKEN`, with
-   `CLOUDFLARE_ACCOUNT_ID`. The token there today is account-wide: it can
-   deploy every Worker in the account, production included.
+2. **Agent token. Blocker: until this is done, any agent session can deploy
+   production, and every other Worker in the account.** The token in the
+   Claude environment today is account-wide. In Cloudflare, Manage Account,
+   Account API Tokens, create a token scoped to **Specified Workers:
+   `butterlu-site-stage`** with role **Editor**. Replace `CLOUDFLARE_API_TOKEN`
+   in the Claude environment with it. If other repos share that environment,
+   give butterlu its own environment.
 3. **Production token.** Create a second token scoped to **Specified Workers:
    `butterlu-site`**, role **Editor**. In GitHub, Settings, Environments, create
    `production` and add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as
-   *environment* secrets, not repository secrets. Restrict the environment's
-   deployment refs to tags.
+   *environment* secrets, not repository secrets. A release runs the workflow
+   file from its own tag, so restrict who can make one: add a tag ruleset on
+   `v*` that only you can bypass, and limit the environment's deployment refs
+   to `v*` tags.
 4. **Optional.** Add `ANTHROPIC_API_KEY` to the Claude environment and to the
    `production` environment to run the agent steps in `tests/agentic.e2e.ts`.
 
@@ -83,6 +90,8 @@ Per-Worker tokens can only name Workers that exist, so create both first.
 
 Publish a GitHub Release with a new tag (for example `v0.1.0`) on a `main`
 commit. `release.yml` checks the commit is on `main`, validates, deploys
-`butterlu-site`, and runs e2e against it. To roll back, publish a release of
-the previous tag, or run `npx wrangler rollback --env production` from your
-own machine.
+`butterlu-site`, and runs e2e against it. A prerelease deploys nothing.
+
+A production e2e failure fails the run after the deploy is live; nothing
+rolls back by itself. Roll back by publishing a release on the previous good
+commit, or with `npx wrangler rollback --env production` from your own machine.

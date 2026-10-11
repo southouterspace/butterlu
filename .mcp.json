@@ -2,7 +2,7 @@
   "mcpServers": {
     "e2e": {
       "command": "bash",
-      "args": [".claude/bin/with-node.sh", "npm", "exec", "--prefix", "site", "--", "e2e", "mcp", "--config", "site/e2e.config.ts"]
+      "args": [".claude/bin/e2e-mcp.sh"]
     }
   }
 }

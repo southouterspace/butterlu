@@ -16,21 +16,36 @@ site_changed() {
   ! git diff --quiet "$(git merge-base HEAD origin/main)" HEAD -- site .nvmrc
 }
 
-# A command starts at the beginning of the string or after ; & |, so a doc
-# line that mentions these commands inside a heredoc does not match.
-start='(^|[;&|][[:space:]]*)'
+# Unanchored on purpose: env prefixes, `git -C dir push`, `npm exec wrangler`,
+# `bash -c '...'` and newline-separated commands must all match. A doc line
+# that mentions these inside a heredoc matches too; write docs with Write/Edit.
+# Between git and push only global options may appear (`-C dir`, `-c k=v`),
+# so `git commit -m "... push ..."` does not count as a push.
+re_push='(^|[^[:alnum:]_.-])git([[:blank:]]+-[^[:space:]]+([[:blank:]]+[^-[:space:]][^[:space:]]*)?)*[[:blank:]]+push([^[:alnum:]_-]|$)'
+re_push_delete='[[:space:]](--delete|-d)([[:space:]]|$)'
+re_deploy='(^|[^[:alnum:]_-])wrangler(@[^[:space:]]*)?[[:space:]]+(deploy|versions|rollback|delete|secret|preview)([^[:alnum:]_-]|$)'
+re_preview_delete='wrangler(@[^[:space:]]*)?[[:space:]]+preview[[:space:]]+delete'
+re_prod_script='deploy(:|\.mjs[[:space:]]+)production'
 
 is_push() {
-  [[ "$cmd" =~ ${start}git[[:space:]]+push([[:space:]]|$) ]] && [[ ! "$cmd" =~ --delete ]]
+  [[ "$cmd" =~ $re_push ]] && [[ ! "$cmd" =~ $re_push_delete ]]
+}
+
+is_direct_deploy() {
+  { [[ "$cmd" =~ $re_deploy ]] && [[ ! "$cmd" =~ $re_preview_delete ]]; } || [[ "$cmd" =~ $re_prod_script ]]
 }
 
 if [ "$phase" = pre ]; then
-  if [[ "$cmd" =~ ${start}(npx[[:space:]]+)?wrangler[[:space:]]+(deploy|versions|rollback|delete|secret|preview([[:space:]]|$)) ]] \
-    && [[ ! "$cmd" =~ wrangler[[:space:]]+preview[[:space:]]+delete ]]; then
+  if is_direct_deploy; then
     echo "Deploy through site/scripts/deploy.mjs: npm run deploy:preview or npm run deploy:stage (from main). Production deploys only from a published GitHub Release." >&2
     exit 2
   fi
   if is_push && site_changed; then
+    # Validate what is pushed, not what is on disk.
+    if [ -n "$(git status --porcelain -- site .nvmrc)" ]; then
+      echo "Push blocked: site/ has uncommitted changes. Commit or stash them so validation runs on what you push." >&2
+      exit 2
+    fi
     if ! out="$(cd site && "../${node[0]}" npm run validate 2>&1)"; then
       printf 'Push blocked: npm run validate failed in site/.\n%s\n' "$(tail -n 40 <<<"$out")" >&2
       exit 2
@@ -43,8 +58,14 @@ fi
 is_push || exit 0
 branch="$(git rev-parse --abbrev-ref HEAD)"
 [ "$branch" != main ] || exit 0
-[ "$(git rev-parse HEAD)" = "$(git rev-parse '@{u}' 2>/dev/null)" ] || exit 0
 site_changed || exit 0
+stamp="$(git rev-parse --git-dir)/butterlu-preview-$(tr / - <<<"$branch")"
+[ "$(cat "$stamp" 2>/dev/null)" != "$(git rev-parse HEAD)" ] || exit 0
+if [ "$(git rev-parse HEAD)" != "$(git rev-parse "refs/remotes/origin/$branch" 2>/dev/null)" ]; then
+  msg="No Preview: HEAD is not on origin/$branch after this push. Push the branch itself (git push -u origin HEAD) to get one."
+  jq -n --arg m "$msg" '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $m}}'
+  exit 0
+fi
 
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   msg="No Preview: CLOUDFLARE_API_TOKEN is not set in this Claude environment. Tell the user once (site/README.md, one-time setup); do not work around it."
@@ -52,9 +73,10 @@ else
   out="$(cd site && "../${node[0]}" npm run deploy:preview 2>&1)"
   summary="$(sed -n 's/^deploy-summary //p' <<<"$out")"
   if [ -n "$summary" ]; then
+    git rev-parse HEAD > "$stamp"
     msg="Preview deployed for $branch: $summary. Post the url and e2e result on this branch's PR (one comment, edited on later pushes). health=unreachable means the sandbox cannot reach *.workers.dev; say the Preview was not e2e-tested from here."
   else
-    msg="Preview deploy failed for $branch. Fix it before asking for review. Last output:\n$(tail -n 30 <<<"$out")"
+    msg="$(printf 'Preview deploy failed for %s. Fix it before asking for review. Last output:\n%s' "$branch" "$(tail -n 30 <<<"$out")")"
   fi
 fi
 jq -n --arg m "$msg" '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $m}}'

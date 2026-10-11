@@ -17,7 +17,11 @@ export default {
     {
       engine: web(),
       app: deployedUrl
-        ? { url: deployedUrl, identity: 'butterlu-site', environment: 'staging' }
+        ? {
+            url: deployedUrl,
+            identity: 'butterlu-site',
+            environment: process.env.E2E_ENVIRONMENT === 'production' ? 'production' : 'staging',
+          }
         : {
             url: 'http://127.0.0.1:8787',
             identity: 'butterlu-site',

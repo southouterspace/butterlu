@@ -2,6 +2,7 @@
 // Each run builds, checks, deploys, waits for /api/health, then runs the e2e
 // suite against the deployed URL, and prints one JSON summary line.
 import { execFileSync, spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import { mkdtempSync, readFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -26,13 +27,14 @@ function onCleanSyncedMain() {
   return null;
 }
 
+// Branch names end in their unique part (claude/<topic>-<id>), so a long
+// name keeps a hash of the whole branch instead of being cut at the tail.
 function previewName() {
   const branch = git('rev-parse', '--abbrev-ref', 'HEAD');
-  return branch
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .slice(0, 40)
-    .replace(/^-+|-+$/g, '');
+  const slug = branch.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+  if (slug.length <= 40) return slug;
+  const hash = createHash('sha1').update(branch).digest('hex').slice(0, 8);
+  return `${slug.slice(0, 31).replace(/-+$/, '')}-${hash}`;
 }
 
 // Wrangler records each deploy as one ND-JSON entry in this file. Reading it
@@ -49,17 +51,25 @@ function wrangler(args, type) {
     .find((e) => e.type === type);
 }
 
-const workersDev = (urls = []) => urls.find((u) => u.includes('workers.dev')) ?? urls[0];
+// Wrangler prefixes https:// only on workers.dev targets; routes come bare.
+function workersDev(urls = []) {
+  const url = urls.find((u) => u.includes('workers.dev')) ?? urls[0];
+  return url && !url.startsWith('http') ? `https://${url}` : url;
+}
 
 const ENVIRONMENTS = {
   preview: {
-    precondition: () => (git('rev-parse', '--abbrev-ref', 'HEAD') === 'main' ? 'preview a branch, not main' : null),
+    precondition: () => {
+      if (git('rev-parse', '--abbrev-ref', 'HEAD') === 'main') return 'preview a branch, not main';
+      return git('status', '--porcelain', '--', '.') ? 'site/ has uncommitted changes; the Preview must match a commit' : null;
+    },
     check: 'build',
     deploy: () => workersDev(wrangler(['preview', '--name', previewName()], 'preview')?.preview_urls),
   },
   stage: {
     precondition: onCleanSyncedMain,
     check: 'validate',
+    mustReach: true,
     deploy: () => workersDev(wrangler(['deploy', '--env='], 'deploy')?.targets),
   },
   production: {
@@ -79,7 +89,7 @@ async function healthy(url) {
   let answered = false;
   for (let i = 0; i < 15; i++) {
     try {
-      const res = await fetch(new URL('/api/health', url));
+      const res = await fetch(new URL('/api/health', url), { signal: AbortSignal.timeout(5000) });
       answered = true;
       if (res.ok) return 'ok';
     } catch {}
@@ -102,7 +112,7 @@ if (!url) fail('wrangler reported no URL');
 const health = await healthy(url);
 let e2e = 'skipped';
 if (health === 'ok') {
-  const res = spawnSync('npx', ['e2e', 'run'], { stdio: 'inherit', env: { ...process.env, E2E_BASE_URL: url } });
+  const res = spawnSync('npx', ['e2e', 'run'], { stdio: 'inherit', env: { ...process.env, E2E_BASE_URL: url, E2E_ENVIRONMENT: name } });
   e2e = res.status === 0 ? 'passed' : 'failed';
 }
 

@@ -84,6 +84,8 @@ stage URL. After a branch merges, delete its Preview:
 
 - Run `wrangler deploy`, `wrangler preview`, `wrangler versions` or
   `wrangler rollback` directly. The hook blocks them; use the `deploy:*` scripts.
+  The hook matches the text anywhere in a Bash command, so write docs that
+  mention those commands with Write or Edit, not a heredoc.
 - Deploy production. It ships only from a published release.
 - Skip, disable, or loosen a test or a lint rule to get green.
 - Report a change as verified on the strength of a build alone.

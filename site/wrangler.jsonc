@@ -15,8 +15,9 @@
     "run_worker_first": ["/api/*"]
   },
   "observability": { "enabled": true },
-  // Previews belong to the stage Worker. Bindings that must not touch stage
-  // data get overridden here (docs/07: previews get their own D1).
+  // Previews: agents create them on the stage Worker (deploy.mjs). Bindings
+  // that must not touch stage data get overridden here (docs/07: previews
+  // get their own D1). env.production inherits this block unused.
   "previews": {},
   "env": {
     "production": {

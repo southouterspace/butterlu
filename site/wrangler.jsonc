@@ -3,8 +3,8 @@
   // Top level is stage, so a bare wrangler command can never reach production.
   // Production is env.production, deployed only by .github/workflows/release.yml.
   // Butterlu has its own Cloudflare account, shared with no other project.
-  // scripts/deploy.mjs refuses to deploy until its id is pinned here:
-  // "account_id": "<32-hex id of the Butterlu account>",
+  // scripts/deploy.mjs refuses any other account.
+  "account_id": "5fa9365455451e1db238dedb838fc9ff",
   "name": "butterlu-site-stage",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",

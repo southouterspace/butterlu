@@ -74,9 +74,9 @@ is done, `deploy.mjs` refuses every deploy.
 2. **Workers.** Per-Worker tokens can only name Workers that exist. In the new
    account create two Hello World Workers, `butterlu-site-stage` and
    `butterlu-site`. The first Preview and the first release replace their code.
-3. **Pin the account.** In `site/wrangler.jsonc`, replace the commented
-   `account_id` line with the new account's id. `deploy.mjs` refuses to deploy
-   while it is missing, and refuses any `CLOUDFLARE_ACCOUNT_ID` that differs from it.
+3. **Pin the account.** Done: `site/wrangler.jsonc` pins the Butterlu account,
+   `5fa9365455451e1db238dedb838fc9ff`. `deploy.mjs` refuses any
+   `CLOUDFLARE_ACCOUNT_ID` that differs from it.
 4. **Claude environment and agent token.** Create a Claude cloud environment
    used only for this repo. In the Butterlu account, Manage Account, Account API
    Tokens, create a token scoped to **Specified Workers: `butterlu-site-stage`**,

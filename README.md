@@ -31,7 +31,8 @@ repo is for.
 │   ├── 03-competitor-serp.md          # who outranks us and why
 │   ├── 04-review-pipeline-design.md   # Etsy → Shopify migration + sync
 │   ├── 05-execution-plan.md           # dependency graph + 8 resumable loops
-│   └── 06-etsy-tos-constraints.md     # what the Etsy API Terms permit
+│   ├── 06-etsy-tos-constraints.md     # what the Etsy API Terms permit
+│   └── 07-cloudflare-stripe-stack.md  # should the .com leave Shopify for Cloudflare + Stripe
 ├── plans/         # manifests — loops read work lists and checkpoint here
 ├── prompts/       # runnable session prompts
 └── .env.example   # required environment variables (no secrets)

@@ -35,37 +35,32 @@ function previewName() {
     .replace(/^-+|-+$/g, '');
 }
 
-function wranglerDeploy(envArg) {
+// Wrangler records each deploy as one ND-JSON entry in this file. Reading it
+// avoids parsing the human output, which mixes progress lines into --json.
+function wrangler(args, type) {
   const out = join(mkdtempSync(join(tmpdir(), 'wrangler-')), 'out.ndjson');
-  run('npx', ['wrangler', 'deploy', envArg, '--message', git('rev-parse', '--short', 'HEAD')], {
+  run('npx', ['wrangler', ...args, '--message', git('rev-parse', '--short', 'HEAD')], {
     WRANGLER_OUTPUT_FILE_PATH: out,
   });
-  const entry = readFileSync(out, 'utf8')
+  return readFileSync(out, 'utf8')
     .split('\n')
     .filter(Boolean)
     .map((line) => JSON.parse(line))
-    .find((e) => e.type === 'deploy');
-  return entry?.targets?.find((t) => t.includes('workers.dev')) ?? entry?.targets?.[0];
+    .find((e) => e.type === type);
 }
+
+const workersDev = (urls = []) => urls.find((u) => u.includes('workers.dev')) ?? urls[0];
 
 const ENVIRONMENTS = {
   preview: {
     precondition: () => (git('rev-parse', '--abbrev-ref', 'HEAD') === 'main' ? 'preview a branch, not main' : null),
     check: 'build',
-    deploy() {
-      const res = spawnSync(
-        'npx',
-        ['wrangler', 'preview', '--name', previewName(), '--message', git('rev-parse', '--short', 'HEAD'), '--json'],
-        { encoding: 'utf8', stdio: ['ignore', 'pipe', 'inherit'] },
-      );
-      if (res.status !== 0) fail(`wrangler preview exited ${res.status}\n${res.stdout}`);
-      return JSON.parse(res.stdout).preview.urls[0];
-    },
+    deploy: () => workersDev(wrangler(['preview', '--name', previewName()], 'preview')?.preview_urls),
   },
   stage: {
     precondition: onCleanSyncedMain,
     check: 'validate',
-    deploy: () => wranglerDeploy('--env='),
+    deploy: () => workersDev(wrangler(['deploy', '--env='], 'deploy')?.targets),
   },
   production: {
     precondition: () =>
@@ -74,7 +69,7 @@ const ENVIRONMENTS = {
         : 'production deploys only from .github/workflows/release.yml on a published release',
     check: 'validate',
     mustReach: true,
-    deploy: () => wranglerDeploy('--env=production'),
+    deploy: () => workersDev(wrangler(['deploy', '--env=production'], 'deploy')?.targets),
   },
 };
 

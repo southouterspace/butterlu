@@ -75,7 +75,8 @@ is done, `deploy.mjs` refuses every deploy.
 3. **Pin the account.** Done: `site/wrangler.jsonc` pins the Butterlu account,
    `5fa9365455451e1db238dedb838fc9ff`. `deploy.mjs` refuses any
    `CLOUDFLARE_ACCOUNT_ID` that differs from it.
-4. **Claude environment and agent token.** Create a Claude cloud environment
+4. **Claude environment and agent token.** Set: a Claude environment holds
+   `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`. Create a Claude cloud environment
    used only for this repo. In the Butterlu account, Manage Account, Account API
    Tokens, create a token scoped to **Specified Workers: `butterlu-site-stage`**,
    role **Editor**. Put it in that environment as `CLOUDFLARE_API_TOKEN`, with

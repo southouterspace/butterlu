@@ -45,8 +45,8 @@ repo is for.
   *published* theme; work on a duplicate and publish by hand.
 - **`extension/`** — Chrome extension.
 - **`workers/`** — Cloudflare Workers. The review sync Worker is designed in `docs/04`.
-  The Cloudflare account in use already hosts `fourfold*` and `rps-worker`, so name new
-  workers distinctly (e.g. `butterlu-reviews`).
+  Everything Butterlu runs on Cloudflare lives in its own Cloudflare account, shared
+  with no other project. See `site/README.md`, one-time setup.
 
 ## Next action
 

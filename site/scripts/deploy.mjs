@@ -19,6 +19,18 @@ function fail(reason) {
   process.exit(1);
 }
 
+// Butterlu deploys only to its own Cloudflare account, pinned in wrangler.jsonc.
+// CLOUDFLARE_ACCOUNT_ID overrides the config in wrangler, so a token for any
+// other account (the shared one that hosts Quote Goat) must be refused here.
+function pinnedAccount() {
+  const config = readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8');
+  const pinned = config.match(/^\s*"account_id":\s*"([0-9a-f]{32})"/m)?.[1];
+  if (!pinned) return { blocked: 'wrangler.jsonc pins no account_id; Butterlu needs its own Cloudflare account (site/README.md, one-time setup)' };
+  const fromEnv = process.env.CLOUDFLARE_ACCOUNT_ID;
+  if (fromEnv && fromEnv !== pinned) return { blocked: `CLOUDFLARE_ACCOUNT_ID is ${fromEnv}, not Butterlu's account ${pinned}` };
+  return { pinned };
+}
+
 function onCleanSyncedMain() {
   if (git('rev-parse', '--abbrev-ref', 'HEAD') !== 'main') return 'stage deploys only from main';
   if (git('status', '--porcelain')) return 'working tree is dirty';
@@ -102,6 +114,9 @@ const name = process.argv[2];
 const env = ENVIRONMENTS[name];
 if (!env) fail(`usage: node scripts/deploy.mjs <${Object.keys(ENVIRONMENTS).join('|')}>`);
 if (!process.env.CLOUDFLARE_API_TOKEN) fail('CLOUDFLARE_API_TOKEN is not set (see site/README.md, one-time setup)');
+const account = pinnedAccount();
+if (account.blocked) fail(account.blocked);
+process.env.CLOUDFLARE_ACCOUNT_ID = account.pinned;
 const blocked = env.precondition();
 if (blocked) fail(blocked);
 

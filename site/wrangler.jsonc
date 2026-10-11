@@ -2,7 +2,9 @@
   "$schema": "./node_modules/wrangler/config-schema.json",
   // Top level is stage, so a bare wrangler command can never reach production.
   // Production is env.production, deployed only by .github/workflows/release.yml.
-  // The account also hosts fourfold* and rps-worker; keep these names distinct.
+  // Butterlu has its own Cloudflare account, shared with no other project.
+  // scripts/deploy.mjs refuses to deploy until its id is pinned here:
+  // "account_id": "<32-hex id of the Butterlu account>",
   "name": "butterlu-site-stage",
   "main": "worker/index.ts",
   "compatibility_date": "2026-10-01",

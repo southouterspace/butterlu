@@ -32,7 +32,7 @@ token cannot touch the production Worker. `deploy.mjs` refuses production
 outside a release workflow. The session hook blocks direct `wrangler` deploys.
 Only the first layer is a real boundary; the other two are early, clear errors
 that a determined command can get around. **The first layer does not exist
-until step 2 of the one-time setup is done.**
+until step 4 of the one-time setup is done.** Until step 3, nothing deploys at all.
 
 ## CI runs in agent sessions
 
@@ -63,27 +63,45 @@ npm run deploy:stage      # main only
 
 ## One-time setup (a human)
 
-Per-Worker tokens can only name Workers that exist, so create both first.
+Butterlu shares nothing with any other project: not a Cloudflare account, not
+a `workers.dev` subdomain, not a token, not a Claude environment. Until step 3
+is done, `deploy.mjs` refuses every deploy.
 
-1. **Workers.** `butterlu-site-stage` already exists; an agent session created it with
-   the first Preview. Create `butterlu-site` once from the Cloudflare dashboard
-   (Workers & Pages, Create, Hello World, name `butterlu-site`). The first release
-   replaces its code.
-2. **Agent token. Blocker: until this is done, any agent session can deploy
-   production, and every other Worker in the account.** The token in the
-   Claude environment today is account-wide. In Cloudflare, Manage Account,
-   Account API Tokens, create a token scoped to **Specified Workers:
-   `butterlu-site-stage`** with role **Editor**. Replace `CLOUDFLARE_API_TOKEN`
-   in the Claude environment with it. If other repos share that environment,
-   give butterlu its own environment.
-3. **Production token.** Create a second token scoped to **Specified Workers:
-   `butterlu-site`**, role **Editor**. In GitHub, Settings, Environments, create
+1. **Cloudflare account.** In the Cloudflare dashboard, open the account
+   switcher and add a new account named Butterlu. Under Workers & Pages, set its
+   `workers.dev` subdomain to `butterlu`, so URLs read
+   `<name>.butterlu.workers.dev`.
+2. **Workers.** Per-Worker tokens can only name Workers that exist. In the new
+   account create two Hello World Workers, `butterlu-site-stage` and
+   `butterlu-site`. The first Preview and the first release replace their code.
+3. **Pin the account.** In `site/wrangler.jsonc`, replace the commented
+   `account_id` line with the new account's id. `deploy.mjs` refuses to deploy
+   while it is missing, and refuses any `CLOUDFLARE_ACCOUNT_ID` that differs from it.
+4. **Claude environment and agent token.** Create a Claude cloud environment
+   used only for this repo. In the Butterlu account, Manage Account, Account API
+   Tokens, create a token scoped to **Specified Workers: `butterlu-site-stage`**,
+   role **Editor**. Put it in that environment as `CLOUDFLARE_API_TOKEN`, with
+   `CLOUDFLARE_ACCOUNT_ID`. Never reuse the environment that holds another
+   project's Cloudflare token.
+5. **Production token.** In the Butterlu account, create a second token scoped
+   to **Specified Workers: `butterlu-site`**, role **Editor**. In GitHub, Settings, Environments, create
    `production` and add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as
    *environment* secrets, not repository secrets. A release runs the workflow
    file from its own tag, so restrict who can make one: add a tag ruleset on
    `v*` that only you can bypass, and limit the environment's deployment refs
    to `v*` tags.
-4. **Optional.** Add `ANTHROPIC_API_KEY` to the Claude environment and to the
+6. **pstack in every cloud session.** Cloud sessions ignore plugins a repo
+   enables in `.claude/settings.json`. Put this in the setup script of every
+   Claude cloud environment, so it is baked into the cached image:
+
+   ```bash
+   claude plugin install pstack --marketplace michael-denyer/pstack-claude --scope user
+   ```
+
+   This repo's SessionStart hook installs it too when it is missing, but a
+   session that installs it there only loads it on the next start or after
+   `/reload-plugins`.
+7. **Optional.** Add `ANTHROPIC_API_KEY` to the Claude environment and to the
    `production` environment to run the agent steps in `tests/agentic.e2e.ts`.
 
 ## Releasing

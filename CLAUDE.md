@@ -95,7 +95,7 @@ Established via the Shopify Admin API and ShopifyQL. Trust these:
 | **G1** | Enable checkout (leave "Pause and Build") | Human | **DONE** (plan now "Basic", shop on) — pending one live test order to confirm |
 | **G2** | Consolidation decisions (keep/kill per duplicate cluster) | Human | **OPEN** — needs Wave 0 output first |
 | **G3** | Etsy app credentials | Human | **DONE** — keystring + shared secret obtained |
-| **G4** | Cloudflare connector authorised | Human | **DONE** |
+| **G4** | Cloudflare connector authorised | Human | **DONE** — reaches the Butterlu account (`5fa93654…`), the only account Butterlu deploys to |
 | **G5** | Etsy's answer on review republishing | Etsy | **OPEN** — email DRAFTED, not confirmed sent (see docs/06) |
 
 G1 is done pending a live test order; nothing earns until that order confirms checkout. G2 is the hinge — it blocks

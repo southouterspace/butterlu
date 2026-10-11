@@ -67,13 +67,11 @@ Butterlu shares nothing with any other project: not a Cloudflare account, not
 a `workers.dev` subdomain, not a token, not a Claude environment. Until step 3
 is done, `deploy.mjs` refuses every deploy.
 
-1. **Cloudflare account.** In the Cloudflare dashboard, open the account
-   switcher and add a new account named Butterlu. Under Workers & Pages, set its
-   `workers.dev` subdomain to `butterlu`, so URLs read
-   `<name>.butterlu.workers.dev`.
-2. **Workers.** Per-Worker tokens can only name Workers that exist. In the new
-   account create two Hello World Workers, `butterlu-site-stage` and
-   `butterlu-site`. The first Preview and the first release replace their code.
+1. **Cloudflare account.** Done: account Butterlu, `workers.dev` subdomain
+   `butterlu`, so URLs read `<name>.butterlu.workers.dev`.
+2. **Workers.** Done: `butterlu-site-stage` and `butterlu-site` exist with
+   placeholder code that answers 503. The first Preview and the first release
+   replace it.
 3. **Pin the account.** Done: `site/wrangler.jsonc` pins the Butterlu account,
    `5fa9365455451e1db238dedb838fc9ff`. `deploy.mjs` refuses any
    `CLOUDFLARE_ACCOUNT_ID` that differs from it.

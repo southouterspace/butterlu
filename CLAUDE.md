@@ -37,7 +37,8 @@ scalloped, both 8.375" wide, `assets/frame-drawing.pdf`) plus **one of 44 backgr
 are the same product dressed for different searches. On the new site they become
 search-intent pages, each a preset of the one configurable frame, not separate products.
 Options are in `plans/product-options.json`. The opening takes a 4x6 photo (owner, not
-yet measured). The 44 uploaded backgrounds are the set; Etsy's numbered colour chart is
+yet measured). The frame ships **without** a photo; the buyer adds their own. It sells
+as designed, and custom text is optional, so never make personalisation required. The 44 uploaded backgrounds are the set; Etsy's numbered colour chart is
 not carried over. The two plain rectangles in the drawing are out of scope for now. About
 80 Etsy listings are other products (brag boards, a $62 large frame, car coasters and
 charms, add-ons).

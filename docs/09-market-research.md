@@ -14,6 +14,11 @@ only, on Etsy and off Etsy. No physical retail or wholesale.
 | G. Official APIs and connectors across the funnel | `research/g-funnel-apis.md` |
 | H. Agentic commerce: how AI shopping agents find and buy | `research/h-agentic-commerce.md` |
 
+Correction (owner, 2026-10-12): the frame ships without a photo (the buyer adds their
+own) and can be bought as designed; custom text is optional. An earlier draft
+recommended making personalisation and a photo upload required. That was wrong and is
+removed.
+
 Method limits. B ranks by Etsy API relevance order, which is not etsy.com search order
 (that is personalised and ad-driven). Views and favourites are lifetime counts, not sales.
 Keyword volumes in C are third-party estimates. Several Etsy help pages blocked automated
@@ -44,10 +49,11 @@ reads, so some Etsy claims come from search excerpts; the track files mark which
    pointing to butterlu.com, no "buy direct" offers, no marketing to Etsy buyers, no
    piping Etsy buyer data into any ad or email platform. The site must find its own
    customers. (E, F)
-6. **AI shopping agents can recommend the frame but cannot buy it.** No agent checkout
-   (Google UCP, OpenAI/Stripe ACP) carries custom text and a photo, and Google bans
-   personalised goods from agent checkout. The play is to be found, then hand off to a
-   pre-filled editor on butterlu.com. (H)
+6. **AI shopping agents can sell the frame as designed, but not a personalised one.** No
+   agent checkout (Google UCP, OpenAI/Stripe ACP) carries custom text, and Google bans
+   personalised goods from agent checkout. The frame ships empty (the buyer adds their
+   own photo) and sells as designed, so each preset is an ordinary product an agent can
+   buy. Custom wording hands off to the editor on butterlu.com. (H, corrected by owner)
 7. **A Claude-run stack is mostly reachable through official interfaces.** The gaps are
    Etsy Ads, Etsy messages and Etsy label buying, which have no API and stay human. (G, F)
 
@@ -57,35 +63,28 @@ reads, so some Etsy claims come from search excerpts; the track files mark which
 
 Ranked by expected impact against effort. Counts are from `plans/etsy-metadata-audit.json`.
 
-1. **Personalisation.** Every listing has one optional 256-character text box; none of
-   the frames require it, only 12 instruction texts mention the photo, and none say how
-   to send it. Etsy's 2026 personalisation allows up to 5 fields (text, choice list, file
-   upload) (E). Set frames to required text plus a photo upload in the Etsy UI. Not
-   confirmed: the choice-list option cap (it matters for 44 backgrounds), and whether the
-   API can write the new fields yet (F found the spec still says one text question, and a
-   report that third-party tools are blocked during the beta).
-2. **Merge or retire listings that compete with each other.** 155 candidates (71 old with
+1. **Merge or retire listings that compete with each other.** 155 candidates (71 old with
    very low views and under 5 favourites; 84 newer with under 50 lifetime views). 167 of
    the 240 listings from 2025–26 sit on a search-intent page that already has an older
    listing with 100+ favourites. Etsy has no rule against several listings of one item,
    so this is about self-competition, not a penalty (E). Never delete and recreate a
    listing that has reviews (F).
-3. **Alt text.** 16% of 6,361 images have any; three auto-captions ("a flyer for a fashion
+2. **Alt text.** 16% of 6,361 images have any; three auto-captions ("a flyer for a fashion
    show" and similar) sit on 841 images across 450 listings. (A)
-4. **Titles.** Median 18 words; Etsy's August 2025 guidance is under about 15 (E). They
+3. **Titles.** Median 18 words; Etsy's August 2025 guidance is under about 15 (E). They
    never say "wood" (0.8% vs 18.8% of competitors), never give a size, and never say
    "custom text" (B). 158 near-duplicate titles. Test short, format-first titles on a
    small batch before any bulk change.
-5. **Price.** $37.95 announcement frames are the most exposed; $62.40 brag boards are
+4. **Price.** $37.95 announcement frames are the most exposed; $62.40 brag boards are
    above the segment's 75th percentile (median $40); $62 large frames are cheap (median
    $67). The $35.95 point likely exists to clear Etsy's $35 free-shipping line, which the
    API can't confirm without OAuth. (B)
-6. **Tags are not the gap.** ButterLu uses 57 of competitors' 60 most common tags. Fix the
+5. **Tags are not the gap.** ButterLu uses 57 of competitors' 60 most common tags. Fix the
    smaller issues: 22% of tag uses repeat the title, 10 truncated tags, 2 listings with
    none. (A, B)
-7. **Attributes, sections, materials.** Attributes were not in the export and need an
+6. **Attributes, sections, materials.** Attributes were not in the export and need an
    OAuth read. 28 frames sit in a mismatched section; 49 listings have no materials. (A)
-8. **Use Marketplace Insights.** Etsy's search-demand tool: 15 searches a week free,
+7. **Use Marketplace Insights.** Etsy's search-demand tool: 15 searches a week free,
    unlimited with Etsy Plus ($10/month). It is the missing keyword-volume source for G2. (E)
 
 Fees for context (E): $0.20 per listing per 4 months, 6.5% transaction, about 3% + $0.25
@@ -123,8 +122,7 @@ test; Christmas 2027 its first full season.
 AI agents (H), in order: (1) crawlable pages with Product, Offer, shipping and
 MerchantReturnPolicy markup plus Google and Microsoft Merchant Center feeds, and
 Cloudflare set to admit search and agent crawlers (2–3 days); (2) pre-filled editor links,
-one per preset, with text and photo required before add-to-cart so no agent can place a
-blank order (3–4 days); (3) discovery-only listings: Stripe's agentic catalog with
+one per preset, buyable as designed, with custom wording optional (3–4 days); (3) discovery-only listings: Stripe's agentic catalog with
 checkout off, and an application at chatgpt.com/merchants (1–2 days). Defer in-agent
 checkout and a site MCP server until there are real orders. Google says it ignores
 `llms.txt`.
@@ -203,7 +201,6 @@ TikTok ads connectors when paid ads start; Klaviyo and QuickBooks or Xero later.
 
 - Production time and cost of goods per frame. Peers promise 1–2 day dispatch, and
   channel economics can't be worked out without COGS.
-- Whether to make personalisation required with photo upload on Etsy frames (item 1 above).
 - Approval of a merge/retire list built from the 155 candidates (no listing is touched
   before a manifest is reviewed).
 - Etsy Plus ($10/month) for Marketplace Insights, before G2.
@@ -212,7 +209,8 @@ TikTok ads connectors when paid ads start; Klaviyo and QuickBooks or Xero later.
 
 ## 7. Unverified
 
-- Choice-list option cap in Etsy personalisation, and API support for the new fields.
+- API support for Etsy's 2026 personalisation fields (F found the spec still says one
+  text question).
 - Whether ButterLu's Etsy listings already surface in ChatGPT, Gemini and Copilot. A
   manual check in each would settle it.
 - The text of Etsy's Seller Policy effective 2026-07-09, the US processing rate from Etsy

@@ -1,8 +1,2449 @@
 {
   "_schema": {
-    "description": "L6. Etsy listing to Shopify handle. Below confidence threshold, needsHuman=true.",
-    "row": {"etsyListingId":0,"shopifyHandle":"string","confidence":0.0,"needsHuman":false}
+    "description": "Shopify product handle -> source Etsy listing. Every Shopify product gets a row, so every old URL has a known destination or is flagged. Below confidence 0.9 or with needsHuman=true, a human checks it. Produced by scripts/lineup-draft.mjs.",
+    "method": "handle-suffix: the Shopify handle ends with the last 5 digits of the Etsy listing id (set by the Etsy importer), confirmed by title word overlap. title-only: no active listing has that suffix (source listing no longer active), so the closest active title is suggested. none: nothing close.",
+    "row": {
+      "etsyListingId": "integer | null",
+      "shopifyHandle": "string",
+      "shopifyStatus": "ACTIVE | DRAFT | ARCHIVED",
+      "shopifyTitle": "string",
+      "method": "handle-suffix | title-only | none",
+      "titleSimilarity": "number 0-1, word overlap after stop words",
+      "confidence": "number 0-1",
+      "needsHuman": "boolean"
+    }
   },
-  "generatedAt": null,
-  "rows": []
+  "generatedAt": "2026-10-12T12:22:40.665Z",
+  "rows": [
+    {
+      "etsyListingId": 817552843,
+      "shopifyHandle": "abuelo-gift-for-abuelo-birthday-grandpa-52843",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Abuelo Gift for Abuelo Birthday Grandpa Gift  Grandpa’s Little Girl  New Grandpa Personalized Gift  Personalized Gift 4x6 Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 547189363,
+      "shopifyHandle": "all-that-we-are-and-hope-to-be-frame-89363",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "All That We Are and Hope to Be Frame – Wedding Thank You Gift for Parents of the Bride and Groom, Personalized Parent Wedding Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 518152539,
+      "shopifyHandle": "all-that-we-are-and-hope-to-be-parents-52539",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "All That We Are And Hope To Be Parents Gift Parents Of The Groom Parents Of The Bride Wedding Thank You For Parents Of The Bride & Groom",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.4,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 682930097,
+      "shopifyHandle": "all-that-we-are-and-hope-to-be-wedding-30097",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "All That We Are And Hope To Be Wedding Thank You Gift For Mother Of The Groom Father Of Bride Wedding Gift For Mother Father In Law Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.43,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1814909903,
+      "shopifyHandle": "aunt-gift-personalized-aunt-picture-frame-43453",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Aunt Gift Personalized Aunt Picture Frame Custom Gift For Aunt Birthday Gift For Sister New Aunt From Niece and Nephew 4x6 Photo Custom",
+      "method": "title-only",
+      "titleSimilarity": 0.6,
+      "confidence": 0.42,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 227051713,
+      "shopifyHandle": "aunt-uncle-gift-personalized-picture-02182",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Aunt & Uncle  Gift  Personalized Picture Frame Board For Aunt And Uncle  Gift For Brother and Sister From Niece and Nephew",
+      "method": "title-only",
+      "titleSimilarity": 0.63,
+      "confidence": 0.44,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1832920613,
+      "shopifyHandle": "auntie-photo-frame-aunties-bestie-20613",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Auntie Photo Frame Auntie's Bestie Picture Frame Aunt Picture Frame Birthday Gift Aunt Picture Frame New Aunt Gift Christmas Gift for Aunt",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1576229399,
+      "shopifyHandle": "aunties-bestie-picture-frame-aunt-29399",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Auntie's Bestie Picture Frame  Aunt Picture Frame   Gift Aunt  Aunt Picture Frame  New Aunt Gift  Birthday Gift for Aunt",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "baby-boy-birth-announcement-picture-frame-34226",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Baby Boy Birth Announcement Picture Frame For Baby Boy New Parents Baby Gift For Newborn Baby Boy Gift Personalized Custom Baby Gift For Boy",
+      "method": "none",
+      "titleSimilarity": 0.4,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1818445202,
+      "shopifyHandle": "baby-girl-birth-announcement-picture-45202",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Baby Girl Birth Announcement Picture Frame For Baby Girl New Parents Baby Gift For Newborn Baby Girl Gift Personalized Custom Baby Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.57,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 784655825,
+      "shopifyHandle": "baby-loss-gift-miscarriage-gift-55825",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Baby Loss Gift  Miscarriage Gift  Bereavement Gift  We Will Hold You In Our Hearts Until We Hold You In Heaven  Ultrasound Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4295098553,
+      "shopifyHandle": "baptism-frame-baptism-gift-baptism-98553",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Baptism Frame, Baptism Gift, Baptism Picture Frame, Personalized Baptism Gift, Custom Baptism Keepsake, Christening Gift for Baby",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.25,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 644888748,
+      "shopifyHandle": "baptism-gift-for-godfather-godfather-88748",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Baptism Gift For Godfather  Godfather Picture Frame  Personalized Baptism Frame  Godfathers Are A Blessing Fathers Day Gift for Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.2,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 796124933,
+      "shopifyHandle": "best-gigi-gift-im-as-lucky-as-can-24933",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Best Gigi Gift – I’m As Lucky As Can Be Frame – Personalized 4x6 Gigi Picture Frame – Gift from Grandkids – Mother’s Day Gigi Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.23,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "best-teacher-gift-personalized-49984",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Best Teacher Gift – Personalized Picture Frame, Custom Teacher Appreciation, Gift for Preschool or Elementary Teacher, 4x6 Frame",
+      "method": "none",
+      "titleSimilarity": 0.25,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1825262795,
+      "shopifyHandle": "birthday-gift-for-gg-gigi-grandma-gg-gift-62795",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Birthday Gift For GG Gigi Grandma GG Gift Gigi Frame Gift for Grandma Gift For Grandma Personalized Picture Frame Grandma Personalized Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.38,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 742353482,
+      "shopifyHandle": "birthday-gift-for-grandma-personalized-53482",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Birthday Gift For Grandma Personalized Grandma Christmas Gift Grandma Personalized Picture Frame 4x6 Picture Frame Custom For Grandma",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.3,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 785810682,
+      "shopifyHandle": "birthday-gift-for-grandpa-personalized-10682",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Birthday Gift for Grandpa Personalized Grandpa Gift Grandpa's Little Girl New Grandpa Personalized Gift Grandpa Gift 4x6 Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.75,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 961349865,
+      "shopifyHandle": "birthday-gift-for-great-grandma-49865",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Birthday Gift For Great Grandma  Personalized Gift For Great Grandma  Gift From Grandchild  I Love My Great Grandma  4x6 Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.6,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 664548017,
+      "shopifyHandle": "birthday-gift-godmother-godmothers-are-a-48017",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Birthday Gift Godmother  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift |",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "cat-loss-gifts-cat-personalized-cat-loss-54666",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Cat Loss Gifts Cat Personalized Cat Loss Pet Memorial Frame Cat Loss Gift Pet Bereavement Gift Pet Sympathy Gift Pet Loss 4x6 Picture Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.63,
+      "confidence": 0.44,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "catholic-godmother-gift-godmother-gift-76451",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Catholic Godmother Gift Godmother Gift Godmothers Are A Blessing  Gift For Godmother Godmother Picture Frame Personalized Frame Baptism Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.83,
+      "confidence": 0.58,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4363652559,
+      "shopifyHandle": "christian-gifts-baptism-gift-godfather-80820",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Christian Gifts  Baptism Gift  Godfather Gift  Uncle Gift  Gift For Godfather  Godfather Picture Frame | Personalized Frame |",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 556310429,
+      "shopifyHandle": "countdown-until-youre-grandparents-again-10429",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Countdown Until You're Grandparents Again Frame  Pregnancy Reveal To Parents, Grandparents To Be",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.3,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1821059421,
+      "shopifyHandle": "custom-mimi-gift-frame-grandma-12487",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Custom Mimi Gift Frame – Grandma Picture Frame Personalized for Mother’s Day, Birthday Gift for Mimi, Grandparent Photo Keepsake",
+      "method": "title-only",
+      "titleSimilarity": 0.71,
+      "confidence": 0.5,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "custom-order-for-kevin-c-personalized-97874",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Custom order for Kevin C. Personalized Mama EST. 2025 Frame",
+      "method": "none",
+      "titleSimilarity": 0.15,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4297937447,
+      "shopifyHandle": "daddys-little-girl-frame-37447",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Daddy’s Little Girl Frame – Personalized Father’s Day Gift, Birthday Gift for Dad, Custom Papa or Grandpa Frame, 4x6 Photo Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4297934444,
+      "shopifyHandle": "daddys-little-girl-personalized-frame-34444",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Daddy’s Little Girl Personalized Frame – First Father’s Day Gift, Birthday Gift for Dad or Grandpa, Custom Papa Picture Frame 4x6 Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1818974413,
+      "shopifyHandle": "dog-loss-dog-memorial-dog-lover-gift-dog-36321",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Dog Loss Dog Memorial Dog Lover Gift Dog Loss Gift Dog Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  Pet Loss Picture Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.83,
+      "confidence": 0.58,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1764018510,
+      "shopifyHandle": "dog-loss-gift-rainbow-bridge-dog-18510",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Dog Loss Gift Rainbow Bridge  Dog Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  Pet Loss Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.86,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1818974413,
+      "shopifyHandle": "dog-lover-dog-mom-gift-for-her-pet-lover-74413",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Dog Lover Dog Mom Gift For Her Pet Lover Gift Fur Baby Gift Personalized Gift For Pet Dog Mom Personalized Pet Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4295042357,
+      "shopifyHandle": "dog-lover-gift-dog-loss-gift-rainbow-17968",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Dog Lover Gift Dog Loss Gift Rainbow Bridge Dog Memorial Gift Personalized Gift For Pet Memorial Dog Mom Pet Loss Picture Frame 4x6",
+      "method": "title-only",
+      "titleSimilarity": 0.7,
+      "confidence": 0.49,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1804776554,
+      "shopifyHandle": "dog-lover-gift-for-dog-mom-gift-for-her-76554",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Dog Lover Gift For Dog Mom Gift For Her Pet Lover Gift Fur Baby Gift Personalized Gift For Pet Dog Mom Personalized Pet Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.36,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1816021189,
+      "shopifyHandle": "dog-lover-gift-golden-retriever-dog-mom-21189",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Dog Lover Gift Golden Retriever Dog Mom Gift Dog Memorial Gift  Personalized Gift For Pet Dog Mom Fur Baby Fur Child",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.3,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "dog-mom-gift-for-her-pet-loss-gift-dog-17857",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Dog Mom Gift For Her Pet Loss Gift Dog Loss Memorial Gift Personalized Gift For Pet Memorial  Dog Mom When Tomorrow Starts Without Me Frame",
+      "method": "none",
+      "titleSimilarity": 0.4,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "engagement-countdown-chalkboard-frame-95999",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Engagement Countdown Chalkboard Frame  Countdown To Wedding Day  Picture Frame Gift For Bride To Be",
+      "method": "none",
+      "titleSimilarity": 0.43,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 498953456,
+      "shopifyHandle": "engagement-gift-personalized-engagement-53456",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Engagement Gift Personalized Engagement Picture Frame Gift for Girlfriend Boyfriend Engagement Gift Valentines Day Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 477483500,
+      "shopifyHandle": "engagement-gifts-for-couple-picture-83500",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Engagement Gifts For Couple  Picture Frame  Engagement Gift  She Said Yes Frame  Personalized Wedding Frame  Picture Frame Bride To Be",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 727985618,
+      "shopifyHandle": "engagement-picture-frame-bridal-shower-85618",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Engagement Picture Frame Bridal Shower Gift Meaningful Engagement Gift She Said Yes Frame  Personalized Wedding Frame Bride To Be Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1550048478,
+      "shopifyHandle": "engagement-picture-frame-engagement-gift-08461",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Engagement Picture Frame  Engagement Gift  She Said Yes Frame  Personalized Wedding Frame  Announcement Picture Frame Bride To Be Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 812944651,
+      "shopifyHandle": "first-fathers-day-as-grandpa-gift-44651",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "First Father’s Day as Grandpa Gift    Gift Grandpa  I Love My Grandpa  Grandpa Personalized Gift  4x6 Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.6,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 693902312,
+      "shopifyHandle": "first-grandchild-ultrasound-frame-new-88817",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "First Grandchild Ultrasound Frame – New Grandparent Announcement Gift, Pregnancy Reveal for Parents, Personalized Baby Announcement Keepsake",
+      "method": "title-only",
+      "titleSimilarity": 0.64,
+      "confidence": 0.45,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "friends-frame-best-friend-gift-blonde-69290",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Friends Frame  Best Friend Gift  Blonde Brunette Ginger  Unbreakable Bond  Picture Frame Every Blonde Needs A Brunette Best Friend Frame",
+      "method": "none",
+      "titleSimilarity": 0.42,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "funny-dog-mom-picture-frame-moms-50954",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Funny Dog Mom Picture Frame – Mom’s Walking Vet Bill – Personalized Pet Photo Gift – Dog Lover Gift – Custom 4x6 Pet Frame",
+      "method": "none",
+      "titleSimilarity": 0.36,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4298827592,
+      "shopifyHandle": "funny-favorite-child-frame-gift-for-27592",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Funny Favorite Child Frame – Gift for Mom from Daughter or Son, I’m the Favorite Picture Frame, Personalized Mother’s Day Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4298746666,
+      "shopifyHandle": "funny-mom-gift-from-daughter-i-love-how-46666",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Funny Mom Gift from Daughter I Love How We Don’t Have to Say I’m Your Favorite Child Frame Mother Daughter Picture Personalized Gift for Mom",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.4,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-07251",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift for Godfathers Are A Blessing Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-09184",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift  Godfathers Are A Blessing  Fathers Day Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 0.71,
+      "confidence": 0.5,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-17366",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift for Godfathers Are A Blessing Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 935925735,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-25735",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift  Godfathers Are A Blessing  Fathers Day Gift for Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.15,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 510037753,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-37753",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift For Godfather  Godfather Picture Frame  Personalized Baptism Frame  Godfathers Are A Blessing Fathers Day Gift for Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.14,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-53040",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift  Godfathers Are A Blessing  Fathers Day Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 0.71,
+      "confidence": 0.5,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 523465293,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-65293",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift  Godfathers Are A Blessing  Fathers Day Gift for Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-69022",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift for Godfathers Are A Blessing Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 649383265,
+      "shopifyHandle": "gift-for-godfather-godfather-picture-83265",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift  Godfathers Are A Blessing  Fathers Day Gift for Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.2,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 649383265,
+      "shopifyHandle": "gift-for-godfather-personalized-39255",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather  Personalized Godfather Gift For Baptism  Godparents Frame  Godmother From Godchild Personalized Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.57,
+      "confidence": 0.4,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "gift-for-godfather-personalized-godfather-12504",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather Personalized Godfather Picture Frame Personalized Frame Baptism Gift Godfathers Are A Blessing Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "gift-for-godfather-personalized-godfather-13523",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godfather Personalized Godfather Picture Frame Personalized Frame Baptism Gift Godfathers Are A Blessing Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1832914445,
+      "shopifyHandle": "gift-for-godmother-birthday-gift-14445",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift For Godmother Birthday Gift Godmothers Are A Blessing Christian Baptism Gifts Gift For Godmother Godmother Picture Frame Personalized",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "gift-for-godmother-for-baptism-godmother-05889",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift For Godmother For Baptism Godmother Picture Frame  Personalized Frame Baptism Gift for Godmothers Are A Blessing Gift for Godmother",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 893952799,
+      "shopifyHandle": "gift-for-godmother-godmother-picture-52799",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godmother  Godmother Picture Frame  Personalized Frame Baptism Gift for Godmothers Are A Blessing Gift for Godmother",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "gift-for-godmother-godmothers-are-a-04202",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift For Godmother  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift |",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "gift-for-godmother-godmothers-are-a-08316",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift For Godmother  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift |",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 734321721,
+      "shopifyHandle": "gift-for-godmother-godmothers-are-a-21721",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift For Godmother  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.4,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "gift-for-godmother-godmothers-are-a-60193",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift For Godmother  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift |",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 644339506,
+      "shopifyHandle": "gift-for-godparents-godparents-picture-44719",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift for Godparents  Godparents Picture Frame  Personalized Frame Baptism Gift Godparents Are A Blessing From Godchild Godson Goddaughter",
+      "method": "title-only",
+      "titleSimilarity": 0.45,
+      "confidence": 0.32,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 793264800,
+      "shopifyHandle": "gift-for-grandpa-birthday-personalized-89326",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Gift for Grandpa Birthday Personalized Frame for New Grandpa Grandpas Little Girl Custom 4x6 Picture Frame Special Grandpa Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.67,
+      "confidence": 0.47,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 647843378,
+      "shopifyHandle": "gift-for-great-grandma-personalized-gift-43378",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Gift For Great Grandma  Personalized Gift For Great Grandma  Gift From Grandchild  I Love My Great Grandma  4x6 Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.75,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "gift-godmother-godmothers-are-a-blessing-85731",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Gift Godmother  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift |",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1525901435,
+      "shopifyHandle": "gifts-for-uncle-birthday-gift-for-uncle-01435",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Gifts For Uncle  Birthday Gift For Uncle Personalized Picture Frame  Christmas Gift For Uncle  Personalized Gift From Niece Nephew",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.71,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 639569186,
+      "shopifyHandle": "gigi-birthday-gift-for-gigi-personalized-69186",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Gigi Birthday Gift For Gigi Personalized Picture Frame Gigi 4x6 Gigi Gift From Grandkids Gigi Personalized Christmas Gift I Love My Gigi",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1545150911,
+      "shopifyHandle": "gigi-grandma-gg-gift-gigi-frame-gift-50911",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Gigi Grandma GG Gift  Gigi Frame  Gift for Grandma   Gift For Grandma  Personalized Picture Frame Grandma Personalized Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 733842083,
+      "shopifyHandle": "godfather-frame-baptism-gift-for-31569",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Frame  Baptism Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Godparents  Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.67,
+      "confidence": 0.47,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 699582064,
+      "shopifyHandle": "godfather-frame-baptism-gift-for-82064",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Frame  Baptism Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Fathers Day Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 653057583,
+      "shopifyHandle": "godfather-gift-gift-for-godfather-57583",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Gift  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Fathers Day Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 558263691,
+      "shopifyHandle": "godfather-gift-godfathers-are-a-blessing-63691",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Gift  Godfathers Are A Blessing Picture Frame  Personalized Frame  Baptism Gift for Godfathers Godparents I Love My Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4363652559,
+      "shopifyHandle": "godfather-gift-i-love-my-godfather-gift-60769",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Gift I Love My Godfather  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift   Gift Godfather",
+      "method": "title-only",
+      "titleSimilarity": 0.67,
+      "confidence": 0.47,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1562156225,
+      "shopifyHandle": "godfather-gift-uncle-gift-gift-for-56225",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Gift  Uncle Gift  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Uncle Promoted to Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 782459715,
+      "shopifyHandle": "godfather-gift-uncle-gift-gift-for-59715",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Gift Uncle Gift Gift For Godfather Godfather Picture Frame Personalized Frame Uncle Promoted to Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 782459715,
+      "shopifyHandle": "godfather-gift-uncle-gift-gift-for-73106",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Gift  Uncle Gift  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Uncle Promoted to Godfather",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "godfather-picture-frames-4x6-gift-for-57335",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Picture Frames 4x6  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Fathers Day Gift Godfather",
+      "method": "none",
+      "titleSimilarity": 0.4,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 666196852,
+      "shopifyHandle": "godfather-proposal-gift-will-you-be-my-30745",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Proposal Gift  Will You Be My Godfather?   I Love My Godfather  Godfather Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 721854899,
+      "shopifyHandle": "godfather-proposal-gift-will-you-be-my-54899",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Proposal Gift  Will You Be My Godfather?   I Love My Godfather  Godfather Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 511061376,
+      "shopifyHandle": "godfather-proposal-gift-will-you-be-my-61376",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Proposal  Gift  Will You Be My Godfather?  Godfather Gift  I Love My Godfather Godfathers Are A Blessing",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.25,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "godfather-proposal-godfather-picture-28824",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfather Proposal  Godfather Picture Frame  Personalized Frame Baptism Gift  Godfathers Are A Blessing   Gift for Godfather",
+      "method": "title-only",
+      "titleSimilarity": 0.83,
+      "confidence": 0.58,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 650713476,
+      "shopifyHandle": "godfathers-are-a-blessing-gift-for-13476",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfathers Are A Blessing  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Fathers Day Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.2,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 734321463,
+      "shopifyHandle": "godfathers-are-a-blessing-gift-for-21463",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfathers Are A Blessing  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Fathers Day Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.22,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 644339506,
+      "shopifyHandle": "godfathers-are-a-blessing-gift-for-39506",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfathers Are A Blessing  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Fathers Day Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 731962397,
+      "shopifyHandle": "godfathers-are-a-blessing-gift-for-62397",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfathers Are A Blessing  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift  Fathers Day Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1170966612,
+      "shopifyHandle": "godfathers-are-a-blessing-gift-for-66612",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godfathers Are A Blessing  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift   Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.2,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "godfathers-are-a-blessing-gift-for-92874",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Godfathers Are A Blessing  Gift For Godfather  Godfather Picture Frame  Personalized Frame  Baptism Gift   Gift Godfather",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 633329958,
+      "shopifyHandle": "godmother-baptism-gift-godmothers-are-29958",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Baptism Gift  Godmothers Are Special  Personalized  Gift for Godmother",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1832913833,
+      "shopifyHandle": "godmother-birthday-gift-godmothers-are-a-13833",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Birthday Gift Godmothers Are A Blessing Christian Baptism Gifts Gift For Godmother Godmother Picture Frame Personalized Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 683695009,
+      "shopifyHandle": "godmother-gift-from-godchild-godmother-95009",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift From Godchild  Godmother Picture Frame  Personalized Frame Baptism Gift for Godmothers Are A Blessing Gift for Godmother",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.4,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 784655101,
+      "shopifyHandle": "godmother-gift-gift-from-godchild-07612",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Gift From Godchild  Godmothers Are Special  Personalized  Gift for Godmother",
+      "method": "title-only",
+      "titleSimilarity": 0.56,
+      "confidence": 0.39,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 507749438,
+      "shopifyHandle": "godmother-gift-godmother-baptism-gift-33109",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Godmother Baptism Gift  Godmothers Are Special Personalized 4x6 Frame  Godmother Confirmation Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.6,
+      "confidence": 0.42,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 487255188,
+      "shopifyHandle": "godmother-gift-godmother-baptism-gift-55188",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Godmother Baptism Gift  Godmothers Are Special Personalized 4x6 Frame  Godmother Confirmation Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.45,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 507749438,
+      "shopifyHandle": "godmother-gift-godmother-baptism-gift-69651",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Godmother Baptism Gift  Godmothers Are Special Personalized 4x6 Frame  Godmother Confirmation Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.6,
+      "confidence": 0.42,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "godmother-gift-godmother-frame-i-love-06817",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift   Godmother Frame  I Love My Godmother 4 x 6 Personalized Frame  Godmother Frame Baptism Gift 1st Communion",
+      "method": "none",
+      "titleSimilarity": 0.43,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "godmother-gift-godmother-frame-i-love-14693",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift   Godmother Frame  I Love My Godmother 4 x 6 Personalized Frame  Godmother Frame Baptism Gift 1st Communion",
+      "method": "none",
+      "titleSimilarity": 0.43,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "godmother-gift-godmother-frame-i-love-38419",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift   Godmother Frame  I Love My Godmother 4 x 6 Personalized Frame  Godmother Frame Baptism Gift 1st Communion",
+      "method": "none",
+      "titleSimilarity": 0.43,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 525640447,
+      "shopifyHandle": "godmother-gift-godmother-frame-i-love-40447",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Godmother Gift   Godmother Frame  I Love My Godmother 4 x 6 Personalized Frame  Godmother Frame Baptism Gift 1st Communion",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.22,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 659617014,
+      "shopifyHandle": "godmother-gift-godmother-picture-frame-17014",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Godmother Picture Frame  Godmothers Are Special Gift  Baptism Confirmation First Communion Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.15,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 507749438,
+      "shopifyHandle": "godmother-gift-godmother-picture-frame-49438",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Godmother Picture Frame  Godmothers Are Special Gift  Baptism Confirmation First Communion Gift  I Love My Godmother",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 785081416,
+      "shopifyHandle": "godmother-gift-godmother-picture-frame-81416",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift Godmother Picture Frame Personalized Gift for Godmother I Love My Godmother  Personalized Picture Frame Godmother Gift 4x6",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.25,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1879883185,
+      "shopifyHandle": "godmother-gift-godmother-picture-frame-83185",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift Godmother Picture Frame Personalized Gift for Godmother I Love My Godmother  Personalized Picture Frame Godmother Gift 4x6",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "godmother-gift-godmothers-are-a-blessing-44417",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift |",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 689488538,
+      "shopifyHandle": "godmother-gift-godmothers-are-a-blessing-88538",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Godmothers Are A Blessing  Gift For Godmother  Godmother Picture Frame  Personalized Frame  Baptism Gift |",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 567268891,
+      "shopifyHandle": "godmother-gift-i-love-my-godmother-68891",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  I Love My Godmother   Gift for Godmother  Godparents Frame  Godmother From Godchild Personalized Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.1,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 698926743,
+      "shopifyHandle": "godmother-gift-only-the-best-26743",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Only The Best Friends/Aunts/Sisters Get Promoted To Godmother  Godmother Personalized Picture Frame Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 698926743,
+      "shopifyHandle": "godmother-gift-only-the-best-51508",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Only The Best Friends/Sisters/Aunts Get Promoted To Godmother  Godmother Personalized Picture Frame Gift",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 538762133,
+      "shopifyHandle": "godmother-gift-only-the-best-62133",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Only The Best Friends/Sisters/Aunts Get Promoted To Godmother  Godmother Personalized Picture Frame Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.09,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 718192787,
+      "shopifyHandle": "godmother-gift-only-the-best-sisters-get-92787",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Gift  Only The Best Sisters Get Promoted To Godmother  Godmother Personalized Picture Frame Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.13,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 893952799,
+      "shopifyHandle": "godmother-proposal-gift-will-you-be-my-27456",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Proposal Gift  Will You Be My Godmother?   I Love My Godmother  Godmother Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.6,
+      "confidence": 0.42,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 654104239,
+      "shopifyHandle": "godmother-proposal-gift-will-you-be-my-49653",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Proposal Gift  Will You Be My Godmother?  Godmother Baptism Gift  Personalized Godmother Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.8,
+      "confidence": 0.56,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 893952799,
+      "shopifyHandle": "godmother-proposal-gift-will-you-be-my-79360",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Proposal Gift  Will You Be My Godmother?   I Love My Godmother  Godmother Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.6,
+      "confidence": 0.42,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 677705474,
+      "shopifyHandle": "godmother-proposal-will-you-be-my-05474",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Proposal  Will You Be My Godmother  Gift for Godmother  Godparents Gift  Baptism Gift  Godparents 4x6 Personalized Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.38,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 654104239,
+      "shopifyHandle": "godmother-proposal-will-you-be-my-45947",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmother Proposal  Will You Be My Godmother  Gift for Godmother  Godparents Gift  Baptism Gift  Godparents 4x6 Personalized Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.57,
+      "confidence": 0.4,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 525977440,
+      "shopifyHandle": "godmothers-are-special-because-they-are-77440",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godmothers Are Special Because They Are Chosen  Personalized Gift For Godmother  Baptism Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.11,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1018842795,
+      "shopifyHandle": "godparent-gifts-keepsake-gift-from-86324",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparent Gifts Keepsake Gift From Godchild Godparents Personalized Gift For Godparents From Godchild For Godmother Godfather 4x6 Personal",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1545147521,
+      "shopifyHandle": "godparents-are-a-blessing-gift-for-47521",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Are A Blessing  Gift For Godparents  Godparents Picture Frame  Personalized Frame  Baptism Gift   Gift Godparents",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.67,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1828076891,
+      "shopifyHandle": "godparents-baptism-dedication-keepsake-76891",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Baptism Dedication Keepsake Gift Godparents Personalized Gift For Godparents From Godchild For Godmother Godfather 4x6 Personal",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.21,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "godparents-baptism-gift-godparents-10933",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Baptism Gift  Godparents Proposal Gift  I Love My Godparents  Godparent Dedication Picture Frame",
+      "method": "none",
+      "titleSimilarity": 0.44,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 756223767,
+      "shopifyHandle": "godparents-baptism-gift-godparents-23767",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Baptism Gift  Godparents Proposal Gift  I Love My Godparents  Godparent Dedication Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "godparents-baptism-gift-godparents-49474",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Baptism Gift  Godparents Proposal Gift  I Love My Godparents  Godparent Dedication Picture Frame",
+      "method": "none",
+      "titleSimilarity": 0.44,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 760621415,
+      "shopifyHandle": "godparents-frame-baptism-gift-for-21415",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Frame  Baptism Gift For Godparents  Godparents Picture Frame  Personalized Frame  Baptism Gift  Godparents  Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.25,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 733842083,
+      "shopifyHandle": "godparents-frame-baptism-gift-for-42083",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Frame  Baptism Gift For Godparents  Godparents Picture Frame  Personalized Frame  Baptism Gift  Godparents  Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 733842083,
+      "shopifyHandle": "godparents-frame-baptism-gift-for-65681",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Frame  Baptism Gift For Godparents  Godparents Picture Frame  Personalized Frame  Baptism Gift  Godparents  Gift",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1100072252,
+      "shopifyHandle": "godparents-frame-baptism-gift-for-72252",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Frame  Baptism Gift For Godparents  Godparents Picture Frame  Personalized Frame  Baptism Gift  Godparents  Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.22,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 507749438,
+      "shopifyHandle": "godparents-gift-first-communion-baptism-86285",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Gift First Communion Baptism Gift  Godmothers Are Special  Personalized  Gift for Godmother",
+      "method": "title-only",
+      "titleSimilarity": 0.7,
+      "confidence": 0.49,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1160990678,
+      "shopifyHandle": "godparents-gift-godparents-personalized-90678",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Gift Godparents Personalized Baptism Communion Gift  Personalized Baptism Gift  Gift From Godchild",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.3,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1018842795,
+      "shopifyHandle": "godparents-personalized-keepsake-gift-87008",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Personalized Keepsake Gift Godparents Personalized Gift For Godparents From Godchild Godmother Godfather 4x6 Personalized Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.67,
+      "confidence": 0.47,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 783444604,
+      "shopifyHandle": "godparents-proposal-gift-godparents-gift-44604",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Proposal Gift Godparents Gift Keepsake Baptism Confirmation Picture Gift I Love My Godparents Picture Frame Gift For Godparents",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 627248011,
+      "shopifyHandle": "godparents-proposal-will-you-be-my-48011",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Godparents Proposal Will You Be My Godparents Gift for Godparents Godparents Gift Baptism Gift Godparents 4x6 Personalized Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.27,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4299452054,
+      "shopifyHandle": "graduation-picture-frame-for-college-52054",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Graduation Picture Frame for College Girls – Personalized Grad Gift for Best Friends, Roommates, or Class of 2025 Custom Graduation Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1806857688,
+      "shopifyHandle": "grammie-gift-for-grammie-birthday-gift-57688",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Grammie Gift for Grammie Birthday Gift for Grandma Custom Frame Grammie Gift Personalized Picture Frame for Grammie",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4298857444,
+      "shopifyHandle": "grandma-est-2025-picture-frame-new-57444",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Grandma EST. 2025 Picture Frame – New Grandma Gift, Pregnancy Announcement, First Grandchild Keepsake, Personalized Grandma Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.36,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 795301379,
+      "shopifyHandle": "grandma-gift-grandma-and-me-frame-gift-44080",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Grandma Gift  Grandma and Me Frame  Gift for Grandma   Grandma Gift  Personalized Picture Frame Grandma Personalized Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4296116090,
+      "shopifyHandle": "grandma-gift-picture-frame-personalized-16090",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Grandma Gift Picture Frame, Personalized Grandma Frame, I’ll Love You Forever, Mother’s Day Gift, Mimi Gift, Custom Photo Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.13,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 805343785,
+      "shopifyHandle": "grandpa-gift-birthday-gift-for-grandpa-i-43785",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Grandpa Gift Birthday Gift For Grandpa I Love My Grandpa Picture Grandpa Personalized Gift 4x6 Picture Frame Custom For Dad Grandpa",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.11,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 723490021,
+      "shopifyHandle": "grandpa-personalized-birthday-gift-90021",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Grandpa Personalized Birthday Gift  Christmas Gift Grandpa  I Love My Grandpa  Grandpa Personalized Gift  4x6 Picture Frame Custom",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.17,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 807142979,
+      "shopifyHandle": "grandpa-personalized-gift-birthday-gift-42979",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Grandpa Personalized Gift Birthday Gift For Grandpa  Grandpa's Buddy  Grandpa Personalized Gift  4x6 Picture Frame Custom",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1876914141,
+      "shopifyHandle": "grandparents-est-2025-frame-14141",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Grandparents EST. 2025 Frame – First-Time Grandparent Gift, Pregnancy Reveal, Baby Announcement, Custom Grandparent Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 644340336,
+      "shopifyHandle": "great-aunt-gift-birthday-gift-for-great-40336",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Great Aunt Gift Birthday Gift for Great Aunt Picture Frame For Aunt  Nana Great Aunt  Only The Best Aunts Get Promoted To Great Aunt",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 902628697,
+      "shopifyHandle": "great-aunt-gift-personalized-picture-34861",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Great Aunt Gift Personalized Picture Frame Board For Great Aunt Only The Best Aunts Get Promoted To Great Aunt",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 238114941,
+      "shopifyHandle": "great-grandma-gift-picture-frame-for-14941",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Great Grandma Gift  Picture Frame For Grandma  Nana Great Grandma  Only The Best Grandmas Get Promoted To Great Grandma",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 898693242,
+      "shopifyHandle": "great-grandpa-fathers-day-personalized-93242",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Great Grandpa Father's Day Personalized Gift Christmas Gift Great Grandpa I Love My Grandpa Grandpa Personalized Gift 4x6 Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.27,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1876889885,
+      "shopifyHandle": "handpicked-for-earth-by-my-grandma-in-89885",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Handpicked for Earth by My Grandma in Heaven – New Baby Picture Frame, First Grandchild Gift, Custom Baby Keepsake, Nursery Decor",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.24,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 653440874,
+      "shopifyHandle": "i-love-you-a-bushel-and-a-peck-grandma-41861",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "I Love You A Bushel And A Peck Grandma Gift  Gift For Grandma   Personalized Picture Frame Gift From Grandchild",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 646666545,
+      "shopifyHandle": "ill-love-you-forever-ill-like-you-for-66545",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "I'll Love You Forever I'll Like You For Always As Long As I'm Living Your Baby I'll Be Personalized Frame  Wedding Gift For Father Of Bride",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.23,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "just-a-girl-and-her-cat-frame-cute-97614",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Just a Girl and Her Cat Frame - Cute Trendy Dorm Room Decor - Personalized Cat Lover Gift - Cute Cat Mom Wall Art - Custom Room Accent",
+      "method": "none",
+      "titleSimilarity": 0.31,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4390314515,
+      "shopifyHandle": "just-a-girl-and-her-dog-frame-83335",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Just a Girl and Her Dog Frame – Personalized Pet Picture Frame, Custom Dog Mom Gift, Dog Lover Keepsake, Pet Photo Display, Fur Baby Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.7,
+      "confidence": 0.49,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4390314515,
+      "shopifyHandle": "just-a-girl-and-her-dog-frame-bright-68235",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Just a Girl and Her Dog Frame  Bright Floral Room College Dorm Decor Personalized Dog Lover Gift Custom Pet Keepsake Colorful Dog Mom Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1862692704,
+      "shopifyHandle": "just-a-girl-and-her-dog-picture-frame-92704",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Just a Girl and Her Dog Picture Frame – Custom Pet Photo Frame, Dog Mom Gift, Personalized Dog Lover Frame, Fur Baby Keepsake, Pet Decor",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.58,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1851548117,
+      "shopifyHandle": "let-them-mel-robbins-inspired-48117",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Let Them Mel Robbins Inspired Motivational Reminder Let Them Mel Robbins Inspired Personalized Message Custom Rearview Mirror Ornament",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.69,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 226797672,
+      "shopifyHandle": "love-at-first-sight-picture-frame-97672",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Love At First Sight Picture Frame  Ultrasound Picture Frame  New Baby Gift  Sonogram Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4296130270,
+      "shopifyHandle": "love-at-first-sight-ultrasound-frame-30270",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Love at First Sight Ultrasound Frame, Pregnancy Announcement for Grandparents, Sonogram Picture Frame, New Grandparent Gift, Est. Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.31,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 732083473,
+      "shopifyHandle": "maid-of-honor-gift-today-my-maid-of-00948",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Maid of Honor Gift  Today my Maid of Honor Forever my Sister  4x6 Frame Bridesmaid Gift Wedding Thank You Gift Best Friend",
+      "method": "title-only",
+      "titleSimilarity": 0.45,
+      "confidence": 0.32,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "mama-est-2025-86648",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "mama est. 2025",
+      "method": "none",
+      "titleSimilarity": 0.2,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4297836492,
+      "shopifyHandle": "mama-est-2025-ultrasound-picture-frame-34356",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Mama EST. 2025 Ultrasound Picture Frame – Personalized New Mom Gift, Pregnancy Announcement, First Mother’s Day Gift, Mama to Be Keepsake",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 795301379,
+      "shopifyHandle": "mimi-gift-grandma-gift-birthday-mimi-01379",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Mimi Gift Grandma Gift Birthday  Mimi Frame  Gift for Grandma  Mimi Gift  Personalized Picture Frame Grandma Personalized Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.67,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4298217103,
+      "shopifyHandle": "mimis-little-girl-picture-frame-17103",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Mimi’s Little Girl Picture Frame | Personalized Gift for Mimi | Grandmother and Granddaughter Frame | Custom Photo Frame for Mimi’s Girl",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "mother-of-the-groom-parents-of-groom-23603",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Mother Of The Groom  Parents Of Groom Gift  Today A Groom Tomorrow A Husband Forever Your Son  Wedding Thank You Gift For Parents",
+      "method": "none",
+      "titleSimilarity": 0.4,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1889272946,
+      "shopifyHandle": "mothers-day-dog-mom-gift-just-a-72946",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Mother’s Day Dog Mom Gift – Just a Girl and Her Dog Picture Frame, Personalized Dog Lover Gift, Custom Pet Photo Keepsake Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.3,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 506405987,
+      "shopifyHandle": "mothers-day-gift-for-grandma-15826",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Mother's Day Gift For Grandma Personalized Grandma Frame Gift for Grandma Grandma's Little Girl Personalized Picture Frame Grandma Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.67,
+      "confidence": 0.47,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4455775339,
+      "shopifyHandle": "mothers-day-gift-for-grandma-71265",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Mother’s Day Gift for Grandma – Personalized Picture Frame with Bow, Custom Grandparent Gift from Grandkids, Birthday Gift for Grandma",
+      "method": "title-only",
+      "titleSimilarity": 0.45,
+      "confidence": 0.32,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1879254358,
+      "shopifyHandle": "my-first-easter-frame-baby-easter-54358",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "My First Easter Frame Baby Easter Keepsake Personalized Easter Gift First Easter Photo Frame Newborn Easter Decor Bunny Picture Frame 4x6",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 804406340,
+      "shopifyHandle": "nana-est-2025-picture-frame-59138",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Nana EST. 2025 Picture Frame – Personalized Pregnancy Reveal Gift, New Nana Gift, First Grandchild Frame, Baby Announcement Keepsake",
+      "method": "title-only",
+      "titleSimilarity": 0.55,
+      "confidence": 0.38,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 796008486,
+      "shopifyHandle": "new-baby-girl-gift-personalized-baby-08486",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "New Baby Girl Gift  Personalized Baby Girl Gift  Love At First Sight Frame  Ultrasound Picture Frame  Baby Shower Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.21,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4298781582,
+      "shopifyHandle": "new-baby-girl-gift-personalized-baby-81582",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "New Baby Girl Gift – Personalized Baby Girl Picture Frame, Love at First Sight Frame, Custom Baby Shower Gift, Keepsake for New Parents",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.21,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 700704811,
+      "shopifyHandle": "new-grandma-gift-grandma-gift-the-best-04811",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "New Grandma Gift  Grandma Gift  The Best Moms Get Promoted To ...  4x6 Picture Frame Gift For Grandma",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.46,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1513074460,
+      "shopifyHandle": "new-grandparent-gift-expecting-74460",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "New Grandparent Gift Expecting Grandparent Picture Frame New Grandparents Gifts Personalized Gift from Grandkids Grandchildren 4x6",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.25,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1540830698,
+      "shopifyHandle": "new-grandparents-gift-grandparents-gift-30698",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "New Grandparents Gift  Grandparents Gift  Best Parents Get Promoted To Grandparents Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.09,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 607210739,
+      "shopifyHandle": "new-parents-to-be-gift-pregnancy-10739",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "New Parents To Be Gift  Pregnancy Countdown To Baby  Chalkboard Frame  Weeks Until We're Parents Ultrasound Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.4,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1903468225,
+      "shopifyHandle": "personalized-baby-boy-picture-frame-68225",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Baby Boy Picture Frame – Love at First Sight Gift with Name & Birth Date, Baby Shower Keepsake, Blue 4x6 Photo Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4470849029,
+      "shopifyHandle": "personalized-babys-1st-birthday-gift-20594",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Baby's 1st Birthday Gift  First Birthday Picture Frame  Happy 1st Birthday  Baby Frame Gift  First Birthday Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.57,
+      "confidence": 0.4,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1545147521,
+      "shopifyHandle": "personalized-baptism-gift-for-godparents-56113",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Personalized Baptism Gift For Godparents Godparents Picture Frame  Personalized Baptism Frame  Godparents Are A Blessing Baptism Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.67,
+      "confidence": 0.47,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4295042357,
+      "shopifyHandle": "personalized-cat-memorial-frame-pet-36160",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Cat Memorial Frame | Pet Loss Gift for Cat Lovers | Rainbow Bridge Pet Sympathy Gift | Custom Pet Bereavement Keepsake",
+      "method": "title-only",
+      "titleSimilarity": 0.55,
+      "confidence": 0.38,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4390314515,
+      "shopifyHandle": "personalized-dog-lover-picture-frame-gift-72236",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Personalized Dog Lover Picture Frame Gift – Just a Girl and Her Dog Frame, Dog Mom Decor, Custom Pet Photo Keepsake, Dog Lover Gift Idea",
+      "method": "title-only",
+      "titleSimilarity": 0.88,
+      "confidence": 0.61,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4295042357,
+      "shopifyHandle": "personalized-dog-memorial-frame-pet-06847",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Personalized Dog Memorial Frame | Pet Loss Gift for Dog Lovers | Rainbow Bridge Pet Sympathy Gift | Custom Pet Bereavement Keepsake",
+      "method": "title-only",
+      "titleSimilarity": 0.7,
+      "confidence": 0.49,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "personalized-family-birthday-gift-picture-25475",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Family Birthday Gift Picture Frame For Family Personalized Family Picture Frame Gift Custom Photo Gift Sentimental Keepsake",
+      "method": "none",
+      "titleSimilarity": 0.25,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "personalized-gift-for-godfather-28667",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Personalized  Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift for Godfathers Are A Blessing Gift",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 503492874,
+      "shopifyHandle": "personalized-gift-for-godfather-33747",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Personalized  Gift for Godfather  Godfather Picture Frame  Personalized Frame Baptism Gift for Godfathers Are A Blessing Gift",
+      "method": "title-only",
+      "titleSimilarity": 1,
+      "confidence": 0.7,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1879266870,
+      "shopifyHandle": "personalized-grandpa-frame-i-love-my-66870",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Grandpa Frame – I Love My Grandpa Gift, Custom Grandparent Keepsake, Birthday Gift for Grandpa, Grandpa’s Little Girl Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.18,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1796806763,
+      "shopifyHandle": "personalized-great-grandma-gift-custom-06763",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Great Grandma Gift Custom Gift For Great Grandma Great Grandma Picture Frame Personalized Picture Frame Great Grandma",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.29,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1893449561,
+      "shopifyHandle": "personalized-great-grandma-gift-gift-49561",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Great Grandma Gift – Gift from Grandchild, I Love My Great Grandma Frame, Custom 4x6 Picture Frame, Grandparent Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.13,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4297836492,
+      "shopifyHandle": "personalized-mama-est-2025-frame-36492",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Personalized Mama EST. 2025 Frame – Ultrasound Picture Frame, Pregnancy Reveal Gift, New Mom Gift, Mama to Be Baby Announcement Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.73,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 796125495,
+      "shopifyHandle": "personalized-new-baby-picture-frame-with-25495",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized New Baby Picture Frame with Baby Name – Custom Baby Gift for New Parents, 4x6 Keepsake Frame, Nursery Shelf Decor",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.63,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 800289265,
+      "shopifyHandle": "personalized-oma-or-mimi-frame-gift-89265",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Oma or Mimi Frame – Gift for Grandma from Grandkids – Custom 4x6 Picture Frame Keepsake for Mother’s Day or Birthday",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.27,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4295042357,
+      "shopifyHandle": "personalized-pet-memorial-frame-dog-34854",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Personalized Pet Memorial Frame – Dog Loss Gift, Dog Mom Sympathy Gift, Fur Baby Remembrance, Pet Loss Keepsake, Custom Dog Memoria",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4441017470,
+      "shopifyHandle": "personalized-pet-picture-frame-ornament-30759",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Personalized Pet Picture Frame & Ornament – Custom Dog or Cat Photo Frame, Pet Lover Gift, Pet Keepsake, Pet Memorial Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.57,
+      "confidence": 0.4,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4297841944,
+      "shopifyHandle": "personalized-uncle-picture-frame-gift-41944",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Uncle Picture Frame – Gift from Nieces and Nephews, Birthday Gift for Uncle, Best Uncle Ever Frame, Custom Uncle Keepsake",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.15,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 641726252,
+      "shopifyHandle": "personalized-wedding-thank-you-gift-for-26252",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Personalized Wedding Thank You Gift For Parents Of Bride & Groom  There Are Two Gifts That Parents Give Children...",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1833478117,
+      "shopifyHandle": "pet-loss-gift-best-dog-memorial-dog-loss-78117",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift Best Dog Memorial Dog Loss Dog Mom Gift Personalized Gift For Pet Memorial  Dog Mom When Tomorrow Starts Without Me",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 658788223,
+      "shopifyHandle": "pet-loss-gift-dog-loss-dog-memorial-gift-67645",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift Dog Loss Dog Memorial Gift Personalized Gift For Pet Memorial Dog Mom Custom Dog Memorial Dog Cat Loss Gift For Cat Memorial",
+      "method": "title-only",
+      "titleSimilarity": 0.83,
+      "confidence": 0.58,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "pet-loss-gift-dog-loss-memorial-gift-24088",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift  Dog Loss Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  When Tomorrow Starts Without Me Personalized Frame",
+      "method": "none",
+      "titleSimilarity": 0.44,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 643463268,
+      "shopifyHandle": "pet-loss-gift-dog-memorial-dog-loss-dog-63268",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift Dog Memorial Dog Loss Dog Mom Gift Personalized Gift For Pet Memorial  Dog Mom When Tomorrow Starts Without Me",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.44,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "pet-loss-gift-dog-memorial-gift-07222",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift  Dog Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  You Were My Favorite Hello And Hardest Goodbye",
+      "method": "none",
+      "titleSimilarity": 0.4,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 929749574,
+      "shopifyHandle": "pet-loss-gift-dog-memorial-gift-49574",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift  Dog Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  You Were My Favorite Hello And Hardest Goodbye",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.36,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 658788223,
+      "shopifyHandle": "pet-loss-gift-dog-memorial-gift-88223",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift  Dog Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  You Were My Favorite Hello And Hardest Goodbye",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.36,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "pet-loss-gift-forever-loved-dog-memorial-17225",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift  Forever Loved Dog Memorial Gift  Personalized Gift For Pet Memorial Dog Mom You Were My Favorite Hello And Hardest Goodbye",
+      "method": "none",
+      "titleSimilarity": 0.33,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 643463268,
+      "shopifyHandle": "pet-loss-gift-fur-baby-dog-mom-dog-81758",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gift  Fur Baby  Dog Mom  Dog Memorial Gift  Fur Child Personalized Gift For Pet Memorial  Dog Mom |",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "pet-loss-gifts-personalized-pet-memorial-01323",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Loss Gifts  Personalized Pet Memorial Frame | Cat Loss Gift | Dog Loss Gift | Pet Bereavement Gift | Pet Sympathy Gift | Pet Loss Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.86,
+      "confidence": 0.6,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "pet-loss-gifts-personalized-pet-memorial-26738",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pet Loss Gifts  Personalized Pet Memorial Frame | Cat Loss Gift | Dog Loss Gift | Pet Bereavement Gift | Pet Sympathy Gift | Pet Loss Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.86,
+      "confidence": 0.6,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "pet-loss-gifts-personalized-pet-memorial-49914",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pet Loss Gifts  Personalized Pet Memorial Frame | Cat Loss Gift | Dog Loss Gift | Pet Bereavement Gift | Pet Sympathy Gift | Pet Loss Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.86,
+      "confidence": 0.6,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "pet-loss-gifts-personalized-pet-memorial-77661",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pet Loss Gifts  Personalized Pet Memorial Frame | Cat Loss Gift | Dog Loss Gift | Pet Bereavement Gift | Pet Sympathy Gift | Pet Loss Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.86,
+      "confidence": 0.6,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "pet-loss-gifts-personalized-pet-memorial-77909",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pet Loss Gifts  Personalized Pet Memorial Frame | Cat Loss Gift | Dog Loss Gift | Pet Bereavement Gift | Pet Sympathy Gift | Pet Loss Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.86,
+      "confidence": 0.6,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "pet-memorial-dog-memorial-gift-pet-loss-84805",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pet Memorial, Dog Memorial Gift, Pet Loss Gifts, Pet Memorial Gift, Loss of Dog, Dog Remembrance Gift, Dog Sympathy Gift, Pet Memorial Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.71,
+      "confidence": 0.5,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4295042357,
+      "shopifyHandle": "pet-memorial-frame-for-dog-loss-i-42357",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Memorial Frame for Dog Loss – I Crossed the Rainbow Bridge – Custom Pet Remembrance Gift – 4x6 Personalized Photo Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.55,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4295042357,
+      "shopifyHandle": "pet-memorial-frame-personalized-rainbow-83484",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Memorial Frame Personalized Rainbow Bridge Memorial Dog Memorial Gift Pet Loss Frame Pet Sympathy Gift Custom Picture Display Pet Parent",
+      "method": "title-only",
+      "titleSimilarity": 0.7,
+      "confidence": 0.49,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1764018510,
+      "shopifyHandle": "pet-memorial-picture-frame-i-crossed-07397",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Memorial Picture Frame – I Crossed the Rainbow Bridge Knowing I Was Loved – Dog Loss Gift – Custom Pet Remembrance 4x6 Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1697897924,
+      "shopifyHandle": "pet-photo-car-charm-pet-loss-gift-39977",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pet Photo Car Charm Pet Loss Gift  Personalized Car Rearview Mirror Accessory  Pet Portrait Name Gift  Rearview Mirror Ornament",
+      "method": "title-only",
+      "titleSimilarity": 0.55,
+      "confidence": 0.38,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 667775625,
+      "shopifyHandle": "pet-sympathy-gift-dog-memorial-gift-75625",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Pet Sympathy Gift  Dog Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  You Were My Favorite Hello And Hardest Goodbye",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.27,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1530171834,
+      "shopifyHandle": "pregnancy-gift-sonogram-ultrasound-97805",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pregnancy Gift Sonogram Ultrasound Picture Frame Sonogram Frame Pregnancy Announcement Grandparents Baby Countdown Frame Ultrasound Gifts",
+      "method": "title-only",
+      "titleSimilarity": 0.56,
+      "confidence": 0.39,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 942948009,
+      "shopifyHandle": "pregnancy-reveal-grandma-to-be-gift-48009",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Pregnancy Reveal Grandma To Be Gift Pregnancy Reveal to Parents  Baby Bump  Grandparents Picture Frame  New Grandma Picture",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 800925410,
+      "shopifyHandle": "print-out-photo-and-place-in-frame-25410",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Print out photo and place in frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.6,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 4295042357,
+      "shopifyHandle": "rainbow-bridge-dog-lover-gift-dog-loss-34313",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Rainbow Bridge Dog Lover Gift Dog Loss Gift  Dog Memorial Gift  Personalized Gift For Pet Memorial  Dog Mom  Pet Loss Picture Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.78,
+      "confidence": 0.54,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 494449050,
+      "shopifyHandle": "sometimes-when-you-pray-for-a-miracle-49050",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Sometimes When You Pray For A Miracle, God Gives You Two  Twins Baby Announcement  Twins Pregnancy Announcement",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.25,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "soul-sisters-picture-frame-best-70252",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Soul Sisters Picture Frame – Best Friend Gift, Personalized Friendship Frame, Custom Photo Gift, Long Distance Bestie, Sisters by Heart",
+      "method": "none",
+      "titleSimilarity": 0.31,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1686345184,
+      "shopifyHandle": "teacher-appreciation-gift-custom-45184",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Teacher Appreciation Gift – Custom Teacher Photo Frame, Preschool or Elementary Teacher Gift, End of Year Thank You Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.25,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "test",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "test",
+      "method": "none",
+      "titleSimilarity": 0,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 648210729,
+      "shopifyHandle": "thank-you-for-raising-the-man-of-my-39896",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Thank You For Raising The Man Of My Dreams  Wedding Thank You Gift For Mother Of The Groom Parents Of The Groom Picture Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 4295054654,
+      "shopifyHandle": "thank-you-for-raising-the-man-of-my-54654",
+      "shopifyStatus": "DRAFT",
+      "shopifyTitle": "Thank You For Raising The Man Of My Dreams  Wedding Thank You Gift For Mother Of The Groom  Personalized Parents Of The Groom Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 504577714,
+      "shopifyHandle": "thank-you-for-raising-the-woman-of-my-77714",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Thank You For Raising The Woman Of My Dreams  Wedding Thank You Gift For Mother Of The Bride Father Of The Bride Parents Of The Bride Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.38,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 639607916,
+      "shopifyHandle": "the-best-grandmas-get-promoted-to-great-07916",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "The Best Grandmas Get Promoted To Great Grandmas  Personalized Picture Frame For Grandma  Great Grandma Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 512387968,
+      "shopifyHandle": "the-best-sisters-get-promoted-to-87968",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "The Best Sisters Get Promoted to Godmother  Godmother Gift  Godmother Picture Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.56,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 220396763,
+      "shopifyHandle": "the-best-uncles-get-promoted-to-godfather-96763",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "The Best Uncles Get Promoted to Godfather – Personalized Uncle Gift, Godfather Proposal Frame, Custom Picture Frame from Niece or Nephew",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.27,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 503466288,
+      "shopifyHandle": "today-a-bride-tomorrow-a-wife-forever-66288",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Today A Bride Tomorrow A Wife  Forever And Always Your Little Girl  Parents Of The Bride Gift  Wedding Thank You Gift For Parents",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.13,
+      "confidence": 0.8,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 653058379,
+      "shopifyHandle": "twin-baby-gift-frame-sometimes-when-you-58379",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Twin Baby Gift Frame, Sometimes When You Pray for a Miracle God Gives You Two, Twin Pregnancy Announcement, Baby Shower Gift for Twins",
+      "method": "handle-suffix",
+      "titleSimilarity": 1,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "uncle-brother-godfather-gift-only-the-93079",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Uncle Brother Godfather Gift  Only The Best Brothers Get Promoted To Godfather  Godfather Personalized Picture Frame Gift",
+      "method": "none",
+      "titleSimilarity": 0.38,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 1668511410,
+      "shopifyHandle": "wedding-gift-for-parents-parents-of-the-11410",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Wedding Gift For Parents  Parents Of The Groom Gift  Parents Of The Bride Gift  Wedding Gift For Dad  Wedding Gift for Mom Wedding frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.75,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1778211963,
+      "shopifyHandle": "when-tomorrow-starts-without-me-11963",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "When Tomorrow Starts Without Me – Personalized Pet Memorial Frame, Dog Loss Gift, Pet Remembrance Keepsake, Custom Dog Mom Sympathy Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.42,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1859402766,
+      "shopifyHandle": "will-you-be-my-godfather-frame-02766",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "Will You Be My Godfather Frame – Godfather Proposal Gift, I Love My Godfather Picture Frame, Baptism Gift, Personalized Godparent Frame",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.67,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 666196852,
+      "shopifyHandle": "will-you-be-my-godfather-godfather-96852",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godfather?  Godfather Proposal Gift  I Love My Godfather  Godfather Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 666196852,
+      "shopifyHandle": "will-you-be-my-godmother-frame-36079",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godmother Frame – Godmother Proposal Gift with Bow, Personalized Baby Keepsake, Baptism Gift, Custom Photo Frame",
+      "method": "title-only",
+      "titleSimilarity": 0.57,
+      "confidence": 0.4,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 654104239,
+      "shopifyHandle": "will-you-be-my-godmother-godmother-04239",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godmother?  Godmother Proposal Gift  I Love My Godmother  Godmother Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 506350688,
+      "shopifyHandle": "will-you-be-my-godmother-godmother-50688",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godmother? Godmother Proposal Gift I Love My Godmother Personalized Keepsake For Godmother Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.5,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 893952799,
+      "shopifyHandle": "will-you-be-my-godmother-godmother-62061",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godmother?  Godmother Proposal Gift  I Love My Godmother  Godmother Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.6,
+      "confidence": 0.42,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 783444604,
+      "shopifyHandle": "will-you-be-my-godparents-godparent-55993",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godparents?  Godparent Proposal Gift  I Love My Godparents  Personalized Godparents Gift",
+      "method": "title-only",
+      "titleSimilarity": 0.5,
+      "confidence": 0.35,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "will-you-be-my-godparents-godparents-62633",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godparents?  Godparents Gift  Godparents Proposal",
+      "method": "none",
+      "titleSimilarity": 0.43,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": null,
+      "shopifyHandle": "will-you-be-my-godparents-godparents-92063",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godparents?  Godparents Gift  Godparents Proposal",
+      "method": "none",
+      "titleSimilarity": 0.43,
+      "confidence": 0,
+      "needsHuman": true
+    },
+    {
+      "etsyListingId": 689494180,
+      "shopifyHandle": "will-you-be-my-godparents-godparents-94180",
+      "shopifyStatus": "ARCHIVED",
+      "shopifyTitle": "Will You Be My Godparents  Godparents Proposal Gift  I Love My Godparents  Godparents Gift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.33,
+      "confidence": 0.95,
+      "needsHuman": false
+    },
+    {
+      "etsyListingId": 1874972754,
+      "shopifyHandle": "you-were-always-enough-frame-72754",
+      "shopifyStatus": "ACTIVE",
+      "shopifyTitle": "You Were Always Enough Frame – Self-Love Affirmation Gift, Inner Child Healing Decor, Motivational Wall Art, Therapy Keepsake, Mindset Shift",
+      "method": "handle-suffix",
+      "titleSimilarity": 0.44,
+      "confidence": 0.95,
+      "needsHuman": false
+    }
+  ]
 }

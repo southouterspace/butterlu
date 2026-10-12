@@ -85,7 +85,7 @@ on butterlu.com* that is contested.
 The Terms name the route twice: contact `developer@etsy.com`. **This email has been drafted but NOT confirmed sent** — verify before assuming an answer is pending. Draft:
 
 > I'm the owner of the ButterLu shop. I'd like to display my own shop's reviews on my
-> separate Shopify storefront, sourced via `getReviewsByShop`. I understand section 1
+> own website, sourced via `getReviewsByShop`. I understand section 1
 > limits caching of Member Content and section 4 addresses driving traffic off-platform.
 > Is this a permitted use, and if so under what conditions on attribution, refresh
 > frequency and reviewer data?

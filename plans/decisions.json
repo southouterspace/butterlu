@@ -1,12 +1,14 @@
 {
   "_schema": {
-    "description": "GATE G2 — A HUMAN FILLS THIS IN. Read clusters.json, then record which product survives each cluster and what happens to the rest. Consolidation, L1 and L2 all block on this file. Do not generate it automatically.",
+    "description": "GATE G2 — THE OWNER FILLS THIS IN. Read clusters.json, then record which Etsy listing survives each cluster as a product on the new site. Every Shopify handle in a dropped or kept cluster 301s to the survivor. Nothing builds the site catalog until this file is filled. Do not generate it automatically.",
     "row": {
       "clusterId": "matches clusters.json",
-      "keep": "handle",
-      "archive": ["handle"],
-      "redirectTo": "handle — usually same as keep",
-      "note": "optional human note"
+      "keep": "etsyListingId, or null to drop the whole design",
+      "drop": [
+        "etsyListingId"
+      ],
+      "redirectTo": "etsyListingId whose new URL the cluster's Shopify handles 301 to — usually same as keep; null sends them to a collection",
+      "note": "optional owner note"
     }
   },
   "decidedBy": null,

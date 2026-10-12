@@ -9,14 +9,12 @@ earlier step produced. That makes the plan auditable before a single mutation fi
 
 | File | Produced by | Consumed by |
 |---|---|---|
-| `catalog.json` | Wave 0 snapshot | everything |
-| `clusters.json` | Wave 0 cluster detection | human (to fill `decisions.json`) |
-| `decisions.json` | **a human** — gate G2 | consolidation, L1, L2 |
-| `seo-copy.json` | drafting step | L1 |
-| `redirects.json` | archive audit + consolidation | L2 |
-| `descriptions.json` | Etsy-link scan | L3 |
-| `listing-map.json` | L6 title matching | L7 |
-| `reviews.json` | L6 Etsy fetch | L7 |
+| `etsy-listings.json` | `scripts/etsy-export-listings.mjs` | line-up, new site catalog |
+| `catalog.json` | `scripts/shopify-catalog-from-pages.mjs` (Shopify URLs only) | listing map, 301s |
+| `listing-map.json` | `scripts/lineup-draft.mjs` | 301s, review mapping |
+| `clusters.json` | `scripts/lineup-draft.mjs` | **the owner** (to fill `decisions.json`) |
+| `decisions.json` | **the owner** — gate G2 | new site catalog, 301s |
+| `seo-copy.json`, `descriptions.json`, `redirects.json`, `reviews.json` | Shopify-era loops, dropped 2026-10-12 | — |
 | `run-log.jsonl` | every loop | humans, debugging |
 
 `run-log.jsonl` is append-only: one JSON object per line with `ts`, `loop`, `item`,

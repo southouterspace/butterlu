@@ -12,7 +12,8 @@ earlier step produced. That makes the plan auditable before a single mutation fi
 | `etsy-listings.json` | `scripts/etsy-export-listings.mjs` | line-up, new site catalog |
 | `catalog.json` | `scripts/shopify-catalog-from-pages.mjs` (Shopify URLs only) | listing map, 301s |
 | `listing-map.json` | `scripts/lineup-draft.mjs` | 301s, review mapping |
-| `clusters.json` | `scripts/lineup-draft.mjs` | **the owner** (to fill `decisions.json`) |
+| `clusters.json` | `scripts/lineup-draft.mjs` (search-intent pages) | **the owner** (to fill `decisions.json`) |
+| `product-options.json` | `scripts/product-options.mjs` (shapes, backgrounds) | new site product, editor |
 | `decisions.json` | **the owner** — gate G2 | new site catalog, 301s |
 | `seo-copy.json`, `descriptions.json`, `redirects.json`, `reviews.json` | Shopify-era loops, dropped 2026-10-12 | — |
 | `run-log.jsonl` | every loop | humans, debugging |

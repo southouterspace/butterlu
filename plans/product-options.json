@@ -1,0 +1,486 @@
+{
+  "_schema": {
+    "description": "The configurable frame: one shape plus one background, with fully custom text. Etsy listing variations exist to capture search volume; on the new site they are presets of this one product. Produced by scripts/product-options.mjs.",
+    "shape": {
+      "id": "string",
+      "name": "string",
+      "widthIn": "number",
+      "heightIn": "number",
+      "source": "string"
+    },
+    "background": {
+      "id": "string",
+      "name": "string",
+      "pattern": "solid | stripes | checkers | toile | bows | linen | shiplap | wood-plank | wood",
+      "color": "string",
+      "order": "integer, the file-name prefix",
+      "file": "string",
+      "width": "px",
+      "height": "px"
+    }
+  },
+  "generatedAt": "2026-10-12T13:17:15.021Z",
+  "shapes": [
+    {
+      "id": "rounded-rectangle",
+      "name": "Rounded rectangle",
+      "widthIn": 8.375,
+      "heightIn": 6.375,
+      "source": "assets/frame-drawing.pdf"
+    },
+    {
+      "id": "scalloped",
+      "name": "Scalloped",
+      "widthIn": 8.375,
+      "heightIn": 6.368,
+      "source": "assets/frame-drawing.pdf"
+    }
+  ],
+  "unconfirmed": [
+    "The photo opening is drawn but not dimensioned; scaled off the drawing it is about 5.75 x 3.75 in.",
+    "assets/frame-drawing.pdf also draws two plain rectangles, 15.00 x 5.00 in and 13.75 x 9.25 in. Not yet known which products they are (brag board? the $62 large frame?).",
+    "Backgrounds are 2550 x 3300 px at 300 dpi (8.5 x 11 in sheets)."
+  ],
+  "backgrounds": [
+    {
+      "id": "maroon-bows",
+      "name": "Maroon Bows",
+      "pattern": "bows",
+      "color": "Maroon",
+      "order": 0,
+      "file": "assets/background-images/_0000_Maroon Bows.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "blue-toile",
+      "name": "Blue Toile",
+      "pattern": "toile",
+      "color": "Blue",
+      "order": 1,
+      "file": "assets/background-images/_0001_Blue Toile.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "sage-stripes",
+      "name": "Sage Stripes",
+      "pattern": "stripes",
+      "color": "Sage",
+      "order": 2,
+      "file": "assets/background-images/_0002_Sage Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "blush-stripes",
+      "name": "Blush Stripes",
+      "pattern": "stripes",
+      "color": "Blush",
+      "order": 3,
+      "file": "assets/background-images/_0003_Blush Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "blush-checkers",
+      "name": "Blush Checkers",
+      "pattern": "checkers",
+      "color": "Blush",
+      "order": 4,
+      "file": "assets/background-images/_0004_Blush Checkers.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "sage-checkers",
+      "name": "Sage Checkers",
+      "pattern": "checkers",
+      "color": "Sage",
+      "order": 5,
+      "file": "assets/background-images/_0005_Sage Checkers.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "blue-checkers",
+      "name": "Blue Checkers",
+      "pattern": "checkers",
+      "color": "Blue",
+      "order": 6,
+      "file": "assets/background-images/_0006_Blue Checkers.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "gray-stripes",
+      "name": "Gray Stripes",
+      "pattern": "stripes",
+      "color": "Gray",
+      "order": 7,
+      "file": "assets/background-images/_0007_Gray Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "gray-checkers",
+      "name": "Gray Checkers",
+      "pattern": "checkers",
+      "color": "Gray",
+      "order": 8,
+      "file": "assets/background-images/_0008_Gray Checkers.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "maroon-checkers",
+      "name": "Maroon Checkers",
+      "pattern": "checkers",
+      "color": "Maroon",
+      "order": 9,
+      "file": "assets/background-images/_0009_Maroon Checkers.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "yellow-checkers",
+      "name": "Yellow Checkers",
+      "pattern": "checkers",
+      "color": "Yellow",
+      "order": 10,
+      "file": "assets/background-images/_0010_Yellow Checkers.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "pink-checkers",
+      "name": "Pink Checkers",
+      "pattern": "checkers",
+      "color": "Pink",
+      "order": 11,
+      "file": "assets/background-images/_0011_Pink Checkers.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "pink-stripes",
+      "name": "Pink Stripes",
+      "pattern": "stripes",
+      "color": "Pink",
+      "order": 12,
+      "file": "assets/background-images/_0012_Pink Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "yellow-stripes",
+      "name": "Yellow Stripes",
+      "pattern": "stripes",
+      "color": "Yellow",
+      "order": 13,
+      "file": "assets/background-images/_0013_Yellow Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "light-blue-stripes",
+      "name": "Light Blue Stripes",
+      "pattern": "stripes",
+      "color": "Light Blue",
+      "order": 14,
+      "file": "assets/background-images/_0014_Light Blue Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "navy-stripes",
+      "name": "Navy Stripes",
+      "pattern": "stripes",
+      "color": "Navy",
+      "order": 15,
+      "file": "assets/background-images/_0015_Navy Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "maroon-stripes",
+      "name": "Maroon Stripes",
+      "pattern": "stripes",
+      "color": "Maroon",
+      "order": 16,
+      "file": "assets/background-images/_0016_Maroon Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "olive-green-stripes",
+      "name": "Olive Green Stripes",
+      "pattern": "stripes",
+      "color": "Olive Green",
+      "order": 17,
+      "file": "assets/background-images/_0017_Olive Green Stripes.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "yellow-toile",
+      "name": "Yellow Toile",
+      "pattern": "toile",
+      "color": "Yellow",
+      "order": 18,
+      "file": "assets/background-images/_0018_Yellow Toile.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "green-toile",
+      "name": "Green Toile",
+      "pattern": "toile",
+      "color": "Green",
+      "order": 19,
+      "file": "assets/background-images/_0019_Green Toile.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "pink-toile",
+      "name": "Pink Toile",
+      "pattern": "toile",
+      "color": "Pink",
+      "order": 20,
+      "file": "assets/background-images/_0020_Pink Toile.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "blue-bows",
+      "name": "Blue Bows",
+      "pattern": "bows",
+      "color": "Blue",
+      "order": 21,
+      "file": "assets/background-images/_0021_Blue Bows.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "white-linen",
+      "name": "White Linen",
+      "pattern": "linen",
+      "color": "White",
+      "order": 22,
+      "file": "assets/background-images/_0022_White Linen.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "gray-shiplap",
+      "name": "Gray Shiplap",
+      "pattern": "shiplap",
+      "color": "Gray",
+      "order": 23,
+      "file": "assets/background-images/_0023_Gray Shiplap.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "white-shiplap",
+      "name": "White Shiplap",
+      "pattern": "shiplap",
+      "color": "White",
+      "order": 24,
+      "file": "assets/background-images/_0024_White Shiplap.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "brown-wood-plank",
+      "name": "Brown Wood Plank",
+      "pattern": "wood-plank",
+      "color": "Brown",
+      "order": 25,
+      "file": "assets/background-images/_0025_Brown Wood Plank.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "whitewashed-wood",
+      "name": "Whitewashed Wood",
+      "pattern": "wood",
+      "color": "Whitewashed",
+      "order": 26,
+      "file": "assets/background-images/_0026_Whitewashed Wood.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "distressed-white",
+      "name": "Distressed White",
+      "pattern": "solid",
+      "color": "Distressed White",
+      "order": 27,
+      "file": "assets/background-images/_0027_Distressed White.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "black",
+      "name": "Black",
+      "pattern": "solid",
+      "color": "Black",
+      "order": 28,
+      "file": "assets/background-images/_0028_Black.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "charcoal",
+      "name": "Charcoal",
+      "pattern": "solid",
+      "color": "Charcoal",
+      "order": 29,
+      "file": "assets/background-images/_0029_Charcoal.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "gray",
+      "name": "Gray",
+      "pattern": "solid",
+      "color": "Gray",
+      "order": 30,
+      "file": "assets/background-images/_0030_Gray.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "dark-brown",
+      "name": "Dark Brown",
+      "pattern": "solid",
+      "color": "Dark Brown",
+      "order": 31,
+      "file": "assets/background-images/_0031_Dark Brown.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "light-brown",
+      "name": "Light Brown",
+      "pattern": "solid",
+      "color": "Light Brown",
+      "order": 32,
+      "file": "assets/background-images/_0032_Light Brown.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "light-purple",
+      "name": "Light Purple",
+      "pattern": "solid",
+      "color": "Light Purple",
+      "order": 33,
+      "file": "assets/background-images/_0033_Light Purple.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "dark-blue-navy",
+      "name": "Dark Blue / Navy",
+      "pattern": "solid",
+      "color": "Dark Blue / Navy",
+      "order": 34,
+      "file": "assets/background-images/_0034_Dark Blue_Navy.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "light-blue",
+      "name": "Light Blue",
+      "pattern": "solid",
+      "color": "Light Blue",
+      "order": 35,
+      "file": "assets/background-images/_0035_Light Blue.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "teal",
+      "name": "Teal",
+      "pattern": "solid",
+      "color": "Teal",
+      "order": 36,
+      "file": "assets/background-images/_0036_Teal.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "green",
+      "name": "Green",
+      "pattern": "solid",
+      "color": "Green",
+      "order": 37,
+      "file": "assets/background-images/_0037_Green.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "lime-green",
+      "name": "Lime Green",
+      "pattern": "solid",
+      "color": "Lime Green",
+      "order": 38,
+      "file": "assets/background-images/_0038_Lime Green.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "yellow",
+      "name": "Yellow",
+      "pattern": "solid",
+      "color": "Yellow",
+      "order": 39,
+      "file": "assets/background-images/_0039_Yellow.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "orange",
+      "name": "Orange",
+      "pattern": "solid",
+      "color": "Orange",
+      "order": 40,
+      "file": "assets/background-images/_0040_Orange.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "pink",
+      "name": "Pink",
+      "pattern": "solid",
+      "color": "Pink",
+      "order": 41,
+      "file": "assets/background-images/_0041_Pink.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "pink-coral",
+      "name": "Pink Coral",
+      "pattern": "solid",
+      "color": "Pink Coral",
+      "order": 42,
+      "file": "assets/background-images/_0042_Pink Coral.jpg",
+      "width": 2550,
+      "height": 3300
+    },
+    {
+      "id": "red",
+      "name": "Red",
+      "pattern": "solid",
+      "color": "Red",
+      "order": 43,
+      "file": "assets/background-images/_0043_Red.jpg",
+      "width": 2550,
+      "height": 3300
+    }
+  ]
+}

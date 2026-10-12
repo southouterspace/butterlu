@@ -30,7 +30,6 @@ function jaccard(a, b) {
   return both / (x.size + y.size - both);
 }
 const round = (n) => Math.round(n * 100) / 100;
-const heroImageId = (l) => l.images[0]?.url.match(/il_fullxfull\.(\d+)_/)?.[1] ?? null;
 
 // ---- listing-map: Shopify handle -> Etsy listing -------------------------------------
 // The Shopify store was made by an Etsy importer that ended every handle with the last
@@ -87,88 +86,144 @@ for (const m of mapRows) {
   handlesByListing.set(m.etsyListingId, [...(handlesByListing.get(m.etsyListingId) ?? []), m.shopifyHandle]);
 }
 
-// ---- clusters: near-duplicate Etsy listings ------------------------------------------
-// Two listings are the same design sold under different keywords when any of these hold:
-//   same-hero-image   the first photo is the same Etsy image
-//   identical-title   titles match after lowercasing
-//   near-title        title word overlap >= 0.7 within the same shop section
-//   same-copy         identical description AND title overlap >= 0.5
-// A shared description alone is not enough: 255 listings reuse 56 template descriptions.
-const NEAR_TITLE = 0.7;
-const SAME_COPY_TITLE = 0.5;
+// ---- clusters: search-intent pages ---------------------------------------------------
+// A frame is one of two shapes plus one background, with fully custom text. The ~540
+// frame listings on Etsy are the same product dressed for different searches
+// ("godmother proposal frame", "grandma gift"). So the line-up is not which designs to
+// keep. It is which search intents get a page, each one a preset (shape, background,
+// starter text) on the one configurable frame. Listings are grouped by intent: the
+// recipient and occasion named earliest in the title, since Etsy titles lead with the
+// main keyword.
+const PRODUCT_TYPES = [
+  ['car-accessory', (l) => l.sectionTitle === 'Car coasters/ornaments'],
+  ['brag-board', (l) => l.sectionTitle === 'Photo Blocks Clip Frames'],
+  ['add-on', (l) => l.sectionTitle === 'Add ons' || /figurine/i.test(l.title)],
+  ['large-frame', (l) => l.price >= 60],
+  ['frame', () => true],
+];
+const productType = (l) => PRODUCT_TYPES.find(([, test]) => test(l))[0];
 
-const parent = new Map(listings.map((l) => [l.listingId, l.listingId]));
-const find = (x) => (parent.get(x) === x ? x : (parent.set(x, find(parent.get(x))), parent.get(x)));
-const reasons = new Map();
-function union(a, b, why) {
-  const ra = find(a.listingId);
-  const rb = find(b.listingId);
-  if (ra !== rb) parent.set(ra, rb);
-  for (const id of [a.listingId, b.listingId]) reasons.set(id, new Set([...(reasons.get(id) ?? []), why]));
-}
-
-for (let i = 0; i < listings.length; i++) {
-  for (let j = i + 1; j < listings.length; j++) {
-    const a = listings[i];
-    const b = listings[j];
-    const hero = heroImageId(a);
-    if (hero && hero === heroImageId(b)) union(a, b, 'same-hero-image');
-    else if (a.title.trim().toLowerCase() === b.title.trim().toLowerCase()) union(a, b, 'identical-title');
-    else {
-      const sim = jaccard(a.title, b.title);
-      if (a.sectionId === b.sectionId && sim >= NEAR_TITLE) union(a, b, 'near-title');
-      else if (a.descriptionSha256 === b.descriptionSha256 && sim >= SAME_COPY_TITLE) union(a, b, 'same-copy');
-    }
+// Each entry: [intent key, regex]. Order breaks ties at the same title position, so
+// the more specific term comes first.
+const RECIPIENTS = [
+  ['godparents', /god ?parents?/],
+  ['godmother', /god ?mother|godmom|fairy godmother/],
+  ['godfather', /god ?father/],
+  ['great-grandparent', /great[- ]?grand(ma|mother|pa|father|parents?|kids?)|great[- ]?nana|great[- ]?gigi/],
+  ['grandparents-to-be', /grandparents? to be|new grandparents?|grandparent (pregnancy|announcement|reveal)|first grandchild|promoted to grand/],
+  ['grandparents', /grandparents/],
+  ['grandpa', /grandpa|grandfather|grandad|granddad|papa|poppy|pop\b|pawpaw|abuelo|opa\b|gramps/],
+  ['grandma', /grandma|grandmother|nana|mimi|gigi|granny|grammy|glamma|abuela|oma\b|lolli|nonna|meme\b|gram\b/],
+  ['parents-of-couple', /parents? (of (the )?)?(bride|groom)|parents? thank you|thank you (gift )?(for )?parents|mother of the (bride|groom)|father of the (bride|groom)|wedding (gift )?for parents|parents wedding|thank you (mom and dad|parents)/],
+  ['aunt-uncle', /aunt|auntie|tia\b|uncle|tio\b/],
+  ['mom', /\bmom\b|mother|mama|mommy/],
+  ['dad', /\bdad\b|father|daddy/],
+  ['teacher-nanny-coach', /teacher|nanny|coach|daycare|babysitter/],
+  ['sibling-friend', /sister|brother|sibling|best ?friend|bestie|soul sisters?|friendship/],
+  ['pet', /\bpets?\b|\bdogs?\b|\bcats?\b|puppy|kitten|fur ?baby|rainbow bridge|paw/],
+  ['couple', /wedding|engagement|engaged|anniversary|couple|bride|groom|valentine|boyfriend|girlfriend|husband|wife/],
+  ['baby', /baby|newborn|nursery|birth announcement|ultrasound|sonogram|pregnancy|first birthday|1st birthday|cake smash|christening|baptism|miscarriage/],
+  ['graduate', /graduat|sorority|senior/],
+  ['self', /affirmation|self[- ]love|inner child|encouragement|faith|jesus|bible|scripture/],
+];
+const OCCASIONS = [
+  ['proposal', /will you be my|proposal|be my god/],
+  ['memorial', /memorial|loss|sympathy|rainbow bridge|in memory|remembrance|heaven|miscarriage|crossed/],
+  ['announcement', /announcement|reveal|to be\b|promoted|expecting|ultrasound|sonogram|pregnan/],
+  ['baptism', /baptism|christening|first communion|dedication/],
+  ['wedding', /wedding|engagement|engaged|bride|groom|anniversary/],
+  ['christmas', /christmas|holiday|xmas|ornament/],
+  ['mothers-day', /mother'?s day/],
+  ['fathers-day', /father'?s day/],
+  ['birthday', /birthday|cake smash/],
+  ['graduation', /graduat/],
+  ['thank-you', /thank you|appreciation/],
+  ['birth', /birth announcement|newborn|new baby|nursery/],
+];
+function earliest(vocab, title) {
+  let best = null;
+  for (const [key, re] of vocab) {
+    const at = title.search(re);
+    if (at >= 0 && (best === null || at < best.at)) best = { key, at };
   }
+  return best?.key ?? null;
 }
-
-const groups = new Map();
-for (const l of listings) groups.set(find(l.listingId), [...(groups.get(find(l.listingId)) ?? []), l]);
+// "Wedding", "baby" and "self" words often describe the occasion or photo rather than
+// who receives the frame ("Wedding Frame: Parents Thank You Gift", "Baby Gift for
+// Grandma"), so they count only when no other recipient is named.
+const CONTEXT_RECIPIENTS = new Set(['couple', 'baby', 'self']);
+function intentOf(title) {
+  const t = title.toLowerCase();
+  const recipient =
+    earliest(RECIPIENTS.filter(([k]) => !CONTEXT_RECIPIENTS.has(k)), t) ??
+    earliest(RECIPIENTS.filter(([k]) => CONTEXT_RECIPIENTS.has(k)), t) ??
+    'general';
+  const occasion = earliest(OCCASIONS, t) ?? 'everyday';
+  // "Pregnancy announcement for grandparents" and "grandparents to be" are one search.
+  if (recipient === 'grandparents' && occasion === 'announcement') return { recipient: 'grandparents-to-be', occasion };
+  return { recipient, occasion };
+}
 
 // Favourites first, views to break ties. Both are lifetime proxies: real per-listing
 // sales need OAuth (transactions_r), which this export does not have.
-const CUT_FAVORERS = 5;
 const byDemand = (a, b) => b.numFavorers - a.numFavorers || b.views - a.views;
+const sum = (xs, f) => xs.reduce((s, x) => s + f(x), 0);
 
-// Line-up tiers over the whole shop, by favourites percentile of each cluster's best
-// listing. A suggestion only; the owner rules in decisions.json.
-const survivors = [...groups.values()].map((m) => m.sort(byDemand)[0]).sort(byDemand);
-const tierOf = new Map(
-  survivors.map((s, i) => {
-    const pct = i / survivors.length;
-    return [s.listingId, pct < 0.2 ? 'core' : pct < 0.6 ? 'keep' : s.numFavorers < CUT_FAVORERS ? 'cut-candidate' : 'review'];
-  }),
-);
+const groups = new Map();
+for (const l of listings) {
+  const type = productType(l);
+  const { recipient, occasion } = intentOf(l.title);
+  const key = type === 'frame' ? `frame/${recipient}/${occasion}` : `${type}/${recipient}`;
+  groups.set(key, [...(groups.get(key) ?? []), l]);
+}
 
-let n = 0;
-const clusterRows = survivors.map((survivor) => {
-  const members = groups.get(find(survivor.listingId));
-  const multi = members.length > 1;
-  const matchTypes = multi ? [...new Set(members.flatMap((m) => [...(reasons.get(m.listingId) ?? [])]))].sort() : ['single'];
-  const tier = tierOf.get(survivor.listingId);
+// A page earns a launch slot by the demand behind it, not by how many listings Etsy
+// needed to cover its keywords. Tiers are by share of all favourites, so a small set of
+// pages carries most of the demand.
+const pages = [...groups.entries()]
+  .map(([key, members]) => ({ key, members: members.sort(byDemand), favorers: sum(members, (m) => m.numFavorers) }))
+  .sort((a, b) => b.favorers - a.favorers || b.members.length - a.members.length);
+const totalFavorers = sum(pages, (p) => p.favorers);
+let running = 0;
+const LAUNCH_SHARE = 0.8;
+const LATER_SHARE = 0.95;
+
+const clusterRows = pages.map((p, i) => {
+  const before = running / totalFavorers;
+  running += p.favorers;
+  const tier = before < LAUNCH_SHARE ? 'launch' : before < LATER_SHARE ? 'later' : 'fold-in';
+  const [type, recipient, occasion = null] = p.key.split('/');
+  const lead = p.members[0];
   return {
-    clusterId: `C${String(++n).padStart(3, '0')}`,
-    rank: n,
+    clusterId: `P${String(i + 1).padStart(3, '0')}`,
+    rank: i + 1,
     tier,
-    matchType: matchTypes.join('+'),
-    section: survivor.sectionTitle,
-    members: members.map((m) => ({
+    pageKey: p.key,
+    productType: type,
+    recipient,
+    occasion,
+    favorers: p.favorers,
+    views: sum(p.members, (m) => m.views),
+    listingCount: p.members.length,
+    suggestedPreset: lead.listingId,
+    members: p.members.map((m) => ({
       etsyListingId: m.listingId,
       title: m.title,
       numFavorers: m.numFavorers,
       views: m.views,
       price: m.price,
-      isPersonalizable: m.isPersonalizable,
       shopifyHandles: handlesByListing.get(m.listingId) ?? [],
     })),
-    suggestedSurvivor: survivor.listingId,
-    rationale: multi
-      ? `${members.length} listings of one design (${matchTypes.join(', ')}); keep the most-favourited, 301 the rest's Shopify URLs to it.`
-      : `Single listing; tier "${tier}" by favourites rank ${n} of ${survivors.length}.`,
+    rationale:
+      tier === 'fold-in'
+        ? `Little demand (${p.favorers} favourites); fold into a broader ${recipient} page rather than build its own.`
+        : `${p.members.length} Etsy listings, ${p.favorers} favourites. Preset from the most-favourited listing, ${lead.listingId}.`,
   };
 });
 
-const tierCounts = Object.fromEntries(['core', 'keep', 'review', 'cut-candidate'].map((t) => [t, clusterRows.filter((r) => r.tier === t).length]));
+const tierCounts = Object.fromEntries(['launch', 'later', 'fold-in'].map((t) => [t, clusterRows.filter((r) => r.tier === t).length]));
+const pageOf = new Map(clusterRows.flatMap((r) => r.members.map((m) => [m.etsyListingId, r.pageKey])));
+for (const m of mapRows) m.pageKey = m.etsyListingId == null ? null : pageOf.get(m.etsyListingId);
 
 const listingMap = await read('listing-map.json');
 listingMap._schema = {
@@ -185,6 +240,7 @@ listingMap._schema = {
     titleSimilarity: 'number 0-1, word overlap after stop words',
     confidence: 'number 0-1',
     needsHuman: 'boolean',
+    pageKey: 'string | null — the clusters.json page this old URL should 301 to',
   },
 };
 listingMap.generatedAt = now;
@@ -194,28 +250,34 @@ await write('listing-map.json', listingMap);
 const clusters = await read('clusters.json');
 clusters._schema = {
   description:
-    'Suggested line-up for the new site, built from the Etsy shop. One row per design: near-duplicate Etsy listings are grouped, every listing appears exactly once. A RECOMMENDATION for the owner to rule on in decisions.json. Nothing here is acted upon automatically. Produced by scripts/lineup-draft.mjs.',
+    'Suggested line-up for the new site. A frame is one of two shapes plus a background with fully custom text (see product-options.json), so Etsy listings are grouped into search-intent PAGES, not designs. Each page is a preset on the one configurable product. Every Etsy listing appears exactly once. A RECOMMENDATION for the owner to rule on in decisions.json. Nothing here is acted upon automatically. Produced by scripts/lineup-draft.mjs.',
   ranking:
-    'Rows are ranked by the best member\'s num_favorers, then views. These are lifetime PROXIES for demand. Real per-listing sales need Etsy OAuth (transactions_r), which this export does not use.',
+    'Pages are ranked by the summed num_favorers of their listings. Lifetime PROXIES for demand: real per-listing sales need Etsy OAuth (transactions_r), which this export does not use.',
   tiers:
-    'core = top 20% of designs; keep = next 40%; review = bottom 40% with 5+ favourites; cut-candidate = bottom 40% under 5 favourites.',
+    'launch = pages that together hold the first 80% of all favourites; later = the next 15%; fold-in = the last 5%, better merged into a broader page.',
+  intent:
+    'recipient and occasion are the earliest matching terms in the Etsy title (keyword rules in scripts/lineup-draft.mjs). productType is frame unless the section or price says brag-board, large-frame, car-accessory or add-on.',
   row: {
-    clusterId: 'string',
-    rank: 'integer, 1 = most favourited',
-    tier: 'core | keep | review | cut-candidate',
-    matchType: 'single | same-hero-image | identical-title | near-title | same-copy, joined with +',
-    section: 'Etsy shop section of the suggested survivor',
-    members: [{ etsyListingId: 'integer', title: 'string', numFavorers: 'integer', views: 'integer', price: 'number', isPersonalizable: 'boolean', shopifyHandles: ['handle that 301s here'] }],
-    suggestedSurvivor: 'etsyListingId',
+    clusterId: 'string, P001 = most favourited page',
+    rank: 'integer',
+    tier: 'launch | later | fold-in',
+    pageKey: 'frame/{recipient}/{occasion} | {productType}/{recipient}',
+    productType: 'frame | large-frame | brag-board | car-accessory | add-on',
+    recipient: 'string',
+    occasion: 'string | null',
+    favorers: 'integer, summed over members',
+    views: 'integer, summed over members',
+    listingCount: 'integer',
+    suggestedPreset: 'etsyListingId whose photo and wording become the page default',
+    members: [{ etsyListingId: 'integer', title: 'string', numFavorers: 'integer', views: 'integer', price: 'number', shopifyHandles: ['handle that 301s to this page'] }],
     rationale: 'one line',
   },
 };
 clusters.generatedAt = now;
 clusters.summary = {
   etsyListings: listings.length,
-  designs: clusterRows.length,
-  duplicateGroups: clusterRows.filter((r) => r.members.length > 1).length,
-  listingsInDuplicateGroups: clusterRows.filter((r) => r.members.length > 1).reduce((s, r) => s + r.members.length, 0),
+  pages: clusterRows.length,
+  byProductType: Object.fromEntries(PRODUCT_TYPES.map(([t]) => [t, sum(clusterRows.filter((r) => r.productType === t), (r) => r.listingCount)])),
   tiers: tierCounts,
 };
 clusters.rows = clusterRows;
@@ -223,4 +285,4 @@ await write('clusters.json', clusters);
 
 const matched = mapRows.filter((r) => r.method === 'handle-suffix').length;
 console.log(`listing-map: ${mapRows.length} Shopify handles, ${matched} matched by suffix, ${mapRows.filter((r) => r.needsHuman).length} need a human`);
-console.log(`clusters: ${listings.length} listings -> ${clusterRows.length} designs, tiers ${JSON.stringify(tierCounts)}`);
+console.log(`clusters: ${listings.length} listings -> ${clusterRows.length} pages, tiers ${JSON.stringify(tierCounts)}`);

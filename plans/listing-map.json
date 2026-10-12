@@ -10,10 +10,11 @@
       "method": "handle-suffix | title-only | none",
       "titleSimilarity": "number 0-1, word overlap after stop words",
       "confidence": "number 0-1",
-      "needsHuman": "boolean"
+      "needsHuman": "boolean",
+      "pageKey": "string | null — the clusters.json page this old URL should 301 to"
     }
   },
-  "generatedAt": "2026-10-12T12:22:40.665Z",
+  "generatedAt": "2026-10-12T13:17:35.437Z",
   "rows": [
     {
       "etsyListingId": 817552843,
@@ -23,7 +24,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandpa/birth"
     },
     {
       "etsyListingId": 547189363,
@@ -33,7 +35,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": 518152539,
@@ -43,7 +46,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.4,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": 682930097,
@@ -53,7 +57,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.43,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/mom/wedding"
     },
     {
       "etsyListingId": 1814909903,
@@ -63,7 +68,8 @@
       "method": "title-only",
       "titleSimilarity": 0.6,
       "confidence": 0.42,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/aunt-uncle/christmas"
     },
     {
       "etsyListingId": 227051713,
@@ -73,7 +79,8 @@
       "method": "title-only",
       "titleSimilarity": 0.63,
       "confidence": 0.44,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/aunt-uncle/everyday"
     },
     {
       "etsyListingId": 1832920613,
@@ -83,7 +90,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/aunt-uncle/birthday"
     },
     {
       "etsyListingId": 1576229399,
@@ -93,7 +101,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/aunt-uncle/birthday"
     },
     {
       "etsyListingId": null,
@@ -103,7 +112,8 @@
       "method": "none",
       "titleSimilarity": 0.4,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 1818445202,
@@ -113,7 +123,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.57,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/birth"
     },
     {
       "etsyListingId": 784655825,
@@ -123,7 +134,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/memorial"
     },
     {
       "etsyListingId": 4295098553,
@@ -133,7 +145,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.25,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 644888748,
@@ -143,7 +156,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.2,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 796124933,
@@ -153,7 +167,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.23,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/christmas"
     },
     {
       "etsyListingId": null,
@@ -163,7 +178,8 @@
       "method": "none",
       "titleSimilarity": 0.25,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 1825262795,
@@ -173,7 +189,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.38,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/mom/mothers-day"
     },
     {
       "etsyListingId": 742353482,
@@ -183,7 +200,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.3,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/christmas"
     },
     {
       "etsyListingId": 785810682,
@@ -193,7 +211,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.75,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandpa/christmas"
     },
     {
       "etsyListingId": 961349865,
@@ -203,7 +222,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.6,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/mom/everyday"
     },
     {
       "etsyListingId": 664548017,
@@ -213,7 +233,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 1778211963,
@@ -223,7 +244,8 @@
       "method": "title-only",
       "titleSimilarity": 0.63,
       "confidence": 0.44,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 689488538,
@@ -233,7 +255,8 @@
       "method": "title-only",
       "titleSimilarity": 0.83,
       "confidence": 0.58,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 4363652559,
@@ -243,7 +266,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 556310429,
@@ -253,7 +277,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.3,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandparents-to-be/announcement"
     },
     {
       "etsyListingId": 1821059421,
@@ -263,7 +288,8 @@
       "method": "title-only",
       "titleSimilarity": 0.71,
       "confidence": 0.5,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandma/everyday"
     },
     {
       "etsyListingId": null,
@@ -273,7 +299,8 @@
       "method": "none",
       "titleSimilarity": 0.15,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 4297937447,
@@ -283,7 +310,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/dad/birthday"
     },
     {
       "etsyListingId": 4297934444,
@@ -293,7 +321,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/dad/birthday"
     },
     {
       "etsyListingId": 1818974413,
@@ -303,7 +332,8 @@
       "method": "title-only",
       "titleSimilarity": 0.83,
       "confidence": 0.58,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1764018510,
@@ -313,7 +343,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.86,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1818974413,
@@ -323,7 +354,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 4295042357,
@@ -333,7 +365,8 @@
       "method": "title-only",
       "titleSimilarity": 0.7,
       "confidence": 0.49,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1804776554,
@@ -343,7 +376,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.36,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/everyday"
     },
     {
       "etsyListingId": 1816021189,
@@ -353,7 +387,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.3,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/everyday"
     },
     {
       "etsyListingId": null,
@@ -363,7 +398,8 @@
       "method": "none",
       "titleSimilarity": 0.4,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": null,
@@ -373,7 +409,8 @@
       "method": "none",
       "titleSimilarity": 0.43,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 498953456,
@@ -383,7 +420,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/couple/wedding"
     },
     {
       "etsyListingId": 477483500,
@@ -393,7 +431,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/couple/wedding"
     },
     {
       "etsyListingId": 727985618,
@@ -403,7 +442,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/couple/wedding"
     },
     {
       "etsyListingId": 1550048478,
@@ -413,7 +453,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/couple/wedding"
     },
     {
       "etsyListingId": 812944651,
@@ -423,7 +464,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.6,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/dad/fathers-day"
     },
     {
       "etsyListingId": 693902312,
@@ -433,7 +475,8 @@
       "method": "title-only",
       "titleSimilarity": 0.64,
       "confidence": 0.45,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandparents-to-be/announcement"
     },
     {
       "etsyListingId": null,
@@ -443,7 +486,8 @@
       "method": "none",
       "titleSimilarity": 0.42,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": null,
@@ -453,7 +497,8 @@
       "method": "none",
       "titleSimilarity": 0.36,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 4298827592,
@@ -463,7 +508,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/mom/everyday"
     },
     {
       "etsyListingId": 4298746666,
@@ -473,7 +519,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.4,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/mom/everyday"
     },
     {
       "etsyListingId": 503492874,
@@ -483,7 +530,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 503492874,
@@ -493,7 +541,8 @@
       "method": "title-only",
       "titleSimilarity": 0.71,
       "confidence": 0.5,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 503492874,
@@ -503,7 +552,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 935925735,
@@ -513,7 +563,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.15,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/thank-you"
     },
     {
       "etsyListingId": 510037753,
@@ -523,7 +574,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.14,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 503492874,
@@ -533,7 +585,8 @@
       "method": "title-only",
       "titleSimilarity": 0.71,
       "confidence": 0.5,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 523465293,
@@ -543,7 +596,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 503492874,
@@ -553,7 +607,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 649383265,
@@ -563,7 +618,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.2,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/thank-you"
     },
     {
       "etsyListingId": 649383265,
@@ -573,7 +629,8 @@
       "method": "title-only",
       "titleSimilarity": 0.57,
       "confidence": 0.4,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/thank-you"
     },
     {
       "etsyListingId": 503492874,
@@ -583,7 +640,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 503492874,
@@ -593,7 +651,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 1832914445,
@@ -603,7 +662,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 689488538,
@@ -613,7 +673,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 893952799,
@@ -623,7 +684,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 689488538,
@@ -633,7 +695,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 689488538,
@@ -643,7 +706,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 734321721,
@@ -653,7 +717,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.4,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 689488538,
@@ -663,7 +728,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 644339506,
@@ -673,7 +739,8 @@
       "method": "title-only",
       "titleSimilarity": 0.45,
       "confidence": 0.32,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 793264800,
@@ -683,7 +750,8 @@
       "method": "title-only",
       "titleSimilarity": 0.67,
       "confidence": 0.47,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandpa/christmas"
     },
     {
       "etsyListingId": 647843378,
@@ -693,7 +761,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.75,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/great-grandparent/christmas"
     },
     {
       "etsyListingId": 689488538,
@@ -703,7 +772,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 1525901435,
@@ -713,7 +783,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.71,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/aunt-uncle/birthday"
     },
     {
       "etsyListingId": 639569186,
@@ -723,7 +794,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/birthday"
     },
     {
       "etsyListingId": 1545150911,
@@ -733,7 +805,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/christmas"
     },
     {
       "etsyListingId": 733842083,
@@ -743,7 +816,8 @@
       "method": "title-only",
       "titleSimilarity": 0.67,
       "confidence": 0.47,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 699582064,
@@ -753,7 +827,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 653057583,
@@ -763,7 +838,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 558263691,
@@ -773,7 +849,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 4363652559,
@@ -783,7 +860,8 @@
       "method": "title-only",
       "titleSimilarity": 0.67,
       "confidence": 0.47,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 1562156225,
@@ -793,7 +871,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/proposal"
     },
     {
       "etsyListingId": 782459715,
@@ -803,7 +882,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/announcement"
     },
     {
       "etsyListingId": 782459715,
@@ -813,7 +893,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/announcement"
     },
     {
       "etsyListingId": null,
@@ -823,7 +904,8 @@
       "method": "none",
       "titleSimilarity": 0.4,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 666196852,
@@ -833,7 +915,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/proposal"
     },
     {
       "etsyListingId": 721854899,
@@ -843,7 +926,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 511061376,
@@ -853,7 +937,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.25,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/proposal"
     },
     {
       "etsyListingId": 503492874,
@@ -863,7 +948,8 @@
       "method": "title-only",
       "titleSimilarity": 0.83,
       "confidence": 0.58,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 650713476,
@@ -873,7 +959,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.2,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 734321463,
@@ -883,7 +970,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.22,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 644339506,
@@ -893,7 +981,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 731962397,
@@ -903,7 +992,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 1170966612,
@@ -913,7 +1003,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.2,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 503492874,
@@ -923,7 +1014,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 633329958,
@@ -933,7 +1025,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 1832913833,
@@ -943,7 +1036,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 683695009,
@@ -953,7 +1047,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.4,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 784655101,
@@ -963,7 +1058,8 @@
       "method": "title-only",
       "titleSimilarity": 0.56,
       "confidence": 0.39,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 507749438,
@@ -973,7 +1069,8 @@
       "method": "title-only",
       "titleSimilarity": 0.6,
       "confidence": 0.42,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 487255188,
@@ -983,7 +1080,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.45,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 507749438,
@@ -993,7 +1091,8 @@
       "method": "title-only",
       "titleSimilarity": 0.6,
       "confidence": 0.42,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": null,
@@ -1003,7 +1102,8 @@
       "method": "none",
       "titleSimilarity": 0.43,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": null,
@@ -1013,7 +1113,8 @@
       "method": "none",
       "titleSimilarity": 0.43,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": null,
@@ -1023,7 +1124,8 @@
       "method": "none",
       "titleSimilarity": 0.43,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 525640447,
@@ -1033,7 +1135,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.22,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 659617014,
@@ -1043,7 +1146,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.15,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 507749438,
@@ -1053,7 +1157,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 785081416,
@@ -1063,7 +1168,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.25,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/christmas"
     },
     {
       "etsyListingId": 1879883185,
@@ -1073,7 +1179,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 689488538,
@@ -1083,7 +1190,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 689488538,
@@ -1093,7 +1201,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 567268891,
@@ -1103,7 +1212,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.1,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 698926743,
@@ -1113,7 +1223,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/announcement"
     },
     {
       "etsyListingId": 698926743,
@@ -1123,7 +1234,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/announcement"
     },
     {
       "etsyListingId": 538762133,
@@ -1133,7 +1245,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.09,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/everyday"
     },
     {
       "etsyListingId": 718192787,
@@ -1143,7 +1256,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.13,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/everyday"
     },
     {
       "etsyListingId": 893952799,
@@ -1153,7 +1267,8 @@
       "method": "title-only",
       "titleSimilarity": 0.6,
       "confidence": 0.42,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 654104239,
@@ -1163,7 +1278,8 @@
       "method": "title-only",
       "titleSimilarity": 0.8,
       "confidence": 0.56,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/proposal"
     },
     {
       "etsyListingId": 893952799,
@@ -1173,7 +1289,8 @@
       "method": "title-only",
       "titleSimilarity": 0.6,
       "confidence": 0.42,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 677705474,
@@ -1183,7 +1300,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.38,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/proposal"
     },
     {
       "etsyListingId": 654104239,
@@ -1193,7 +1311,8 @@
       "method": "title-only",
       "titleSimilarity": 0.57,
       "confidence": 0.4,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/proposal"
     },
     {
       "etsyListingId": 525977440,
@@ -1203,7 +1322,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.11,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 1018842795,
@@ -1213,7 +1333,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/everyday"
     },
     {
       "etsyListingId": 1545147521,
@@ -1223,7 +1344,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.67,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 1828076891,
@@ -1233,7 +1355,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.21,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/proposal"
     },
     {
       "etsyListingId": null,
@@ -1243,7 +1366,8 @@
       "method": "none",
       "titleSimilarity": 0.44,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 756223767,
@@ -1253,7 +1377,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": null,
@@ -1263,7 +1388,8 @@
       "method": "none",
       "titleSimilarity": 0.44,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 760621415,
@@ -1273,7 +1399,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.25,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 733842083,
@@ -1283,7 +1410,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 733842083,
@@ -1293,7 +1421,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 1100072252,
@@ -1303,7 +1432,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.22,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 507749438,
@@ -1313,7 +1443,8 @@
       "method": "title-only",
       "titleSimilarity": 0.7,
       "confidence": 0.49,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 1160990678,
@@ -1323,7 +1454,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.3,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 1018842795,
@@ -1333,7 +1465,8 @@
       "method": "title-only",
       "titleSimilarity": 0.67,
       "confidence": 0.47,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/everyday"
     },
     {
       "etsyListingId": 783444604,
@@ -1343,7 +1476,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/proposal"
     },
     {
       "etsyListingId": 627248011,
@@ -1353,7 +1487,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.27,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/proposal"
     },
     {
       "etsyListingId": 4299452054,
@@ -1363,7 +1498,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/graduate/graduation"
     },
     {
       "etsyListingId": 1806857688,
@@ -1373,7 +1509,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandma/everyday"
     },
     {
       "etsyListingId": 4298857444,
@@ -1383,7 +1520,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.36,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/announcement"
     },
     {
       "etsyListingId": 795301379,
@@ -1393,7 +1531,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandma/everyday"
     },
     {
       "etsyListingId": 4296116090,
@@ -1403,7 +1542,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.13,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/baby/birth"
     },
     {
       "etsyListingId": 805343785,
@@ -1413,7 +1553,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.11,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandpa/fathers-day"
     },
     {
       "etsyListingId": 723490021,
@@ -1423,7 +1564,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.17,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandpa/birthday"
     },
     {
       "etsyListingId": 807142979,
@@ -1433,7 +1575,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandpa/christmas"
     },
     {
       "etsyListingId": 1876914141,
@@ -1443,7 +1586,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandparents-to-be/announcement"
     },
     {
       "etsyListingId": 644340336,
@@ -1453,7 +1597,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/aunt-uncle/birthday"
     },
     {
       "etsyListingId": 902628697,
@@ -1463,7 +1608,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "brag-board/aunt-uncle"
     },
     {
       "etsyListingId": 238114941,
@@ -1473,7 +1619,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/great-grandparent/announcement"
     },
     {
       "etsyListingId": 898693242,
@@ -1483,7 +1630,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.27,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/great-grandparent/birthday"
     },
     {
       "etsyListingId": 1876889885,
@@ -1493,7 +1641,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.24,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/memorial"
     },
     {
       "etsyListingId": 653440874,
@@ -1503,7 +1652,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/great-grandparent/everyday"
     },
     {
       "etsyListingId": 646666545,
@@ -1513,7 +1663,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.23,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": null,
@@ -1523,7 +1674,8 @@
       "method": "none",
       "titleSimilarity": 0.31,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 4390314515,
@@ -1533,7 +1685,8 @@
       "method": "title-only",
       "titleSimilarity": 0.7,
       "confidence": 0.49,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/everyday"
     },
     {
       "etsyListingId": 4390314515,
@@ -1543,7 +1696,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/everyday"
     },
     {
       "etsyListingId": 1862692704,
@@ -1553,7 +1707,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.58,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/christmas"
     },
     {
       "etsyListingId": 1851548117,
@@ -1563,7 +1718,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.69,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "car-accessory/general"
     },
     {
       "etsyListingId": 226797672,
@@ -1573,7 +1729,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/announcement"
     },
     {
       "etsyListingId": 4296130270,
@@ -1583,7 +1740,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.31,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandparents-to-be/announcement"
     },
     {
       "etsyListingId": 732083473,
@@ -1593,7 +1751,8 @@
       "method": "title-only",
       "titleSimilarity": 0.45,
       "confidence": 0.32,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/sibling-friend/wedding"
     },
     {
       "etsyListingId": null,
@@ -1603,7 +1762,8 @@
       "method": "none",
       "titleSimilarity": 0.2,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 4297836492,
@@ -1613,7 +1773,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/mom/announcement"
     },
     {
       "etsyListingId": 795301379,
@@ -1623,7 +1784,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.67,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/everyday"
     },
     {
       "etsyListingId": 4298217103,
@@ -1633,7 +1795,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/everyday"
     },
     {
       "etsyListingId": null,
@@ -1643,7 +1806,8 @@
       "method": "none",
       "titleSimilarity": 0.4,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 1889272946,
@@ -1653,7 +1817,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.3,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/everyday"
     },
     {
       "etsyListingId": 506405987,
@@ -1663,7 +1828,8 @@
       "method": "title-only",
       "titleSimilarity": 0.67,
       "confidence": 0.47,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandma/everyday"
     },
     {
       "etsyListingId": 4455775339,
@@ -1673,7 +1839,8 @@
       "method": "title-only",
       "titleSimilarity": 0.45,
       "confidence": 0.32,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandma/birthday"
     },
     {
       "etsyListingId": 1879254358,
@@ -1683,7 +1850,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/christmas"
     },
     {
       "etsyListingId": 804406340,
@@ -1693,7 +1861,8 @@
       "method": "title-only",
       "titleSimilarity": 0.55,
       "confidence": 0.38,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandpa/announcement"
     },
     {
       "etsyListingId": 796008486,
@@ -1703,7 +1872,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.21,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/birth"
     },
     {
       "etsyListingId": 4298781582,
@@ -1713,7 +1883,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.21,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/birth"
     },
     {
       "etsyListingId": 700704811,
@@ -1723,7 +1894,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.46,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/christmas"
     },
     {
       "etsyListingId": 1513074460,
@@ -1733,7 +1905,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.25,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/birth"
     },
     {
       "etsyListingId": 1540830698,
@@ -1743,7 +1916,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.09,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandparents-to-be/announcement"
     },
     {
       "etsyListingId": 607210739,
@@ -1753,7 +1927,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.4,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/announcement"
     },
     {
       "etsyListingId": 1903468225,
@@ -1763,7 +1938,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/everyday"
     },
     {
       "etsyListingId": 4470849029,
@@ -1773,7 +1949,8 @@
       "method": "title-only",
       "titleSimilarity": 0.57,
       "confidence": 0.4,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/baby/birthday"
     },
     {
       "etsyListingId": 1545147521,
@@ -1783,7 +1960,8 @@
       "method": "title-only",
       "titleSimilarity": 0.67,
       "confidence": 0.47,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godparents/baptism"
     },
     {
       "etsyListingId": 4295042357,
@@ -1793,7 +1971,8 @@
       "method": "title-only",
       "titleSimilarity": 0.55,
       "confidence": 0.38,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 4390314515,
@@ -1803,7 +1982,8 @@
       "method": "title-only",
       "titleSimilarity": 0.88,
       "confidence": 0.61,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/everyday"
     },
     {
       "etsyListingId": 4295042357,
@@ -1813,7 +1993,8 @@
       "method": "title-only",
       "titleSimilarity": 0.7,
       "confidence": 0.49,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": null,
@@ -1823,7 +2004,8 @@
       "method": "none",
       "titleSimilarity": 0.25,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 503492874,
@@ -1833,7 +2015,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 503492874,
@@ -1843,7 +2026,8 @@
       "method": "title-only",
       "titleSimilarity": 1,
       "confidence": 0.7,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/baptism"
     },
     {
       "etsyListingId": 1879266870,
@@ -1853,7 +2037,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.18,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandpa/birthday"
     },
     {
       "etsyListingId": 1796806763,
@@ -1863,7 +2048,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.29,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/great-grandparent/birth"
     },
     {
       "etsyListingId": 1893449561,
@@ -1873,7 +2059,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.13,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandma/announcement"
     },
     {
       "etsyListingId": 4297836492,
@@ -1883,7 +2070,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.73,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/mom/announcement"
     },
     {
       "etsyListingId": 796125495,
@@ -1893,7 +2081,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.63,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/birth"
     },
     {
       "etsyListingId": 800289265,
@@ -1903,7 +2092,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.27,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/birthday"
     },
     {
       "etsyListingId": 4295042357,
@@ -1913,7 +2103,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 4441017470,
@@ -1923,7 +2114,8 @@
       "method": "title-only",
       "titleSimilarity": 0.57,
       "confidence": 0.4,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 4297841944,
@@ -1933,7 +2125,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.15,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/aunt-uncle/birthday"
     },
     {
       "etsyListingId": 641726252,
@@ -1943,7 +2136,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": 1833478117,
@@ -1953,7 +2147,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 658788223,
@@ -1963,7 +2158,8 @@
       "method": "title-only",
       "titleSimilarity": 0.83,
       "confidence": 0.58,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": null,
@@ -1973,7 +2169,8 @@
       "method": "none",
       "titleSimilarity": 0.44,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 643463268,
@@ -1983,7 +2180,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.44,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": null,
@@ -1993,7 +2191,8 @@
       "method": "none",
       "titleSimilarity": 0.4,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 929749574,
@@ -2003,7 +2202,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.36,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 658788223,
@@ -2013,7 +2213,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.36,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": null,
@@ -2023,7 +2224,8 @@
       "method": "none",
       "titleSimilarity": 0.33,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 643463268,
@@ -2033,7 +2235,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1778211963,
@@ -2043,7 +2246,8 @@
       "method": "title-only",
       "titleSimilarity": 0.86,
       "confidence": 0.6,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1778211963,
@@ -2053,7 +2257,8 @@
       "method": "title-only",
       "titleSimilarity": 0.86,
       "confidence": 0.6,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1778211963,
@@ -2063,7 +2268,8 @@
       "method": "title-only",
       "titleSimilarity": 0.86,
       "confidence": 0.6,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1778211963,
@@ -2073,7 +2279,8 @@
       "method": "title-only",
       "titleSimilarity": 0.86,
       "confidence": 0.6,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1778211963,
@@ -2083,7 +2290,8 @@
       "method": "title-only",
       "titleSimilarity": 0.86,
       "confidence": 0.6,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1778211963,
@@ -2093,7 +2301,8 @@
       "method": "title-only",
       "titleSimilarity": 0.71,
       "confidence": 0.5,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 4295042357,
@@ -2103,7 +2312,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.55,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 4295042357,
@@ -2113,7 +2323,8 @@
       "method": "title-only",
       "titleSimilarity": 0.7,
       "confidence": 0.49,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1764018510,
@@ -2123,7 +2334,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1697897924,
@@ -2133,7 +2345,8 @@
       "method": "title-only",
       "titleSimilarity": 0.55,
       "confidence": 0.38,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "car-accessory/pet"
     },
     {
       "etsyListingId": 667775625,
@@ -2143,7 +2356,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.27,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1530171834,
@@ -2153,7 +2367,8 @@
       "method": "title-only",
       "titleSimilarity": 0.56,
       "confidence": 0.39,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/grandparents-to-be/announcement"
     },
     {
       "etsyListingId": 942948009,
@@ -2163,7 +2378,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandparents-to-be/announcement"
     },
     {
       "etsyListingId": 800925410,
@@ -2173,7 +2389,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.6,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "add-on/general"
     },
     {
       "etsyListingId": 4295042357,
@@ -2183,7 +2400,8 @@
       "method": "title-only",
       "titleSimilarity": 0.78,
       "confidence": 0.54,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 494449050,
@@ -2193,7 +2411,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.25,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/announcement"
     },
     {
       "etsyListingId": null,
@@ -2203,7 +2422,8 @@
       "method": "none",
       "titleSimilarity": 0.31,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 1686345184,
@@ -2213,7 +2433,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.25,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/teacher-nanny-coach/thank-you"
     },
     {
       "etsyListingId": null,
@@ -2223,7 +2444,8 @@
       "method": "none",
       "titleSimilarity": 0,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 648210729,
@@ -2233,7 +2455,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": 4295054654,
@@ -2243,7 +2466,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": 504577714,
@@ -2253,7 +2477,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.38,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/mom/wedding"
     },
     {
       "etsyListingId": 639607916,
@@ -2263,7 +2488,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/grandma/announcement"
     },
     {
       "etsyListingId": 512387968,
@@ -2273,7 +2499,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.56,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/announcement"
     },
     {
       "etsyListingId": 220396763,
@@ -2283,7 +2510,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.27,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/proposal"
     },
     {
       "etsyListingId": 503466288,
@@ -2293,7 +2521,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.13,
       "confidence": 0.8,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": 653058379,
@@ -2303,7 +2532,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 1,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/baby/announcement"
     },
     {
       "etsyListingId": null,
@@ -2313,7 +2543,8 @@
       "method": "none",
       "titleSimilarity": 0.38,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 1668511410,
@@ -2323,7 +2554,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.75,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/parents-of-couple/wedding"
     },
     {
       "etsyListingId": 1778211963,
@@ -2333,7 +2565,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.42,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/pet/memorial"
     },
     {
       "etsyListingId": 1859402766,
@@ -2343,7 +2576,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.67,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/proposal"
     },
     {
       "etsyListingId": 666196852,
@@ -2353,7 +2587,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godfather/proposal"
     },
     {
       "etsyListingId": 666196852,
@@ -2363,7 +2598,8 @@
       "method": "title-only",
       "titleSimilarity": 0.57,
       "confidence": 0.4,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godfather/proposal"
     },
     {
       "etsyListingId": 654104239,
@@ -2373,7 +2609,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/proposal"
     },
     {
       "etsyListingId": 506350688,
@@ -2383,7 +2620,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.5,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godmother/proposal"
     },
     {
       "etsyListingId": 893952799,
@@ -2393,7 +2631,8 @@
       "method": "title-only",
       "titleSimilarity": 0.6,
       "confidence": 0.42,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godmother/baptism"
     },
     {
       "etsyListingId": 783444604,
@@ -2403,7 +2642,8 @@
       "method": "title-only",
       "titleSimilarity": 0.5,
       "confidence": 0.35,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": "frame/godparents/proposal"
     },
     {
       "etsyListingId": null,
@@ -2413,7 +2653,8 @@
       "method": "none",
       "titleSimilarity": 0.43,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": null,
@@ -2423,7 +2664,8 @@
       "method": "none",
       "titleSimilarity": 0.43,
       "confidence": 0,
-      "needsHuman": true
+      "needsHuman": true,
+      "pageKey": null
     },
     {
       "etsyListingId": 689494180,
@@ -2433,7 +2675,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.33,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/godparents/proposal"
     },
     {
       "etsyListingId": 1874972754,
@@ -2443,7 +2686,8 @@
       "method": "handle-suffix",
       "titleSimilarity": 0.44,
       "confidence": 0.95,
-      "needsHuman": false
+      "needsHuman": false,
+      "pageKey": "frame/self/everyday"
     }
   ]
 }

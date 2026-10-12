@@ -143,8 +143,10 @@ Two consequences of this shape that the first draft got wrong:
 
 The catalog is born from the Etsy shop, not from the Shopify store (owner decision,
 2026-10-12). `plans/etsy-listings.json` holds every active Etsy listing and
-`plans/clusters.json` groups them into designs. The owner makes the G2 keep/kill decisions
-and only the survivors are imported. Shopify contributes only its URLs, for 301s.
+`plans/clusters.json` groups them into search-intent pages. A frame is one of two shapes
+plus one of 44 backgrounds with fully custom text (`plans/product-options.json`), so the
+catalog holds one configurable frame and each page presets it. The owner picks the pages
+to build in G2. Shopify contributes only its URLs, for 301s.
 `docs/02` finding 3 (43% of products chase one theme) is a content problem that a new
 stack would faithfully reproduce if imported wholesale.
 

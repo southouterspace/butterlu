@@ -31,6 +31,14 @@ Shop domain: `da0e1b-6c.myshopify.com` · Storefront: `www.butterlu.com`
 the new site keeps the paths that rank and 301s the rest. Shopify Waves 1–3, loops L1–L8
 as Shopify loops, and the Wave 0 write test are dropped.
 
+**The product (owner, 2026-10-12).** A frame is one of **two shapes** (rounded rectangle or
+scalloped, both 8.375" wide, `assets/frame-drawing.pdf`) plus **one of 44 backgrounds**
+(`assets/background-images/`), with **100% custom text**. The hundreds of Etsy listings
+are the same product dressed for different searches. On the new site they become
+search-intent pages, each a preset of the one configurable frame, not separate products.
+Options are in `plans/product-options.json`. About 80 Etsy listings are other products
+(brag boards, a $62 large frame, car coasters and charms, add-ons).
+
 ---
 
 ## 2. Ground truth — verified, do not re-derive
@@ -108,13 +116,13 @@ Established via the Shopify Admin API and ShopifyQL. Trust these:
 | Gate | What | Owner | Status |
 |---|---|---|---|
 | **G1** | Enable checkout (leave "Pause and Build") | Human | **DROPPED** 2026-10-12 — leaving Shopify; checkout moves to Stripe |
-| **G2** | Line-up decisions (keep/kill per Etsy design cluster) | Human | **OPEN** — input ready in `plans/clusters.json` |
+| **G2** | Line-up decisions (which search-intent pages to build, and each page's preset) | Human | **OPEN** — input ready in `plans/clusters.json` |
 | **G3** | Etsy app credentials | Human | **DONE** — keystring + shared secret obtained |
 | **G4** | Cloudflare connector authorised | Human | **DONE** — reaches the Butterlu account (`5fa93654…`), the only account Butterlu deploys to |
 | **G5** | Etsy's answer on review republishing | Etsy | **OPEN** — email DRAFTED (now says "my own website"), not confirmed sent (see docs/06) |
 
-G2 is the hinge — it decides which Etsy designs become the new site's catalog and where
-each old Shopify URL 301s.
+G2 is the hinge — it decides which search-intent pages the new site launches with and
+where each old Shopify URL 301s.
 
 ---
 
@@ -125,6 +133,7 @@ Wave 0 and the Shopify waves are dropped. The exports are done and rerunnable:
 - `scripts/etsy-export-listings.mjs` → `plans/etsy-listings.json` (Etsy, read-only)
 - `scripts/shopify-catalog-from-pages.mjs` → `plans/catalog.json` (Shopify URLs, read-only)
 - `scripts/lineup-draft.mjs` → `plans/listing-map.json`, `plans/clusters.json`
+- `scripts/product-options.mjs` → `plans/product-options.json` (shapes, backgrounds)
 
 Next: the owner rules on `plans/clusters.json` in `plans/decisions.json` (G2). Do not
 build the site catalog until that file is filled in. Do not import Etsy reviews until G5

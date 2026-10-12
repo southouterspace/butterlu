@@ -35,6 +35,35 @@ npx e2e run tests/smoke.e2e.ts     # one file
 
 Agent steps (`agent.act`, `agent.assert`) need `ANTHROPIC_API_KEY`; without it
 `tests/agentic.e2e.ts` skips. Pair every agent step with an exact `expect`.
+
+### Agent steps without `ANTHROPIC_API_KEY`: run them with subagents
+
+When the key is unset, run each test in `tests/agentic.e2e.ts` by hand with
+subagents against the branch's Preview (section 4), after its fixed e2e passes.
+
+1. The e2e MCP server starts without `E2E_BASE_URL`, so point it at the Preview
+   with a scratch config. `.e2e/` is gitignored. Write it with Write, not a
+   heredoc. Save it as `site/.e2e/preview.config.ts`:
+
+   ```ts
+   import type { E2EConfig } from 'e2e';
+   import { web } from '@e2e-dev/web';
+   export default {
+     targets: [{ engine: web(), app: { url: '<Preview url>', identity: 'butterlu-site', environment: 'staging' } }],
+   } satisfies E2EConfig;
+   ```
+
+2. For each test, spawn two subagents in parallel, each with its own session:
+   `open_session` with config `site/.e2e/preview.config.ts`. Give each one the
+   test's steps and the exact `agent.act` or `agent.assert` text, and have it
+   judge only what is on screen, not the source. Use `observe` and
+   `screenshot`, and close the session whether the test passes or fails. One
+   is a standard QA agent; the other defaults to FAIL unless the evidence is
+   plainly visible and judges from the screenshot first. Each replies
+   `VERDICT`, `EVIDENCE` (the exact on-screen text), `NOTES`.
+3. A test passes only if both subagents return PASS. Report each verdict
+   and its evidence next to the Preview's e2e result. The runner still
+   reports the test as skipped; do not change the test's `skip` to hide that.
 Run `npx e2e guide writing-tests` (or `agent`, `debugging`, `running`) for the
 framework's own reference.
 

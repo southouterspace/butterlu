@@ -1,6 +1,7 @@
 #!/bin/bash
-# Gives cloud sessions what the release workflow has: Node from .nvmrc and
-# site/ dependencies, so `npm run validate` works before the first prompt.
+# Gives cloud sessions what the release workflow has: Node from .nvmrc, Bun
+# from site/package.json and site/ dependencies, so `bun run validate` works
+# before the first prompt.
 set -euo pipefail
 
 if [ "${CLAUDE_CODE_REMOTE:-}" != "true" ]; then
@@ -17,11 +18,11 @@ if ! claude plugin list 2>/dev/null | grep -q 'pstack@pstack-claude'; then
     || echo "pstack install failed; add it to the environment's setup script" >&2
 fi
 
-node_bin="$(.claude/bin/with-node.sh sh -c 'dirname "$(command -v node)"')"
+bins="$(.claude/bin/with-toolchain.sh sh -c 'echo "$(dirname "$(command -v bun)"):$(dirname "$(command -v node)")"')"
 {
-  echo "export PATH=\"$node_bin:\$PATH\""
+  echo "export PATH=\"$bins:\$PATH\""
   echo 'export E2E_TELEMETRY_DISABLED=1'
 } >> "$CLAUDE_ENV_FILE"
 
 cd site
-../.claude/bin/with-node.sh npm install --no-audit --no-fund
+../.claude/bin/with-toolchain.sh bun install

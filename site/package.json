@@ -5,13 +5,14 @@
   "engines": {
     "node": ">=24.8.0"
   },
+  "packageManager": "bun@1.4.2",
   "scripts": {
     "dev": "astro dev",
     "build": "astro check && astro build && node scripts/lint-dist.mjs",
     "check:worker": "tsc --noEmit -p worker",
     "serve": "wrangler dev --port 8787 --ip 127.0.0.1",
     "test:e2e": "e2e run",
-    "validate": "npm run build && npm run check:worker && npm run test:e2e",
+    "validate": "bun run build && bun run check:worker && bun run test:e2e",
     "deploy:preview": "node scripts/deploy.mjs preview",
     "deploy:stage": "node scripts/deploy.mjs stage",
     "deploy:production": "node scripts/deploy.mjs production"

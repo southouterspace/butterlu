@@ -145,11 +145,11 @@ Loops are `L1`–`L8`, gates `G1`–`G5`. Use the same identifiers in manifests,
 separate from the Shopify waves above and changes nothing on the live store.
 
 - Three environments. Each pushed branch gets a Preview. Stage is `main`, deployed with
-  `npm run deploy:stage`. Production ships only when a human publishes a GitHub Release.
+  `bun run deploy:stage`. Production ships only when a human publishes a GitHub Release.
 - CI runs in the session, not GitHub Actions. A hook validates before any push that
   changes `site/` and blocks it on failure, then deploys the Preview and e2e-tests it.
 - Before calling a site change done, follow `.claude/skills/verify/SKILL.md`. A cloud
-  session's SessionStart hook installs Node 24 and the dependencies.
+  session's SessionStart hook installs Node 24, Bun and the dependencies.
 - New behavior ships with a test in `site/tests/`. New SEO rules go in
   `site/scripts/lint-dist.mjs`.
 - Open setup items and first runs are in `TODO.md`. Until its owner items are done, a

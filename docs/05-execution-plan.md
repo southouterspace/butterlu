@@ -1,5 +1,7 @@
 # 05 — Execution plan: dependency graph + resumable loops
 
+> **Superseded for Shopify writes (2026-10-12).** The owner is leaving Shopify; see `CLAUDE.md` §1. Kept as history.
+
 The store findings and the review pipeline as one dependency graph, with every bulk
 operation specified as a resumable loop.
 

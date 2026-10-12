@@ -1,12 +1,15 @@
 {
   "_schema": {
-    "description": "GATE G2 — A HUMAN FILLS THIS IN. Read clusters.json, then record which product survives each cluster and what happens to the rest. Consolidation, L1 and L2 all block on this file. Do not generate it automatically.",
+    "description": "GATE G2 — THE OWNER FILLS THIS IN. Read clusters.json. Each row there is a search-intent page; decide which pages the new site launches with and each page's default preset (shape, background, starter text). Old Shopify URLs 301 to their page (listing-map.json pageKey), or to whatever redirectTo names when a page is not built. Nothing builds the site catalog until this file is filled. Do not generate it automatically.",
     "row": {
       "clusterId": "matches clusters.json",
-      "keep": "handle",
-      "archive": ["handle"],
-      "redirectTo": "handle — usually same as keep",
-      "note": "optional human note"
+      "pageKey": "matches clusters.json",
+      "build": "true | false",
+      "shape": "product-options.json shape id",
+      "background": "product-options.json background id",
+      "presetFrom": "etsyListingId whose photo and wording seed the page, usually clusters.json suggestedPreset",
+      "redirectTo": "pageKey that takes this page's old URLs when build is false",
+      "note": "optional owner note"
     }
   },
   "decidedBy": null,

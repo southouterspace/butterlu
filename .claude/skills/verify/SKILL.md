@@ -14,8 +14,8 @@ failure.
 
 ```bash
 cd site
-npm run build          # astro check, astro build, scripts/lint-dist.mjs
-npm run check:worker   # tsc over worker/
+bun run build          # astro check, astro build, scripts/lint-dist.mjs
+bun run check:worker   # tsc over worker/
 ```
 
 `lint-dist` reads the HTML in `dist/` that a crawler receives: one `<title>` of
@@ -25,8 +25,8 @@ new SEO rule belongs in its `rules` table, not in a reviewer's memory.
 ## 2. e2e against the local Worker
 
 ```bash
-npx e2e run                        # whole suite; starts wrangler dev on 127.0.0.1:8787
-npx e2e run tests/smoke.e2e.ts     # one file
+bunx e2e run                        # whole suite; starts wrangler dev on 127.0.0.1:8787
+bunx e2e run tests/smoke.e2e.ts     # one file
 ```
 
 `wrangler dev` serves `dist/`, so build first. Tests live in
@@ -64,7 +64,7 @@ subagents against the branch's Preview (section 4), after its fixed e2e passes.
 3. A test passes only if both subagents return PASS. Report each verdict
    and its evidence next to the Preview's e2e result. The runner still
    reports the test as skipped; do not change the test's `skip` to hide that.
-Run `npx e2e guide writing-tests` (or `agent`, `debugging`, `running`) for the
+Run `bunx e2e guide writing-tests` (or `agent`, `debugging`, `running`) for the
 framework's own reference.
 
 Every new user-visible behavior gets a test in `tests/`. Before you keep it,
@@ -81,9 +81,9 @@ locator before writing it into a test. Close the session when done.
 
 CI runs in your session. `git push` triggers `.claude/hooks/site-gate.sh`.
 Before the push, when the branch changes `site/` or `.nvmrc`, it runs
-`npm run validate` and blocks the push on failure with the failing output.
+`bun run validate` and blocks the push on failure with the failing output.
 
-After the push lands, the hook runs `npm run deploy:preview`: build, deploy a
+After the push lands, the hook runs `bun run deploy:preview`: build, deploy a
 Preview named after the branch on the `butterlu-site-stage` Worker, wait for
 `/api/health`, run the e2e suite against the Preview URL. The result comes back
 as a `deploy-summary` line with `url`, `commit`, `health` and `e2e`.
@@ -102,12 +102,12 @@ as a `deploy-summary` line with `url`, `commit`, `health` and `e2e`.
 | Environment | Worker | Deployed by |
 | --- | --- | --- |
 | Preview, per branch | `butterlu-site-stage` Previews | The push hook |
-| Stage | `butterlu-site-stage` | `npm run deploy:stage` from a clean `main` equal to `origin/main` |
+| Stage | `butterlu-site-stage` | `bun run deploy:stage` from a clean `main` equal to `origin/main` |
 | Production | `butterlu-site` | `.github/workflows/release.yml`, when the owner publishes a GitHub Release |
 
-`deploy:stage` runs `npm run validate`, deploys, then runs e2e against the
+`deploy:stage` runs `bun run validate`, deploys, then runs e2e against the
 stage URL. After a branch merges, delete its Preview:
-`npx wrangler preview delete --name <preview name> --skip-confirmation`.
+`bunx wrangler preview delete --name <preview name> --skip-confirmation`.
 
 ## Never
 

@@ -48,7 +48,7 @@ tool can write Claude environment variables, GitHub secrets or rulesets.
 - [ ] **May agents merge their own PRs?** Agents working without approval needs
   it. Proposed rule: an agent may merge when the push gate and the Preview e2e
   passed on the PR head and a fresh reviewer agent found nothing blocking, then
-  runs `npm run deploy:stage`. An agent could not write this into `CLAUDE.md`;
+  runs `bun run deploy:stage`. An agent could not write this into `CLAUDE.md`;
   the session's safety check blocked it as agents granting themselves
   authority. Add it to `CLAUDE.md` §6a and `.claude/skills/verify/SKILL.md` if
   you want it.
@@ -62,8 +62,9 @@ None of these has run against the Butterlu account yet.
   (commit `6b5cfcf`): `health: ok`, `e2e: passed` on
   https://claude-first-preview-butterlu-site-stage.butterlu.workers.dev. The
   environment's token can create Previews.
-- [ ] **First stage deploy.** After the merge, from a clean `main`:
-  `cd site && npm run deploy:stage`. Never run yet.
+- [x] **First stage deploy.** Done 2026-10-12 from `main` at `2ca6bd7` (with
+  npm, before the switch to Bun): `health: ok`, `e2e: passed` on
+  https://butterlu-site-stage.butterlu.workers.dev.
 - [ ] **First release.** The owner publishes `v0.1.0` on `main`. Check that
   `release.yml` passes and https://butterlu-site.butterlu.workers.dev serves
   the site. The workflow has never run.

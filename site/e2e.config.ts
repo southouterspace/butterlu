@@ -26,7 +26,7 @@ export default {
             url: 'http://127.0.0.1:8787',
             identity: 'butterlu-site',
             command: {
-              executable: 'npx',
+              executable: 'bunx',
               args: ['wrangler', 'dev', '--port', '8787', '--ip', '127.0.0.1'],
               log: '.e2e/logs/app.log',
               reuseExisting: true,

@@ -34,18 +34,19 @@ jobs:
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version-file: .nvmrc
-          cache: npm
-          cache-dependency-path: site/package-lock.json
-      - run: npm ci
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: site/package.json
+      - run: bun install --frozen-lockfile
         working-directory: site
-      - run: npx e2e-web install chromium --with-deps
+      - run: bunx e2e-web install chromium --with-deps
         working-directory: site
       - id: deploy
         name: Validate, deploy, smoke-test production
         working-directory: site
         run: |
           set -o pipefail
-          npm run deploy:production | tee deploy.log
+          bun run deploy:production | tee deploy.log
           echo "url=$(sed -n 's/^deploy-summary //p' deploy.log | jq -r .url)" >> "$GITHUB_OUTPUT"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

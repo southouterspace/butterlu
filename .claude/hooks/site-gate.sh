@@ -1,6 +1,6 @@
 #!/bin/bash
 # CI for agent sessions. Registered for Bash in .claude/settings.json.
-#   pre:  blocks direct wrangler deploys, and runs `npm run validate` before a
+#   pre:  blocks direct wrangler deploys, and runs `bun run validate` before a
 #         `git push` that changes the site. A failed check blocks the push.
 #   post: after a branch push lands, deploys its Preview and e2e-tests it,
 #         then hands the result back to the agent to post on the PR.
@@ -9,14 +9,14 @@ set -uo pipefail
 phase="$1"
 cmd="$(jq -r '.tool_input.command // ""')"
 cd "$CLAUDE_PROJECT_DIR"
-node=(.claude/bin/with-node.sh)
+toolchain=../.claude/bin/with-toolchain.sh
 
 site_changed() {
   git fetch --quiet origin main 2>/dev/null
   ! git diff --quiet "$(git merge-base HEAD origin/main)" HEAD -- site .nvmrc
 }
 
-# Unanchored on purpose: env prefixes, `git -C dir push`, `npm exec wrangler`,
+# Unanchored on purpose: env prefixes, `git -C dir push`, `bunx wrangler`,
 # `bash -c '...'` and newline-separated commands must all match. A doc line
 # that mentions these inside a heredoc matches too; write docs with Write/Edit.
 # Between git and push only global options may appear (`-C dir`, `-c k=v`),
@@ -37,7 +37,7 @@ is_direct_deploy() {
 
 if [ "$phase" = pre ]; then
   if is_direct_deploy; then
-    echo "Deploy through site/scripts/deploy.mjs: npm run deploy:preview or npm run deploy:stage (from main). Production deploys only from a published GitHub Release." >&2
+    echo "Deploy through site/scripts/deploy.mjs: bun run deploy:preview or bun run deploy:stage (from main). Production deploys only from a published GitHub Release." >&2
     exit 2
   fi
   if is_push && site_changed; then
@@ -46,8 +46,8 @@ if [ "$phase" = pre ]; then
       echo "Push blocked: site/ has uncommitted changes. Commit or stash them so validation runs on what you push. This check runs before the whole command, so commit in one command and push in the next." >&2
       exit 2
     fi
-    if ! out="$(cd site && "../${node[0]}" npm run validate 2>&1)"; then
-      printf 'Push blocked: npm run validate failed in site/.\n%s\n' "$(tail -n 40 <<<"$out")" >&2
+    if ! out="$(cd site && "$toolchain" bun run validate 2>&1)"; then
+      printf 'Push blocked: bun run validate failed in site/.\n%s\n' "$(tail -n 40 <<<"$out")" >&2
       exit 2
     fi
   fi
@@ -70,7 +70,7 @@ fi
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
   msg="No Preview: CLOUDFLARE_API_TOKEN is not set in this Claude environment. Tell the user once (site/README.md, one-time setup); do not work around it."
 else
-  out="$(cd site && "../${node[0]}" npm run deploy:preview 2>&1)"
+  out="$(cd site && "$toolchain" bun run deploy:preview 2>&1)"
   summary="$(sed -n 's/^deploy-summary //p' <<<"$out")"
   if [ -n "$summary" ]; then
     git rev-parse HEAD > "$stamp"

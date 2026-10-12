@@ -19,7 +19,7 @@ ships only from a release, before any store feature lands.
 | Environment | Worker | Deployed by | Trigger |
 | --- | --- | --- | --- |
 | Preview, one per branch | `butterlu-site-stage` (Previews) | Agent session | Every `git push` of a branch that changes `site/` |
-| Stage | `butterlu-site-stage` | Agent session | `npm run deploy:stage` on a clean, up-to-date `main` |
+| Stage | `butterlu-site-stage` | Agent session | `bun run deploy:stage` on a clean, up-to-date `main` |
 | Production | `butterlu-site` | `.github/workflows/release.yml` | A human publishes a GitHub Release whose commit is on `main` |
 
 Every deploy builds and checks first (`build` for a Preview, the full
@@ -39,8 +39,8 @@ until step 4 of the one-time setup is done.** Until step 3, nothing deploys at a
 `.claude/hooks/site-gate.sh` runs on every Bash call in a Claude Code session:
 
 - Before `git push`, when the branch changes `site/` or `.nvmrc`, it runs
-  `npm run validate` and blocks the push if it fails.
-- After the push lands, it runs `npm run deploy:preview` and hands the URL and
+  `bun run validate` and blocks the push if it fails.
+- After the push lands, it runs `bun run deploy:preview` and hands the URL and
   e2e result back to the agent to post on the PR.
 - It blocks `wrangler deploy`, `preview`, `versions`, `rollback`, `delete` and
   `secret`, so deploys go through `deploy.mjs`. `wrangler preview delete` stays allowed.
@@ -49,16 +49,17 @@ GitHub Actions runs only `release.yml`, once per release.
 
 ## Commands
 
-Node 24 (`/.nvmrc`). From `site/`:
+Bun (`packageManager` in `package.json`) installs packages and runs scripts;
+Node 24 (`/.nvmrc`) runs the code, because the e2e runner needs Node. From `site/`:
 
 ```bash
-npm install
-npm run build             # astro check + build + lint-dist
-npm run check:worker
-npm run test:e2e          # serves dist/ through wrangler dev and runs tests/
-npm run validate          # all of the above
-npm run deploy:preview    # this branch's Preview, then e2e against it
-npm run deploy:stage      # main only
+bun install
+bun run build             # astro check + build + lint-dist
+bun run check:worker
+bun run test:e2e          # serves dist/ through wrangler dev and runs tests/
+bun run validate          # all of the above
+bun run deploy:preview    # this branch's Preview, then e2e against it
+bun run deploy:stage      # main only
 ```
 
 ## One-time setup (a human)
@@ -111,4 +112,4 @@ commit. `release.yml` checks the commit is on `main`, validates, deploys
 
 A production e2e failure fails the run after the deploy is live; nothing
 rolls back by itself. Roll back by publishing a release on the previous good
-commit, or with `npx wrangler rollback --env production` from your own machine.
+commit, or with `bunx wrangler rollback --env production` from your own machine.

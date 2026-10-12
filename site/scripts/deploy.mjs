@@ -63,7 +63,7 @@ function previewName() {
 // avoids parsing the human output, which mixes progress lines into --json.
 function wrangler(args, type) {
   const out = join(mkdtempSync(join(tmpdir(), 'wrangler-')), 'out.ndjson');
-  run('npx', ['wrangler', ...args, '--message', git('rev-parse', '--short', 'HEAD')], {
+  run('bunx', ['wrangler', ...args, '--message', git('rev-parse', '--short', 'HEAD')], {
     WRANGLER_OUTPUT_FILE_PATH: out,
   });
   return readFileSync(out, 'utf8')
@@ -131,14 +131,14 @@ process.env.CLOUDFLARE_ACCOUNT_ID = account.pinned;
 const blocked = env.precondition();
 if (blocked) fail(blocked);
 
-run('npm', ['run', env.check]);
+run('bun', ['run', env.check]);
 const url = env.deploy();
 if (!url) fail('wrangler reported no URL');
 
 const health = await healthy(url);
 let e2e = 'skipped';
 if (health === 'ok') {
-  const res = spawnSync('npx', ['e2e', 'run'], { stdio: 'inherit', env: { ...process.env, E2E_BASE_URL: url, E2E_ENVIRONMENT: name } });
+  const res = spawnSync('bunx', ['e2e', 'run'], { stdio: 'inherit', env: { ...process.env, E2E_BASE_URL: url, E2E_ENVIRONMENT: name } });
   e2e = res.status === 0 ? 'passed' : 'failed';
 }
 

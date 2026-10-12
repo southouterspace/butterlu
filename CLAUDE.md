@@ -139,6 +139,9 @@ Wave 0 and the Shopify waves are dropped. The exports are done and rerunnable:
 - `scripts/product-options.mjs` → `plans/product-options.json` (shapes, backgrounds)
 
 The record behind these (decisions, Etsy API quirks, findings) is `docs/08`.
+Market research (Etsy listings, competitors on and off Etsy, the Claude-run API stack)
+is `docs/09`, with track reports in `docs/research/`. Etsy forbids using Etsy buyers or
+packaging to drive traffic to butterlu.com; read `docs/09` §3 before any Etsy integration.
 
 Next: the owner rules on `plans/clusters.json` in `plans/decisions.json` (G2). Do not
 build the site catalog until that file is filled in. Do not import Etsy reviews until G5

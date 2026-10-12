@@ -1,5 +1,10 @@
 # 06 — Etsy API Terms: what is and is not permitted
 
+> **Out of date (2026-10-12).** Etsy rewrote its API Terms on 2026-08-18. The clause
+> numbers below are from the older text. Current quotes, including the new bans on
+> diverting members, connecting to marketing platforms and messaging Etsy buyers about
+> orders, are in `docs/research/f-marketplace-hub.md` §1. The conclusions here still hold.
+
 **Read this before writing any code that touches Etsy data.** The review migration
 designed in `04` is blocked on an open question with Etsy (gate G5). This document records
 why, so nobody re-opens it from scratch or quietly works around it.

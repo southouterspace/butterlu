@@ -36,8 +36,11 @@ scalloped, both 8.375" wide, `assets/frame-drawing.pdf`) plus **one of 44 backgr
 (`assets/background-images/`), with **100% custom text**. The hundreds of Etsy listings
 are the same product dressed for different searches. On the new site they become
 search-intent pages, each a preset of the one configurable frame, not separate products.
-Options are in `plans/product-options.json`. About 80 Etsy listings are other products
-(brag boards, a $62 large frame, car coasters and charms, add-ons).
+Options are in `plans/product-options.json`. The opening takes a 4x6 photo (owner, not
+yet measured). The 44 uploaded backgrounds are the set; Etsy's numbered colour chart is
+not carried over. The two plain rectangles in the drawing are out of scope for now. About
+80 Etsy listings are other products (brag boards, a $62 large frame, car coasters and
+charms, add-ons).
 
 ---
 
@@ -134,6 +137,8 @@ Wave 0 and the Shopify waves are dropped. The exports are done and rerunnable:
 - `scripts/shopify-catalog-from-pages.mjs` → `plans/catalog.json` (Shopify URLs, read-only)
 - `scripts/lineup-draft.mjs` → `plans/listing-map.json`, `plans/clusters.json`
 - `scripts/product-options.mjs` → `plans/product-options.json` (shapes, backgrounds)
+
+The record behind these (decisions, Etsy API quirks, findings) is `docs/08`.
 
 Next: the owner rules on `plans/clusters.json` in `plans/decisions.json` (G2). Do not
 build the site catalog until that file is filled in. Do not import Etsy reviews until G5

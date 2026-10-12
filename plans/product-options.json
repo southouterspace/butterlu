@@ -19,7 +19,7 @@
       "height": "px"
     }
   },
-  "generatedAt": "2026-10-12T13:17:15.021Z",
+  "generatedAt": "2026-10-12T13:20:17.817Z",
   "shapes": [
     {
       "id": "rounded-rectangle",
@@ -36,9 +36,10 @@
       "source": "assets/frame-drawing.pdf"
     }
   ],
-  "unconfirmed": [
-    "The photo opening is drawn but not dimensioned; scaled off the drawing it is about 5.75 x 3.75 in.",
-    "assets/frame-drawing.pdf also draws two plain rectangles, 15.00 x 5.00 in and 13.75 x 9.25 in. Not yet known which products they are (brag board? the $62 large frame?).",
+  "notes": [
+    "The photo opening takes a 4x6 photo (owner: \"I think so\"; the drawing does not dimension it, scaled it is about 5.75 x 3.75 in). Confirm against a real frame before the editor fixes crop sizes.",
+    "The two plain rectangles in assets/frame-drawing.pdf (15.00 x 5.00 in, 13.75 x 9.25 in) are out of scope for now.",
+    "These 44 backgrounds are the set. The Etsy colour chart (\"#1 is fuchsia\") is not carried over.",
     "Backgrounds are 2550 x 3300 px at 300 dpi (8.5 x 11 in sheets)."
   ],
   "backgrounds": [

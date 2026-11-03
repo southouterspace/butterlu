@@ -6,10 +6,9 @@
   "scripts": {
     "dev": "wrangler dev --persist-to .wrangler/state",
     "sync-assets": "node scripts/sync-assets.mjs",
-    "typecheck": "tsc --noEmit && tsc --noEmit -p ../../packages/frame",
-    "test": "bun test ../../packages/frame",
+    "typecheck": "tsc --noEmit",
     "smoke": "node scripts/smoke.mjs",
-    "validate": "bun run typecheck && bun run test && bun run smoke"
+    "validate": "bun run typecheck && bun run smoke"
   },
   "dependencies": {
     "@butterlu/frame": "workspace:*",

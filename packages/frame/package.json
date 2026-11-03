@@ -11,7 +11,8 @@
     "extract-geometry": "node scripts/extract-geometry.mjs",
     "background-colors": "node scripts/background-colors.mjs",
     "typecheck": "tsc --noEmit",
-    "test": "bun test"
+    "test": "bun test",
+    "validate": "bun run typecheck && bun run test"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "1.1.1",

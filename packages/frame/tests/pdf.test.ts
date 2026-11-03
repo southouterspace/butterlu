@@ -8,7 +8,7 @@ import { type FrameSpec, SHAPES, type ShapeId, type Side, type SideText, safeZon
 import { renderPdf } from '../src/pdf';
 
 const here = path.dirname(new URL(import.meta.url).pathname);
-const fontFile = (pkg: string, file: string) => new Uint8Array(fs.readFileSync(path.join(here, '../node_modules/@fontsource', pkg, 'files', file)));
+const fontFile = (pkg: string, file: string) => new Uint8Array(fs.readFileSync(Bun.resolveSync(`@fontsource/${pkg}/files/${file}`, here)));
 const fonts = {
   'great-vibes': fontFile('great-vibes', 'great-vibes-latin-400-normal.woff'),
   'playfair-display': fontFile('playfair-display', 'playfair-display-latin-700-normal.woff'),

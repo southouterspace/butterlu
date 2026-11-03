@@ -5,7 +5,7 @@ export interface FontEntry {
   name: string;
   style: string;
   weight: number;
-  /** Where scripts/sync-assets.mjs reads the file from, relative to node_modules. */
+  /** Where scripts/sync-assets.mjs reads the file from, as a package path Node can resolve. */
   source: string;
   licence: string;
   /** True until Asli's real font list replaces the stand-ins. */

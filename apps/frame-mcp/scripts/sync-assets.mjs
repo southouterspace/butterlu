@@ -9,6 +9,7 @@ import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
 
@@ -30,7 +31,7 @@ const batches = [
   },
   {
     contentType: 'font/woff',
-    rows: fonts.map((f) => ({ key: `fonts/${f.id}.woff`, file: path.join(appDir, 'node_modules', f.source) })),
+    rows: fonts.map((f) => ({ key: `fonts/${f.id}.woff`, file: createRequire(import.meta.url).resolve(f.source) })),
   },
 ];
 

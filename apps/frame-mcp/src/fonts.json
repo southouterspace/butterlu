@@ -1,0 +1,29 @@
+[
+  {
+    "id": "great-vibes",
+    "name": "Great Vibes",
+    "style": "script",
+    "weight": 400,
+    "source": "@fontsource/great-vibes/files/great-vibes-latin-400-normal.woff",
+    "licence": "OFL-1.1",
+    "placeholder": true
+  },
+  {
+    "id": "playfair-display-bold",
+    "name": "Playfair Display Bold",
+    "style": "serif",
+    "weight": 700,
+    "source": "@fontsource/playfair-display/files/playfair-display-latin-700-normal.woff",
+    "licence": "OFL-1.1",
+    "placeholder": true
+  },
+  {
+    "id": "montserrat-semibold",
+    "name": "Montserrat SemiBold",
+    "style": "sans-serif",
+    "weight": 600,
+    "source": "@fontsource/montserrat/files/montserrat-latin-600-normal.woff",
+    "licence": "OFL-1.1",
+    "placeholder": true
+  }
+]

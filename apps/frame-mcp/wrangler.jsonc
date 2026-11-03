@@ -1,0 +1,12 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "butterlu-frame-mcp",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "r2_buckets": [
+    { "binding": "ASSETS", "bucket_name": "butterlu-frame-assets" },
+    { "binding": "RENDERS", "bucket_name": "butterlu-frame-renders" }
+  ]
+}

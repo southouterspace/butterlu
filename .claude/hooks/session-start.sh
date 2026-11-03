@@ -24,5 +24,4 @@ bins="$(.claude/bin/with-toolchain.sh sh -c 'echo "$(dirname "$(command -v bun)"
   echo 'export E2E_TELEMETRY_DISABLED=1'
 } >> "$CLAUDE_ENV_FILE"
 
-cd site
-../.claude/bin/with-toolchain.sh bun install
+"$CLAUDE_PROJECT_DIR/.claude/bin/with-toolchain.sh" bun install

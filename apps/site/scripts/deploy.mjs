@@ -35,7 +35,7 @@ const FORBIDDEN_ACCOUNTS = new Set(['d85e596fe8902fb82e35f754fac9ffb8']);
 function pinnedAccount() {
   const config = readFileSync(new URL('../wrangler.jsonc', import.meta.url), 'utf8');
   const pinned = config.match(/^\s*"account_id":\s*"([0-9a-f]{32})"/m)?.[1];
-  if (!pinned) return { blocked: 'wrangler.jsonc pins no account_id; Butterlu needs its own Cloudflare account (site/README.md, one-time setup)' };
+  if (!pinned) return { blocked: 'wrangler.jsonc pins no account_id; Butterlu needs its own Cloudflare account (apps/site/README.md, one-time setup)' };
   const fromEnv = process.env.CLOUDFLARE_ACCOUNT_ID;
   if (fromEnv && fromEnv !== pinned) return { blocked: `CLOUDFLARE_ACCOUNT_ID is ${fromEnv}, not Butterlu's account ${pinned}` };
   return { pinned };
@@ -83,7 +83,7 @@ const ENVIRONMENTS = {
   preview: {
     precondition: () => {
       if (git('rev-parse', '--abbrev-ref', 'HEAD') === 'main') return 'preview a branch, not main';
-      return git('status', '--porcelain', '--', '.') ? 'site/ has uncommitted changes; the Preview must match a commit' : null;
+      return git('status', '--porcelain', '--', '.') ? 'apps/site has uncommitted changes; the Preview must match a commit' : null;
     },
     check: 'build',
     deploy: () => workersDev(wrangler(['preview', '--name', previewName()], 'preview')?.preview_urls),
@@ -123,7 +123,7 @@ async function healthy(url) {
 const name = process.argv[2];
 const env = ENVIRONMENTS[name];
 if (!env) fail(`usage: node scripts/deploy.mjs <${Object.keys(ENVIRONMENTS).join('|')}>`);
-if (!process.env.CLOUDFLARE_API_TOKEN) setupBlocked('CLOUDFLARE_API_TOKEN is not set (see site/README.md, one-time setup)');
+if (!process.env.CLOUDFLARE_API_TOKEN) setupBlocked('CLOUDFLARE_API_TOKEN is not set (see apps/site/README.md, one-time setup)');
 const account = pinnedAccount();
 if (account.blocked) setupBlocked(account.blocked);
 if (FORBIDDEN_ACCOUNTS.has(account.pinned)) setupBlocked(`account ${account.pinned} belongs to another project; Butterlu needs its own`);

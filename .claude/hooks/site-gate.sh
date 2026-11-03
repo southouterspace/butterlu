@@ -1,7 +1,8 @@
 #!/bin/bash
 # CI for agent sessions. Registered for Bash in .claude/settings.json.
 #   pre:  blocks direct wrangler deploys, and runs `bun run validate` before a
-#         `git push` that changes the site. A failed check blocks the push.
+#         `git push` that changes apps/, packages/ or the root workspace files.
+#         A failed check blocks the push.
 #   post: after a branch push lands, deploys its Preview and e2e-tests it,
 #         then hands the result back to the agent to post on the PR.
 set -uo pipefail
@@ -9,12 +10,17 @@ set -uo pipefail
 phase="$1"
 cmd="$(jq -r '.tool_input.command // ""')"
 cd "$CLAUDE_PROJECT_DIR"
-toolchain=../.claude/bin/with-toolchain.sh
+toolchain="$CLAUDE_PROJECT_DIR/.claude/bin/with-toolchain.sh"
+watched=(apps packages package.json bun.lock .nvmrc)
+preview_watched=(apps/site packages package.json bun.lock .nvmrc)
 
-site_changed() {
+changed_in() {
   git fetch --quiet origin main 2>/dev/null
-  ! git diff --quiet "$(git merge-base HEAD origin/main)" HEAD -- site .nvmrc
+  ! git diff --quiet "$(git merge-base HEAD origin/main)" HEAD -- "$@"
 }
+
+workspace_changed() { changed_in "${watched[@]}"; }
+preview_changed() { changed_in "${preview_watched[@]}"; }
 
 # Unanchored on purpose: env prefixes, `git -C dir push`, `bunx wrangler`,
 # `bash -c '...'` and newline-separated commands must all match. A doc line
@@ -37,17 +43,17 @@ is_direct_deploy() {
 
 if [ "$phase" = pre ]; then
   if is_direct_deploy; then
-    echo "Deploy through site/scripts/deploy.mjs: bun run deploy:preview or bun run deploy:stage (from main). Production deploys only from a published GitHub Release." >&2
+    echo "Deploy through apps/site/scripts/deploy.mjs: bun run deploy:preview or bun run deploy:stage (from apps/site, on main). Production deploys only from a published GitHub Release." >&2
     exit 2
   fi
-  if is_push && site_changed; then
+  if is_push && workspace_changed; then
     # Validate what is pushed, not what is on disk.
-    if [ -n "$(git status --porcelain -- site .nvmrc)" ]; then
-      echo "Push blocked: site/ has uncommitted changes. Commit or stash them so validation runs on what you push. This check runs before the whole command, so commit in one command and push in the next." >&2
+    if [ -n "$(git status --porcelain -- "${watched[@]}")" ]; then
+      echo "Push blocked: apps/, packages/ or the root workspace files have uncommitted changes. Commit or stash them so validation runs on what you push. This check runs before the whole command, so commit in one command and push in the next." >&2
       exit 2
     fi
-    if ! out="$(cd site && "$toolchain" bun run validate 2>&1)"; then
-      printf 'Push blocked: bun run validate failed in site/.\n%s\n' "$(tail -n 40 <<<"$out")" >&2
+    if ! out="$("$toolchain" bun run validate 2>&1)"; then
+      printf 'Push blocked: bun run validate failed at the repo root.\n%s\n' "$(tail -n 40 <<<"$out")" >&2
       exit 2
     fi
   fi
@@ -58,7 +64,7 @@ fi
 is_push || exit 0
 branch="$(git rev-parse --abbrev-ref HEAD)"
 [ "$branch" != main ] || exit 0
-site_changed || exit 0
+preview_changed || exit 0
 stamp="$(git rev-parse --git-dir)/butterlu-preview-$(tr / - <<<"$branch")"
 [ "$(cat "$stamp" 2>/dev/null)" != "$(git rev-parse HEAD)" ] || exit 0
 if [ "$(git rev-parse HEAD)" != "$(git rev-parse "refs/remotes/origin/$branch" 2>/dev/null)" ]; then
@@ -68,9 +74,9 @@ if [ "$(git rev-parse HEAD)" != "$(git rev-parse "refs/remotes/origin/$branch" 2
 fi
 
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-  msg="No Preview: CLOUDFLARE_API_TOKEN is not set in this Claude environment. Tell the user once (site/README.md, one-time setup); do not work around it."
+  msg="No Preview: CLOUDFLARE_API_TOKEN is not set in this Claude environment. Tell the user once (apps/site/README.md, one-time setup); do not work around it."
 else
-  out="$(cd site && "$toolchain" bun run deploy:preview 2>&1)"
+  out="$(cd apps/site && "$toolchain" bun run deploy:preview 2>&1)"
   summary="$(sed -n 's/^deploy-summary //p' <<<"$out")"
   if [ -n "$summary" ]; then
     git rev-parse HEAD > "$stamp"

@@ -5,7 +5,7 @@ What was decided, measured and built on 2026-10-12, so the next session starts f
 
 ## Decisions (owner)
 
-- Leave Shopify. The new site in `site/` is built from the Etsy shop. Shopify supplies
+- Leave Shopify. The new site in `apps/site/` is built from the Etsy shop. Shopify supplies
   only its URLs, for 301s. Shopify Waves 1–3, loops L1–L8 and the Wave 0 write test are
   dropped. G1 is dropped.
 - A frame is one of two shapes plus one of 44 backgrounds, with fully custom text. Etsy's

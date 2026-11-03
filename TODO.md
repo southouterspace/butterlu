@@ -2,7 +2,7 @@
 
 What is left before agents can build, preview and stage the site without a
 human, and before the first production release. The design is in
-`site/README.md`. Tick items here as they land.
+`apps/site/README.md`. Tick items here as they land.
 
 Butterlu Cloudflare account: `5fa9365455451e1db238dedb838fc9ff`
 (`workers.dev` subdomain `butterlu`). Workers `butterlu-site-stage` and
@@ -23,7 +23,7 @@ tool can write Claude environment variables, GitHub secrets or rulesets.
   https://claude.ai/code:
   - `CLOUDFLARE_API_TOKEN` = the agent token
   - `CLOUDFLARE_ACCOUNT_ID` = `5fa9365455451e1db238dedb838fc9ff`
-  - Optional: `ANTHROPIC_API_KEY`, to run `site/tests/agentic.e2e.ts`
+  - Optional: `ANTHROPIC_API_KEY`, to run `apps/site/tests/agentic.e2e.ts`
   - Setup script:
     `claude plugin install pstack --marketplace michael-denyer/pstack-claude --scope user`
 - [ ] **Stop using the shared environment for Butterlu.** The environment used

@@ -26,7 +26,7 @@ top five listings on Etsy's `/market/aunt_picture_frame` page (which ranks #1 fo
 Shop domain: `da0e1b-6c.myshopify.com` · Storefront: `www.butterlu.com`
 
 **Decision (owner, 2026-10-12): leave Shopify.** butterlu.com moves to the custom site in
-`site/` (Astro + Cloudflare Worker + Stripe, `docs/07`). The new catalog is built from the
+`apps/site/` (Astro + Cloudflare Worker + Stripe, `docs/07`). The new catalog is built from the
 **Etsy shop**, not the Shopify store. Shopify is kept only as the list of current URLs, so
 the new site keeps the paths that rank and 301s the rest. Shopify Waves 1–3, loops L1–L8
 as Shopify loops, and the Wave 0 write test are dropped.
@@ -171,19 +171,35 @@ Loops are `L1`–`L8`, gates `G1`–`G5`. Use the same identifiers in manifests,
 
 ---
 
+## Repo layout
+
+Bun workspaces (`apps/*`, `packages/*`), one root `bun.lock`, `bun install` at the root.
+
+- `apps/site/` is the butterlu.com storefront (Astro + Worker), the walking skeleton from `docs/07`.
+- `apps/frame-mcp/` is the MCP server that renders sublimation print files for the frames. In progress.
+- `packages/frame/` is the shared frame geometry, safe zones and text fitting. The MCP server uses it now and the site's editor will later.
+- `assets/`, `docs/`, `plans/`, `prompts/` and `scripts/` stay at the root. They are business data and research, not workspaces.
+
+A new tool goes in `apps/<name>`. Shared code goes in `packages/<name>`. Each workspace has its own `validate` script, and root `bun run validate` runs all of them, so the push gate covers a workspace the day it exists.
+
+There is no Turborepo or Nx. Two apps and one package do not need a task cache, and `bun run --filter` already fans out. Revisit if validate time becomes the bottleneck. Bun's `catalog` is also skipped: only one workspace has dependencies so far, so there is no shared version to centralize.
+
+---
+
 ## 6a. The site and the PR loop
 
-`site/` is the Cloudflare storefront from `docs/07`, currently a walking skeleton. It is
+`apps/site/` is the Cloudflare storefront from `docs/07`, currently a walking skeleton. It is
 separate from the Shopify waves above and changes nothing on the live store.
 
 - Three environments. Each pushed branch gets a Preview. Stage is `main`, deployed with
   `bun run deploy:stage`. Production ships only when a human publishes a GitHub Release.
 - CI runs in the session, not GitHub Actions. A hook validates before any push that
-  changes `site/` and blocks it on failure, then deploys the Preview and e2e-tests it.
+  changes `apps/`, `packages/` or the root workspace files and blocks it on failure (root
+  `bun run validate`, every workspace), then deploys the site Preview and e2e-tests it.
 - Before calling a site change done, follow `.claude/skills/verify/SKILL.md`. A cloud
   session's SessionStart hook installs Node 24, Bun and the dependencies.
-- New behavior ships with a test in `site/tests/`. New SEO rules go in
-  `site/scripts/lint-dist.mjs`.
+- New behavior ships with a test in `apps/site/tests/`. New SEO rules go in
+  `apps/site/scripts/lint-dist.mjs`.
 - Open setup items and first runs are in `TODO.md`. Until its owner items are done, a
   push reports `deploy-setup-blocked`: report it, never work around it.
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 # Gives cloud sessions what the release workflow has: Node from .nvmrc, Bun
-# from site/package.json and site/ dependencies, so `bun run validate` works
+# from the root package.json and the workspace dependencies, so `bun run validate` works
 # before the first prompt.
 set -euo pipefail
 

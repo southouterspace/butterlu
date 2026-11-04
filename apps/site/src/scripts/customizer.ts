@@ -5,6 +5,7 @@ import { FONTS, type FrameSpec, type HexColor, SIDES, type Side, backgroundById 
 import { SIDE_LABEL, TEXT_COLORS, parseDesign } from '@butterlu/frame/design';
 import { frameSvg } from '../lib/frame-svg';
 import { addToCart } from './cart';
+import { track } from './track';
 import { fontsReady, placementsInBrowser } from './measure';
 
 interface Config {
@@ -135,7 +136,10 @@ export function mountCustomizer(root: HTMLElement) {
     }
   });
 
+  let customized = false;
   form.addEventListener('input', () => {
+    if (!customized) track('customize');
+    customized = true;
     status.dataset.kind = '';
     render();
   });
@@ -171,6 +175,7 @@ export function mountCustomizer(root: HTMLElement) {
     if (!current) return;
     // Quantity is set in the cart; adding here is one tap.
     addToCart(config.handle, current, 1);
+    track('add_to_cart', { d: snapshot() === original ? 'as_designed' : 'customized' });
     status.dataset.kind = 'added';
     status.innerHTML = `Added to your cart. <a href="/cart">View cart and check out</a>`;
   });

@@ -48,6 +48,15 @@ test('the checkout API stays off without a Stripe key', async ({ app }) => {
   expect(res.status).toBe(503);
 });
 
+test('the funnel beacon takes known events and ignores the rest', async ({ app }) => {
+  const send = (body: unknown) =>
+    // A test user agent, so the report counts this as a bot, not a shopper.
+    fetch(new URL('/api/e', app.baseUrl), { method: 'POST', headers: { 'content-type': 'application/json', 'user-agent': 'butterlu-e2e-bot' }, body: JSON.stringify(body) });
+  expect((await send({ n: 'view', p: 'home', f: 'e2etest0000000001' })).status).toBe(204);
+  expect((await send({ n: 'order_paid' })).status).toBe(204);
+  expect((await fetch(new URL('/api/e', app.baseUrl), { method: 'POST', body: 'nope' })).status).toBe(400);
+});
+
 test('old URLs redirect to the new pages', async ({ app }) => {
   const res = await fetch(new URL('/products', app.baseUrl), { redirect: 'manual' });
   expect(res.status).toBe(301);

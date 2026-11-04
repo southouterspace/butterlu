@@ -6,6 +6,7 @@ import { describeDesign, designToMetadata, parseDesign } from '@butterlu/frame/d
 import type { FrameSpec } from '@butterlu/frame';
 import { CURRENCY, PRODUCTS } from '../src/catalog/products';
 import type { Env } from './env';
+import { track, validFid } from './events';
 
 export const MAX_LINES = 20;
 export const MAX_QUANTITY = 10;
@@ -56,10 +57,42 @@ export function checkKey(env: Env): KeyCheck {
   return { ok: true, mode: live ? 'live' : 'test' };
 }
 
+export interface SessionOptions {
+  /** Funnel id from the browser, echoed back on the Session as client_reference_id. */
+  fid?: string;
+  /** Unix seconds when the unpaid Session expires and counts as abandoned. */
+  expiresAt?: number;
+  /** Show Stripe's promotion code field (owner's call, off by default). */
+  promoCodes?: boolean;
+}
+
+export const DEFAULT_EXPIRES_HOURS = 2;
+
+/** CHECKOUT_EXPIRES_HOURS, clamped to what Stripe allows (30 minutes to 24 hours). */
+export function expiresAt(env: Env, nowSeconds = Math.floor(Date.now() / 1000)): number {
+  const hours = Number(env.CHECKOUT_EXPIRES_HOURS ?? DEFAULT_EXPIRES_HOURS);
+  const h = Number.isFinite(hours) ? hours : DEFAULT_EXPIRES_HOURS;
+  // A minute inside each of Stripe's limits so clock skew never trips them.
+  return nowSeconds + Math.min(86340, Math.max(1860, Math.round(h * 3600)));
+}
+
 /** Stripe's form encoding for a Checkout Session, as ordered key/value pairs. */
-export function sessionParams(lines: CheckedLine[], origin: string): URLSearchParams {
+export function sessionParams(lines: CheckedLine[], origin: string, opts: SessionOptions = {}): URLSearchParams {
   const p = new URLSearchParams();
   p.set('mode', 'payment');
+  if (opts.fid) {
+    p.set('client_reference_id', opts.fid);
+    p.set('metadata[fid]', opts.fid);
+  }
+  if (opts.expiresAt) p.set('expires_at', String(opts.expiresAt));
+  // Abandoned checkout recovery (docs/11). Stripe shows the opt-in box to US
+  // shoppers only, and returns the email on expiry only to those who ticked it.
+  p.set('consent_collection[promotions]', 'auto');
+  p.set('after_expiration[recovery][enabled]', 'true');
+  p.set('after_expiration[recovery][allow_promotion_codes]', opts.promoCodes ? 'true' : 'false');
+  if (opts.promoCodes) p.set('allow_promotion_codes', 'true');
+  // Trust copy beside the pay button: when it ships and how to fix a typo (Baymard: delivery and trust).
+  p.set('custom_text[submit][message]', "Made to order and shipped within 3 to 5 business days. Spot a typo? Reply to your receipt and we'll fix it before we print.");
   p.set('success_url', `${origin}/checkout/success?session_id={CHECKOUT_SESSION_ID}`);
   p.set('cancel_url', `${origin}/cart`);
   p.set('billing_address_collection', 'auto');
@@ -88,22 +121,33 @@ export function sessionParams(lines: CheckedLine[], origin: string): URLSearchPa
 }
 
 export async function createCheckout(request: Request, env: Env, fetcher: typeof fetch = fetch): Promise<Response> {
-  const key = checkKey(env);
-  if (!key.ok) return Response.json({ error: key.error }, { status: key.status });
   const body = await request.json().catch(() => null);
+  const rawFid = (body as { fid?: unknown } | null)?.fid;
+  const fid = validFid(rawFid) ? rawFid : undefined;
+  const key = checkKey(env);
+  if (!key.ok) {
+    track(env, { name: 'checkout_refused', page: 'cart', fid, detail: 'checkout_off' });
+    return Response.json({ error: key.error }, { status: key.status });
+  }
   const cart = checkCart(body);
-  if (!cart.ok) return Response.json({ error: 'Something in your cart needs a fix.', details: cart.errors }, { status: 400 });
+  if (!cart.ok) {
+    track(env, { name: 'checkout_refused', page: 'cart', fid, detail: 'cart_invalid' });
+    return Response.json({ error: 'Something in your cart needs a fix.', details: cart.errors }, { status: 400 });
+  }
 
   const origin = new URL(request.url).origin;
   const res = await fetcher('https://api.stripe.com/v1/checkout/sessions', {
     method: 'POST',
     headers: { authorization: `Bearer ${env.STRIPE_SECRET_KEY!.trim()}`, 'content-type': 'application/x-www-form-urlencoded' },
-    body: sessionParams(cart.lines, origin),
+    body: sessionParams(cart.lines, origin, { fid, expiresAt: expiresAt(env), promoCodes: env.CHECKOUT_PROMO_CODES === 'true' }),
   });
   const data = (await res.json().catch(() => ({}))) as { url?: string; id?: string; error?: { message?: string } };
   if (!res.ok || !data.url) {
     console.error('stripe checkout session failed', res.status, data.error?.message);
+    track(env, { name: 'checkout_refused', page: 'cart', fid, detail: 'stripe_error' });
     return Response.json({ error: 'We could not start checkout. Please try again in a moment.' }, { status: 502 });
   }
+  const amount = cart.lines.reduce((s, l) => s + l.unitAmount * l.quantity, 0);
+  track(env, { name: 'checkout_created', page: 'cart', fid, value: amount, detail: key.mode });
   return Response.json({ url: data.url, id: data.id, mode: key.mode });
 }

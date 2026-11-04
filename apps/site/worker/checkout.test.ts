@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { PRODUCTS } from '../src/catalog/products';
-import { checkCart, checkKey, createCheckout, sessionParams } from './checkout';
+import { checkCart, checkKey, createCheckout, expiresAt, sessionParams } from './checkout';
 import type { Env } from './env';
 
 const product = PRODUCTS[0]!;
@@ -49,6 +49,28 @@ test('session params carry the design as product metadata and free US shipping',
   expect(p.get('shipping_address_collection[allowed_countries][0]')).toBe('US');
   expect(p.get('shipping_options[0][shipping_rate_data][fixed_amount][amount]')).toBe('0');
   expect(p.get('success_url')).toBe('https://shop.test/checkout/success?session_id={CHECKOUT_SESSION_ID}');
+});
+
+test('session params turn on abandoned checkout recovery and carry the funnel id', () => {
+  const r = checkCart({ items: [item] });
+  if (!r.ok) throw new Error('cart');
+  const p = sessionParams(r.lines, 'https://shop.test', { fid: 'abcdef0123456789', expiresAt: 1_800_007_200 });
+  expect(p.get('client_reference_id')).toBe('abcdef0123456789');
+  expect(p.get('expires_at')).toBe('1800007200');
+  expect(p.get('consent_collection[promotions]')).toBe('auto');
+  expect(p.get('after_expiration[recovery][enabled]')).toBe('true');
+  expect(p.get('after_expiration[recovery][allow_promotion_codes]')).toBe('false');
+  expect(p.has('allow_promotion_codes')).toBe(false);
+  expect(sessionParams(r.lines, 'https://shop.test', { promoCodes: true }).get('allow_promotion_codes')).toBe('true');
+});
+
+test('expiry defaults to 2 hours and stays inside Stripe limits', () => {
+  const now = 1_800_000_000;
+  expect(expiresAt(env(), now)).toBe(now + 7200);
+  expect(expiresAt(env(undefined, { CHECKOUT_EXPIRES_HOURS: '0.1' }), now)).toBe(now + 1860);
+  expect(expiresAt(env(undefined, { CHECKOUT_EXPIRES_HOURS: '0.5001' }), now)).toBe(now + 1860);
+  expect(expiresAt(env(undefined, { CHECKOUT_EXPIRES_HOURS: '48' }), now)).toBe(now + 86400 - 60);
+  expect(expiresAt(env(undefined, { CHECKOUT_EXPIRES_HOURS: 'soon' }), now)).toBe(now + 7200);
 });
 
 describe('createCheckout', () => {

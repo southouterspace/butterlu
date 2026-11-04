@@ -2,6 +2,7 @@ import { describeDesign } from '@butterlu/frame/design';
 import { frameSvg } from '../lib/frame-svg';
 import { MAX_QUANTITY, cartLines, clearCart, onCartChange, removeLine, setQuantity } from './cart';
 import { fontsReady, placementsInBrowser } from './measure';
+import { funnelId, track } from './track';
 
 type Catalog = Record<string, { name: string; priceCents: number }>;
 const money = (c: number) => `$${(c / 100).toFixed(2)}`;
@@ -65,19 +66,23 @@ export function mountCart(root: HTMLElement) {
   checkout.addEventListener('click', async () => {
     checkout.disabled = true;
     status.textContent = 'Taking you to secure checkout…';
+    const lines = cartLines().filter((l) => catalog[l.handle]);
+    track('checkout_click', { v: lines.reduce((s, l) => s + catalog[l.handle]!.priceCents * l.quantity, 0) });
     try {
       const res = await fetch('/api/checkout', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ items: cartLines().map((l) => ({ handle: l.handle, quantity: l.quantity, design: l.design })) }),
+        body: JSON.stringify({ fid: funnelId(), items: cartLines().map((l) => ({ handle: l.handle, quantity: l.quantity, design: l.design })) }),
       });
       const data = (await res.json().catch(() => ({}))) as { url?: string; error?: string };
       if (res.ok && data.url) {
         window.location.assign(data.url);
         return;
       }
+      track('checkout_error', { d: `http_${res.status}` });
       status.textContent = data.error ?? 'Checkout is not available right now. Please try again in a moment.';
     } catch {
+      track('checkout_error', { d: 'network' });
       status.textContent = 'We could not reach checkout. Check your connection and try again.';
     }
     checkout.disabled = false;

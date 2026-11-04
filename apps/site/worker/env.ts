@@ -6,4 +6,15 @@ export interface Env {
   STRIPE_WEBHOOK_SECRET?: string;
   /** Set to "true" only when the owner turns on live payments. */
   STRIPE_ALLOW_LIVE?: string;
+  /** Funnel events (docs/11). Optional: without it events go to Workers Logs only. */
+  EVENTS?: AnalyticsEngineDataset;
+  /** Hours before an unpaid Checkout Session expires and counts as abandoned. Default 2, 0.5 to 24. */
+  CHECKOUT_EXPIRES_HOURS?: string;
+  /** "true" shows Stripe's promotion code field, in checkout and in recovered checkouts. Owner's call. */
+  CHECKOUT_PROMO_CODES?: string;
+  /**
+   * Abandoned checkout follow-up (docs/11): "off" records nothing about recovery,
+   * "log" (default) records what would be sent. Nothing sends email yet.
+   */
+  RECOVERY_EMAILS?: string;
 }

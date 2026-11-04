@@ -3,6 +3,7 @@
 // docs/10 has the next step (D1 order table, proof review, print files).
 import { describeDesign, designFromMetadata } from '@butterlu/frame/design';
 import type { Env } from './env';
+import { track, validFid } from './events';
 
 export const TOLERANCE_SECONDS = 300;
 
@@ -31,6 +32,37 @@ export async function verifySignature(header: string | null, payload: string, se
   return v1s.some((v) => safeEqual(v, expected));
 }
 
+/** The parts of a Checkout Session the funnel reads. */
+export interface SessionLike {
+  id?: string;
+  livemode?: boolean;
+  client_reference_id?: string | null;
+  amount_total?: number | null;
+  payment_status?: string | null;
+  recovered_from?: string | null;
+  customer_details?: { email?: string | null } | null;
+  consent?: { promotions?: string | null } | null;
+  after_expiration?: { recovery?: { enabled?: boolean; url?: string | null } | null } | null;
+}
+
+export type RecoveryDecision = { send: true; reason: 'eligible' } | { send: false; reason: 'recovery_off' | 'no_recovery_link' | 'no_consent' | 'no_email' };
+
+/**
+ * Whether an expired Checkout Session may get an abandoned checkout email
+ * (docs/11). Consent comes first: Stripe only returns the email of shoppers who
+ * ticked the box. Frequency caps and the send delay need the D1 table, so even an
+ * "eligible" session is only recorded until the owner picks an email provider.
+ */
+export function recoveryDecision(session: SessionLike, env: Env): RecoveryDecision {
+  if ((env.RECOVERY_EMAILS ?? 'log') === 'off') return { send: false, reason: 'recovery_off' };
+  if (!session.after_expiration?.recovery?.url) return { send: false, reason: 'no_recovery_link' };
+  if (session.consent?.promotions !== 'opt_in') return { send: false, reason: 'no_consent' };
+  if (!session.customer_details?.email) return { send: false, reason: 'no_email' };
+  return { send: true, reason: 'eligible' };
+}
+
+const fidOf = (s: SessionLike) => (validFid(s.client_reference_id) ? s.client_reference_id : undefined);
+
 interface LineItem {
   quantity: number;
   amount_total: number;
@@ -44,11 +76,19 @@ export async function handleWebhook(request: Request, env: Env, fetcher: typeof 
   if (!(await verifySignature(request.headers.get('stripe-signature'), payload, secret))) {
     return Response.json({ error: 'bad signature' }, { status: 400 });
   }
-  const event = JSON.parse(payload) as { type?: string; livemode?: boolean; data?: { object?: { id?: string } } };
-  if (event.type !== 'checkout.session.completed') return Response.json({ received: true });
+  const event = JSON.parse(payload) as { type?: string; livemode?: boolean; data?: { object?: SessionLike } };
+  if (event.type !== 'checkout.session.completed' && event.type !== 'checkout.session.expired') return Response.json({ received: true });
   if (event.livemode && env.STRIPE_ALLOW_LIVE !== 'true') return Response.json({ received: true, ignored: 'live event while in test mode' });
+  const session = event.data?.object ?? {};
 
-  const id = event.data?.object?.id;
+  if (event.type === 'checkout.session.expired') {
+    // Abandoned checkout. Record the decision only: no email address, no recovery link.
+    const decision = recoveryDecision(session, env);
+    track(env, { name: 'checkout_expired', fid: fidOf(session), value: session.amount_total ?? 0, detail: decision.reason });
+    return Response.json({ received: true, recovery: decision.reason });
+  }
+
+  const id = session.id;
   const key = env.STRIPE_SECRET_KEY?.trim();
   if (!id || !key) return Response.json({ error: 'cannot read the order' }, { status: 500 });
   const res = await fetcher(`https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(id)}/line_items?limit=100&expand[]=data.price.product`, {
@@ -68,5 +108,16 @@ export async function handleWebhook(request: Request, env: Env, fetcher: typeof 
     };
   });
   console.log('order paid', JSON.stringify({ session: id, lines }));
+  // Recorded once the order is read, so a retried delivery that failed above isn't counted.
+  // Async methods (bank debits) complete unpaid; those count when they settle (docs/11).
+  if (session.payment_status === 'paid' || session.payment_status === 'no_payment_required') {
+    track(env, {
+      name: 'order_paid',
+      page: 'success',
+      fid: fidOf(session),
+      value: session.amount_total ?? 0,
+      detail: session.recovered_from ? 'recovered' : session.consent?.promotions === 'opt_in' ? 'opted_in' : 'direct',
+    });
+  }
   return Response.json({ received: true, lines: lines.length });
 }

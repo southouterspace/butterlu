@@ -24,6 +24,20 @@ const nav = [
   { href: '/collections/baby-frames', label: 'Baby' },
 ];
 const path = Astro.url.pathname;
+// Funnel step for the page-view beacon (docs/11). At build time the path carries
+// the output file name (/index.html, /cart.html), so drop it first.
+const page = path.replace(/\.html$/, '').replace(/\/index$/, '') || '/';
+const [, section = '', slug] = page.split('/');
+const pageType =
+  page === '/' ? 'home'
+  : section === 'products' ? 'product'
+  : section === 'collections' ? 'collection'
+  : page === '/cart' ? 'cart'
+  : page === '/checkout/success' ? 'success'
+  : section === 'pages' ? 'content'
+  : page === '/404' ? 'not_found'
+  : 'other';
+const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : undefined;
 ---
 <!doctype html>
 <html lang="en">
@@ -43,7 +57,7 @@ const path = Astro.url.pathname;
     <link rel="preload" href="/fonts/playfair-display-bold.woff" as="font" type="font/woff" crossorigin />
     {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
   </head>
-  <body class="flex min-h-svh flex-col">
+  <body class="flex min-h-svh flex-col" data-page-type={pageType} data-handle={pageHandle}>
     <a class="sr-only z-50 rounded-3xl bg-background px-3 py-2 focus:not-sr-only focus:fixed focus:top-2 focus:left-2" href="#main">Skip to content</a>
     <header class="border-b">
       <div class="mx-auto flex h-14 max-w-6xl items-center gap-2 px-4 md:h-16">
@@ -107,6 +121,8 @@ const path = Astro.url.pathname;
     </footer>
     <script>
       import { cartCount, onCartChange } from './scripts/cart';
+      import { referrerHost, track } from './scripts/track';
+      track('view', { r: referrerHost() });
       const render = () => document.querySelectorAll('[data-cart-count]').forEach((el) => (el.textContent = String(cartCount())));
       render();
       onCartChange(render);

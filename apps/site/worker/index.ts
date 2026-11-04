@@ -1,5 +1,6 @@
 import { checkKey, createCheckout } from './checkout';
 import type { Env } from './env';
+import { handleEvent } from './events';
 import { handleWebhook } from './webhook';
 
 export default {
@@ -7,6 +8,7 @@ export default {
     const { pathname } = new URL(request.url);
     const method = request.method;
     if (pathname === '/api/health') return Response.json({ ok: true });
+    if (pathname === '/api/e' && method === 'POST') return handleEvent(request, env);
     if (pathname === '/api/checkout' && method === 'POST') return createCheckout(request, env);
     if (pathname === '/api/checkout/status' && method === 'GET') {
       const key = checkKey(env);

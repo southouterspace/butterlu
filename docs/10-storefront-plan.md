@@ -114,8 +114,8 @@ Etsy OAuth. The line-up ranks by favourites and listing counts instead.
   (deployment branches: `main` only), never a repository secret. It must be a Butterlu
   Account API token scoped to **Specified Workers: `butterlu-site-stage`**, role **Editor**,
   so code running on stage can never deploy production (`apps/site/README.md`, step 4a).
-- Enable R2 on the Butterlu Cloudflare account. The frame MCP needs it.
-- Set the `MCP_TOKEN` secret on the frame MCP Worker.
+- Set up the frame MCP: its print PDFs go to Google Drive, not R2 (`apps/frame-mcp/README.md`,
+  Google Drive), and `MCP_TOKEN` is set by the same setup script.
 - Set Stripe **test** keys on the site Worker: `STRIPE_SECRET_KEY` and
   `STRIPE_WEBHOOK_SECRET`. Point a test webhook at `/api/stripe/webhook`.
 - Confirm the defaults above, then mark G2 decided.

@@ -92,10 +92,21 @@ Owner (from Asli):
 - [ ] **Safe zones measured on a real blank.** Current insets (0.15 in rounded,
   0.35 in scalloped, 0.125 in from the opening) come from the drawing.
 
-Owner setup:
+Owner setup (details in `apps/frame-mcp/README.md`, Google Drive and Deploy):
 
-- [ ] **Auth for the MCP server.** `apps/frame-mcp/src/auth.ts` lets every request
-  through. Do not deploy publicly until it is filled in.
+- [x] **Auth for the MCP server.** Bearer `MCP_TOKEN`, fail-closed.
+- [ ] **Stage token covers the MCP.** Edit the GitHub `stage` environment's
+  `CLOUDFLARE_STAGE_API_TOKEN` to list Specified Workers `butterlu-site-stage`
+  and `butterlu-frame-mcp-stage` (the Worker exists, as a placeholder).
+- [ ] **Google Drive.** Google Cloud project with the Drive API, consent screen
+  published (In production) with only `drive.file`, a Desktop app OAuth client,
+  then `node scripts/google-setup.mjs --env stage --client-file … --mcp-token`.
+  Optional: the stage `MCP_TOKEN` as GitHub `stage` secret `FRAME_MCP_TOKEN`.
+- [ ] **Workers Paid on the Butterlu account.** A render takes ~0.35 s CPU; Free
+  allows 10 ms.
+- [ ] **Production, when ready.** Make a placeholder `butterlu-frame-mcp` Worker,
+  add it to the production token's Specified Workers, run `google-setup.mjs
+  --env production`, share `Butterlu print files` with Asli, publish a Release.
 
 Agent, no inputs needed:
 

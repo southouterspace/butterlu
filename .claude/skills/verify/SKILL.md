@@ -1,12 +1,12 @@
 ---
 name: verify
-description: Prove a change to the butterlu.com site (apps/site/) works. Covers the local build and dist lint, the e2e suite against wrangler dev, driving the site over the e2e MCP server, the push gate and automatic per-branch Cloudflare Preview, and deploying stage. Use after any change under apps/ or packages/, before opening or updating a PR, when a push is blocked, and after a merge to main.
+description: Prove a change to the butterlu.com site (apps/site/) works. Covers the local build and dist lint, the e2e suite against wrangler dev, driving the site over the e2e MCP server, the push gate and the automatic stage deploy after a push to main. Use after any change under apps/ or packages/, before pushing to main, and when a push is blocked.
 ---
 
 # Verify a site change
 
 The site is Astro (static HTML) plus one Worker for `/api/*`, on Cloudflare.
-Every pushed branch gets a Preview URL and an e2e run against it.
+Every push to `main` deploys stage and runs e2e against it.
 Prove a change on the real artifact, in this order, and stop at the first
 failure.
 
@@ -39,9 +39,9 @@ Agent steps (`agent.act`, `agent.assert`) need `ANTHROPIC_API_KEY`; without it
 ### Agent steps without `ANTHROPIC_API_KEY`: run them with subagents
 
 When the key is unset, run each test in `tests/agentic.e2e.ts` by hand with
-subagents against the branch's Preview (section 4), after its fixed e2e passes.
+subagents against stage (section 4), after its fixed e2e passes.
 
-1. The e2e MCP server starts without `E2E_BASE_URL`, so point it at the Preview
+1. The e2e MCP server starts without `E2E_BASE_URL`, so point it at stage
    with a scratch config. `.e2e/` is gitignored. Write it with Write, not a
    heredoc. Save it as `apps/site/.e2e/preview.config.ts`:
 
@@ -49,7 +49,7 @@ subagents against the branch's Preview (section 4), after its fixed e2e passes.
    import type { E2EConfig } from 'e2e';
    import { web } from '@e2e-dev/web';
    export default {
-     targets: [{ engine: web(), app: { url: '<Preview url>', identity: 'butterlu-site', environment: 'staging' } }],
+     targets: [{ engine: web(), app: { url: '<stage url>', identity: 'butterlu-site', environment: 'staging' } }],
    } satisfies E2EConfig;
    ```
 
@@ -62,7 +62,7 @@ subagents against the branch's Preview (section 4), after its fixed e2e passes.
    plainly visible and judges from the screenshot first. Each replies
    `VERDICT`, `EVIDENCE` (the exact on-screen text), `NOTES`.
 3. A test passes only if both subagents return PASS. Report each verdict
-   and its evidence next to the Preview's e2e result. The runner still
+   and its evidence next to the stage e2e result. The runner still
    reports the test as skipped; do not change the test's `skip` to hide that.
 Run `bunx e2e guide writing-tests` (or `agent`, `debugging`, `running`) for the
 framework's own reference.
@@ -77,36 +77,37 @@ The `e2e` MCP server in `.mcp.json` drives the same site the suite does.
 `call {tool: "screenshot"}` for pixels, and `call {tool: "locate"}` to check a
 locator before writing it into a test. Close the session when done.
 
-## 4. Push: the gate and the Preview
+## 4. Push to main: the gate and stage
 
+Work goes straight to `main` in small commits; there are no PRs (CLAUDE.md 6a).
 CI runs in your session. `git push` triggers `.claude/hooks/site-gate.sh`.
-Before the push, when the branch changes `apps/`, `packages/` or the root workspace files, it runs
+Before the push, when it changes `apps/`, `packages/` or the root workspace files, it runs
 `bun run validate` at the repo root (every workspace) and blocks the push on failure with the failing output.
 
-After the push lands, the hook runs `bun run deploy:preview`: build, deploy a
-Preview named after the branch on the `butterlu-site-stage` Worker, wait for
-`/api/health`, run the e2e suite against the Preview URL. The result comes back
-as a `deploy-summary` line with `url`, `commit`, `health` and `e2e`.
+After a push to `main` lands, the hook runs `bun run deploy:stage`: build, deploy
+the `butterlu-site-stage` Worker, wait for `/api/health`, run the e2e suite
+against the stage URL. (A push of any other branch runs `deploy:preview`
+instead.) The result comes back as a `deploy-summary` line with `url`, `commit`,
+`health` and `e2e`.
 
-- Post the URL and the e2e result on the branch's PR as one comment, and edit
-  that comment on later pushes. The owner reviews UX on that URL.
+- Report the URL and the e2e result to the owner. The owner reviews UX on stage.
 - `e2e: failed` means the change is not done. Read
   `apps/site/.e2e/results/<test>/trace.md`, fix, push again.
 - `health: unreachable` means the sandbox got no HTTP response from
-  `*.workers.dev`. Say the Preview was not e2e-tested from here.
-- No Preview because `CLOUDFLARE_API_TOKEN` is unset: report it once. Only
+  `*.workers.dev`. Say stage was not e2e-tested from here.
+- No deploy because `CLOUDFLARE_API_TOKEN` is unset: report it once. Only
   the owner can add it.
 
 ## 5. Stage and production
 
 | Environment | Worker | Deployed by |
 | --- | --- | --- |
-| Preview, per branch | `butterlu-site-stage` Previews | The push hook |
-| Stage | `butterlu-site-stage` | `bun run deploy:stage` from `apps/site` on a clean `main` equal to `origin/main` |
+| Stage | `butterlu-site-stage` | The push hook after every push to `main` (or `bun run deploy:stage` from `apps/site` on a clean `main` equal to `origin/main`) |
+| Preview, per branch (rare) | `butterlu-site-stage` Previews | The push hook, for a branch push |
 | Production | `butterlu-site` | `.github/workflows/release.yml`, when the owner publishes a GitHub Release |
 
 `deploy:stage` (from `apps/site`) runs `bun run validate`, deploys, then runs e2e against the
-stage URL. After a branch merges, delete its Preview:
+stage URL. If a branch Preview was made, delete it once the work is on `main`:
 `bunx wrangler preview delete --name <preview name> --skip-confirmation`.
 
 ## Never

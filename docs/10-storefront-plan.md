@@ -1,7 +1,9 @@
 # 10 · Storefront plan and handoff
 
-Status: **in progress on `claude/butterlu-storefront`**. Everything customer-facing here is a
-**proposed default** until Asli confirms it. Gate G2 (`plans/decisions.json`) stays `proposed`.
+Status: **on `main`, so on stage once a session with the Cloudflare token pushes or deploys
+stage**. Not in production: that waits for the owner's GitHub Release. Everything
+customer-facing here is a **proposed default** until Asli confirms it. Gate G2
+(`plans/decisions.json`) stays `proposed`.
 
 ## What the store is
 
@@ -116,35 +118,36 @@ Etsy OAuth. The line-up ranks by favourites and listing counts instead.
 - Later, and only on the owner's yes: live Stripe keys plus `STRIPE_ALLOW_LIVE`, the
   production deploy (a GitHub Release) and DNS.
 
-## Handoff: what's left on this branch
+## Handoff: next session (runs in the Butterlu cloud environment)
 
-Built and passing locally:
+On `main` and passing root `bun run validate`:
 
 - the site build plus lint-dist (34 pages)
 - `check:worker`
 - worker unit tests (13)
+- store e2e (`apps/site/tests/store.e2e.ts`) plus smoke
 - frame package tests
 - frame MCP validate
 
-Left to do:
+The repo now works push-to-main (CLAUDE.md 6a). Next steps:
 
-1. e2e tests in `apps/site/tests/` for the store:
-   - the home page lists frames
-   - the product page preview updates when a side's text changes
-   - add to cart, then the cart shows the line
-   - checkout without a key shows the "not switched on" message
-   - `POST /api/checkout` with an unknown handle is a 400
-2. Run root `bun run validate` and fix anything it finds.
-3. Push. In an environment with `CLOUDFLARE_API_TOKEN`, the site-gate hook deploys the
-   branch Preview after the push. Otherwise use the repo's `deploy:preview` script.
+1. Deploy stage from a clean `main` equal to `origin/main` with the repo's `deploy:stage`
+   script in `apps/site`. The next push to `main` does this by itself through the hook.
    Never call wrangler deploy directly.
-4. Open a **draft** PR (Before/After description) and subscribe to its activity.
-5. Report back in the project thread with the PR link and preview URL.
+2. Report the stage URL and its e2e result in the project thread, so Justin can click
+   through the store.
+3. Carry on in small validated commits to `main`, starting with:
+   - the owner's answers on the defaults above
+   - Asli's real fonts
+   - the D1 order table
+   - the agent step that runs `plan_site_order` and `render_frame` for each paid order
+4. Before any push, have a second agent review the diff.
 
 Limits for whoever picks this up:
 
-- Draft PR and preview deploy only.
-- No merge to main, no GitHub Release, no production deploy, no DNS changes.
+- Push to `main` and deploy stage freely.
+- Production is Justin's call alone: no GitHub Release, no production deploy, no DNS
+  changes.
 - No Stripe live mode or live payment links.
 - No emails, and no Etsy posts.
 - Nothing in Justin's or Asli's accounts changes without Justin's yes in the project

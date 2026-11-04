@@ -3,8 +3,10 @@
 #   pre:  blocks direct wrangler deploys, and runs `bun run validate` before a
 #         `git push` that changes apps/, packages/ or the root workspace files.
 #         A failed check blocks the push.
-#   post: after a branch push lands, deploys its Preview and e2e-tests it,
-#         then hands the result back to the agent to post on the PR.
+#   post: after a push to main lands, deploys stage and e2e-tests it. Work goes
+#         straight to main in small validated commits (CLAUDE.md 6a). A push of
+#         any other branch deploys that branch's Preview instead. Production is
+#         never deployed from here: only a published GitHub Release does that.
 set -uo pipefail
 
 phase="$1"
@@ -63,28 +65,32 @@ fi
 # post
 is_push || exit 0
 branch="$(git rev-parse --abbrev-ref HEAD)"
-[ "$branch" != main ] || exit 0
-preview_changed || exit 0
-stamp="$(git rev-parse --git-dir)/butterlu-preview-$(tr / - <<<"$branch")"
+if [ "$branch" = main ]; then
+  target=stage
+else
+  target=preview
+  preview_changed || exit 0
+fi
+stamp="$(git rev-parse --git-dir)/butterlu-$target-$(tr / - <<<"$branch")"
 [ "$(cat "$stamp" 2>/dev/null)" != "$(git rev-parse HEAD)" ] || exit 0
 if [ "$(git rev-parse HEAD)" != "$(git rev-parse "refs/remotes/origin/$branch" 2>/dev/null)" ]; then
-  msg="No Preview: HEAD is not on origin/$branch after this push. Push the branch itself (git push -u origin HEAD) to get one."
+  msg="No $target deploy: HEAD is not on origin/$branch after this push. Push the branch itself (git push -u origin HEAD) to get one."
   jq -n --arg m "$msg" '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $m}}'
   exit 0
 fi
 
 if [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
-  msg="No Preview: CLOUDFLARE_API_TOKEN is not set in this Claude environment. Tell the user once (apps/site/README.md, one-time setup); do not work around it."
+  msg="No $target deploy: CLOUDFLARE_API_TOKEN is not set in this Claude environment. Tell the user once (apps/site/README.md, one-time setup); do not work around it."
 else
-  out="$(cd apps/site && "$toolchain" bun run deploy:preview 2>&1)"
+  out="$(cd apps/site && "$toolchain" bun run "deploy:$target" 2>&1)"
   summary="$(sed -n 's/^deploy-summary //p' <<<"$out")"
   if [ -n "$summary" ]; then
     git rev-parse HEAD > "$stamp"
-    msg="Preview deployed for $branch: $summary. Post the url and e2e result on this branch's PR (one comment, edited on later pushes). health=unreachable means the sandbox cannot reach *.workers.dev; say the Preview was not e2e-tested from here."
+    msg="Deployed $target for $branch: $summary. Report the url and e2e result to the user. health=unreachable means the sandbox cannot reach *.workers.dev; say it was not e2e-tested from here."
   elif blocked="$(sed -n 's/^deploy-setup-blocked: //p' <<<"$out")" && [ -n "$blocked" ]; then
-    msg="No Preview: $blocked. This is owner setup. Tell the user once and do not work around it: never pin, borrow or switch to another project's Cloudflare account or token."
+    msg="No $target deploy: $blocked. This is owner setup. Tell the user once and do not work around it: never pin, borrow or switch to another project's Cloudflare account or token."
   else
-    msg="$(printf 'Preview deploy failed for %s. Fix it before asking for review. Last output:\n%s' "$branch" "$(tail -n 30 <<<"$out")")"
+    msg="$(printf '%s deploy failed for %s. Fix it with a follow-up commit. Last output:\n%s' "$target" "$branch" "$(tail -n 30 <<<"$out")")"
   fi
 fi
 jq -n --arg m "$msg" '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $m}}'

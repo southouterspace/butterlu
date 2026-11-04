@@ -69,6 +69,44 @@ None of these has run against the Butterlu account yet.
   `release.yml` passes and https://butterlu-site.butterlu.workers.dev serves
   the site. The workflow has never run.
 
+## Frame MCP: Etsy order fulfilment (`apps/frame-mcp`)
+
+`plan_order` reads an Etsy order's Color and Personalization into a layout and
+lists every reason it needs review; `render_frame` makes the mirrored print PDF.
+Most real orders still go to review until the owner inputs below land.
+
+Owner (from Asli):
+
+- [ ] **Background files for the 20 unmatched chart colours**: #4, 5, 6, 8, 11,
+  14, 16, 20, 23, 26–28, 30, 32–36, 38, 40. Same 8.5 × 11 in, 300 dpi sheets as
+  `assets/background-images/`. Then add each to `MATCHES` in
+  `apps/frame-mcp/scripts/etsy-color-chart.mjs` and rerun it.
+- [ ] **Confirm chart #31 → whitewashed-wood and #41 → gray-shiplap.** Marked
+  `likely` until then, so orders on them go to review.
+- [ ] **Font list and font files**, licensed for embedding. Three open fonts
+  stand in (`apps/frame-mcp/src/fonts.json`, `placeholder: true`).
+- [ ] **Layouts for "As Shown" orders**: for the top-selling listings, the
+  background and which side holds which line. Becomes a per-listing preset.
+- [ ] **Text colour by chart number**: when a buyer writes "(color #2)", does it
+  print in that colour or in black? `plan_order` uses the swatch colour today.
+- [ ] **Safe zones measured on a real blank.** Current insets (0.15 in rounded,
+  0.35 in scalloped, 0.125 in from the opening) come from the drawing.
+
+Owner setup:
+
+- [ ] **Auth for the MCP server.** `apps/frame-mcp/src/auth.ts` lets every request
+  through. Do not deploy publicly until it is filled in.
+
+Agent, no inputs needed:
+
+- [ ] Render portrait ("Vertical frame") orders; the parser detects them, the
+  renderer still lays out landscape.
+- [ ] PNG preview of the proof for the chat and for review drafts.
+- [ ] Packing-slip batch: parse the day's Etsy packing-slip PDF, plan and render
+  every order, return the print files and the review list. Keep real slips out
+  of the repo (buyer names and addresses).
+- [ ] Measure Worker CPU per `render_frame` call before the first deploy.
+
 ## Known limits
 
 - The session hook matches deploy commands anywhere in a Bash command, so a

@@ -19,7 +19,7 @@ ships only from a release, before any store feature lands.
 | Environment | Worker | Deployed by | Trigger |
 | --- | --- | --- | --- |
 | Preview, one per branch | `butterlu-site-stage` (Previews) | Agent session | Every `git push` of a branch that changes `apps/site/` or `packages/` |
-| Stage | `butterlu-site-stage` | Agent session | `bun run deploy:stage` on a clean, up-to-date `main` |
+| Stage | `butterlu-site-stage` | `.github/workflows/stage.yml` | Every push to `main` (or `bun run deploy:stage` on a clean, up-to-date `main` where a session has a token) |
 | Production | `butterlu-site` | `.github/workflows/release.yml` | A human publishes a GitHub Release whose commit is on `main` |
 
 Every deploy builds and checks first (`build` for a Preview, the full
@@ -34,18 +34,20 @@ Only the first layer is a real boundary; the other two are early, clear errors
 that a determined command can get around. **The first layer does not exist
 until step 4 of the one-time setup is done.** Until step 3, nothing deploys at all.
 
-## CI runs in agent sessions
+## Checks in the session, deploys in GitHub Actions
 
 `.claude/hooks/site-gate.sh` runs on every Bash call in a Claude Code session:
 
 - Before `git push`, when the branch changes `apps/`, `packages/` or the root workspace files, it runs
   `bun run validate` at the repo root (every workspace) and blocks the push if it fails.
-- After the push lands, it runs `bun run deploy:preview` and hands the URL and
-  e2e result back to the agent to post on the PR.
+- After a push to `main`, it points the agent at the stage run in GitHub Actions.
+- After a push of any other branch, it runs `bun run deploy:preview` when the
+  session has a token, and hands the URL and e2e result back to the agent.
 - It blocks `wrangler deploy`, `preview`, `versions`, `rollback`, `delete` and
   `secret`, so deploys go through `deploy.mjs`. `wrangler preview delete` stays allowed.
 
-GitHub Actions runs only `release.yml`, once per release.
+GitHub Actions runs `stage.yml` on every push to `main` that changes the site (stage-only token) and
+`release.yml` once per release (production token).
 
 ## Commands
 
@@ -83,6 +85,14 @@ is done, `deploy.mjs` refuses every deploy.
    role **Editor**. Put it in that environment as `CLOUDFLARE_API_TOKEN`, with
    `CLOUDFLARE_ACCOUNT_ID`. Never reuse the environment that holds another
    project's Cloudflare token.
+
+   4a. **Stage token for GitHub Actions.** Create one more token with the same
+   scope (**Specified Workers: `butterlu-site-stage`**, role **Editor**). In
+   GitHub, Settings, Environments, create `stage`, limit its deployment
+   branches to `main`, and add the token as the *environment* secret
+   `CLOUDFLARE_STAGE_API_TOKEN`, never a repository secret. Every push to `main`
+   runs repo code with this token, so it must not be able to touch
+   `butterlu-site`. Never use an account-wide Workers token here.
 5. **Production token.** In the Butterlu account, create a second token scoped
    to **Specified Workers: `butterlu-site`**, role **Editor**. In GitHub, Settings, Environments, create
    `production` and add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as
@@ -102,7 +112,8 @@ is done, `deploy.mjs` refuses every deploy.
    session that installs it there only loads it on the next start or after
    `/reload-plugins`.
 7. **Optional.** Add `ANTHROPIC_API_KEY` to the Claude environment and to the
-   `production` environment to run the agent steps in `tests/agentic.e2e.ts`.
+   `stage` and `production` environments to run the agent steps in
+   `tests/agentic.e2e.ts`.
 
 ## Releasing
 

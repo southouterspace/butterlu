@@ -1,10 +1,9 @@
 name: release
 
-# Production changes only through a published GitHub Release. This is the one
-# workflow in the repo, and the only place the production token exists: an
-# account API token scoped to the butterlu-site Worker, stored on the
-# `production` environment. Agents build, check and deploy stage in their own
-# sessions with a token that cannot touch this Worker.
+# Production changes only through a published GitHub Release. This is the only
+# place the production token exists: an account API token scoped to the
+# butterlu-site Worker, stored on the `production` environment. Stage deploys
+# from stage.yml on every push to main, with its own stage-only token.
 on:
   release:
     types: [published]

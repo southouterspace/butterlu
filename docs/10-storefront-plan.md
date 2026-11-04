@@ -1,7 +1,7 @@
 # 10 · Storefront plan and handoff
 
-Status: **on `main`, so on stage once a session with the Cloudflare token pushes or deploys
-stage**. Not in production: that waits for the owner's GitHub Release. Everything
+Status: **on `main`, so on stage once the owner adds the `CLOUDFLARE_STAGE_API_TOKEN` secret
+and the stage workflow runs**. Not in production: that waits for the owner's GitHub Release. Everything
 customer-facing here is a **proposed default** until Asli confirms it. Gate G2
 (`plans/decisions.json`) stays `proposed`.
 
@@ -80,8 +80,8 @@ The frame MCP now requires a bearer token (`MCP_TOKEN`, fail-closed).
 
 ## Agent-run operations
 
-- **Catalog updates:** an agent edits `products.ts`, reruns the line-up script and opens a
-  PR. The preview is the review surface. Nothing reaches production without a merge and a
+- **Catalog updates:** an agent edits `products.ts`, reruns the line-up script and commits
+  to `main`. Stage is the review surface. Nothing reaches production without the owner's
   Release.
 - **Order handling:** the webhook queues the order, and an agent plans and renders it
   through the MCP. A human approves each proof until the fonts and backgrounds are final.
@@ -110,6 +110,10 @@ Etsy OAuth. The line-up ranks by favourites and listing counts instead.
 
 ## Owner steps before launch
 
+- Add the `CLOUDFLARE_STAGE_API_TOKEN` secret as a GitHub `stage` *environment* secret
+  (deployment branches: `main` only), never a repository secret. It must be a Butterlu
+  Account API token scoped to **Specified Workers: `butterlu-site-stage`**, role **Editor**,
+  so code running on stage can never deploy production (`apps/site/README.md`, step 4a).
 - Enable R2 on the Butterlu Cloudflare account. The frame MCP needs it.
 - Set the `MCP_TOKEN` secret on the frame MCP Worker.
 - Set Stripe **test** keys on the site Worker: `STRIPE_SECRET_KEY` and
@@ -118,7 +122,7 @@ Etsy OAuth. The line-up ranks by favourites and listing counts instead.
 - Later, and only on the owner's yes: live Stripe keys plus `STRIPE_ALLOW_LIVE`, the
   production deploy (a GitHub Release) and DNS.
 
-## Handoff: next session (runs in the Butterlu cloud environment)
+## Handoff: next session (any environment)
 
 On `main` and passing root `bun run validate`:
 
@@ -131,11 +135,13 @@ On `main` and passing root `bun run validate`:
 
 The repo now works push-to-main (CLAUDE.md 6a). Next steps:
 
-1. Deploy stage from a clean `main` equal to `origin/main` with the repo's `deploy:stage`
-   script in `apps/site`. The next push to `main` does this by itself through the hook.
-   Never call wrangler deploy directly.
-2. Report the stage URL and its e2e result in the project thread, so Justin can click
-   through the store.
+1. Stage deploys from GitHub Actions (`.github/workflows/stage.yml`) on every push to
+   `main`, so no session needs a Cloudflare token. It needs the owner's
+   `CLOUDFLARE_STAGE_API_TOKEN` secret first; until then the run stops at
+   `deploy-setup-blocked`. Once it's added, re-run the latest run (or run the workflow by
+   hand). Never call wrangler deploy directly.
+2. Report the stage URL and its e2e result from the run in the project thread, so Justin can
+   click through the store.
 3. Carry on in small validated commits to `main`, starting with:
    - the owner's answers on the defaults above
    - Asli's real fonts

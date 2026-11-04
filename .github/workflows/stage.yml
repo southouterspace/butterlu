@@ -1,0 +1,79 @@
+name: stage
+
+# Every push to main deploys stage (the butterlu-site-stage Worker) and
+# e2e-tests it, so any session that pushes to main gets stage deployed without
+# needing a Cloudflare token of its own. Production is NOT deployed here: it
+# ships only from release.yml, when the owner publishes a GitHub Release, with
+# its own token on the `production` environment.
+#
+# Needs one secret, on the `stage` GitHub environment only (deployment branches
+# limited to main), never as a repository secret:
+#   CLOUDFLARE_STAGE_API_TOKEN  a Butterlu Account API token scoped to
+#                               Specified Workers: butterlu-site-stage, role
+#                               Editor. Repo code runs with it on every push, so
+#                               it must not be able to touch butterlu-site.
+#                               Never an account-wide token or the prod token.
+# Optional: ANTHROPIC_API_KEY on the same environment, for the agent e2e steps
+# (they skip without it).
+# The account id is pinned in apps/site/wrangler.jsonc; deploy.mjs refuses any
+# other account.
+on:
+  push:
+    branches: [main]
+    # Only pushes that can change what stage serves. Docs-only pushes skip it.
+    paths:
+      - 'apps/**'
+      - 'packages/**'
+      - 'package.json'
+      - 'bun.lock'
+      - '.nvmrc'
+      - 'assets/**'
+      - 'plans/**'
+      - '.github/workflows/stage.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: stage
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+      url: ${{ steps.deploy.outputs.url }}
+    env:
+      E2E_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: bun install --frozen-lockfile
+      - run: bunx e2e-web install chromium --with-deps
+        working-directory: apps/site
+      - id: deploy
+        name: Validate, deploy, e2e-test stage
+        working-directory: apps/site
+        run: |
+          set -o pipefail
+          bun run deploy:stage | tee "$RUNNER_TEMP/deploy.log"
+          echo "url=$(sed -n 's/^deploy-summary //p' "$RUNNER_TEMP/deploy.log" | jq -r .url)" >> "$GITHUB_OUTPUT"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_STAGE_API_TOKEN }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: e2e-stage
+          path: apps/site/.e2e
+          if-no-files-found: warn
+          retention-days: 14

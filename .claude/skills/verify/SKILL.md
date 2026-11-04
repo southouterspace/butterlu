@@ -6,7 +6,7 @@ description: Prove a change to the butterlu.com site (apps/site/) works. Covers 
 # Verify a site change
 
 The site is Astro (static HTML) plus one Worker for `/api/*`, on Cloudflare.
-Every push to `main` deploys stage and runs e2e against it.
+Every push to `main` that changes the site deploys stage and runs e2e against it.
 Prove a change on the real artifact, in this order, and stop at the first
 failure.
 
@@ -80,29 +80,32 @@ locator before writing it into a test. Close the session when done.
 ## 4. Push to main: the gate and stage
 
 Work goes straight to `main` in small commits; there are no PRs (CLAUDE.md 6a).
-CI runs in your session. `git push` triggers `.claude/hooks/site-gate.sh`.
+Checks run in your session; the stage deploy runs in GitHub Actions. `git push`
+triggers `.claude/hooks/site-gate.sh`.
 Before the push, when it changes `apps/`, `packages/` or the root workspace files, it runs
 `bun run validate` at the repo root (every workspace) and blocks the push on failure with the failing output.
 
-After a push to `main` lands, the hook runs `bun run deploy:stage`: build, deploy
-the `butterlu-site-stage` Worker, wait for `/api/health`, run the e2e suite
-against the stage URL. (A push of any other branch runs `deploy:preview`
-instead.) The result comes back as a `deploy-summary` line with `url`, `commit`,
-`health` and `e2e`.
+After a push to `main` lands, GitHub Actions (`.github/workflows/stage.yml`)
+runs `bun run deploy:stage`: validate, deploy the `butterlu-site-stage` Worker,
+wait for `/api/health`, run the e2e suite against the stage URL. Its log ends
+with a `deploy-summary` line with `url`, `commit`, `health` and `e2e`, and the
+e2e traces are the run's `e2e-stage` artifact. Follow it with
+`gh run list --workflow stage.yml --limit 1` and `gh run view <id> --log`.
+(A push of any other branch runs `deploy:preview` from the session hook, only
+where the session has `CLOUDFLARE_API_TOKEN`.)
 
 - Report the URL and the e2e result to the owner. The owner reviews UX on stage.
-- `e2e: failed` means the change is not done. Read
-  `apps/site/.e2e/results/<test>/trace.md`, fix, push again.
-- `health: unreachable` means the sandbox got no HTTP response from
-  `*.workers.dev`. Say stage was not e2e-tested from here.
-- No deploy because `CLOUDFLARE_API_TOKEN` is unset: report it once. Only
-  the owner can add it.
+- A red run with `e2e: failed` means the change is not done. Read the traces
+  in the run's artifact, fix, push again.
+- A run that stops at `deploy-setup-blocked: CLOUDFLARE_API_TOKEN is not set`
+  means the `CLOUDFLARE_STAGE_API_TOKEN` secret is missing. Report it once.
+  Only the owner can add it.
 
 ## 5. Stage and production
 
 | Environment | Worker | Deployed by |
 | --- | --- | --- |
-| Stage | `butterlu-site-stage` | The push hook after every push to `main` (or `bun run deploy:stage` from `apps/site` on a clean `main` equal to `origin/main`) |
+| Stage | `butterlu-site-stage` | `.github/workflows/stage.yml` after every push to `main` that changes the site (or `bun run deploy:stage` from `apps/site` on a clean `main` equal to `origin/main`, where a session has a token) |
 | Preview, per branch (rare) | `butterlu-site-stage` Previews | The push hook, for a branch push |
 | Production | `butterlu-site` | `.github/workflows/release.yml`, when the owner publishes a GitHub Release |
 

@@ -3,10 +3,11 @@
 #   pre:  blocks direct wrangler deploys, and runs `bun run validate` before a
 #         `git push` that changes apps/, packages/ or the root workspace files.
 #         A failed check blocks the push.
-#   post: after a push to main lands, deploys stage and e2e-tests it. Work goes
-#         straight to main in small validated commits (CLAUDE.md 6a). A push of
-#         any other branch deploys that branch's Preview instead. Production is
-#         never deployed from here: only a published GitHub Release does that.
+#   post: work goes straight to main in small validated commits (CLAUDE.md 6a).
+#         A push to main is deployed to stage by GitHub Actions (stage.yml), not
+#         here. A push of any other branch deploys that branch's Preview, when
+#         this environment has a token. Production is never deployed from here:
+#         only a published GitHub Release does that (release.yml).
 set -uo pipefail
 
 phase="$1"
@@ -65,12 +66,15 @@ fi
 # post
 is_push || exit 0
 branch="$(git rev-parse --abbrev-ref HEAD)"
-if [ "$branch" = main ]; then
-  target=stage
-else
-  target=preview
-  preview_changed || exit 0
+# origin/main moved to HEAD (from main, or via HEAD:main): Actions deploys stage.
+if [ "$(git rev-parse HEAD)" = "$(git rev-parse refs/remotes/origin/main 2>/dev/null)" ]; then
+  msg="Pushed to main. If the push changed apps/, packages/, assets/, plans/ or the root package files, GitHub Actions deploys stage and e2e-tests it (.github/workflows/stage.yml; docs-only pushes skip it). Check the run with: gh run list --workflow stage.yml --limit 1, and report the stage url and e2e result from it."
+  jq -n --arg m "$msg" '{hookSpecificOutput: {hookEventName: "PostToolUse", additionalContext: $m}}'
+  exit 0
 fi
+[ "$branch" != main ] || exit 0
+target=preview
+preview_changed || exit 0
 stamp="$(git rev-parse --git-dir)/butterlu-$target-$(tr / - <<<"$branch")"
 [ "$(cat "$stamp" 2>/dev/null)" != "$(git rev-parse HEAD)" ] || exit 0
 if [ "$(git rev-parse HEAD)" != "$(git rev-parse "refs/remotes/origin/$branch" 2>/dev/null)" ]; then

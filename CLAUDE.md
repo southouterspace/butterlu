@@ -197,16 +197,19 @@ from the Shopify waves above and changes nothing on the live store.
   straight to `main`. Split big changes into steps that each work on their own (add the
   module, then use it; hide unfinished customer-facing work behind a flag). Before a
   push, have a second agent review the diff and fix what it finds first.
-- `main` is **stage**. Every push to `main` deploys stage (`butterlu-site-stage`) and
-  e2e-tests it. Stage is where the owner clicks through.
+- `main` is **stage**. Every push to `main` that changes the site (anything but docs) deploys stage (`butterlu-site-stage`) and
+  e2e-tests it through GitHub Actions (`.github/workflows/stage.yml`, stage-only token
+  `CLOUDFLARE_STAGE_API_TOKEN`), so any session can deploy stage by pushing. Stage is where
+  the owner clicks through. After a push, check the run (`gh run list --workflow stage.yml`)
+  and report its stage URL and e2e result.
 - **Production is the owner's call alone.** It ships only when a human publishes a GitHub
   Release (`.github/workflows/release.yml`, the only place the production token exists).
   Agents never cut a Release, deploy production, change DNS or switch Stripe to live mode.
-- CI runs in the session, not GitHub Actions. A hook validates before any push that
-  changes `apps/`, `packages/` or the root workspace files and blocks it on failure (root
-  `bun run validate`, every workspace). After a push to `main` it deploys stage; a push of
-  any other branch deploys that branch's Preview. Deploys need `CLOUDFLARE_API_TOKEN`,
-  which only the owner's Butterlu cloud environment has.
+- Checks run in the session before the push; deploys run in GitHub Actions after it. A hook
+  validates before any push that changes `apps/`, `packages/` or the root workspace files
+  and blocks it on failure (root `bun run validate`, every workspace). A push of a branch
+  other than `main` deploys that branch's Preview only where the session has
+  `CLOUDFLARE_API_TOKEN` (rare; prefer `main`).
 - Before calling a site change done, follow `.claude/skills/verify/SKILL.md`. A cloud
   session's SessionStart hook installs Node 24, Bun and the dependencies.
 - New behavior ships with a test in `apps/site/tests/`. New SEO rules go in

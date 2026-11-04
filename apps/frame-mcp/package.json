@@ -8,7 +8,8 @@
     "sync-assets": "node scripts/sync-assets.mjs",
     "typecheck": "tsc --noEmit",
     "smoke": "node scripts/smoke.mjs",
-    "validate": "bun run typecheck && bun run smoke"
+    "validate": "bun run typecheck && bun run test && bun run smoke",
+    "test": "bun test"
   },
   "dependencies": {
     "@butterlu/frame": "workspace:*",

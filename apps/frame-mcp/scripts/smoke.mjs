@@ -76,8 +76,13 @@ try {
   }
 
   const { tools } = await rpc('tools/list');
-  assert.deepEqual(tools.map((t) => t.name).sort(), ['list_options', 'render_frame']);
-  console.log('ok tools/list: list_options, render_frame');
+  assert.deepEqual(tools.map((t) => t.name).sort(), ['list_options', 'plan_order', 'render_frame']);
+  console.log('ok tools/list: list_options, plan_order, render_frame');
+
+  const plan = JSON.parse((await callTool('plan_order', { personalization: 'I love my uncle Dale\nLove, Sammy', color: '32' })).text);
+  assert.deepEqual(plan.lines.map((l) => [l.side, l.text]), [['top', 'I love my uncle Dale'], ['bottom', 'Love, Sammy']]);
+  assert.equal(plan.ready, false);
+  console.log(`ok plan_order: ${plan.lines.length} lines placed, review: ${plan.needsReview.join(' ')}`);
 
   const options = JSON.parse((await callTool('list_options', {})).text);
   assert.equal(options.backgrounds.length, 44);

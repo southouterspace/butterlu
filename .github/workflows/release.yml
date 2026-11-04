@@ -2,8 +2,9 @@ name: release
 
 # Production changes only through a published GitHub Release. This is the only
 # place the production token exists: an account API token scoped to the
-# butterlu-site Worker, stored on the `production` environment. Stage deploys
-# from stage.yml on every push to main, with its own stage-only token.
+# butterlu-site and butterlu-frame-mcp Workers, stored on the `production`
+# environment. Stage deploys from stage.yml and frame-mcp-stage.yml on every
+# push to main, with their own stage-only token.
 on:
   release:
     types: [published]
@@ -57,3 +58,36 @@ jobs:
           path: apps/site/.e2e
           if-no-files-found: warn
           retention-days: 30
+
+  # The frame MCP's production Worker (butterlu-frame-mcp). No test render here:
+  # production saves into the real print folder, so only orders go there.
+  frame-mcp:
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - name: Release commit is on main
+        run: git merge-base --is-ancestor HEAD origin/main
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - run: bun install --frozen-lockfile
+      - id: deploy
+        name: Validate, deploy, health-check the frame MCP in production
+        working-directory: apps/frame-mcp
+        run: |
+          set -o pipefail
+          bun run deploy:production | tee "$RUNNER_TEMP/deploy.log"
+          echo "url=$(sed -n 's/^deploy-summary //p' "$RUNNER_TEMP/deploy.log" | jq -r .url)" >> "$GITHUB_OUTPUT"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

@@ -1,0 +1,64 @@
+name: frame-mcp-stage
+
+# Every push to main that can change the frame MCP deploys its stage Worker
+# (butterlu-frame-mcp-stage) through apps/frame-mcp/scripts/deploy.mjs: validate
+# (typecheck, tests, local smoke against a mock Google Drive), deploy, wait for
+# /health, then, if FRAME_MCP_TOKEN is set, render one test frame through stage
+# and check it was saved to the stage Drive folder. Production is NOT deployed
+# here: release.yml does it on a GitHub Release the owner publishes.
+#
+# Secrets, on the `stage` GitHub environment only (deployment branches: main):
+#   CLOUDFLARE_STAGE_API_TOKEN  the same stage token stage.yml uses. Its scope
+#                               must list BOTH Specified Workers
+#                               butterlu-site-stage and butterlu-frame-mcp-stage,
+#                               role Editor, and nothing in production.
+#   FRAME_MCP_TOKEN (optional)  the stage Worker's MCP_TOKEN, for the test render.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/frame-mcp/**'
+      - 'packages/frame/**'
+      - 'assets/background-images/**'
+      - 'plans/product-options.json'
+      - 'package.json'
+      - 'bun.lock'
+      - '.nvmrc'
+      - '.github/workflows/frame-mcp-stage.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: frame-mcp-stage
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: stage
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version-file: .nvmrc
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version-file: package.json
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
+      - run: bun install --frozen-lockfile
+      - id: deploy
+        name: Validate, deploy, check the frame MCP on stage
+        working-directory: apps/frame-mcp
+        run: |
+          set -o pipefail
+          bun run deploy:stage | tee "$RUNNER_TEMP/deploy.log"
+          echo "url=$(sed -n 's/^deploy-summary //p' "$RUNNER_TEMP/deploy.log" | jq -r .url)" >> "$GITHUB_OUTPUT"
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_STAGE_API_TOKEN }}
+          FRAME_MCP_TOKEN: ${{ secrets.FRAME_MCP_TOKEN }}

@@ -22,7 +22,7 @@ const { values: args } = parseArgs({
 });
 
 const options = JSON.parse(fs.readFileSync(path.join(repoDir, 'plans/product-options.json'), 'utf8'));
-const fonts = JSON.parse(fs.readFileSync(path.join(appDir, 'src/fonts.json'), 'utf8'));
+const fonts = JSON.parse(fs.readFileSync(path.join(repoDir, 'packages/frame/src/fonts.json'), 'utf8'));
 
 const batches = [
   {

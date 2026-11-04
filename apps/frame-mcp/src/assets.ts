@@ -1,4 +1,4 @@
-import fonts from './fonts.json';
+import { FONTS as SHARED_FONTS } from '@butterlu/frame';
 
 export interface FontEntry {
   id: string;
@@ -12,7 +12,7 @@ export interface FontEntry {
   placeholder: boolean;
 }
 
-export const FONTS: readonly FontEntry[] = fonts;
+export const FONTS: readonly FontEntry[] = SHARED_FONTS;
 export const FONT_IDS = FONTS.map((f) => f.id);
 
 // R2 key layout, shared with scripts/sync-assets.mjs.

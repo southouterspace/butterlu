@@ -10,6 +10,7 @@ import {
   defaultRotation,
   safeZone,
 } from '@butterlu/frame';
+import { describeDesign, designFromMetadata } from '@butterlu/frame/design';
 import { DEFAULT_BLEED_IN, renderPdf } from '@butterlu/frame/pdf';
 import { McpServer } from '@modelcontextprotocol/server';
 import { z } from 'zod';
@@ -140,6 +141,29 @@ export function createServer(env: Env, origin: string) {
       },
     },
     async ({ personalization, color, privateNotes }) => json(planOrder(color, personalization, privateNotes)),
+  );
+
+  server.registerTool(
+    'plan_site_order',
+    {
+      description:
+        "Turn one butterlu.com order line into render_frame input. Pass the metadata of the line item's Stripe product exactly as Stripe returns it (keys frame_shape, frame_background, frame_top, frame_right, frame_bottom, frame_left). The customer built this design in the site's customizer with the same shapes, backgrounds, fonts and safe zones, so unlike an Etsy order it needs no guessing. Returns the spec to pass to render_frame, a one-line summary for the order, and anything a person should check before printing.",
+      inputSchema: {
+        metadata: z.record(z.string(), z.string()).describe("The Stripe product's metadata for this line item."),
+      },
+    },
+    async ({ metadata }) => {
+      const parsed = designFromMetadata(metadata);
+      if (!parsed.ok) return fail(`This line's design is not valid, so do not print it: ${parsed.errors.join('; ')}`);
+      const placeholderFonts = [...new Set(Object.values(parsed.spec.sides).flatMap((s) => (s ? [s.fontId] : [])))].filter(
+        (id) => FONTS.find((f) => f.id === id)?.placeholder,
+      );
+      return json({
+        spec: parsed.spec,
+        summary: describeDesign(parsed.spec),
+        needsReview: placeholderFonts.map((id) => `Font ${id} is a stand-in until the real font list lands.`),
+      });
+    },
   );
 
   return server;

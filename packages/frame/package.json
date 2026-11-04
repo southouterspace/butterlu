@@ -5,7 +5,9 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./pdf": "./src/pdf.ts"
+    "./pdf": "./src/pdf.ts",
+    "./design": "./src/design.ts",
+    "./fonts.json": "./src/fonts.json"
   },
   "scripts": {
     "extract-geometry": "node scripts/extract-geometry.mjs",

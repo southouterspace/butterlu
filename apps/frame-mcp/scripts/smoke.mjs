@@ -27,7 +27,9 @@ execFileSync('node', [path.join(appDir, 'scripts/sync-assets.mjs'), '--persist-t
 
 const port = await freePort();
 const base = `http://127.0.0.1:${port}`;
-const dev = spawn('npx', ['wrangler', 'dev', '--port', String(port), '--ip', '127.0.0.1', '--persist-to', state], {
+// A throwaway token for this run only; the real one is a Worker secret.
+const token = crypto.randomUUID();
+const dev = spawn('npx', ['wrangler', 'dev', '--port', String(port), '--ip', '127.0.0.1', '--persist-to', state, '--var', `MCP_TOKEN:${token}`], {
   cwd: appDir,
   stdio: ['ignore', 'pipe', 'pipe'],
   detached: true,
@@ -46,7 +48,7 @@ let nextId = 1;
 async function rpc(method, params) {
   const res = await fetch(`${base}/mcp`, {
     method: 'POST',
-    headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream' },
+    headers: { 'content-type': 'application/json', accept: 'application/json, text/event-stream', authorization: `Bearer ${token}` },
     body: JSON.stringify({ jsonrpc: '2.0', id: nextId++, method, params }),
   });
   assert.equal(res.status, 200, `${method} -> HTTP ${res.status}`);
@@ -76,8 +78,8 @@ try {
   }
 
   const { tools } = await rpc('tools/list');
-  assert.deepEqual(tools.map((t) => t.name).sort(), ['list_options', 'plan_order', 'render_frame']);
-  console.log('ok tools/list: list_options, plan_order, render_frame');
+  assert.deepEqual(tools.map((t) => t.name).sort(), ['list_options', 'plan_order', 'plan_site_order', 'render_frame']);
+  console.log('ok tools/list: list_options, plan_order, plan_site_order, render_frame');
 
   const plan = JSON.parse((await callTool('plan_order', { personalization: 'I love my uncle Dale\nLove, Sammy', color: '25' })).text);
   assert.deepEqual(plan.lines.map((l) => [l.side, l.text]), [['top', 'I love my uncle Dale'], ['bottom', 'Love, Sammy']]);
@@ -128,6 +130,21 @@ try {
   const missing = await fetch(`${base}/renders/${crypto.randomUUID()}/print.pdf`);
   assert.equal(missing.status, 404);
   console.log('ok unknown render id -> 404');
+
+  const rpcBody = JSON.stringify({ jsonrpc: '2.0', id: 999, method: 'tools/list' });
+  const mcpHeaders = { 'content-type': 'application/json', accept: 'application/json, text/event-stream' };
+  const anon = await fetch(`${base}/mcp`, { method: 'POST', headers: mcpHeaders, body: rpcBody });
+  assert.equal(anon.status, 401, 'a call without a token must be refused');
+  const wrong = await fetch(`${base}/mcp`, { method: 'POST', headers: { ...mcpHeaders, authorization: 'Bearer wrong' }, body: rpcBody });
+  assert.equal(wrong.status, 401, 'a call with the wrong token must be refused');
+  console.log('ok /mcp refuses a missing or wrong token');
+
+  const site = await callTool('plan_site_order', {
+    metadata: { frame_shape: 'scalloped', frame_background: 'blue-toile', frame_top: JSON.stringify({ text: 'Promoted to Grandparents', fontId: 'great-vibes' }) },
+  });
+  assert.ok(!site.isError, site.text);
+  assert.equal(JSON.parse(site.text).spec.sides.top.text, 'Promoted to Grandparents');
+  console.log('ok plan_site_order turns Stripe metadata into a render_frame spec');
 
   execFileSync('pdftoppm', ['-png', '-r', '100', '-singlefile', files.proof, path.join(args.out, 'proof')]);
   console.log(`proof PNG for inspection: ${path.join(args.out, 'proof.png')}`);

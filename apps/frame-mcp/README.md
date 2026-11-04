@@ -4,9 +4,10 @@ An MCP server on a Cloudflare Worker that turns a frame order into print files.
 Claude calls it with a shape, a background and the text for each side. It returns
 a link to a print-ready PDF for the Epson SureColor F570 and a link to a proof.
 
-> **Do not deploy this Worker where the public can reach it.** It has no
-> authentication yet. Anyone who finds the URL can render files into your R2
-> bucket. Add a check in `src/auth.ts` (`authorizeMcpRequest`) before you deploy.
+> **Every `/mcp` call needs `Authorization: Bearer <MCP_TOKEN>`.** `MCP_TOKEN` is a
+> Worker secret only the owner sets. With no secret the Worker refuses every call,
+> so a deploy that forgot it is closed, not open. Rendered PDFs stay reachable by
+> their random UUID link, without the token, so a proof link works in a chat.
 
 The layout rules (frame geometry, safe zones, text fitting) live in
 [`packages/frame`](../../packages/frame) (`@butterlu/frame`), so a future
@@ -55,6 +56,13 @@ or choose a narrower font.
 
 An unknown shape, background or font id gets an error that lists the valid ids.
 
+`plan_site_order` takes the metadata of one butterlu.com order line, as Stripe
+stores it on the line item's product (`frame_shape`, `frame_background`,
+`frame_top` and the other sides). It returns the spec for `render_frame`, a
+one-line summary, and anything to check, such as a stand-in font. The customer
+built the design with the same rules this server prints with, so a site order
+needs no guessing.
+
 ## Files
 
 The print file is mirrored left to right for sublimation transfer. It has no
@@ -94,7 +102,7 @@ To check the whole thing, run `bun run validate`. It runs these steps:
 
 ## Add a font
 
-1. Add one row to `src/fonts.json`. Set `id`, `name`, `style`, `weight`,
+1. Add one row to `packages/frame/src/fonts.json` (the site's customizer reads the same list). Set `id`, `name`, `style`, `weight`,
    `licence` and `placeholder`. Set `source` to the path of the font file
    (TTF, OTF or WOFF) under `node_modules`.
 2. Run `bun run sync-assets`. It uploads the file to `fonts/<id>.woff`.
@@ -115,8 +123,21 @@ from the repo instead.
 
 The safe zones come from this table, so you do not need to change any code.
 
+## Authentication
+
+`src/auth.ts` checks a bearer token on every `/mcp` request before any tool runs.
+
+1. Generate a long random token (a password manager works) and keep it there.
+2. Set it as a secret on the deployed Worker, from this directory:
+   `npx wrangler secret put MCP_TOKEN` (or in the Cloudflare dashboard under the
+   Worker's Settings, Variables and Secrets).
+3. Give the same token to the MCP client as an `Authorization: Bearer` header.
+
+Locally, `bun run dev` needs it too: put `MCP_TOKEN=<anything>` in a `.dev.vars`
+file here (the repo's `.gitignore` keeps it out of git). The
+smoke test makes its own throwaway token.
+
 ## Not built yet
 
-- Authentication (see the warning at the top).
 - A PNG preview of the proof for the chat.
 - Listing presets.

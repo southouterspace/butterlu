@@ -1,7 +1,24 @@
 import { BACKGROUNDS } from './backgrounds.generated';
 import { SHAPE_GEOMETRY } from './shapes.generated';
+import fonts from './fonts.json';
 
 export { BACKGROUNDS };
+
+export interface Font {
+  id: string;
+  name: string;
+  style: string;
+  weight: number;
+  /** Package path of the font file, resolved by the scripts that copy it. */
+  source: string;
+  licence: string;
+  /** True until Asli's real font list replaces the stand-ins. */
+  placeholder: boolean;
+}
+
+/** The fonts a frame can print in. The site's customizer and the frame MCP both read this list. */
+export const FONTS: readonly Font[] = fonts;
+export const FONT_IDS: readonly string[] = FONTS.map((f) => f.id);
 
 export type ShapeId = keyof typeof SHAPE_GEOMETRY;
 export type BackgroundId = (typeof BACKGROUNDS)[number]['id'];

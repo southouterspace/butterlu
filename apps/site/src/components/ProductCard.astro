@@ -1,0 +1,26 @@
+---
+import { type Product, formatPrice } from '../catalog/products';
+import { frameSvg } from '../lib/frame-svg';
+import { placementsAtBuild } from '../lib/layout-build';
+
+interface Props {
+  product: Product;
+  headingLevel?: 'h2' | 'h3';
+}
+const { product, headingLevel = 'h3' } = Astro.props;
+const Heading = headingLevel;
+const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: `card-${product.handle}`, photoHint: false });
+---
+<li class="card">
+  <a href={`/products/${product.handle}`}>
+    <div class="art" set:html={svg} />
+    <div class="body">
+      <Heading class="card-title">{product.name}</Heading>
+      <span class="price">{formatPrice(product.priceCents)}</span>
+    </div>
+  </a>
+</li>
+
+<style>
+  .card-title { font-size: 1.05rem; margin: 0; font-family: var(--serif); }
+</style>

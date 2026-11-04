@@ -1,0 +1,42 @@
+---
+import Layout from '../Layout.astro';
+import { PRODUCTS, SHOP } from '../catalog/products';
+
+// Names and prices for display only. The checkout Worker prices every line itself.
+const catalog = Object.fromEntries(PRODUCTS.map((p) => [p.handle, { name: p.name, priceCents: p.priceCents }]));
+---
+<Layout title="Your Cart | Butterlu" description="Review your personalized frames and check out." noindex>
+  <h1>Your cart</h1>
+  <div data-cart data-catalog={JSON.stringify(catalog)}>
+    <p data-empty>Your cart is empty. <a href="/collections/all">Find a frame</a></p>
+    <ul class="lines" data-lines></ul>
+    <div class="summary" data-summary hidden>
+      <p class="total">Subtotal <span data-subtotal></span></p>
+      <p class="small">{SHOP.shipping}. Tax, if any, is added at checkout.</p>
+      <button type="button" class="button" data-checkout>Check out</button>
+      <p class="status" role="status" aria-live="polite" data-status></p>
+    </div>
+  </div>
+</Layout>
+
+<script>
+  import { mountCart } from '../scripts/cart-page';
+  const root = document.querySelector<HTMLElement>('[data-cart]');
+  if (root) mountCart(root);
+</script>
+
+<style>
+  .lines { list-style: none; padding: 0; margin: 0 0 24px; display: grid; gap: 16px; }
+  :global(.line) { display: grid; grid-template-columns: 180px 1fr auto; gap: 18px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+  @media (max-width: 640px) { :global(.line) { grid-template-columns: 110px 1fr; } :global(.line .line-actions) { grid-column: 1 / -1; } }
+  :global(.line h2) { font-size: 1.1rem; margin: 0 0 4px; }
+  :global(.line .desc) { color: var(--muted); font-size: 0.92rem; margin: 0; }
+  :global(.line-actions) { display: flex; gap: 10px; align-items: center; }
+  :global(.line-actions input) { width: 72px; font: inherit; padding: 8px; border: 1px solid #b9b0a4; border-radius: 8px; min-height: 44px; }
+  :global(.line-actions button) { background: none; border: 0; color: var(--accent); text-decoration: underline; font: inherit; cursor: pointer; padding: 8px 4px; }
+  .summary { max-width: 420px; margin-left: auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .total { display: flex; justify-content: space-between; font-weight: 700; font-size: 1.15rem; margin: 0 0 6px; }
+  .small { color: var(--muted); font-size: 0.9rem; }
+  .summary .button { width: 100%; }
+  .status { margin: 10px 0 0; }
+</style>

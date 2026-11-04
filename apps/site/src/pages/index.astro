@@ -1,7 +1,61 @@
 ---
 import Layout from '../Layout.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { COLLECTIONS, FEATURED, SHOP, productByHandle } from '../catalog/products';
+import { frameSvg } from '../lib/frame-svg';
+import { placementsAtBuild } from '../lib/layout-build';
+
+const featured = FEATURED.map((h) => productByHandle(h)!);
+const hero = featured[0]!;
+const heroSvg = frameSvg(hero.preset, placementsAtBuild(hero.preset), { idPrefix: 'hero', label: `${hero.name}, as designed` });
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Butterlu Gifts', url: Astro.site?.href },
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Butterlu', url: Astro.site?.href },
+];
 ---
-<Layout title="Personalised Picture Frames and Keepsake Gifts | Butterlu" description="Personalised picture frames and keepsake gifts, handmade by Butterlu.">
-  <h1>Butterlu Gifts</h1>
-  <p>Personalised picture frames and keepsake gifts.</p>
+<Layout title="Personalized Picture Frames and Keepsake Gifts | Butterlu" description="Personalized picture frames for grandparents, godparents, weddings and new babies. Your words, two frame shapes, 44 backgrounds. Made to order." jsonLd={jsonLd}>
+  <section class="hero">
+    <div>
+      <h1>Butterlu Gifts</h1>
+      <p class="lede">Personalized picture frames for the people who matter most. Choose a design, make the words yours, and add your favorite 4x6 photo.</p>
+      <p><a class="button" href="/collections/all">Shop all frames</a></p>
+      <p class="small">{SHOP.shipping}. {SHOP.dispatch}.</p>
+    </div>
+    <a class="hero-art" href={`/products/${hero.handle}`} set:html={heroSvg} />
+  </section>
+
+  <section aria-labelledby="best">
+    <h2 id="best">Most loved</h2>
+    <ul class="grid">{featured.map((p) => <ProductCard product={p} />)}</ul>
+  </section>
+
+  <section aria-labelledby="how" class="how">
+    <h2 id="how">Made the way you want it</h2>
+    <ol>
+      <li><strong>Two shapes.</strong> Scalloped or rounded, both about 8.4 by 6.4 inches.</li>
+      <li><strong>44 backgrounds.</strong> Stripes, checks, toile, bows, shiplap, wood and solids.</li>
+      <li><strong>Your words on any side.</strong> Keep our wording or write your own. We size it to fit.</li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="shop-by">
+    <h2 id="shop-by">Shop by occasion</h2>
+    <ul class="collections">
+      {COLLECTIONS.map((c) => <li><a href={`/collections/${c.handle}`}>{c.name}</a></li>)}
+    </ul>
+  </section>
 </Layout>
+
+<style>
+  section { margin: 48px 0; }
+  .hero { display: grid; grid-template-columns: 1fr 1.1fr; gap: 32px; align-items: center; margin-top: 8px; }
+  @media (max-width: 760px) { .hero { grid-template-columns: 1fr; } }
+  .hero-art { background: var(--accent-soft); border-radius: var(--radius); padding: clamp(16px, 4vw, 36px); display: block; }
+  .small { color: var(--muted); font-size: 0.92rem; }
+  .how ol { list-style: none; padding: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .how li { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .how strong { display: block; font-family: var(--serif); font-size: 1.1rem; margin-bottom: 4px; }
+  .collections { list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+  .collections a { display: inline-block; padding: 10px 16px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; }
+  .collections a:hover { border-color: var(--ink); }
+</style>

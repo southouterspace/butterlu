@@ -1,16 +1,19 @@
-interface Env {
-  ASSETS: Fetcher;
-}
+import { checkKey, createCheckout } from './checkout';
+import type { Env } from './env';
+import { handleWebhook } from './webhook';
 
 export default {
   async fetch(request, env): Promise<Response> {
     const { pathname } = new URL(request.url);
-    if (pathname === '/api/health') {
-      return Response.json({ ok: true });
+    const method = request.method;
+    if (pathname === '/api/health') return Response.json({ ok: true });
+    if (pathname === '/api/checkout' && method === 'POST') return createCheckout(request, env);
+    if (pathname === '/api/checkout/status' && method === 'GET') {
+      const key = checkKey(env);
+      return Response.json(key.ok ? { enabled: true, mode: key.mode } : { enabled: false, reason: key.error });
     }
-    if (pathname.startsWith('/api/')) {
-      return Response.json({ error: 'not found' }, { status: 404 });
-    }
+    if (pathname === '/api/stripe/webhook' && method === 'POST') return handleWebhook(request, env);
+    if (pathname.startsWith('/api/')) return Response.json({ error: 'not found' }, { status: 404 });
     return env.ASSETS.fetch(request);
   },
 } satisfies ExportedHandler<Env>;

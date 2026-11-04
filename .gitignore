@@ -10,6 +10,9 @@ node_modules
 .pnp.js
 
 # Build output
+apps/site/public/backgrounds
+apps/site/public/fonts
+apps/site/public/_redirects
 dist
 dist-ssr
 build

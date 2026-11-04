@@ -1,0 +1,16 @@
+---
+import Layout from '../../Layout.astro';
+import { SHOP } from '../../catalog/products';
+---
+<Layout title="Thank You for Your Order | Butterlu" description="Your Butterlu order is in." noindex>
+  <div class="prose">
+    <h1>Thank you, your order is in</h1>
+    <p class="lede">A receipt is on its way to your email. {SHOP.dispatch}, and we’ll email you when it ships.</p>
+    <p>Spot a typo in your wording? Reply to your receipt as soon as you can and we’ll fix it before we print.</p>
+    <p><a class="button secondary" href="/collections/all">Keep shopping</a></p>
+  </div>
+</Layout>
+<script>
+  import { clearCart } from '../../scripts/cart';
+  clearCart();
+</script>

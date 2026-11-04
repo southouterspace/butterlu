@@ -1,0 +1,15 @@
+---
+import Layout from '../../Layout.astro';
+import { SHOP } from '../../catalog/products';
+---
+<Layout title="Shipping and Returns | Butterlu" description="Made to order, shipped free in the US. How shipping, changes and returns work for personalized frames.">
+  <div class="prose">
+    <h1>Shipping and returns</h1>
+    <h2>Shipping</h2>
+    <p>{SHOP.dispatch}. {SHOP.shipping}, and you’ll get tracking by email when it ships. We ship to US addresses only for now.</p>
+    <h2>Changes to your wording</h2>
+    <p>Reply to your order receipt as soon as you can. We can change wording until your frame goes to print.</p>
+    <h2>Returns</h2>
+    <p>Each frame is printed with your words, so we can’t take returns or exchanges. If your frame arrives damaged or isn’t what your preview showed, reply to your receipt with a photo and we’ll make it right.</p>
+  </div>
+</Layout>

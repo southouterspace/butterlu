@@ -1,0 +1,147 @@
+---
+// The product page's purchase column: live preview plus the options the frame MCP
+// prints from (shape, background, text per side, font, colour). Server-rendered
+// with the preset selected, so the page reads correctly before the script runs.
+import { BACKGROUNDS, FONTS, SHAPES, SIDES } from '@butterlu/frame';
+import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS } from '@butterlu/frame/design';
+import { type Product, SHOP, formatPrice } from '../catalog/products';
+import { frameSvg } from '../lib/frame-svg';
+import { placementsAtBuild } from '../lib/layout-build';
+
+interface Props {
+  product: Product;
+}
+const { product } = Astro.props;
+const preset = product.preset;
+const svg = frameSvg(preset, placementsAtBuild(preset), { idPrefix: 'pdp', label: `${product.name} preview` });
+const presetColor = Object.values(preset.sides).find((s) => s?.color)?.color ?? 'auto';
+const shapeName = { 'rounded-rectangle': 'Rounded', scalloped: 'Scalloped' } as const;
+const sideHelp = {
+  top: 'Runs across the top.',
+  bottom: 'Runs across the bottom.',
+  left: 'Reads upward along the left.',
+  right: 'Reads downward along the right.',
+};
+const config = { handle: product.handle, preset };
+---
+<div class="customizer" data-customizer={JSON.stringify(config)}>
+  <div class="preview-col">
+    <div class="preview" data-preview set:html={svg} />
+    <p class="preview-note">Preview of your frame. Text is sized to fit, exactly as it prints. {SHOP.photoNote}</p>
+  </div>
+
+  <form class="options" data-form novalidate>
+    <h1>{product.name}</h1>
+    <p class="price">{formatPrice(product.priceCents)}</p>
+    <p class="intro">{product.intro}</p>
+
+    <fieldset>
+      <legend>Frame shape</legend>
+      <div class="shapes">
+        {Object.entries(SHAPES).map(([id, s]) => (
+          <label class="shape-option">
+            <input type="radio" name="shape" value={id} checked={id === preset.shape} />
+            <svg viewBox={`-0.1 -0.1 ${s.widthIn + 0.2} ${s.heightIn + 0.2}`} aria-hidden="true"><path d={s.outline} fill="none" stroke="currentColor" stroke-width="0.12" /><path d={s.opening} fill="none" stroke="currentColor" stroke-width="0.08" /></svg>
+            <span>{shapeName[id as keyof typeof shapeName]}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Background <span class="chosen" data-background-name>{BACKGROUNDS.find((b) => b.id === preset.backgroundId)?.name}</span></legend>
+      <div class="swatches">
+        {BACKGROUNDS.map((b) => (
+          <label class="swatch" title={b.name}>
+            <input type="radio" name="background" value={b.id} checked={b.id === preset.backgroundId} />
+            <img src={`/backgrounds/thumb/${b.id}.webp`} alt="" width="160" height="160" loading="lazy" decoding="async" />
+            <span class="visually-hidden">{b.name}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Your words</legend>
+      <p class="hint">Keep our wording, change it, or leave a side blank. Text shrinks to fit its side.</p>
+      {SIDES.map((side) => (
+        <div class="side-row">
+          <label for={`text-${side}`}>{SIDE_LABEL[side]} <span class="hint">{sideHelp[side]}</span></label>
+          <div class="side-inputs">
+            <input id={`text-${side}`} name={`text-${side}`} type="text" maxlength={MAX_SIDE_CHARS} autocomplete="off" value={preset.sides[side]?.text ?? ''} aria-describedby={`warn-${side}`} />
+            <select name={`font-${side}`} aria-label={`${SIDE_LABEL[side]} font`}>
+              {FONTS.map((f) => <option value={f.id} selected={(preset.sides[side]?.fontId ?? 'playfair-display-bold') === f.id}>{f.name.replace(/ (Bold|SemiBold)$/, '')}</option>)}
+            </select>
+          </div>
+          <p class="warn" id={`warn-${side}`} data-warn={side}></p>
+        </div>
+      ))}
+      <label class="color-row">Text color
+        <select name="color">
+          <option value="auto" selected={presetColor === 'auto'}>Best for this background</option>
+          {TEXT_COLORS.map((c) => <option value={c.hex} selected={presetColor === c.hex}>{c.name}</option>)}
+        </select>
+      </label>
+      <button type="button" class="link-button" data-reset>Start over with our design</button>
+    </fieldset>
+
+    <div class="buy-row">
+      <label class="qty">Quantity <input type="number" name="quantity" min="1" max="10" value="1" inputmode="numeric" /></label>
+      <button type="submit" class="button" data-add>Add to cart · {formatPrice(product.priceCents)}</button>
+    </div>
+    <p class="status" role="status" aria-live="polite" data-status></p>
+    <ul class="facts">
+      <li>{SHOP.dispatch}</li>
+      <li>{SHOP.shipping}</li>
+      <li>8.4 × 6.4 inch wood frame with glass and an easel back</li>
+    </ul>
+  </form>
+</div>
+
+<script>
+  import { mountCustomizer } from '../scripts/customizer';
+  document.querySelectorAll<HTMLElement>('[data-customizer]').forEach(mountCustomizer);
+</script>
+
+<style>
+  .customizer { display: grid; gap: 32px; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+  @media (max-width: 860px) { .customizer { grid-template-columns: 1fr; } }
+  .preview-col { position: sticky; top: 12px; }
+  @media (max-width: 860px) { .preview-col { position: static; } }
+  .preview { background: var(--accent-soft); border-radius: var(--radius); padding: clamp(16px, 4vw, 40px); }
+  .preview-note { color: var(--muted); font-size: 0.9rem; margin-top: 10px; }
+  .options h1 { margin-bottom: 4px; }
+  .price { font-size: 1.3rem; font-weight: 600; margin: 0 0 8px; }
+  .intro { color: var(--muted); margin: 0 0 16px; }
+  fieldset { border: 0; border-top: 1px solid var(--line); margin: 0; padding: 16px 0; }
+  legend { font-weight: 700; padding: 0; margin-bottom: 10px; float: left; width: 100%; }
+  legend + * { clear: both; }
+  .chosen { font-weight: 400; color: var(--muted); margin-left: 6px; }
+  .shapes { display: flex; gap: 12px; }
+  .shape-option { flex: 1; border: 2px solid var(--line); border-radius: var(--radius); padding: 10px; display: grid; justify-items: center; gap: 6px; cursor: pointer; background: var(--surface); }
+  .shape-option svg { width: 72px; color: var(--ink); }
+  .shape-option:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+  .shape-option:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 2px; }
+  .shape-option input, .swatch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 8px; max-height: 236px; overflow-y: auto; padding: 4px; }
+  .swatch { cursor: pointer; border-radius: 8px; border: 2px solid transparent; padding: 2px; display: block; }
+  .swatch img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 5px; border: 1px solid var(--line); }
+  .swatch:has(input:checked) { border-color: var(--accent); }
+  .swatch:has(input:focus-visible) { outline: 3px solid var(--focus); outline-offset: 1px; }
+  .hint { color: var(--muted); font-size: 0.88rem; font-weight: 400; margin: 0 0 8px; }
+  .side-row { margin-bottom: 10px; }
+  .side-row > label { display: block; font-weight: 600; margin-bottom: 4px; }
+  .side-row .hint { margin: 0 0 0 4px; }
+  .side-inputs { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+  input[type='text'], input[type='number'], select { font: inherit; padding: 10px 12px; border: 1px solid #b9b0a4; border-radius: 8px; background: var(--surface); color: var(--ink); min-height: 44px; }
+  .warn { color: #8a2f00; font-size: 0.88rem; margin: 4px 0 0; min-height: 0; }
+  .warn:empty { display: none; }
+  .color-row { display: grid; gap: 4px; font-weight: 600; margin: 8px 0 12px; max-width: 320px; }
+  .link-button { background: none; border: 0; padding: 4px 0; color: var(--accent); text-decoration: underline; font: inherit; cursor: pointer; }
+  .buy-row { display: flex; gap: 12px; align-items: end; flex-wrap: wrap; border-top: 1px solid var(--line); padding-top: 16px; }
+  .qty { display: grid; gap: 4px; font-weight: 600; }
+  .qty input { width: 88px; }
+  .buy-row .button { flex: 1; min-width: 220px; }
+  .status { min-height: 1.5em; margin: 10px 0; font-weight: 600; }
+  .facts { color: var(--muted); padding-left: 18px; margin: 0; display: grid; gap: 4px; }
+</style>

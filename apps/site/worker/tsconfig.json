@@ -4,9 +4,12 @@
     "lib": ["es2024"],
     "module": "es2022",
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "strict": true,
     "noEmit": true,
     "types": ["@cloudflare/workers-types"]
   },
-  "include": ["*.ts"]
+  "include": ["*.ts"],
+  // Unit tests run under bun (bun test worker) with bun's own types.
+  "exclude": ["*.test.ts"]
 }

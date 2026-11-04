@@ -1,0 +1,40 @@
+---
+import Layout from '../../Layout.astro';
+import ProductCard from '../../components/ProductCard.astro';
+import { COLLECTIONS, type Collection, PRODUCTS, collectionProducts } from '../../catalog/products';
+
+export function getStaticPaths() {
+  const all: Collection = {
+    handle: 'all',
+    name: 'All frames',
+    seoTitle: 'Personalized Picture Frames: Shop All',
+    seoDescription: 'Every Butterlu frame: grandparents, godparents, weddings, baby and pet memorials. Personalized wording, two shapes, 44 backgrounds.',
+    intro: 'Every design starts from the same handmade frame. Pick the one closest to your occasion, then make it yours.',
+  };
+  return [all, ...COLLECTIONS].map((collection) => ({ params: { handle: collection.handle }, props: { collection } }));
+}
+
+interface Props {
+  collection: Collection;
+}
+const { collection } = Astro.props;
+const products = collection.handle === 'all' ? PRODUCTS : collectionProducts(collection.handle);
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: collection.name,
+    description: collection.seoDescription,
+    hasPart: products.map((p) => ({ '@type': 'Product', name: p.name, url: new URL(`/products/${p.handle}`, Astro.site).href })),
+  },
+];
+---
+<Layout title={`${collection.seoTitle} | Butterlu`} description={collection.seoDescription} jsonLd={jsonLd}>
+  <h1>{collection.name}</h1>
+  <p class="lede">{collection.intro}</p>
+  <ul class="grid list">{products.map((p) => <ProductCard product={p} headingLevel="h2" />)}</ul>
+</Layout>
+
+<style>
+  .list { margin-top: 24px; }
+</style>

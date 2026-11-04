@@ -1,7 +1,9 @@
 ---
+// A product tile in the shadcn Card shape, rendered as static HTML.
 import { type Product, formatPrice } from '../catalog/products';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
+import { cardClass, cn } from './ui/variants';
 
 interface Props {
   product: Product;
@@ -11,16 +13,12 @@ const { product, headingLevel = 'h3' } = Astro.props;
 const Heading = headingLevel;
 const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: `card-${product.handle}`, photoHint: false });
 ---
-<li class="card">
-  <a href={`/products/${product.handle}`}>
-    <div class="art" set:html={svg} />
-    <div class="body">
-      <Heading class="card-title">{product.name}</Heading>
-      <span class="price">{formatPrice(product.priceCents)}</span>
+<li class={cn(cardClass, 'shadow-sm transition-shadow hover:shadow-md')}>
+  <a href={`/products/${product.handle}`} class="group flex h-full flex-col text-foreground no-underline">
+    <div class="bg-muted p-3 sm:p-5" set:html={svg} />
+    <div class="grid gap-1 p-3 sm:p-4">
+      <Heading class="text-sm leading-snug font-medium tracking-normal group-hover:underline sm:text-base">{product.name}</Heading>
+      <span class="text-sm text-muted-foreground">{formatPrice(product.priceCents)}</span>
     </div>
   </a>
 </li>
-
-<style>
-  .card-title { font-size: 1.05rem; margin: 0; font-family: var(--serif); }
-</style>

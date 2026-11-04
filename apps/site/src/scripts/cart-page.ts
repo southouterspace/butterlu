@@ -1,6 +1,6 @@
 import { describeDesign } from '@butterlu/frame/design';
 import { frameSvg } from '../lib/frame-svg';
-import { cartLines, clearCart, onCartChange, removeLine, setQuantity } from './cart';
+import { MAX_QUANTITY, cartLines, clearCart, onCartChange, removeLine, setQuantity } from './cart';
 import { fontsReady, placementsInBrowser } from './measure';
 
 type Catalog = Record<string, { name: string; priceCents: number }>;
@@ -17,6 +17,9 @@ export function mountCart(root: HTMLElement) {
   const checkout = root.querySelector<HTMLButtonElement>('[data-checkout]')!;
 
   function render() {
+    // Re-rendering replaces the list, so keep keyboard focus on the quantity being changed.
+    const focusedKey = (document.activeElement as HTMLElement | null)?.closest<HTMLElement>('[data-key]')?.dataset.key;
+    const focusedQty = (document.activeElement as HTMLElement | null)?.matches('[data-qty]');
     // Drop lines whose product is gone from the catalog.
     const lines = cartLines().filter((l) => catalog[l.handle]);
     empty.hidden = lines.length > 0;
@@ -25,20 +28,32 @@ export function mountCart(root: HTMLElement) {
       .map((l, i) => {
         const p = catalog[l.handle]!;
         const svg = frameSvg(l.design, placementsInBrowser(l.design), { idPrefix: `line-${i}`, photoHint: false });
-        return `<li class="line" data-key="${esc(l.key)}">
-          <a href="/products/${esc(l.handle)}" aria-hidden="true" tabindex="-1">${svg}</a>
-          <div><h2>${esc(p.name)}</h2><p class="desc">${esc(describeDesign(l.design))}</p><p>${money(p.priceCents)}</p></div>
-          <div class="line-actions">
-            <label>Qty <input type="number" min="0" max="10" value="${l.quantity}" data-qty aria-label="Quantity of ${esc(p.name)}"></label>
-            <button type="button" data-remove>Remove</button>
+        const qty = Array.from({ length: MAX_QUANTITY }, (_, n) => n + 1)
+          .map((n) => `<option value="${n}"${n === l.quantity ? ' selected' : ''}>${n}</option>`)
+          .join('');
+        return `<li class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4 rounded-4xl bg-card p-3 shadow-sm ring-1 ring-foreground/5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:p-4" data-key="${esc(l.key)}">
+          <a class="block self-start rounded-3xl bg-muted p-2" href="/products/${esc(l.handle)}" aria-hidden="true" tabindex="-1">${svg}</a>
+          <div class="flex min-w-0 flex-col gap-1">
+            <h2 class="text-base leading-snug font-medium tracking-normal">${esc(p.name)}</h2>
+            <p class="text-sm break-words text-muted-foreground">${esc(describeDesign(l.design))}</p>
+            <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-2">
+              <label class="flex items-center gap-2 text-sm">Qty
+                <select class="select-chevron h-9 appearance-none rounded-3xl border border-transparent bg-input/50 pr-8 pl-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring md:text-sm" data-qty aria-label="Quantity of ${esc(p.name)}">${qty}</select>
+              </label>
+              <span class="font-medium">${money(p.priceCents * l.quantity)}</span>
+            </div>
+            <button type="button" class="self-start py-1 text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground" data-remove>Remove</button>
           </div></li>`;
       })
       .join('');
+    if (focusedKey && focusedQty) {
+      for (const li of list.querySelectorAll<HTMLElement>('[data-key]')) if (li.dataset.key === focusedKey) li.querySelector<HTMLElement>('[data-qty]')?.focus();
+    }
     subtotal.textContent = money(lines.reduce((s, l) => s + catalog[l.handle]!.priceCents * l.quantity, 0));
   }
 
   list.addEventListener('change', (e) => {
-    const input = (e.target as HTMLElement).closest<HTMLInputElement>('[data-qty]');
+    const input = (e.target as HTMLElement).closest<HTMLSelectElement>('[data-qty]');
     const key = input?.closest<HTMLElement>('[data-key]')?.dataset.key;
     if (input && key) setQuantity(key, Number(input.value));
   });

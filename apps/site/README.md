@@ -14,6 +14,18 @@ ships only from a release, before any store feature lands.
 | `scripts/lint-dist.mjs` | Checks the built HTML: title length, description, canonical, `lang`. |
 | `e2e.config.ts`, `tests/` | The [e2e](https://github.com/tester-army/e2e) suite. Runs against `wrangler dev`, or a deployed URL when `E2E_BASE_URL` is set. |
 
+## UI
+
+The look is shadcn/ui's radix-luma style from preset `b7ClQvqBE` (mist base, yellow
+theme, Inter, lucide icons), on Tailwind v4. Tokens live in `src/styles/global.css`;
+class recipes for buttons, badges, inputs, selects and cards are in
+`src/components/ui/variants.ts`. Pages render them as static Astro markup, so no UI
+framework ships to the browser. Interactive parts use native elements instead of
+React and Radix: the background picker is a `<dialog>` bottom sheet on phones and an
+inline grid from `md` up, the phone and tablet menu is a `popover` side sheet,
+selects are native, and "Fonts and color" is a `<details>`. Keep it that way unless
+a feature truly needs a framework: the product page ships about 7 KB of script.
+
 ## Environments
 
 | Environment | Worker | Deployed by | Trigger |

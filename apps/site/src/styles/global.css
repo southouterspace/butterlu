@@ -1,0 +1,283 @@
+/* shadcn/ui, style radix-luma, preset b7ClQvqBE: base colour mist, theme yellow,
+   Inter, lucide icons, default radius. Tokens below are the preset's own values
+   (ui.shadcn.com/init for that preset). */
+@import 'tailwindcss';
+@import 'shadcn/tailwind.css';
+@import '@fontsource-variable/inter';
+
+@custom-variant dark (&:is(.dark *));
+
+/* The frame's print fonts. The preview SVG uses them, so they load on every page
+   that draws a frame. */
+@font-face { font-family: 'Great Vibes'; src: url('/fonts/great-vibes.woff') format('woff'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('/fonts/playfair-display-bold.woff') format('woff'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Montserrat'; src: url('/fonts/montserrat-semibold.woff') format('woff'); font-weight: 600; font-display: swap; }
+
+@theme inline {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: var(--font-sans);
+  /* The wordmark only. */
+  --font-brand: 'Playfair Display', Georgia, serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+}
+
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.148 0.004 228.8);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.148 0.004 228.8);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.148 0.004 228.8);
+  --primary: oklch(0.852 0.199 91.936);
+  --primary-foreground: oklch(0.421 0.095 57.708);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.963 0.002 197.1);
+  /* Preset is L 0.56; 0.50 keeps 4.5:1 on the muted and input tints too. */
+  --muted-foreground: oklch(0.5 0.021 213.5);
+  --accent: oklch(0.963 0.002 197.1);
+  --accent-foreground: oklch(0.218 0.008 223.9);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.925 0.005 214.3);
+  --input: oklch(0.925 0.005 214.3);
+  /* Preset is L 0.723 (2.4:1 on white); focus rings need 3:1, so darker. */
+  --ring: oklch(0.45 0.017 213.2);
+  --chart-1: oklch(0.872 0.007 219.6);
+  --chart-2: oklch(0.56 0.021 213.5);
+  --chart-3: oklch(0.45 0.017 213.2);
+  --chart-4: oklch(0.378 0.015 216);
+  --chart-5: oklch(0.275 0.011 216.9);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.987 0.002 197.1);
+  --sidebar-foreground: oklch(0.148 0.004 228.8);
+  --sidebar-primary: oklch(0.681 0.162 75.834);
+  --sidebar-primary-foreground: oklch(0.987 0.026 102.212);
+  --sidebar-accent: oklch(0.963 0.002 197.1);
+  --sidebar-accent-foreground: oklch(0.218 0.008 223.9);
+  --sidebar-border: oklch(0.925 0.005 214.3);
+  --sidebar-ring: oklch(0.723 0.014 214.4);
+}
+
+.dark {
+  --background: oklch(0.148 0.004 228.8);
+  --foreground: oklch(0.987 0.002 197.1);
+  --card: oklch(0.218 0.008 223.9);
+  --card-foreground: oklch(0.987 0.002 197.1);
+  --popover: oklch(0.218 0.008 223.9);
+  --popover-foreground: oklch(0.987 0.002 197.1);
+  --primary: oklch(0.795 0.184 86.047);
+  --primary-foreground: oklch(0.421 0.095 57.708);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.275 0.011 216.9);
+  --muted-foreground: oklch(0.723 0.014 214.4);
+  --accent: oklch(0.275 0.011 216.9);
+  --accent-foreground: oklch(0.987 0.002 197.1);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.56 0.021 213.5);
+  --chart-1: oklch(0.872 0.007 219.6);
+  --chart-2: oklch(0.56 0.021 213.5);
+  --chart-3: oklch(0.45 0.017 213.2);
+  --chart-4: oklch(0.378 0.015 216);
+  --chart-5: oklch(0.275 0.011 216.9);
+  --sidebar: oklch(0.218 0.008 223.9);
+  --sidebar-foreground: oklch(0.987 0.002 197.1);
+  --sidebar-primary: oklch(0.795 0.184 86.047);
+  --sidebar-primary-foreground: oklch(0.987 0.026 102.212);
+  --sidebar-accent: oklch(0.275 0.011 216.9);
+  --sidebar-accent-foreground: oklch(0.987 0.002 197.1);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.56 0.021 213.5);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    @apply font-heading font-semibold tracking-tight text-balance;
+  }
+  h1 {
+    @apply mb-4 text-2xl md:text-3xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  a {
+    @apply underline-offset-4;
+  }
+  img,
+  svg {
+    @apply block max-w-full;
+  }
+}
+
+@utility font-heading {
+  font-family: var(--font-heading);
+}
+
+/* Long-form pages (about, FAQ, shipping). */
+@utility prose-shop {
+  @apply max-w-[68ch] text-base leading-7 text-foreground;
+  & h2 {
+    @apply mt-10 mb-3 text-xl;
+  }
+  & p,
+  & ul,
+  & ol {
+    @apply my-4;
+  }
+  & ul {
+    @apply list-disc pl-5;
+  }
+  & ol {
+    @apply list-decimal pl-5;
+  }
+  & a:not(.button) {
+    @apply font-medium underline;
+  }
+}
+
+.frame-svg {
+  width: 100%;
+  height: auto;
+}
+
+/* Class names the long-form and checkout pages already use, mapped onto the
+   shadcn tokens so those pages need no markup changes. */
+@layer components {
+  .prose {
+    @apply prose-shop;
+  }
+  .lede {
+    @apply max-w-[60ch] text-lg text-muted-foreground;
+  }
+  .notice {
+    @apply rounded-3xl bg-muted px-4 py-3;
+  }
+  .button {
+    @apply inline-flex h-10 no-underline items-center justify-center gap-1.5 rounded-4xl bg-primary px-5 text-sm font-medium text-primary-foreground no-underline transition-all hover:bg-primary/80 focus-visible:ring-3 focus-visible:ring-ring focus-visible:outline-none;
+  }
+  .button.secondary {
+    @apply border border-border bg-background text-foreground hover:bg-muted;
+  }
+  .visually-hidden {
+    @apply sr-only;
+  }
+}
+
+/* Background picker: a bottom sheet (shadcn Drawer shape) on phones, opened as a
+   modal <dialog>; an inline grid from md up, where the same element is always shown.
+   Native dialog gives focus trapping, Escape and the top layer with no library. */
+.bg-picker {
+  margin: auto 0 0;
+  width: 100%;
+  max-width: 100%;
+  max-height: 64svh;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-4xl) var(--radius-4xl) 0 0;
+  background: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 -12px 40px oklch(0 0 0 / 0.14);
+  overscroll-behavior: contain;
+  transition:
+    translate 220ms cubic-bezier(0.32, 0.72, 0, 1),
+    display 220ms allow-discrete,
+    overlay 220ms allow-discrete;
+  translate: 0 100%;
+}
+.bg-picker[open] {
+  display: flex;
+  flex-direction: column;
+  translate: 0 0;
+}
+@starting-style {
+  .bg-picker[open] {
+    translate: 0 100%;
+  }
+}
+/* Light scrim, no blur: the sticky preview above the sheet stays readable. */
+.bg-picker::backdrop {
+  background: oklch(0 0 0 / 0.12);
+}
+html:has(.bg-picker:modal) {
+  overflow: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bg-picker {
+    transition: none;
+  }
+}
+@media (min-width: 48rem) {
+  .bg-picker:not(:modal) {
+    display: block;
+    position: static;
+    margin: 0;
+    width: auto;
+    max-height: none;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    translate: none;
+    transition: none;
+  }
+}
+
+/* Chevron for native selects drawn in the shadcn select-trigger style. A plain class,
+   so the data URL stays out of class attributes and tailwind-merge. */
+.select-chevron {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371808a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+}

@@ -58,35 +58,32 @@ const jsonLd = [
 ];
 ---
 <Layout title={`${product.seoTitle} | Butterlu`} description={product.seoDescription} jsonLd={jsonLd}>
-  <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="/collections/all">Shop</a> <span aria-hidden="true">/</span>
-    <a href={`/collections/${primary.handle}`}>{primary.name}</a>
+  <nav class="mb-2 text-sm text-muted-foreground md:mb-6" aria-label="Breadcrumb">
+    <a class="no-underline hover:text-foreground hover:underline" href="/collections/all">Shop</a> <span aria-hidden="true">/</span>
+    <a class="no-underline hover:text-foreground hover:underline" href={`/collections/${primary.handle}`}>{primary.name}</a>
   </nav>
   <Customizer product={product} />
 
-  <section class="details">
-    <h2>A good fit for</h2>
-    <ul>{product.goodFor.map((g) => <li>{g}</li>)}</ul>
-    <h2>How it works</h2>
-    <ol>
-      <li>Pick a shape and a background. Every frame comes in all 44.</li>
-      <li>Keep our words or write your own on any side.</li>
-      <li>We print it, build it and ship it. You add your 4x6 photo.</li>
-    </ol>
+  <section class="mt-12 grid gap-8 border-t pt-8 md:grid-cols-2 md:gap-10">
+    <div>
+      <h2 class="mb-3 text-lg">A good fit for</h2>
+      <ul class="grid list-disc gap-1.5 pl-5 text-muted-foreground">{product.goodFor.map((g) => <li>{g}</li>)}</ul>
+    </div>
+    <div>
+      <h2 class="mb-3 text-lg">How it works</h2>
+      <ol class="grid list-decimal gap-1.5 pl-5 text-muted-foreground">
+        <li>Pick a shape and a background. Every frame comes in all 44.</li>
+        <li>Keep our words or write your own on any side.</li>
+        <li>We print it, build it and ship it. You add your 4x6 photo.</li>
+      </ol>
+    </div>
   </section>
 
   {related.length > 0 && (
-    <section aria-labelledby="related">
-      <h2 id="related">More {primary.name.toLowerCase()}</h2>
-      <ul class="grid">{related.map((p) => <ProductCard product={p} />)}</ul>
+    <section aria-labelledby="related" class="mt-12">
+      <h2 id="related" class="mb-4 text-lg">More {primary.name.toLowerCase()}</h2>
+      <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">{related.map((p) => <ProductCard product={p} />)}</ul>
     </section>
   )}
 </Layout>
 
-<style>
-  .crumbs { font-size: 0.9rem; color: var(--muted); margin-bottom: 16px; }
-  .details { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 0 32px; margin: 40px 0; padding-top: 24px; border-top: 1px solid var(--line); }
-  .details h2 { grid-row: 1; }
-  .details ul, .details ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
-  section { margin-top: 40px; }
-</style>

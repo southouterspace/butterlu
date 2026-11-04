@@ -1,8 +1,8 @@
 // Live customizer on the product page. Reads the form into a FrameSpec, checks it
 // with the shared design rules, fits the text with the shared layout rules, and
 // redraws the preview. The spec it adds to the cart is what the frame MCP prints.
-import { BACKGROUNDS, type FrameSpec, type HexColor, SIDES, type Side, backgroundById } from '@butterlu/frame';
-import { SIDE_LABEL, parseDesign } from '@butterlu/frame/design';
+import { FONTS, type FrameSpec, type HexColor, SIDES, type Side, backgroundById } from '@butterlu/frame';
+import { SIDE_LABEL, TEXT_COLORS, parseDesign } from '@butterlu/frame/design';
 import { frameSvg } from '../lib/frame-svg';
 import { addToCart } from './cart';
 import { fontsReady, placementsInBrowser } from './measure';
@@ -18,7 +18,11 @@ export function mountCustomizer(root: HTMLElement) {
   const preview = root.querySelector<HTMLElement>('[data-preview]')!;
   const status = root.querySelector<HTMLElement>('[data-status]')!;
   const addButton = root.querySelector<HTMLButtonElement>('[data-add]')!;
-  const backgroundName = root.querySelector<HTMLElement>('[data-background-name]')!;
+  const backgroundNames = root.querySelectorAll<HTMLElement>('[data-background-name]');
+  const backgroundThumb = root.querySelector<HTMLImageElement>('[data-bg-thumb]');
+  const picker = root.querySelector<HTMLDialogElement>('[data-bg-picker]');
+  const moreSummary = root.querySelector<HTMLElement>('[data-more-summary]');
+  const resetButton = root.querySelector<HTMLButtonElement>('[data-reset]');
   const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | RadioNodeList | null;
   const value = (name: string) => {
     const f = field(name);
@@ -45,10 +49,46 @@ export function mountCustomizer(root: HTMLElement) {
 
   let current: FrameSpec | null = config.preset;
 
+  const fontName = (id: string) => FONTS.find((f) => f.id === id)?.name.replace(/ (Bold|SemiBold)$/, '') ?? id;
+  // What the form holds, and what it holds for the preset. The baseline comes from the
+  // preset, not the page's first state, because a browser can restore edits on reload.
+  const snapshot = () => JSON.stringify(Object.fromEntries([...new FormData(form).entries()].map(([k, v]) => [k, String(v)]).sort()));
+  const p0 = config.preset;
+  const original = JSON.stringify(
+    Object.fromEntries(
+      [
+        ['shape', p0.shape],
+        ['background', p0.backgroundId],
+        ['color', Object.values(p0.sides).find((s) => s?.color)?.color ?? 'auto'],
+        ...SIDES.flatMap((side) => [
+          [`text-${side}`, p0.sides[side]?.text ?? ''],
+          [`font-${side}`, p0.sides[side]?.fontId ?? 'playfair-display-bold'],
+        ]),
+      ].sort(),
+    ),
+  );
+
+  // The little things that echo the choices: background name and thumb, the
+  // collapsed "Fonts and color" line, and "Start over" only once something changed.
+  function syncChrome() {
+    const bg = backgroundById(value('background'));
+    for (const el of backgroundNames) el.textContent = bg?.name ?? '';
+    if (backgroundThumb && bg) backgroundThumb.src = `/backgrounds/thumb/${bg.id}.webp`;
+    if (moreSummary) {
+      const fonts = [...new Set(SIDES.filter((s) => value(`text-${s}`).trim()).map((s) => fontName(value(`font-${s}`))))];
+      const color = value('color');
+      const colorName = color === 'auto' ? 'Best for the background' : (TEXT_COLORS.find((c) => c.hex === color)?.name ?? color);
+      moreSummary.textContent = [fonts.join(', '), colorName].filter(Boolean).join(' · ');
+    }
+    // Only sides with words get a font choice; an empty side has nothing to style.
+    for (const row of root.querySelectorAll<HTMLElement>('[data-font-row]')) row.hidden = !value(`text-${row.dataset.fontRow}`).trim();
+    if (resetButton) resetButton.hidden = snapshot() === original;
+  }
+
   function render() {
     const spec = readSpec();
     for (const el of root.querySelectorAll<HTMLElement>('[data-warn]')) el.textContent = '';
-    backgroundName.textContent = backgroundById(value('background'))?.name ?? '';
+    syncChrome();
     if ('errors' in spec) {
       current = null;
       addButton.disabled = true;
@@ -79,20 +119,58 @@ export function mountCustomizer(root: HTMLElement) {
       (field(`font-${side}`) as HTMLSelectElement).value = p.sides[side]?.fontId ?? 'playfair-display-bold';
     }
     (field('color') as HTMLSelectElement).value = Object.values(p.sides).find((s) => s?.color)?.color ?? 'auto';
+    status.dataset.kind = '';
     render();
+    // The button hides itself now, so put focus somewhere useful and say what happened.
+    (field('text-top') as HTMLInputElement).focus();
+    status.textContent = 'Back to our design.';
   }
+
+  // Enter (the phone keyboard's "Done") closes the keyboard; it never adds to the cart.
+  form.addEventListener('keydown', (e) => {
+    const t = e.target as HTMLElement;
+    if (e.key === 'Enter' && t instanceof HTMLInputElement && t.type === 'text') {
+      e.preventDefault();
+      t.blur();
+    }
+  });
 
   form.addEventListener('input', () => {
     status.dataset.kind = '';
     render();
   });
-  root.querySelector('[data-reset]')?.addEventListener('click', reset);
+  resetButton?.addEventListener('click', reset);
+
+  // Background sheet (phones). From md up the same element shows inline and these
+  // never run, because the open button is hidden there.
+  if (picker) {
+    root.querySelector('[data-bg-open]')?.addEventListener('click', () => {
+      picker.showModal();
+      // Focus the current choice, not the first swatch, so a key press doesn't change it.
+      const checked = picker.querySelector<HTMLInputElement>('input[name="background"]:checked');
+      checked?.focus({ preventScroll: true });
+      const scroller = picker.querySelector<HTMLElement>('[data-bg-scroll]');
+      const label = checked?.closest('label');
+      if (scroller && label) scroller.scrollTop = label.offsetTop - scroller.offsetTop - scroller.clientHeight / 2 + label.clientHeight / 2;
+    });
+    // Rotating a phone past md shows the picker inline; don't leave a modal behind.
+    matchMedia('(min-width: 48rem)').addEventListener('change', (e) => {
+      if (e.matches && picker.open) picker.close();
+    });
+    root.querySelector('[data-bg-done]')?.addEventListener('click', () => picker.close());
+    // A tap on the scrim (the dialog box itself, outside its content) closes it.
+    picker.addEventListener('click', (e) => {
+      if (e.target !== picker) return;
+      const r = picker.getBoundingClientRect();
+      if (e.clientY < r.top || e.clientY > r.bottom || e.clientX < r.left || e.clientX > r.right) picker.close();
+    });
+  }
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     render();
     if (!current) return;
-    const quantity = Math.max(1, Math.min(10, Number.parseInt(value('quantity'), 10) || 1));
-    addToCart(config.handle, current, quantity);
+    // Quantity is set in the cart; adding here is one tap.
+    addToCart(config.handle, current, 1);
     status.dataset.kind = 'added';
     status.innerHTML = `Added to your cart. <a href="/cart">View cart and check out</a>`;
   });
@@ -100,6 +178,4 @@ export function mountCustomizer(root: HTMLElement) {
   // The server drew the preset with the print renderer's metrics; redraw once the
   // fonts are in so later edits and the first frame agree.
   void fontsReady().then(render);
-  // Warm the cache for the full-size backgrounds a shopper is likely to try.
-  for (const b of BACKGROUNDS.slice(0, 6)) new Image().src = `/backgrounds/${b.id}.webp`;
 }

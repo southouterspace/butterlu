@@ -1,6 +1,7 @@
 import { checkKey, createCheckout } from './checkout';
 import type { Env } from './env';
 import { handleEvent } from './events';
+import { serveMedia } from './media';
 import { handleWebhook } from './webhook';
 
 export default {
@@ -15,6 +16,7 @@ export default {
       return Response.json(key.ok ? { enabled: true, mode: key.mode } : { enabled: false, reason: key.error });
     }
     if (pathname === '/api/stripe/webhook' && method === 'POST') return handleWebhook(request, env);
+    if (pathname.startsWith('/media/') && (method === 'GET' || method === 'HEAD')) return serveMedia(request, env);
     if (pathname.startsWith('/api/')) return Response.json({ error: 'not found' }, { status: 404 });
     return env.ASSETS.fetch(request);
   },

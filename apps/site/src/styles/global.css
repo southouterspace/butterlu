@@ -9,9 +9,9 @@
 
 /* The frame's print fonts. The preview SVG uses them, so they load on every page
    that draws a frame. */
-@font-face { font-family: 'Great Vibes'; src: url('/fonts/great-vibes.woff') format('woff'); font-weight: 400; font-display: swap; }
-@font-face { font-family: 'Playfair Display'; src: url('/fonts/playfair-display-bold.woff') format('woff'); font-weight: 700; font-display: swap; }
-@font-face { font-family: 'Montserrat'; src: url('/fonts/montserrat-semibold.woff') format('woff'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Great Vibes'; src: url('/fonts/great-vibes.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Playfair Display'; src: url('/fonts/playfair-display-bold.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Montserrat'; src: url('/fonts/montserrat-semibold.woff2') format('woff2'); font-weight: 600; font-display: swap; }
 
 @theme inline {
   --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
@@ -280,4 +280,44 @@ html:has(.bg-picker:modal) {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2371808a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
+}
+
+/* While a newly chosen background downloads, the preview shows the old one dimmed. */
+.preview[aria-busy='true'] svg {
+  opacity: 0.7;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .preview svg {
+    transition: opacity 150ms;
+  }
+}
+
+/* Product gallery: a full-screen native dialog with a scroll-snap track. */
+@layer components {
+  .gallery {
+    @apply m-0 h-dvh max-h-none w-screen max-w-none flex-col bg-background p-0 text-foreground;
+  }
+  .gallery:modal {
+    display: flex;
+  }
+  .gallery::backdrop {
+    background: oklch(0 0 0 / 0.6);
+  }
+  .gallery-track {
+    @apply flex min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto overscroll-x-contain outline-none;
+    scrollbar-width: none;
+  }
+  .gallery-slide {
+    @apply flex w-full shrink-0 snap-center items-center justify-center px-4 py-2;
+  }
+  .gallery-slide img,
+  .gallery-slide video {
+    @apply max-h-full max-w-full object-contain;
+  }
+  .gallery-slide picture {
+    @apply contents;
+  }
+  html:has(.gallery:modal) {
+    overflow: hidden;
+  }
 }

@@ -69,6 +69,37 @@ export function inkMeasure(fontBytes: Uint8Array): MeasureInk {
   };
 }
 
+/**
+ * Text as SVG path data, from the same font file and glyph advances the print file
+ * uses (pdf-lib draws with plain advance widths, no kerning). For rasterising a
+ * frame without a browser (product images at build time). The path starts at
+ * (0, 0) on the baseline, in units of `size` (y down, as in SVG).
+ */
+export function textOutline(fontBytes: Uint8Array): (text: string, size: number) => string {
+  const font = fontkit.create(fontBytes);
+  const upm = font.unitsPerEm;
+  return (text, size) => {
+    const s = size / upm;
+    let pen = 0;
+    const parts: string[] = [];
+    for (const glyph of font.layout(text).glyphs) {
+      const ox = pen * s;
+      // fontkit's Path keeps its drawing commands at runtime; the typings omit them.
+      const { commands } = glyph.path as unknown as { commands: { command: string; args: number[] }[] };
+      const d = commands
+        .map(({ command, args }) => {
+          const pts = args.map((v, k) => (k % 2 === 0 ? ox + v * s : -v * s).toFixed(4));
+          const c = { moveTo: 'M', lineTo: 'L', quadraticCurveTo: 'Q', bezierCurveTo: 'C', closePath: 'Z' }[command];
+          return c ? c + pts.join(' ') : '';
+        })
+        .join('');
+      if (d) parts.push(d);
+      pen += glyph.advanceWidth;
+    }
+    return parts.join('');
+  };
+}
+
 const toRgb = (hex: HexColor) => {
   const n = Number.parseInt(hex.slice(1), 16);
   return rgb(((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255);

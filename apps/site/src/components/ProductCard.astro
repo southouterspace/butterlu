@@ -8,10 +8,12 @@ import { cardClass, cn } from './ui/variants';
 interface Props {
   product: Product;
   headingLevel?: 'h2' | 'h3';
+  /** Load the art at once; for the first row. Later cards wait until scrolled near. */
+  eager?: boolean;
 }
-const { product, headingLevel = 'h3' } = Astro.props;
+const { product, headingLevel = 'h3', eager = false } = Astro.props;
 const Heading = headingLevel;
-const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: `card-${product.handle}`, photoHint: false });
+const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: `card-${product.handle}`, photoHint: false, size: 'card', lazy: !eager });
 ---
 <li class={cn(cardClass, 'shadow-sm transition-shadow hover:shadow-md')}>
   <a href={`/products/${product.handle}`} class="group flex h-full flex-col text-foreground no-underline">

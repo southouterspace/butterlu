@@ -2,6 +2,8 @@
 import Layout from '../../Layout.astro';
 import Customizer from '../../components/Customizer.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import { getImage } from 'astro:assets';
+import { productMedia } from '../../catalog/media';
 import { COLLECTIONS, CURRENCY, PRODUCTS, type Product, SHOP, collectionProducts } from '../../catalog/products';
 
 export function getStaticPaths() {
@@ -14,10 +16,20 @@ interface Props {
 const { product } = Astro.props;
 const url = new URL(`/products/${product.handle}`, Astro.site).href;
 const primary = COLLECTIONS.find((c) => c.handle === product.collections[0])!;
+// Images for search and link previews: real photos first (1200 px JPEG for the
+// widest crawler support), then the preset drawn at build time (/products/<handle>.jpg).
+const photos = await Promise.all(
+  productMedia(product.handle)
+    .filter((m) => m.kind === 'photo')
+    .slice(0, 3)
+    .map((m) => getImage({ src: m.image, width: Math.min(1200, m.image.width), format: 'jpg', quality: 80 })),
+);
+const rendered = { src: `/products/${product.handle}.jpg`, width: 1200, height: 1200 };
+const images = [...photos.map((p) => ({ src: p.src, width: Number(p.attributes.width), height: Number(p.attributes.height) })), rendered];
 const related = collectionProducts(primary.handle).filter((p) => p.handle !== product.handle).slice(0, 4);
 
 // Product, Offer, shipping and returns markup: what Google's free listings and AI
-// shopping agents read (docs/09 §2). No review markup until native reviews exist.
+// shopping agents read (docs/09-seo-shape.md §3). No review markup until native reviews exist.
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -26,6 +38,8 @@ const jsonLd = [
     description: product.seoDescription,
     sku: product.handle,
     brand: { '@type': 'Brand', name: SHOP.name },
+    image: images.map((i) => new URL(i.src, Astro.site).href),
+    material: 'Wood and glass',
     url,
     offers: {
       '@type': 'Offer',
@@ -57,7 +71,7 @@ const jsonLd = [
   },
 ];
 ---
-<Layout title={`${product.seoTitle} | Butterlu`} description={product.seoDescription} jsonLd={jsonLd}>
+<Layout title={`${product.seoTitle} | Butterlu`} description={product.seoDescription} jsonLd={jsonLd} ogType="product" image={{ ...images[0]!, alt: product.name }}>
   <nav class="mb-2 text-sm text-muted-foreground md:mb-6" aria-label="Breadcrumb">
     <a class="no-underline hover:text-foreground hover:underline" href="/collections/all">Shop</a> <span aria-hidden="true">/</span>
     <a class="no-underline hover:text-foreground hover:underline" href={`/collections/${primary.handle}`}>{primary.name}</a>

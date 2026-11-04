@@ -3,7 +3,8 @@
 // redraws the preview. The spec it adds to the cart is what the frame MCP prints.
 import { FONTS, type FrameSpec, type HexColor, SIDES, type Side, backgroundById } from '@butterlu/frame';
 import { SIDE_LABEL, TEXT_COLORS, parseDesign } from '@butterlu/frame/design';
-import { frameSvg } from '../lib/frame-svg';
+import { backgroundUrl, frameSvg } from '../lib/frame-svg';
+import { loadNow, whenIdle } from './idle';
 import { addToCart } from './cart';
 import { track } from './track';
 import { fontsReady, placementsInBrowser } from './measure';
@@ -86,6 +87,36 @@ export function mountCustomizer(root: HTMLElement) {
     if (resetButton) resetButton.hidden = snapshot() === original;
   }
 
+  // Backgrounds: the preview keeps showing the last decoded background until the
+  // chosen one is ready, so it never flashes blank. Hovering, pressing or focusing
+  // a swatch starts the download early.
+  const ready = new Set<string>([config.preset.backgroundId]);
+  const loading = new Set<string>();
+  let shownBackground: string = config.preset.backgroundId;
+  let wantedBackground = shownBackground;
+  function warm(id: string) {
+    if (!id || ready.has(id) || loading.has(id)) return;
+    loading.add(id);
+    const img = new Image();
+    img.src = backgroundUrl(id);
+    img.decode().then(
+      () => {
+        loading.delete(id);
+        ready.add(id);
+        if (id === wantedBackground) render();
+      },
+      () => {
+        // Failed: don't mark it ready (a later press retries), but stop holding the
+        // old background; the preview's own <image> tries the chosen one.
+        loading.delete(id);
+        if (id === wantedBackground) {
+          shownBackground = id;
+          render();
+        }
+      },
+    );
+  }
+
   function render() {
     const spec = readSpec();
     for (const el of root.querySelectorAll<HTMLElement>('[data-warn]')) el.textContent = '';
@@ -102,7 +133,11 @@ export function mountCustomizer(root: HTMLElement) {
     addButton.disabled = false;
     if (status.dataset.kind !== 'added') status.textContent = '';
     const placements = placementsInBrowser(spec);
-    preview.innerHTML = frameSvg(spec, placements, { idPrefix: 'pdp', label: 'Preview of your frame' });
+    wantedBackground = spec.backgroundId;
+    if (ready.has(spec.backgroundId)) shownBackground = spec.backgroundId;
+    else if (shownBackground !== spec.backgroundId) warm(spec.backgroundId);
+    preview.setAttribute('aria-busy', String(shownBackground !== spec.backgroundId));
+    preview.innerHTML = frameSvg({ ...spec, backgroundId: shownBackground as typeof spec.backgroundId }, placements, { idPrefix: 'pdp', label: 'Preview of your frame' });
     for (const p of placements) {
       for (const w of p.warnings) {
         const el = root.querySelector<HTMLElement>(`[data-warn="${p.side}"]`);
@@ -144,6 +179,22 @@ export function mountCustomizer(root: HTMLElement) {
     render();
   });
   resetButton?.addEventListener('click', reset);
+
+  const swatchValue = (e: Event) =>
+    (e.target as Element | null)?.closest('label')?.querySelector<HTMLInputElement>('input[name="background"]')?.value ?? '';
+  // Pressing or focusing a swatch warms its full image at once. A mouse resting on
+  // one for 200 ms does too; merely sweeping across the grid downloads nothing.
+  for (const type of ['pointerdown', 'focusin']) form.addEventListener(type, (e) => warm(swatchValue(e)));
+  let hoverTimer = 0;
+  form.addEventListener('pointerover', (e) => {
+    if ((e as PointerEvent).pointerType !== 'mouse') return;
+    clearTimeout(hoverTimer);
+    const id = swatchValue(e);
+    if (id) hoverTimer = window.setTimeout(() => warm(id), 200);
+  });
+  form.addEventListener('pointerout', () => clearTimeout(hoverTimer));
+  // The sheet's swatches are lazy; queue them once the page is idle so it opens painted.
+  if (picker) whenIdle(() => loadNow(picker));
 
   // Background sheet (phones). From md up the same element shows inline and these
   // never run, because the open button is hidden there.

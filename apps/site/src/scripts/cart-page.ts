@@ -28,7 +28,7 @@ export function mountCart(root: HTMLElement) {
     list.innerHTML = lines
       .map((l, i) => {
         const p = catalog[l.handle]!;
-        const svg = frameSvg(l.design, placementsInBrowser(l.design), { idPrefix: `line-${i}`, photoHint: false });
+        const svg = frameSvg(l.design, placementsInBrowser(l.design), { idPrefix: `line-${i}`, photoHint: false, size: 'card' });
         const qty = Array.from({ length: MAX_QUANTITY }, (_, n) => n + 1)
           .map((n) => `<option value="${n}"${n === l.quantity ? ' selected' : ''}>${n}</option>`)
           .join('');

@@ -12,9 +12,16 @@ interface Props {
   jsonLd?: object[];
   /** Keep the page out of search results (cart, checkout result). */
   noindex?: boolean;
+  /** Link-preview image (og:image), an absolute or root-relative URL to a raster. */
+  image?: { src: string; width: number; height: number; alt: string };
+  ogType?: 'website' | 'product';
 }
-const { title, description, jsonLd = [], noindex = false } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+const { title, description, jsonLd = [], noindex = false, image, ogType = 'website' } = Astro.props;
+// With build.format 'file', Astro.url.pathname is the output file at build time
+// ("/index.html", "/products/x.html"). Pages are served without the extension, so
+// strip it for the canonical, og:url and the nav's current-page match.
+const path = Astro.url.pathname.replace(/(?:\/index)?\.html$/, '') || '/';
+const canonical = new URL(path, Astro.site);
 const nav = [
   { href: '/collections/all', label: 'Shop all' },
   { href: '/collections/grandparent-frames', label: 'Grandparents' },
@@ -23,10 +30,9 @@ const nav = [
   { href: '/collections/wedding-thank-you-frames', label: 'Weddings' },
   { href: '/collections/baby-frames', label: 'Baby' },
 ];
-const path = Astro.url.pathname;
-// Funnel step for the page-view beacon (docs/11). At build time the path carries
-// the output file name (/index.html, /cart.html), so drop it first.
-const page = path.replace(/\.html$/, '').replace(/\/index$/, '') || '/';
+// Funnel step for the page-view beacon (docs/11). `path` above already has the
+// build file name (/index.html, /cart.html) stripped.
+const page = path;
 const [, section = '', slug] = page.split('/');
 const pageType =
   page === '/' ? 'home'
@@ -53,8 +59,19 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
+    <meta property="og:type" content={ogType} />
+    {image && (
+      <>
+        <meta property="og:image" content={new URL(image.src, Astro.site)} />
+        <meta property="og:image:width" content={String(image.width)} />
+        <meta property="og:image:height" content={String(image.height)} />
+        <meta property="og:image:alt" content={image.alt} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </>
+    )}
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/playfair-display-bold.woff" as="font" type="font/woff" crossorigin />
+    <!-- Playfair is the wordmark's face as well as a frame font, so every page wants it early. -->
+    <link rel="preload" href="/fonts/playfair-display-bold.woff2" as="font" type="font/woff2" crossorigin />
     {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
   </head>
   <body class="flex min-h-svh flex-col" data-page-type={pageType} data-handle={pageHandle}>
@@ -126,6 +143,24 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
       const render = () => document.querySelectorAll('[data-cart-count]').forEach((el) => (el.textContent = String(cartCount())));
       render();
       onCartChange(render);
+
+      // Card art below the fold: SVG <image> has no loading="lazy", so the
+      // background is fetched only when its card nears the viewport.
+      const lazy = document.querySelectorAll<SVGSVGElement>('svg[data-lazy]');
+      if (lazy.length) {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (!e.isIntersecting) continue;
+              const img = e.target.querySelector('image[data-href]');
+              if (img) img.setAttribute('href', img.getAttribute('data-href')!);
+              io.unobserve(e.target);
+            }
+          },
+          { rootMargin: '400px 0px' },
+        );
+        lazy.forEach((el) => io.observe(el));
+      }
     </script>
   </body>
 </html>

@@ -10,11 +10,11 @@ const featured = FEATURED.map((h) => productByHandle(h)!);
 const hero = featured[0]!;
 const heroSvg = frameSvg(hero.preset, placementsAtBuild(hero.preset), { idPrefix: 'hero', label: `${hero.name}, as designed` });
 const jsonLd = [
-  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Butterlu Gifts', url: Astro.site?.href },
+  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Butterlu', alternateName: 'Butterlu Gifts', url: Astro.site?.href },
   { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Butterlu', url: Astro.site?.href },
 ];
 ---
-<Layout title="Personalized Picture Frames and Keepsake Gifts | Butterlu" description="Personalized picture frames for grandparents, godparents, weddings and new babies. Your words, two frame shapes, 44 backgrounds. Made to order." jsonLd={jsonLd}>
+<Layout title="Personalized Picture Frames and Keepsake Gifts | Butterlu" description="Personalized picture frames for grandparents, godparents, weddings and new babies. Your words, two frame shapes, 44 backgrounds. Made to order." jsonLd={jsonLd} image={{ src: `/products/${hero.handle}.jpg`, width: 1200, height: 1200, alt: hero.name }}>
   <section class="grid items-center gap-6 md:grid-cols-[1fr_1.1fr] md:gap-10">
     <div class="order-2 md:order-1">
       <h1 class="text-3xl md:text-5xl">Butterlu Gifts</h1>
@@ -27,7 +27,7 @@ const jsonLd = [
 
   <section aria-labelledby="best" class="mt-14">
     <h2 id="best" class="mb-4 text-xl md:text-2xl">Most loved</h2>
-    <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{featured.map((p) => <ProductCard product={p} />)}</ul>
+    <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{featured.map((p, i) => <ProductCard product={p} eager={i < 4} />)}</ul>
   </section>
 
   <section aria-labelledby="how" class="mt-14">

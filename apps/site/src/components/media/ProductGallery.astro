@@ -1,0 +1,93 @@
+---
+// Product photos and videos beside the live preview. On first load only the small
+// thumbnails download (64 px slots, AVIF/WebP at 1x-3x). Once the page is idle the
+// full-size photos queue in the background (the browser picks the srcset size for
+// the screen), so pressing a thumbnail opens a native <dialog> carousel that is
+// already painted. CSS scroll snap does the sliding; video files fetch nothing
+// until played. No carousel library: the script only wires buttons and keys.
+import { Picture, getImage } from 'astro:assets';
+import type { ProductMedia } from '../../catalog/media';
+import Icon from '../ui/Icon.astro';
+import { buttonVariants } from '../ui/variants';
+
+interface Props {
+  media: ProductMedia[];
+  name: string;
+}
+const { media, name } = Astro.props;
+const id = 'gallery';
+const formats: ('avif' | 'webp')[] = ['avif', 'webp'];
+const slideSizes = '(min-width: 64rem) 60rem, 100vw';
+const slideWidths = [480, 768, 1080, 1440, 1920];
+const posters = await Promise.all(
+  media.map((m) => (m.kind === 'video' ? getImage({ src: m.poster, width: 1440, format: 'webp', quality: 70 }) : null)),
+);
+const thumbOf = (m: ProductMedia) => (m.kind === 'photo' ? m.image : m.poster);
+---
+<div>
+  <p class="mb-2 text-sm font-medium">Photos{media.some((m) => m.kind === 'video') ? ' and video' : ''}</p>
+  <ul class="flex gap-2 overflow-x-auto pb-1" data-gallery-thumbs>
+    {media.map((m, i) => (
+      <li class="shrink-0">
+        <button
+          type="button"
+          class="relative block size-16 overflow-hidden rounded-xl bg-muted outline-none focus-visible:ring-3 focus-visible:ring-ring"
+          data-gallery-open={i}
+          aria-label={`${m.kind === 'video' ? 'Play video' : 'View photo'} ${i + 1} of ${media.length}: ${m.alt}`}
+        >
+          <Picture src={thumbOf(m)} alt="" formats={formats} widths={[64, 128, 192]} sizes="64px" class="size-full object-cover" loading={i < 5 ? 'eager' : 'lazy'} decoding="async" />
+          {m.kind === 'video' && (
+            <span class="absolute inset-0 grid place-items-center bg-black/25 text-white">
+              <svg viewBox="0 0 24 24" class="size-6" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+            </span>
+          )}
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <dialog id={id} class="gallery" aria-label={`${name} photos`} data-gallery>
+    <div class="flex items-center justify-between px-4 py-3 text-sm">
+      <span aria-live="polite" data-gallery-count>1 / {media.length}</span>
+      <button type="button" class={buttonVariants({ variant: 'ghost', size: 'icon' })} data-gallery-close aria-label="Close">
+        <Icon name="x" class="size-5" />
+      </button>
+    </div>
+    <ul class="gallery-track" data-gallery-track tabindex="-1">
+      {media.map((m, i) => (
+        <li class="gallery-slide" aria-roledescription="slide" aria-label={`${i + 1} of ${media.length}`}>
+          {m.kind === 'photo' ? (
+            <Picture src={m.image} alt={m.alt} formats={formats} widths={slideWidths.filter((w) => w <= m.image.width)} sizes={slideSizes} loading="lazy" decoding="async" class="h-auto w-auto rounded-2xl" />
+          ) : (
+            <video
+              class="h-auto w-full rounded-2xl bg-black"
+              controls
+              playsinline
+              preload="none"
+              width={m.poster.width}
+              height={m.poster.height}
+              data-poster={posters[i]!.src}
+              aria-label={m.alt}
+              data-src={m.src}
+            />
+          )}
+        </li>
+      ))}
+    </ul>
+    {media.length > 1 && (
+      <div class="flex justify-center gap-3 p-4">
+        <button type="button" class={buttonVariants({ variant: 'outline', size: 'icon-lg' })} data-gallery-step="-1" aria-label="Previous">
+          <Icon name="chevron-right" class="size-5 rotate-180" />
+        </button>
+        <button type="button" class={buttonVariants({ variant: 'outline', size: 'icon-lg' })} data-gallery-step="1" aria-label="Next">
+          <Icon name="chevron-right" class="size-5" />
+        </button>
+      </div>
+    )}
+  </dialog>
+</div>
+
+<script>
+  import { initGallery } from '../../scripts/gallery';
+  document.querySelectorAll<HTMLDialogElement>('dialog[data-gallery]').forEach(initGallery);
+</script>

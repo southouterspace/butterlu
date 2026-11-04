@@ -8,7 +8,9 @@
 import { BACKGROUNDS, FONTS, SHAPES, SIDES } from '@butterlu/frame';
 import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS } from '@butterlu/frame/design';
 import { type Product, SHOP, formatPrice } from '../catalog/products';
+import { productMedia } from '../catalog/media';
 import { groupedBackgrounds } from '../lib/background-groups';
+import ProductGallery from './media/ProductGallery.astro';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
 import Icon from './ui/Icon.astro';
@@ -36,6 +38,7 @@ const groups = groupedBackgrounds();
 const pickerId = `bg-picker-${product.handle}`;
 const config = { handle: product.handle, preset };
 const price = formatPrice(product.priceCents);
+const media = productMedia(product.handle);
 const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
 ---
 <div class="customizer grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-10" data-customizer={JSON.stringify(config)}>
@@ -51,6 +54,8 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
       <p class="mt-1 text-lg font-semibold">{price}</p>
       <p class="mt-2 text-muted-foreground">{product.intro}</p>
     </div>
+
+    {media.length > 0 && <ProductGallery media={media} name={product.name} />}
 
     <fieldset>
       <legend class={legend}>Your words</legend>

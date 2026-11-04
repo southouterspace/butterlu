@@ -1,0 +1,11 @@
+# Workers static assets response headers.
+# Hashed build output never changes under the same name: cache it for a year.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Backgrounds and fonts keep stable names; cache a week, revalidate in the background.
+/backgrounds/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+
+/fonts/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400

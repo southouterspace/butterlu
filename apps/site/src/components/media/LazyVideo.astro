@@ -1,0 +1,113 @@
+---
+// A video for anywhere below the fold. Nothing loads until it nears the screen:
+// the poster arrives as a small WebP, the video file only when the shopper
+// presses play (or, for a muted ambient loop, when it is in view). Ambient loops
+// pause off screen, never autoplay for people who ask for reduced motion, and
+// carry a visible pause button (WCAG 2.2.2).
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
+import { buttonVariants, cn } from '../ui/variants';
+
+interface Props {
+  src: string;
+  poster: ImageMetadata;
+  /** What the video shows, for screen readers. */
+  alt: string;
+  /** Muted, looping, no controls: a moving photo. Otherwise a normal player. */
+  ambient?: boolean;
+  /** Display width in CSS px, to size the poster. */
+  width?: number;
+  class?: string;
+}
+const { src, poster, alt, ambient = false, width = 720, class: cls } = Astro.props;
+const still = await getImage({ src: poster, width: Math.min(width * 2, poster.width), format: 'webp', quality: 70 });
+const height = Math.round((poster.height / poster.width) * 1000);
+---
+<div class:list={['relative', cls]} data-lazy-video-wrap>
+<video
+  class="block h-auto w-full rounded-3xl bg-muted"
+  width="1000"
+  height={height}
+  preload="none"
+  playsinline
+  muted={ambient}
+  loop={ambient}
+  controls={!ambient}
+  aria-label={alt}
+  data-lazy-video={ambient ? 'ambient' : 'player'}
+  data-poster={still.src}
+  src={ambient ? undefined : src}
+  data-src={ambient ? src : undefined}
+></video>
+{ambient && (
+  <button
+    type="button"
+    class={cn(buttonVariants({ variant: 'secondary', size: 'icon-sm' }), 'absolute right-3 bottom-3 opacity-90')}
+    aria-label="Pause video"
+    data-video-toggle
+  >
+    <svg viewBox="0 0 24 24" class="size-4" aria-hidden="true" data-icon="pause"><path d="M7 5h3v14H7zM14 5h3v14h-3z" fill="currentColor" /></svg>
+    <svg viewBox="0 0 24 24" class="hidden size-4" aria-hidden="true" data-icon="play"><path d="M8 5v14l11-7z" fill="currentColor" /></svg>
+  </button>
+)}
+</div>
+
+<script>
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        const v = e.target as HTMLVideoElement;
+        if (e.isIntersecting && v.dataset.poster) {
+          v.poster = v.dataset.poster;
+          delete v.dataset.poster;
+        }
+        if (v.dataset.lazyVideo !== 'ambient') {
+          if (!v.dataset.poster) io.unobserve(v);
+          continue;
+        }
+        if (e.isIntersecting && !reduced.matches && !v.dataset.userPaused) {
+          if (v.dataset.src) {
+            v.src = v.dataset.src;
+            delete v.dataset.src;
+          }
+          v.play().catch(() => {});
+        } else if (!v.paused) {
+          v.pause();
+        }
+      }
+    },
+    { rootMargin: '300px 0px' },
+  );
+  document.querySelectorAll<HTMLVideoElement>('video[data-lazy-video]').forEach((v) => io.observe(v));
+
+  // Ambient loops: one visible button pauses and resumes. A pause sticks, so
+  // scrolling back doesn't restart the video.
+  document.querySelectorAll<HTMLElement>('[data-lazy-video-wrap]').forEach((wrap) => {
+    const v = wrap.querySelector('video')!;
+    const b = wrap.querySelector<HTMLButtonElement>('[data-video-toggle]');
+    if (!b) return;
+    const sync = () => {
+      const paused = v.paused;
+      b.setAttribute('aria-label', paused ? 'Play video' : 'Pause video');
+      b.querySelector('[data-icon="pause"]')!.classList.toggle('hidden', paused);
+      b.querySelector('[data-icon="play"]')!.classList.toggle('hidden', !paused);
+    };
+    v.addEventListener('play', sync);
+    v.addEventListener('pause', sync);
+    sync();
+    b.addEventListener('click', () => {
+      if (v.paused) {
+        delete v.dataset.userPaused;
+        if (v.dataset.src) {
+          v.src = v.dataset.src;
+          delete v.dataset.src;
+        }
+        v.play().catch(() => {});
+      } else {
+        v.dataset.userPaused = 'true';
+        v.pause();
+      }
+    });
+  });
+</script>

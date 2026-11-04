@@ -1,6 +1,9 @@
 import type { APIRoute } from 'astro';
 
+// /cart and /checkout are not disallowed: they carry noindex, and a crawler has to
+// fetch a page to see its noindex. /api/ answers JSON only.
+
 export const GET: APIRoute = ({ site }) =>
-  new Response(`User-agent: *\nDisallow: /cart\nDisallow: /checkout\nDisallow: /api/\n\nSitemap: ${new URL('/sitemap.xml', site)}\n`, {
+  new Response(`User-agent: *\nDisallow: /api/\n\nSitemap: ${new URL('/sitemap.xml', site)}\n`, {
     headers: { 'content-type': 'text/plain' },
   });

@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { PDFDocument } from 'pdf-lib';
 import { type FrameSpec, SHAPES, type ShapeId, type Side, type SideText, safeZone } from '../src/index';
-import { renderPdf } from '../src/pdf';
+import { inkMeasure, renderPdf, textOutline } from '../src/pdf';
 
 const here = path.dirname(new URL(import.meta.url).pathname);
 const fontFile = (pkg: string, file: string) => new Uint8Array(fs.readFileSync(Bun.resolveSync(`@fontsource/${pkg}/files/${file}`, here)));
@@ -115,5 +115,24 @@ describe('renderPdf', () => {
     expect(placements[0]!.color).toBe('#ffffff');
     expect(placements[0]!.warnings).toEqual([]);
     expect(placements[1]!.warnings[0]?.code).toBe('below-min-size');
+  });
+});
+
+describe('textOutline', () => {
+  test('draws text as path data whose extent matches the ink measure', () => {
+    const size = 0.5;
+    const d = textOutline(fonts['playfair-display'])('Nana', size);
+    expect(d.startsWith('M')).toBe(true);
+    const xs = [...d.matchAll(/[MLQC]([^MLQCZ]+)/g)].flatMap((m) => m[1]!.trim().split(/\s+/).filter((_, i) => i % 2 === 0).map(Number));
+    const ink = inkMeasure(fonts['playfair-display'])('Nana');
+    // Same font, same shaping: the outline's horizontal extent matches the ink box
+    // (within 1%: a curve's control points can sit a hair outside its ink).
+    const inkWidth = (ink.maxX - ink.minX) * size;
+    const width = Math.max(...xs) - Math.min(...xs);
+    expect(Math.abs(width - inkWidth) / inkWidth).toBeLessThan(0.01);
+  });
+
+  test('draws nothing for blank text', () => {
+    expect(textOutline(fonts['great-vibes'])('   ', 1)).toBe('');
   });
 });

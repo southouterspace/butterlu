@@ -25,6 +25,12 @@ const rules = [
   [`<title> at most ${MAX_TITLE} chars`, (html) => (html.match(/<title>([^<]*)<\/title>/i)?.[1] ?? '').length <= MAX_TITLE],
   ['one meta description', (html) => count(html, /<meta name="description" content="[^"]+"/gi) === 1],
   ['one canonical', (html, file) => file === '404.html' || count(html, /<link rel="canonical"/gi) === 1],
+  // Pages are served without .html (build.format 'file'); the canonical must match.
+  ['canonical and og:url have no .html', (html) => !/<link rel="canonical" href="[^"]*\.html"/.test(html) && !/<meta property="og:url" content="[^"]*\.html"/.test(html)],
+  ['meta description at most 160 chars', (html) => (html.match(/<meta name="description" content="([^"]*)"/i)?.[1] ?? '').length <= 160],
+  // Merchant listings need a product image; link previews need og:image.
+  ['product page: og:image and Product markup image', (html, file) => !file.startsWith('products/') || (/<meta property="og:image" content="https:/.test(html) && /"@type":"Product"[^<]*"image":\["https:/.test(html))],
+  ['product page: one h1', (html, file) => !file.startsWith('products/') || count(html, /<h1[\s>]/gi) === 1],
 ];
 
 const files = await htmlFiles(DIST);

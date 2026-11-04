@@ -16,6 +16,7 @@
     "deploy:stage": "node scripts/deploy.mjs stage",
     "deploy:production": "node scripts/deploy.mjs production",
     "assets": "node scripts/prepare-assets.mjs && node scripts/redirects.mjs",
+    "media:video": "node scripts/prepare-video.mjs",
     "test:unit": "bun test worker"
   },
   "dependencies": {

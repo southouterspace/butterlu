@@ -24,7 +24,23 @@ framework ships to the browser. Interactive parts use native elements instead of
 React and Radix: the background picker is a `<dialog>` bottom sheet on phones and an
 inline grid from `md` up, the phone and tablet menu is a `popover` side sheet,
 selects are native, and "Fonts and color" is a `<details>`. Keep it that way unless
-a feature truly needs a framework: the product page ships about 7 KB of script.
+a feature truly needs a framework: the product page ships about 8 KB of script.
+
+## Images and media
+
+- Frame backgrounds: `bun run assets` makes 1200 px (product preview), 520 px
+  (cards, cart) and 160 px (picker) WebP from the print sources. Cards below the
+  first row load when scrolled near (`data-lazy` SVGs, observer in `Layout.astro`).
+- Product photos: put them in `src/assets/media/<handle>/` and list them with alt
+  text in `src/catalog/media.ts`. Astro's image pipeline makes AVIF and WebP at
+  several widths; the product page shows them as thumbnails beside the preview and
+  a full-screen gallery that preloads once the page is idle.
+- Product videos: `bun run media:video <file> <handle> <name>` (needs ffmpeg) writes
+  the MP4 to `public/media/<handle>/` and a poster to `src/assets/media/<handle>/`,
+  then add a `video` entry in `src/catalog/media.ts`. `LazyVideo.astro` is for
+  videos lower on a page.
+- `/products/<handle>.jpg` is drawn at build time from the preset (search and link
+  previews). See `docs/09-seo-shape.md` for the whole picture.
 
 ## Environments
 

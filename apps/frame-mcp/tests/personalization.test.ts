@@ -31,9 +31,7 @@ describe('parsePersonalization', () => {
       { side: 'top', text: 'Nana and Me', chartColor: 2, explicit: true },
       { side: 'bottom', text: 'I love you LOTS', chartColor: 2, explicit: true },
     ]);
-    expect(r.needsReview).toHaveLength(2);
-    expect(r.needsReview.join(' ')).toContain('colour-chart');
-    expect(r.needsReview.join(' ')).toContain('black text');
+    expect(r.needsReview).toEqual(['Private note: "black text".']);
   });
 
   test('unplaced lines take top and bottom around a line placed on a side', () => {

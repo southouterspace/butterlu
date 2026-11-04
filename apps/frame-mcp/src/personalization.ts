@@ -86,9 +86,6 @@ export function parsePersonalization(personalization: string, privateNotes = '')
   });
 
   if (lines.length === 0) needsReview.push('No text to print.');
-  if (lines.some((l) => l.chartColor !== undefined)) {
-    needsReview.push('A text colour is given as an Etsy colour-chart number, and the chart is not mapped yet.');
-  }
   if (privateNotes.trim()) needsReview.push(`Private note: "${privateNotes.trim()}".`);
 
   lines.sort((a, b) => SIDE_ORDER.indexOf(a.side) - SIDE_ORDER.indexOf(b.side));

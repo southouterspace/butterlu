@@ -79,9 +79,10 @@ try {
   assert.deepEqual(tools.map((t) => t.name).sort(), ['list_options', 'plan_order', 'render_frame']);
   console.log('ok tools/list: list_options, plan_order, render_frame');
 
-  const plan = JSON.parse((await callTool('plan_order', { personalization: 'I love my uncle Dale\nLove, Sammy', color: '32' })).text);
+  const plan = JSON.parse((await callTool('plan_order', { personalization: 'I love my uncle Dale\nLove, Sammy', color: '25' })).text);
   assert.deepEqual(plan.lines.map((l) => [l.side, l.text]), [['top', 'I love my uncle Dale'], ['bottom', 'Love, Sammy']]);
-  assert.equal(plan.ready, false);
+  assert.equal(plan.background.backgroundId, 'black');
+  assert.equal(plan.ready, true);
   console.log(`ok plan_order: ${plan.lines.length} lines placed, review: ${plan.needsReview.join(' ')}`);
 
   const options = JSON.parse((await callTool('list_options', {})).text);

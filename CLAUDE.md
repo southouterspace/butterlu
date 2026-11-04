@@ -37,8 +37,10 @@ scalloped, both 8.375" wide, `assets/frame-drawing.pdf`) plus **one of 44 backgr
 are the same product dressed for different searches. On the new site they become
 search-intent pages, each a preset of the one configurable frame, not separate products.
 Options are in `plans/product-options.json`. The opening takes a 4x6 photo (owner, not
-yet measured). The 44 uploaded backgrounds are the set; Etsy's numbered colour chart is
-not carried over. The two plain rectangles in the drawing are out of scope for now. About
+yet measured). The 44 uploaded backgrounds are the website's set; Etsy's numbered colour
+chart is not carried over to the site. Etsy orders still name chart numbers (1–41,
+`assets/etsy-color-chart/`), so fulfilment maps them in `apps/frame-mcp/src/etsy-color-chart.json`:
+21 chart colours match a background file, 20 have no file yet. The two plain rectangles in the drawing are out of scope for now. About
 80 Etsy listings are other products (brag boards, a $62 large frame, car coasters and
 charms, add-ons).
 

@@ -15,7 +15,7 @@ import { McpServer } from '@modelcontextprotocol/server';
 import { z } from 'zod';
 import { FONTS, FONT_IDS, backgroundKey, fontKey, renderKey } from './assets';
 import type { Env } from './env';
-import { parsePersonalization } from './personalization';
+import { planOrder } from './plan-order';
 
 const BACKGROUND_IDS = BACKGROUNDS.map((b) => b.id);
 
@@ -132,21 +132,14 @@ export function createServer(env: Env, origin: string) {
     'plan_order',
     {
       description:
-        'Turn the fields of an Etsy order (Color, Personalization, the seller\'s Private notes) into a draft layout: which line goes on which side, the frame orientation, and every reason a person must check it before printing. Each line of Personalization is one printed line. Lines without a stated side go top, then bottom; a third unplaced line is flagged for review, never guessed onto the left or right. Fonts and background are not chosen here; pass the draft to render_frame with them.',
+        'Turn the fields of an Etsy order (Color, Personalization, the seller\'s Private notes) into a draft layout: which line goes on which side, the frame orientation, and every reason a person must check it before printing. Each line of Personalization is one printed line. Lines without a stated side go top, then bottom; a third unplaced line is flagged for review, never guessed onto the left or right. Color is read against the Etsy colour chart: a chart number gives the backgroundId, and "(color #N)" on a line gives that line\'s text colour. Fonts are not chosen here; pass the plan to render_frame with them.',
       inputSchema: {
         personalization: z.string().describe('The Personalization field exactly as on the order, line breaks kept.'),
         color: z.string().describe('The Color field, e.g. "32" or "As Shown".'),
         privateNotes: z.string().optional().describe("The seller's Private notes, if any."),
       },
     },
-    async ({ personalization, color, privateNotes }) => {
-      const parsed = parsePersonalization(personalization, privateNotes);
-      const background = /^\d+$/.test(color.trim())
-        ? `Background is Etsy colour-chart #${color.trim()}, and the chart is not mapped to backgrounds yet.`
-        : `Background is "${color.trim()}", which needs the listing's own design.`;
-      const needsReview = [background, ...parsed.needsReview];
-      return json({ ...parsed, color: color.trim(), needsReview, ready: needsReview.length === 0 });
-    },
+    async ({ personalization, color, privateNotes }) => json(planOrder(color, personalization, privateNotes)),
   );
 
   return server;

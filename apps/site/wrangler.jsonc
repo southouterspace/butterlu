@@ -20,6 +20,8 @@
   // Checkout and recovery controls (docs/11). Change them here and push; a value
   // set only in the dashboard is dropped by the next deploy. Not inherited by env.production.
   "vars": { "RECOVERY_EMAILS": "log", "CHECKOUT_EXPIRES_HOURS": "2", "CHECKOUT_PROMO_CODES": "false" },
+  // Funnel events (docs/11). Analytics Engine creates the dataset on first write.
+  "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "butterlu_funnel_stage" }],
   // Previews: agents create them on the stage Worker (deploy.mjs). Bindings
   // that must not touch stage data get overridden here (docs/07: previews
   // get their own D1). env.production inherits this block unused.
@@ -27,7 +29,8 @@
   "env": {
     "production": {
       "name": "butterlu-site",
-      "vars": { "RECOVERY_EMAILS": "log", "CHECKOUT_EXPIRES_HOURS": "2", "CHECKOUT_PROMO_CODES": "false" }
+      "vars": { "RECOVERY_EMAILS": "log", "CHECKOUT_EXPIRES_HOURS": "2", "CHECKOUT_PROMO_CODES": "false" },
+      "analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "butterlu_funnel" }]
     }
   }
 }

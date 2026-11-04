@@ -81,7 +81,11 @@ before selling to the EU or UK.
    `funnel`). Logs keep a few days only.
 2. **With the `EVENTS` binding** (Workers Analytics Engine, dataset
    `butterlu_funnel_stage`, 3 months of data, SQL): the Worker writes each event there as
-   well. Column contract: `blob1` event, `blob2` page, `blob3` handle, `blob4` funnel id,
+   well. The code is ready; the binding is not in `wrangler.jsonc` yet because a deploy
+   with it failed on 2026-11-04 (Cloudflare code 10089: Analytics Engine isn't enabled on
+   the Butterlu account). Once Justin enables it, re-add
+   `"analytics_engine_datasets": [{ "binding": "EVENTS", "dataset": "butterlu_funnel_stage" }]`
+   at the top level and `butterlu_funnel` under `env.production`. Column contract: `blob1` event, `blob2` page, `blob3` handle, `blob4` funnel id,
    `blob5` detail, `blob6` referrer, `blob7` who (`human`, `bot`, `server`), `double1` value.
 
 ### Funnel report
@@ -161,6 +165,7 @@ phone and pay later on a laptop.
   pay-button message, and promotion codes behind the flag.
 - `worker/webhook.ts`: handles `checkout.session.expired` (decision and event only) and
   records `order_paid`.
+- `wrangler.jsonc` `vars`: the three controls in section 3, for stage and production.
 - Tests: `worker/events.test.ts`, new cases in the checkout and webhook tests, and a beacon
   check in `tests/store.e2e.ts`.
 
@@ -181,6 +186,9 @@ phone and pay later on a laptop.
    grandparents is the obvious one), measured against the report.
 
 ## Owner steps
+
+- Cloudflare dashboard (Butterlu account) → Workers → Analytics Engine: enable it, so the
+  funnel keeps 3 months of events instead of a few days of logs.
 
 - Stripe test webhook endpoint at `/api/stripe/webhook` subscribed to **both**
   `checkout.session.completed` and `checkout.session.expired`.

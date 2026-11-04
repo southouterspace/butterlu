@@ -21,6 +21,19 @@ The successful business is on Etsy. The website is a broken photocopy of it — 
 disabled at the plan level (now on "Basic", live as of 2026-10-10), and it has never taken an order. Closing that gap is what this
 repo is for.
 
+## Repo layout
+
+Bun workspaces (`apps/*`, `packages/*`), one root `bun.lock`, `bun install` at the root.
+
+- `apps/site/` is the butterlu.com storefront (Astro + Worker), the walking skeleton from `docs/07`.
+- `apps/frame-mcp/` is the MCP server that renders sublimation print files for the frames. In progress.
+- `packages/frame/` is the shared frame geometry, safe zones and text fitting. The MCP server uses it now and the site's editor will later.
+- `assets/`, `docs/`, `plans/`, `prompts/` and `scripts/` stay at the root. They are business data and research, not workspaces.
+
+A new tool goes in `apps/<name>`. Shared code goes in `packages/<name>`. Each workspace has its own `validate` script, and root `bun run validate` runs all of them, so the push gate covers a workspace the day it exists.
+
+There is no Turborepo or Nx. Two apps and one package do not need a task cache, and `bun run --filter` already fans out. Revisit if validate time becomes the bottleneck. Bun's `catalog` is also skipped: only one workspace has dependencies so far, so there is no shared version to centralize.
+
 ## Layout
 
 ```
@@ -35,8 +48,9 @@ repo is for.
 │   └── 07-cloudflare-stripe-stack.md  # should the .com leave Shopify for Cloudflare + Stripe
 ├── plans/         # manifests — loops read work lists and checkpoint here
 ├── prompts/       # runnable session prompts
-├── site/          # Cloudflare storefront skeleton; previews, stage, release (see site/README.md)
-├── TODO.md        # open setup items and first runs for site/
+├── apps/site/     # Cloudflare storefront skeleton; previews, stage, release (see apps/site/README.md)
+├── packages/      # shared workspace packages (see Repo layout)
+├── TODO.md        # open setup items and first runs for apps/site
 └── .env.example   # required environment variables (no secrets)
 ```
 
@@ -47,7 +61,7 @@ repo is for.
 - **`extension/`** — Chrome extension.
 - **`workers/`** — Cloudflare Workers. The review sync Worker is designed in `docs/04`.
   Everything Butterlu runs on Cloudflare lives in its own Cloudflare account, shared
-  with no other project. See `site/README.md`, one-time setup.
+  with no other project. See `apps/site/README.md`, one-time setup.
 
 ## Next action
 

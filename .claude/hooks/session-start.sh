@@ -1,6 +1,6 @@
 #!/bin/bash
 # Gives cloud sessions what the release workflow has: Node from .nvmrc, Bun
-# from site/package.json and site/ dependencies, so `bun run validate` works
+# from the root package.json and the workspace dependencies, so `bun run validate` works
 # before the first prompt.
 set -euo pipefail
 
@@ -24,5 +24,4 @@ bins="$(.claude/bin/with-toolchain.sh sh -c 'echo "$(dirname "$(command -v bun)"
   echo 'export E2E_TELEMETRY_DISABLED=1'
 } >> "$CLAUDE_ENV_FILE"
 
-cd site
-../.claude/bin/with-toolchain.sh bun install
+"$CLAUDE_PROJECT_DIR/.claude/bin/with-toolchain.sh" bun install

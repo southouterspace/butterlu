@@ -5,14 +5,17 @@ What was decided, measured and built on 2026-10-12, so the next session starts f
 
 ## Decisions (owner)
 
-- Leave Shopify. The new site in `site/` is built from the Etsy shop. Shopify supplies
+- Leave Shopify. The new site in `apps/site/` is built from the Etsy shop. Shopify supplies
   only its URLs, for 301s. Shopify Waves 1–3, loops L1–L8 and the Wave 0 write test are
   dropped. G1 is dropped.
 - A frame is one of two shapes plus one of 44 backgrounds, with fully custom text. Etsy's
   many listings and options exist to capture search volume. On the new site they become
   search-intent pages that preset the one frame.
 - The 44 uploaded backgrounds are the set. Etsy's numbered colour chart is not carried
-  over.
+  over to the website. (2026-11-04: Etsy orders still arrive with chart numbers, so the
+  chart is in `assets/etsy-color-chart/` and mapped for fulfilment in
+  `apps/frame-mcp/src/etsy-color-chart.json`. Backgrounds 23–43 are chart colours in
+  reverse order; 20 chart colours have no file.)
 - The opening takes a 4x6 photo. The owner believes this, but it has not been measured.
 - The two plain rectangles in `assets/frame-drawing.pdf` are out of scope for now.
 

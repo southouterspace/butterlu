@@ -18,7 +18,7 @@ ships only from a release, before any store feature lands.
 
 | Environment | Worker | Deployed by | Trigger |
 | --- | --- | --- | --- |
-| Preview, one per branch | `butterlu-site-stage` (Previews) | Agent session | Every `git push` of a branch that changes `site/` |
+| Preview, one per branch | `butterlu-site-stage` (Previews) | Agent session | Every `git push` of a branch that changes `apps/site/` or `packages/` |
 | Stage | `butterlu-site-stage` | Agent session | `bun run deploy:stage` on a clean, up-to-date `main` |
 | Production | `butterlu-site` | `.github/workflows/release.yml` | A human publishes a GitHub Release whose commit is on `main` |
 
@@ -38,8 +38,8 @@ until step 4 of the one-time setup is done.** Until step 3, nothing deploys at a
 
 `.claude/hooks/site-gate.sh` runs on every Bash call in a Claude Code session:
 
-- Before `git push`, when the branch changes `site/` or `.nvmrc`, it runs
-  `bun run validate` and blocks the push if it fails.
+- Before `git push`, when the branch changes `apps/`, `packages/` or the root workspace files, it runs
+  `bun run validate` at the repo root (every workspace) and blocks the push if it fails.
 - After the push lands, it runs `bun run deploy:preview` and hands the URL and
   e2e result back to the agent to post on the PR.
 - It blocks `wrangler deploy`, `preview`, `versions`, `rollback`, `delete` and
@@ -50,7 +50,7 @@ GitHub Actions runs only `release.yml`, once per release.
 ## Commands
 
 Bun (`packageManager` in `package.json`) installs packages and runs scripts;
-Node 24 (`/.nvmrc`) runs the code, because the e2e runner needs Node. From `site/`:
+Node 24 (`/.nvmrc`) runs the code, because the e2e runner needs Node. From `apps/site/` (or the repo root, where `bun install` covers every workspace):
 
 ```bash
 bun install
@@ -73,7 +73,7 @@ is done, `deploy.mjs` refuses every deploy.
 2. **Workers.** Done: `butterlu-site-stage` and `butterlu-site` exist with
    placeholder code that answers 503. The first Preview and the first release
    replace it.
-3. **Pin the account.** Done: `site/wrangler.jsonc` pins the Butterlu account,
+3. **Pin the account.** Done: `apps/site/wrangler.jsonc` pins the Butterlu account,
    `5fa9365455451e1db238dedb838fc9ff`. `deploy.mjs` refuses any
    `CLOUDFLARE_ACCOUNT_ID` that differs from it.
 4. **Claude environment and agent token.** Set: a Claude environment holds

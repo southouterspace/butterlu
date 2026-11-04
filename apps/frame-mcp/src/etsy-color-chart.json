@@ -1,0 +1,248 @@
+[
+  {
+    "number": 1,
+    "hex": "#b4274d",
+    "backgroundId": "red",
+    "match": "strong"
+  },
+  {
+    "number": 2,
+    "hex": "#e8757d",
+    "backgroundId": "pink-coral",
+    "match": "strong"
+  },
+  {
+    "number": 3,
+    "hex": "#efc5c4",
+    "backgroundId": "pink",
+    "match": "strong"
+  },
+  {
+    "number": 4,
+    "hex": "#f3e0d8",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 5,
+    "hex": "#fbf5ee",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 6,
+    "hex": "#ec866b",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 7,
+    "hex": "#f5ab7d",
+    "backgroundId": "orange",
+    "match": "strong"
+  },
+  {
+    "number": 8,
+    "hex": "#f8e88c",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 9,
+    "hex": "#f2e989",
+    "backgroundId": "yellow",
+    "match": "strong"
+  },
+  {
+    "number": 10,
+    "hex": "#c0d470",
+    "backgroundId": "lime-green",
+    "match": "strong"
+  },
+  {
+    "number": 11,
+    "hex": "#93a574",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 12,
+    "hex": "#90c2ad",
+    "backgroundId": "green",
+    "match": "strong"
+  },
+  {
+    "number": 13,
+    "hex": "#8ccac8",
+    "backgroundId": "teal",
+    "match": "strong"
+  },
+  {
+    "number": 14,
+    "hex": "#b3dedd",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 15,
+    "hex": "#b4d5db",
+    "backgroundId": "light-blue",
+    "match": "strong"
+  },
+  {
+    "number": 16,
+    "hex": "#367574",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 17,
+    "hex": "#4f687d",
+    "backgroundId": "dark-blue-navy",
+    "match": "strong"
+  },
+  {
+    "number": 18,
+    "hex": "#e3c2d0",
+    "backgroundId": "light-purple",
+    "match": "strong"
+  },
+  {
+    "number": 19,
+    "hex": "#9b7d6d",
+    "backgroundId": "light-brown",
+    "match": "strong"
+  },
+  {
+    "number": 20,
+    "hex": "#efefef",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 21,
+    "hex": "#605149",
+    "backgroundId": "dark-brown",
+    "match": "strong"
+  },
+  {
+    "number": 22,
+    "hex": "#8c8c8c",
+    "backgroundId": "gray",
+    "match": "strong"
+  },
+  {
+    "number": 23,
+    "hex": "#b1b6b4",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 24,
+    "hex": "#474541",
+    "backgroundId": "charcoal",
+    "match": "strong"
+  },
+  {
+    "number": 25,
+    "hex": "#323035",
+    "backgroundId": "black",
+    "match": "strong"
+  },
+  {
+    "number": 26,
+    "hex": "#82b1ae",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 27,
+    "hex": "#a9aec4",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 28,
+    "hex": "#aabfbd",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 29,
+    "hex": "#c3d1c2",
+    "backgroundId": "distressed-white",
+    "match": "strong"
+  },
+  {
+    "number": 30,
+    "hex": "#b4bab7",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 31,
+    "hex": "#c8c8c8",
+    "backgroundId": "whitewashed-wood",
+    "match": "likely"
+  },
+  {
+    "number": 32,
+    "hex": "#b1a681",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 33,
+    "hex": "#e1d0b0",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 34,
+    "hex": "#b1a28b",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 35,
+    "hex": "#85ada2",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 36,
+    "hex": "#9b9989",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 37,
+    "hex": "#886848",
+    "backgroundId": "brown-wood-plank",
+    "match": "strong"
+  },
+  {
+    "number": 38,
+    "hex": "#5d6977",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 39,
+    "hex": "#cddfe2",
+    "backgroundId": "white-shiplap",
+    "match": "strong"
+  },
+  {
+    "number": 40,
+    "hex": "#8e8f63",
+    "backgroundId": null,
+    "match": "none"
+  },
+  {
+    "number": 41,
+    "hex": "#b2b0b0",
+    "backgroundId": "gray-shiplap",
+    "match": "likely"
+  }
+]

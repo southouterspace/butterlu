@@ -1,6 +1,6 @@
 #!/bin/bash
 # Runs a command with the Node major in .nvmrc and the Bun version pinned by
-# site/package.json's packageManager, installing either from the npm registry
+# the root package.json's packageManager, installing either from the npm registry
 # if the container's copy differs. MCP servers and hooks start with the
 # container's PATH, so anything that needs the site toolchain goes through here.
 # Bun installs packages and runs scripts; Node runs the code (e2e needs Node).
@@ -28,7 +28,7 @@ if [ "$have_node" != "$want_node" ]; then
   export PATH="$HOME/.local/node$want_node/package/bin:$PATH"
 fi
 
-want_bun="$(node -p 'require(process.argv[1]).packageManager.split("bun@")[1]' "$root/site/package.json")"
+want_bun="$(node -p 'require(process.argv[1]).packageManager.split("bun@")[1]' "$root/package.json")"
 have_bun="$(bun --version 2>/dev/null || true)"
 if [ "$have_bun" != "$want_bun" ]; then
   fetch "$HOME/.local/bun$want_bun" "@oven/bun-linux-x64@$want_bun"

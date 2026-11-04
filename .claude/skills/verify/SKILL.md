@@ -1,6 +1,6 @@
 ---
 name: verify
-description: Prove a change to the butterlu.com site (site/) works. Covers the local build and dist lint, the e2e suite against wrangler dev, driving the site over the e2e MCP server, the push gate and automatic per-branch Cloudflare Preview, and deploying stage. Use after any change under site/, before opening or updating a PR, when a push is blocked, and after a merge to main.
+description: Prove a change to the butterlu.com site (apps/site/) works. Covers the local build and dist lint, the e2e suite against wrangler dev, driving the site over the e2e MCP server, the push gate and automatic per-branch Cloudflare Preview, and deploying stage. Use after any change under apps/ or packages/, before opening or updating a PR, when a push is blocked, and after a merge to main.
 ---
 
 # Verify a site change
@@ -13,7 +13,7 @@ failure.
 ## 1. Build and lint
 
 ```bash
-cd site
+cd apps/site
 bun run build          # astro check, astro build, scripts/lint-dist.mjs
 bun run check:worker   # tsc over worker/
 ```
@@ -43,7 +43,7 @@ subagents against the branch's Preview (section 4), after its fixed e2e passes.
 
 1. The e2e MCP server starts without `E2E_BASE_URL`, so point it at the Preview
    with a scratch config. `.e2e/` is gitignored. Write it with Write, not a
-   heredoc. Save it as `site/.e2e/preview.config.ts`:
+   heredoc. Save it as `apps/site/.e2e/preview.config.ts`:
 
    ```ts
    import type { E2EConfig } from 'e2e';
@@ -54,7 +54,7 @@ subagents against the branch's Preview (section 4), after its fixed e2e passes.
    ```
 
 2. For each test, spawn two subagents in parallel, each with its own session:
-   `open_session` with config `site/.e2e/preview.config.ts`. Give each one the
+   `open_session` with config `apps/site/.e2e/preview.config.ts`. Give each one the
    test's steps and the exact `agent.act` or `agent.assert` text, and have it
    judge only what is on screen, not the source. Use `observe` and
    `screenshot`, and close the session whether the test passes or fails. One
@@ -80,8 +80,8 @@ locator before writing it into a test. Close the session when done.
 ## 4. Push: the gate and the Preview
 
 CI runs in your session. `git push` triggers `.claude/hooks/site-gate.sh`.
-Before the push, when the branch changes `site/` or `.nvmrc`, it runs
-`bun run validate` and blocks the push on failure with the failing output.
+Before the push, when the branch changes `apps/`, `packages/` or the root workspace files, it runs
+`bun run validate` at the repo root (every workspace) and blocks the push on failure with the failing output.
 
 After the push lands, the hook runs `bun run deploy:preview`: build, deploy a
 Preview named after the branch on the `butterlu-site-stage` Worker, wait for
@@ -91,7 +91,7 @@ as a `deploy-summary` line with `url`, `commit`, `health` and `e2e`.
 - Post the URL and the e2e result on the branch's PR as one comment, and edit
   that comment on later pushes. The owner reviews UX on that URL.
 - `e2e: failed` means the change is not done. Read
-  `site/.e2e/results/<test>/trace.md`, fix, push again.
+  `apps/site/.e2e/results/<test>/trace.md`, fix, push again.
 - `health: unreachable` means the sandbox got no HTTP response from
   `*.workers.dev`. Say the Preview was not e2e-tested from here.
 - No Preview because `CLOUDFLARE_API_TOKEN` is unset: report it once. Only
@@ -102,10 +102,10 @@ as a `deploy-summary` line with `url`, `commit`, `health` and `e2e`.
 | Environment | Worker | Deployed by |
 | --- | --- | --- |
 | Preview, per branch | `butterlu-site-stage` Previews | The push hook |
-| Stage | `butterlu-site-stage` | `bun run deploy:stage` from a clean `main` equal to `origin/main` |
+| Stage | `butterlu-site-stage` | `bun run deploy:stage` from `apps/site` on a clean `main` equal to `origin/main` |
 | Production | `butterlu-site` | `.github/workflows/release.yml`, when the owner publishes a GitHub Release |
 
-`deploy:stage` runs `bun run validate`, deploys, then runs e2e against the
+`deploy:stage` (from `apps/site`) runs `bun run validate`, deploys, then runs e2e against the
 stage URL. After a branch merges, delete its Preview:
 `bunx wrangler preview delete --name <preview name> --skip-confirmation`.
 

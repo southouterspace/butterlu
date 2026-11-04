@@ -18,8 +18,9 @@ export interface ParsedPersonalization {
   needsReview: string[];
 }
 
-/** Unplaced lines fill the free sides in this order. */
-const FILL_ORDER: readonly Side[] = ['top', 'bottom', 'left', 'right'];
+/** Lines with no stated side default to these. Text on the left or right is always asked for by name. */
+const DEFAULT_SIDES: readonly Side[] = ['top', 'bottom'];
+const SIDE_ORDER: readonly Side[] = ['top', 'bottom', 'left', 'right'];
 
 const ORIENTATION_LINE = /^(?:(vertical|portrait)|(horizontal|landscape))(?:\s+frame)?\.?$/i;
 const SIDE_SUFFIX = /\s*[-,:]?\s*(?:along|on|at|across)\s+(?:the\s+)?(top|bottom|left|right)(?:\s+side)?\.?$/i;
@@ -30,8 +31,9 @@ const AS_SHOWN = /\b(?:as\s+(?:shown|pictured)|same\s+as\s+(?:the\s+)?(?:photo|p
  * Reads the free-text Personalization field of an Etsy order. One line of the
  * field is one line of printed text. A line may say where it goes ("along the
  * top") and what colour it is ("(color #2)"); a line on its own like "Vertical
- * frame" sets the orientation and is not printed. Private notes are the
- * seller's own and always send the order to review.
+ * frame" sets the orientation and is not printed. Lines with no side go top,
+ * then bottom; a third goes to review rather than onto a guessed side. Private
+ * notes are the seller's own and always send the order to review.
  */
 export function parsePersonalization(personalization: string, privateNotes = ''): ParsedPersonalization {
   const needsReview: string[] = [];
@@ -74,10 +76,10 @@ export function parsePersonalization(personalization: string, privateNotes = '')
     taken.add(p.side!);
     lines.push({ side: p.side!, text: p.text, chartColor: p.chartColor, explicit: true });
   }
-  const free = FILL_ORDER.filter((s) => !taken.has(s));
+  const free = DEFAULT_SIDES.filter((s) => !taken.has(s));
   const unplaced = pending.filter((p) => !p.side);
-  if (unplaced.length > free.length) {
-    needsReview.push(`${pending.length} lines of text but a frame has 4 sides.`);
+  for (const p of unplaced.slice(free.length)) {
+    needsReview.push(`"${p.text}" has no side, and only top and bottom are filled by default.`);
   }
   unplaced.slice(0, free.length).forEach((p, i) => {
     lines.push({ side: free[i]!, text: p.text, chartColor: p.chartColor, explicit: false });
@@ -89,6 +91,6 @@ export function parsePersonalization(personalization: string, privateNotes = '')
   }
   if (privateNotes.trim()) needsReview.push(`Private note: "${privateNotes.trim()}".`);
 
-  lines.sort((a, b) => FILL_ORDER.indexOf(a.side) - FILL_ORDER.indexOf(b.side));
+  lines.sort((a, b) => SIDE_ORDER.indexOf(a.side) - SIDE_ORDER.indexOf(b.side));
   return { lines, orientation, needsReview };
 }

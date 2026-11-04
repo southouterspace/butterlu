@@ -132,7 +132,7 @@ export function createServer(env: Env, origin: string) {
     'plan_order',
     {
       description:
-        'Turn the fields of an Etsy order (Color, Personalization, the seller\'s Private notes) into a draft layout: which line goes on which side, the frame orientation, and every reason a person must check it before printing. Each line of Personalization is one printed line. Lines without a stated side fill top, bottom, left, right in order. Fonts and background are not chosen here; pass the draft to render_frame with them.',
+        'Turn the fields of an Etsy order (Color, Personalization, the seller\'s Private notes) into a draft layout: which line goes on which side, the frame orientation, and every reason a person must check it before printing. Each line of Personalization is one printed line. Lines without a stated side go top, then bottom; a third unplaced line is flagged for review, never guessed onto the left or right. Fonts and background are not chosen here; pass the draft to render_frame with them.',
       inputSchema: {
         personalization: z.string().describe('The Personalization field exactly as on the order, line breaks kept.'),
         color: z.string().describe('The Color field, e.g. "32" or "As Shown".'),

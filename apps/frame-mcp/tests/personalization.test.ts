@@ -36,17 +36,27 @@ describe('parsePersonalization', () => {
     expect(r.needsReview.join(' ')).toContain('black text');
   });
 
-  test('unplaced lines fill the sides an explicit line left free', () => {
+  test('unplaced lines take top and bottom around a line placed on a side', () => {
     const r = parsePersonalization('Best Dad\nEst. 2020 on the left side\nLove, the kids');
     expect(r.lines.map((l) => [l.side, l.text, l.explicit])).toEqual([
       ['top', 'Best Dad', false],
       ['bottom', 'Love, the kids', false],
       ['left', 'Est. 2020', true],
     ]);
+    expect(r.needsReview).toEqual([]);
   });
 
-  test('more lines than sides, a clash, or "as shown" need review', () => {
-    expect(parsePersonalization('a\nb\nc\nd\ne').needsReview.join(' ')).toContain('4 sides');
+  test('an unplaced line is never guessed onto the left or right', () => {
+    const r = parsePersonalization('Grandma\nGrandpa\nEst. 1970');
+    expect(r.lines.map((l) => l.side)).toEqual(['top', 'bottom']);
+    expect(r.needsReview).toEqual(['"Est. 1970" has no side, and only top and bottom are filled by default.']);
+
+    const taken = parsePersonalization('Nana on top\nLove you\nXO');
+    expect(taken.lines.map((l) => [l.side, l.text])).toEqual([['top', 'Nana'], ['bottom', 'Love you']]);
+    expect(taken.needsReview.join(' ')).toContain('"XO"');
+  });
+
+  test('a clash, "as shown", or no text needs review', () => {
     expect(parsePersonalization('a along the top\nb on top').needsReview.join(' ')).toContain('Two lines');
     expect(parsePersonalization('Same as shown but Auntie').needsReview.join(' ')).toContain('listing photo');
     expect(parsePersonalization('').needsReview).toEqual(['No text to print.']);

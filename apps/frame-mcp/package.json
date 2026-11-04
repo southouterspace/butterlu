@@ -4,12 +4,14 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "wrangler dev --persist-to .wrangler/state",
-    "sync-assets": "node scripts/sync-assets.mjs",
+    "dev": "node scripts/prepare-assets.mjs && node scripts/dev.mjs",
+    "prepare-assets": "node scripts/prepare-assets.mjs",
     "typecheck": "tsc --noEmit",
     "smoke": "node scripts/smoke.mjs",
     "validate": "bun run typecheck && bun run test && bun run smoke",
-    "test": "bun test"
+    "test": "bun test",
+    "deploy:stage": "node scripts/deploy.mjs stage",
+    "deploy:production": "node scripts/deploy.mjs production"
   },
   "dependencies": {
     "@butterlu/frame": "workspace:*",

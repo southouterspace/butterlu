@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-// End-to-end check against `wrangler dev` with a freshly seeded local R2.
-// Needs poppler (pdfinfo, pdftoppm). Leaves the proof PNG in --out for a human to look at.
+// End-to-end check against `wrangler dev`, with the bundled assets freshly
+// prepared and Google Drive replaced by scripts/mock-google.mjs, so it needs no
+// Google account. Needs poppler (pdfinfo, pdftoppm). Leaves the proof PNG in
+// --out for a human to look at.
 import assert from 'node:assert/strict';
 import { execFileSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
@@ -9,11 +11,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { parseArgs } from 'node:util';
+import { MOCK_CREDENTIALS, startMockGoogle } from './mock-google.mjs';
 
 const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const { values: args } = parseArgs({ options: { out: { type: 'string', default: path.join(os.tmpdir(), 'frame-mcp-smoke') } } });
 fs.mkdirSync(args.out, { recursive: true });
-const state = fs.mkdtempSync(path.join(os.tmpdir(), 'frame-mcp-r2-'));
+const state = fs.mkdtempSync(path.join(os.tmpdir(), 'frame-mcp-state-'));
 
 const freePort = () =>
   new Promise((resolve) => {
@@ -23,13 +26,16 @@ const freePort = () =>
     });
   });
 
-execFileSync('node', [path.join(appDir, 'scripts/sync-assets.mjs'), '--persist-to', state], { cwd: appDir, stdio: ['ignore', 'inherit', 'ignore'] });
+execFileSync('node', [path.join(appDir, 'scripts/prepare-assets.mjs')], { cwd: appDir, stdio: ['ignore', 'inherit', 'inherit'] });
+const google = await startMockGoogle();
 
 const port = await freePort();
 const base = `http://127.0.0.1:${port}`;
 // A throwaway token for this run only; the real one is a Worker secret.
 const token = crypto.randomUUID();
-const dev = spawn('npx', ['wrangler', 'dev', '--port', String(port), '--ip', '127.0.0.1', '--persist-to', state, '--var', `MCP_TOKEN:${token}`], {
+const vars = { MCP_TOKEN: token, GOOGLE_API_BASE: google.base, ...MOCK_CREDENTIALS };
+const varArgs = Object.entries(vars).flatMap(([k, v]) => ['--var', `${k}:${v}`]);
+const dev = spawn('npx', ['wrangler', 'dev', '--port', String(port), '--ip', '127.0.0.1', '--persist-to', state, ...varArgs], {
   cwd: appDir,
   stdio: ['ignore', 'pipe', 'pipe'],
   detached: true,
@@ -42,6 +48,7 @@ const stop = () => {
     process.kill(-dev.pid, 'SIGTERM');
   } catch {}
   fs.rmSync(state, { recursive: true, force: true });
+  google.close();
 };
 
 let nextId = 1;
@@ -77,6 +84,10 @@ try {
     await new Promise((r) => setTimeout(r, 250));
   }
 
+  const health = await (await fetch(`${base}/health`)).json();
+  assert.deepEqual(health, { ok: true, auth: 'set', storage: 'google-drive' });
+  console.log('ok /health: auth set, storage google-drive');
+
   const { tools } = await rpc('tools/list');
   assert.deepEqual(tools.map((t) => t.name).sort(), ['list_options', 'plan_order', 'plan_site_order', 'render_frame']);
   console.log('ok tools/list: list_options, plan_order, plan_site_order, render_frame');
@@ -101,16 +112,24 @@ try {
       right: { text: 'Love you to the moon & back', fontId: 'great-vibes', color: '#7a1f3d' },
     },
   };
-  const rendered = await callTool('render_frame', spec);
+  const rendered = await callTool('render_frame', { ...spec, label: 'Etsy 3412: Aunt/Sarah' });
   assert.ok(!rendered.isError, rendered.text);
   const out = JSON.parse(rendered.text);
   assert.deepEqual(out.sides.map((s) => s.side).sort(), ['bottom', 'left', 'right', 'top']);
   console.log(`ok render_frame: ${out.sides.map((s) => `${s.side} ${s.sizePt}pt`).join(', ')}; ${out.warnings.length} warnings`);
 
+  assert.equal(out.storage, 'google-drive');
+  assert.match(out.printFile.name, /^\d{4}-\d{2}-\d{2} Etsy 3412 Aunt Sarah - print\.pdf$/);
+  assert.match(out.proofFile.name, /^PROOF \d{4}-\d{2}-\d{2} Etsy 3412 Aunt Sarah - not for printing\.pdf$/);
+  const uploads = [...google.files.values()];
+  assert.deepEqual(uploads.map((f) => f.metadata.parents[0]).sort(), [MOCK_CREDENTIALS.DRIVE_PROOF_FOLDER_ID, MOCK_CREDENTIALS.DRIVE_FOLDER_ID].sort());
+  assert.ok(uploads.every((f) => f.metadata.mimeType === 'application/pdf' && f.contentType === 'application/pdf'));
+  console.log(`ok Drive upload: "${out.printFile.name}" to the print folder, the proof to the proof folder`);
+
   const shape = options.shapes.find((s) => s.id === spec.shape);
   const files = {};
   for (const variant of ['print', 'proof']) {
-    const res = await fetch(out[`${variant}Url`]);
+    const res = await fetch(out[`${variant}File`].url);
     assert.equal(res.status, 200, `${variant} PDF -> HTTP ${res.status}`);
     assert.equal(res.headers.get('content-type'), 'application/pdf');
     const bytes = Buffer.from(await res.arrayBuffer());
@@ -120,16 +139,18 @@ try {
     const size = pageSizePt(files[variant]);
     assert.ok(Math.abs(size.w - (shape.widthIn + 2 * options.bleedIn) * 72) < 0.01, `${variant} width ${size.w}pt`);
     assert.ok(Math.abs(size.h - (shape.heightIn + 2 * options.bleedIn) * 72) < 0.01, `${variant} height ${size.h}pt`);
-    console.log(`ok GET ${variant}.pdf: ${bytes.length} bytes, ${size.w} x ${size.h} pt`);
+    console.log(`ok ${variant} PDF in Drive: ${bytes.length} bytes, ${size.w} x ${size.h} pt`);
   }
 
   const bad = await callTool('render_frame', { ...spec, backgroundId: 'sage-stripe' });
   assert.ok(bad.isError && bad.text.includes('Valid ids: maroon-bows'), bad.text);
   console.log('ok unknown background id is refused with the valid ids');
 
-  const missing = await fetch(`${base}/renders/${crypto.randomUUID()}/print.pdf`);
-  assert.equal(missing.status, 404);
-  console.log('ok unknown render id -> 404');
+  const gone = await fetch(`${base}/renders/${crypto.randomUUID()}/print.pdf`);
+  assert.equal(gone.status, 404);
+  console.log('ok nothing but /mcp and /health is served (no public asset or render paths)');
+  const asset = await fetch(`${base}/backgrounds/blue-toile.jpg`);
+  assert.equal(asset.status, 404, 'bundled backgrounds must not be public');
 
   const rpcBody = JSON.stringify({ jsonrpc: '2.0', id: 999, method: 'tools/list' });
   const mcpHeaders = { 'content-type': 'application/json', accept: 'application/json, text/event-stream' };

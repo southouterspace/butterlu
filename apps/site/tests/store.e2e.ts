@@ -24,6 +24,9 @@ test('the customizer previews new words and refuses a frame with none', async ({
   await expect(screen.getByRole('button', /^Add to cart/)).toBeEnabled();
 });
 
+// Stage runs with or without Stripe test keys, so these read the switch first.
+const checkoutOn = async (baseUrl: string | URL | undefined) => (await (await fetch(new URL('/api/checkout/status', baseUrl))).json()) as { enabled: boolean; mode?: string };
+
 test('a designed frame goes in the cart, and checkout says when it is off', async ({ app, screen }) => {
   await app.open(PRODUCT);
   await screen.getByRole('textbox', /^Top/).fill('Promoted to Nana');
@@ -33,19 +36,30 @@ test('a designed frame goes in the cart, and checkout says when it is off', asyn
   await app.open('/cart');
   await expect(screen.getByRole('heading', NAME)).toBeVisible();
   await expect(screen.getByText('Top: "Promoted to Nana"', { exact: false })).toBeVisible();
+  // With test keys on, a click leaves for Stripe; the API test below covers that path.
+  if ((await checkoutOn(app.baseUrl)).enabled) return;
   await screen.getByRole('button', 'Check out').click();
   await expect(screen.getByText('Checkout is not switched on yet', { exact: false })).toBeVisible();
 });
 
-test('the checkout API stays off without a Stripe key', async ({ app }) => {
-  const status = await fetch(new URL('/api/checkout/status', app.baseUrl));
-  expect((await status.json()).enabled).toBe(false);
-  const res = await fetch(new URL('/api/checkout', app.baseUrl), {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ items: [] }),
-  });
-  expect(res.status).toBe(503);
+test('the checkout API is off without a Stripe key, and opens test-mode Stripe Checkout with one', async ({ app }) => {
+  const status = await checkoutOn(app.baseUrl);
+  const post = (body: unknown) =>
+    fetch(new URL('/api/checkout', app.baseUrl), { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  if (!status.enabled) {
+    expect((await post({ items: [] })).status).toBe(503);
+    return;
+  }
+  // Never live from a test run.
+  expect(status.mode).toBe('test');
+  expect((await post({ items: [] })).status).toBe(400);
+  const { products } = (await (await fetch(new URL('/products.json', app.baseUrl))).json()) as { products: { handle: string; preset: unknown }[] };
+  const product = products[0]!;
+  const res = await post({ fid: 'e2etest0000000002', items: [{ handle: product.handle, quantity: 1, design: product.preset }] });
+  expect(res.status).toBe(200);
+  const data = (await res.json()) as { url?: string; mode?: string };
+  expect(data.mode).toBe('test');
+  expect(data.url).toContain('https://checkout.stripe.com/');
 });
 
 test('the funnel beacon takes known events and ignores the rest', async ({ app }) => {

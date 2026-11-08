@@ -101,7 +101,7 @@ The frame MCP now requires a bearer token (`MCP_TOKEN`, fail-closed).
 ## Defaults to confirm (customers will notice these)
 
 - The 19-page line-up and 7 collections. No large frames or brag boards yet.
-- Prices match Etsy ($35.95 or $37.95).
+- One price, $39, for both frames and every design (the owner set it on 2026-11-08).
 - Free US shipping, US addresses only.
 - Made to order, ships in 3 to 5 business days.
 - No returns on personalized items. Damaged or wrong frames are made right.

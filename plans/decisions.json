@@ -26,7 +26,7 @@
       "shape": "scalloped",
       "background": "sage-stripes",
       "presetFrom": 693902312,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 10604 favourites over 27 listings"
     },
@@ -38,7 +38,7 @@
       "shape": "scalloped",
       "background": "white-linen",
       "presetFrom": 512288952,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "extraPages": [
         "mother-of-the-groom-frame"
@@ -53,7 +53,7 @@
       "shape": "scalloped",
       "background": "blush-checkers",
       "presetFrom": 795301379,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "extraPages": [
         "mimi-picture-frame",
@@ -69,7 +69,7 @@
       "shape": "scalloped",
       "background": "blush-stripes",
       "presetFrom": 506350688,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 4250 favourites over 4 listings"
     },
@@ -81,7 +81,7 @@
       "shape": "rounded-rectangle",
       "background": "navy-stripes",
       "presetFrom": 503492874,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 4005 favourites over 17 listings"
     },
@@ -103,7 +103,7 @@
       "shape": "scalloped",
       "background": "pink-toile",
       "presetFrom": 525640447,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 3864 favourites over 14 listings"
     },
@@ -115,7 +115,7 @@
       "shape": "rounded-rectangle",
       "background": "maroon-checkers",
       "presetFrom": 785810682,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 2708 favourites over 8 listings"
     },
@@ -127,7 +127,7 @@
       "shape": "rounded-rectangle",
       "background": "gray-shiplap",
       "presetFrom": 723490021,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 2417 favourites over 7 listings"
     },
@@ -139,7 +139,7 @@
       "shape": "scalloped",
       "background": "white-shiplap",
       "presetFrom": 627247659,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 2134 favourites over 22 listings"
     },
@@ -161,7 +161,7 @@
       "shape": "rounded-rectangle",
       "background": "blue-checkers",
       "presetFrom": 227714499,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 1358 favourites over 12 listings"
     },
@@ -173,7 +173,7 @@
       "shape": "scalloped",
       "background": "light-blue-stripes",
       "presetFrom": 226797672,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 1352 favourites over 17 listings"
     },
@@ -185,7 +185,7 @@
       "shape": "rounded-rectangle",
       "background": "olive-green-stripes",
       "presetFrom": 805343785,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "extraPages": [
         "papa-picture-frame"
@@ -200,7 +200,7 @@
       "shape": "rounded-rectangle",
       "background": "brown-wood-plank",
       "presetFrom": 532248987,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 1072 favourites over 16 listings"
     },
@@ -212,7 +212,7 @@
       "shape": "scalloped",
       "background": "green-toile",
       "presetFrom": 796124933,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "extraPages": [
         "nana-picture-frame"
@@ -227,7 +227,7 @@
       "shape": "scalloped",
       "background": "yellow-checkers",
       "presetFrom": 506697625,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 972 favourites over 10 listings"
     },
@@ -239,7 +239,7 @@
       "shape": "scalloped",
       "background": "light-blue",
       "presetFrom": 551630150,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "launch tier, 946 favourites over 43 listings"
     },
@@ -251,7 +251,7 @@
       "shape": "rounded-rectangle",
       "background": "whitewashed-wood",
       "presetFrom": 483294076,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "later tier, 838 favourites over 7 listings"
     },
@@ -263,7 +263,7 @@
       "shape": "rounded-rectangle",
       "background": "blue-toile",
       "presetFrom": 733842083,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "later tier, 727 favourites over 11 listings"
     },
@@ -405,7 +405,7 @@
       "shape": "rounded-rectangle",
       "background": "whitewashed-wood",
       "presetFrom": 658788223,
-      "priceCents": 3595,
+      "priceCents": 3900,
       "redirectTo": null,
       "note": "later tier, 315 favourites over 14 listings"
     },
@@ -1012,5 +1012,5 @@
   ],
   "status": "proposed",
   "proposedBy": "agent, from apps/site/src/catalog/products.ts via scripts/storefront-lineup.mjs",
-  "proposedAt": "2026-11-08T16:03:32.809Z"
+  "proposedAt": "2026-11-08T16:25:31.928Z"
 }

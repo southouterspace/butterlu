@@ -129,7 +129,7 @@ words and any of 44 backgrounds. The store is shaped around that:
   `Product` with `isVariantOf` its frame's group and `pattern` set to the design.
 - **Categories are hubs**: the two frames first, then "Designs to start from" (cards show
   the frame, not a price), then the copy and questions.
-- **One price** for both frames and every design (`FRAME_PRICE_CENTS`, PROPOSED $35.95).
+- **One price** for both frames and every design (`FRAME_PRICE_CENTS`, $39 with free US shipping, set by the owner 2026-11-08).
 - **Shopping feed**: one item per page, `item_group_id` = its frame, `pattern` = the design.
 
 ## 5. Page standards (what every page ships with)
@@ -174,3 +174,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | 2026-11-08 | Baseline snapshot taken; nothing changed yet | all |
 | 2026-11-08 (stage only) | Wave 1: about 330 words of copy and 6 FAQs under each collection grid, CollectionPage with ItemList and FAQPage markup, sibling collection links; new Mimi, Nana, Papa, Abuela and mother of the groom pages with 3 FAQs each; Organization `sameAs` to the Etsy shop; Merchant Center feed at `/feeds/google-products.xml`. Not public until a Release. | 7 collections, 5 new products, home |
 | 2026-11-08 (stage only) | Two products, many designs (§4b): frame pages, designs as variants with wording ideas, category hubs, one price, feed grouped by frame. | all products and collections |
+| 2026-11-08 (stage only) | Price set by the owner: $39 with free US shipping for both frames and every design (was $35.95 proposed). Product pages, checkout and the Shopping feed read the one constant. | all products, feed |

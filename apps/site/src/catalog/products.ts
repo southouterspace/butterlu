@@ -2,8 +2,8 @@
 // any side), sold through search-intent pages that each preset it. Every pageKey here
 // is a row with build: true in plans/decisions.json (PROPOSED, gate G2). The first page
 // listed for a pageKey is its main page and takes the cluster's old Shopify URLs; later
-// pages on the same pageKey are extra exact-search pages (docs/12 §4). Prices are
-// Etsy parity, from each page's preset listing in plans/clusters.json.
+// pages on the same pageKey are extra exact-search pages (docs/12 §4). Every page
+// sells at one price, FRAME_PRICE_CENTS, set by the owner.
 //
 // This file is plain TypeScript with no Astro imports, so the checkout Worker reads
 // the same prices and handles the pages render.
@@ -48,13 +48,13 @@ export interface Collection {
 
 export const CURRENCY = 'usd';
 /**
- * One price for both frames and every design on them. PROPOSED (2026-11-08): Etsy
- * listings were $35.95 or $37.95 for the same frame; the owner confirms.
+ * One price for both frames and every design on them. The owner set $39 with free
+ * US shipping (2026-11-08).
  */
-export const FRAME_PRICE_CENTS = 3595;
+export const FRAME_PRICE_CENTS = 3900;
 export const SHOP = {
   name: 'Butterlu',
-  /** Shown on product pages and the shipping page. PROPOSED, the owner confirms. */
+  /** Shown on product pages and the shipping page. Free US shipping is the owner's call (2026-11-08); the dispatch time is PROPOSED. */
   dispatch: 'Made to order and shipped within 3 to 5 business days',
   shipping: 'Free shipping in the US',
   photoNote: 'Holds a 4x6 photo. The frame ships without a photo, ready for yours.',

@@ -6,8 +6,21 @@ const NAME = 'Grandparent pregnancy announcement frame';
 
 test('the home page lists frames that link to their pages', async ({ app, screen }) => {
   await app.open('/');
-  await expect(screen.getByRole('heading', 'Most loved')).toBeVisible();
+  await expect(screen.getByRole('heading', 'Most loved designs')).toBeVisible();
   await expect(screen.getByRole('link', new RegExp(NAME)).first()).toBeVisible();
+});
+
+test('a category leads with the two frames, and a wording idea fills the frame', async ({ app, screen }) => {
+  await app.open('/collections/baby-frames');
+  await expect(screen.getByRole('heading', 'Two frames, your words')).toBeVisible();
+  await expect(screen.getByRole('link', /Scalloped picture frame/).first()).toBeVisible();
+  await expect(screen.getByRole('link', /Rounded picture frame/).first()).toBeVisible();
+
+  await app.open(PRODUCT);
+  await screen.getByRole('button', /Grandparents/).first().click();
+  await expect(screen.getByRole('status').getByText('Wording idea added. Edit any line to make it yours.')).toBeVisible();
+  await screen.getByRole('button', 'Undo, bring my words back').click();
+  await expect(screen.getByRole('status').getByText('Your words are back.')).toBeVisible();
 });
 
 test('the customizer previews new words and refuses a frame with none', async ({ app, screen }) => {

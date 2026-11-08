@@ -5,7 +5,8 @@ import ProductCard from '../../components/ProductCard.astro';
 import { getImage } from 'astro:assets';
 import { productFaq } from '../../catalog/copy';
 import { productMedia } from '../../catalog/media';
-import { COLLECTIONS, CURRENCY, PRODUCTS, type Product, SHOP, collectionProducts } from '../../catalog/products';
+import FrameChoice from '../../components/FrameChoice.astro';
+import { COLLECTIONS, CURRENCY, DESIGNS, PRODUCTS, type Product, SHOP, collectionProducts, frameFor, isFrame } from '../../catalog/products';
 
 export function getStaticPaths() {
   return PRODUCTS.map((product) => ({ params: { handle: product.handle }, props: { product } }));
@@ -16,7 +17,10 @@ interface Props {
 }
 const { product } = Astro.props;
 const url = new URL(`/products/${product.handle}`, Astro.site).href;
-const primary = COLLECTIONS.find((c) => c.handle === product.collections[0])!;
+// The two frames belong to no collection; a design's first collection is its breadcrumb.
+const primary = COLLECTIONS.find((c) => c.handle === product.collections[0]);
+const frame = frameFor(product);
+const frameUrl = new URL(`/products/${frame.handle}`, Astro.site).href;
 // Images for search and link previews: real photos first (1200 px JPEG for the
 // widest crawler support), then the preset drawn at build time (/products/<handle>.jpg).
 const photos = await Promise.all(
@@ -28,47 +32,74 @@ const photos = await Promise.all(
 const rendered = { src: `/products/${product.handle}.jpg`, width: 1200, height: 1200 };
 const images = [...photos.map((p) => ({ src: p.src, width: Number(p.attributes.width), height: Number(p.attributes.height) })), rendered];
 const faq = productFaq(product.handle);
-const related = collectionProducts(primary.handle).filter((p) => p.handle !== product.handle).slice(0, 4);
+const related = isFrame(product)
+  ? DESIGNS.filter((d) => d.preset.shape === product.preset.shape)
+  : collectionProducts(primary!.handle).filter((p) => p.handle !== product.handle).slice(0, 4);
+const relatedTitle = isFrame(product) ? `Designs on the ${product.name.toLowerCase()}` : `More ${primary!.name.toLowerCase().replace(/ frames$/, '')} designs`;
 
 // Product, Offer, shipping and returns markup: what Google's free listings and AI
 // shopping agents read (docs/09-seo-shape.md §3). No review markup until native reviews exist.
-const jsonLd = [
-  {
-    '@context': 'https://schema.org',
-    '@type': 'Product',
-    name: product.name,
-    description: product.seoDescription,
-    sku: product.handle,
-    brand: { '@type': 'Brand', name: SHOP.name },
-    image: images.map((i) => new URL(i.src, Astro.site).href),
-    material: 'Wood and glass',
-    url,
-    offers: {
-      '@type': 'Offer',
-      url,
-      price: (product.priceCents / 100).toFixed(2),
-      priceCurrency: CURRENCY.toUpperCase(),
-      availability: 'https://schema.org/MadeToOrder',
-      itemCondition: 'https://schema.org/NewCondition',
-      shippingDetails: {
-        '@type': 'OfferShippingDetails',
-        shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' },
-        shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
-      },
-      hasMerchantReturnPolicy: {
-        '@type': 'MerchantReturnPolicy',
-        applicableCountry: 'US',
-        returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
-      },
-    },
+const offer = {
+  '@type': 'Offer',
+  url,
+  price: (product.priceCents / 100).toFixed(2),
+  priceCurrency: CURRENCY.toUpperCase(),
+  availability: 'https://schema.org/MadeToOrder',
+  itemCondition: 'https://schema.org/NewCondition',
+  shippingDetails: {
+    '@type': 'OfferShippingDetails',
+    shippingRate: { '@type': 'MonetaryAmount', value: '0', currency: 'USD' },
+    shippingDestination: { '@type': 'DefinedRegion', addressCountry: 'US' },
   },
+  hasMerchantReturnPolicy: {
+    '@type': 'MerchantReturnPolicy',
+    applicableCountry: 'US',
+    returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
+  },
+};
+// Butterlu sells two products. Every product page carries its frame's full ProductGroup
+// (Google's multi-page variant markup repeats the group on each variant page): it varies
+// by pattern (the design), and hasVariant holds this page's Product in full plus links to
+// the frame's other pages. Google then sees two products, not 26 (docs/12 §4b).
+const own = {
+  '@type': 'Product',
+  name: isFrame(product) ? `${product.name}, your own words` : product.name,
+  description: product.seoDescription,
+  sku: product.handle,
+  brand: { '@type': 'Brand', name: SHOP.name },
+  image: images.map((i) => new URL(i.src, Astro.site).href),
+  material: 'Wood and glass',
+  pattern: isFrame(product) ? 'Your own words' : product.name,
+  url,
+  inProductGroupWithID: frame.handle,
+  offers: offer,
+};
+const siblings = [frame, ...DESIGNS.filter((d) => d.preset.shape === frame.preset.shape)].filter((p) => p.handle !== product.handle);
+const productLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ProductGroup',
+  name: frame.name,
+  description: frame.seoDescription,
+  url: frameUrl,
+  brand: { '@type': 'Brand', name: SHOP.name },
+  productGroupID: frame.handle,
+  variesBy: ['https://schema.org/pattern'],
+  hasVariant: [own, ...siblings.map((d) => ({ '@type': 'Product', url: new URL(`/products/${d.handle}`, Astro.site).href }))],
+};
+
+const jsonLd = [
+  productLd,
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Shop', item: new URL('/collections/all', Astro.site).href },
-      { '@type': 'ListItem', position: 2, name: primary.name, item: new URL(`/collections/${primary.handle}`, Astro.site).href },
-      { '@type': 'ListItem', position: 3, name: product.name, item: url },
+      ...(primary
+        ? [
+            { '@type': 'ListItem', position: 2, name: primary.name, item: new URL(`/collections/${primary.handle}`, Astro.site).href },
+            { '@type': 'ListItem', position: 3, name: product.name, item: url },
+          ]
+        : [{ '@type': 'ListItem', position: 2, name: product.name, item: url }]),
     ],
   },
   ...(faq.length
@@ -84,8 +115,8 @@ const jsonLd = [
 ---
 <Layout title={`${product.seoTitle} | Butterlu`} description={product.seoDescription} jsonLd={jsonLd} ogType="product" image={{ ...images[0]!, alt: product.name }}>
   <nav class="mb-2 text-sm text-muted-foreground md:mb-6" aria-label="Breadcrumb">
-    <a class="no-underline hover:text-foreground hover:underline" href="/collections/all">Shop</a> <span aria-hidden="true">/</span>
-    <a class="no-underline hover:text-foreground hover:underline" href={`/collections/${primary.handle}`}>{primary.name}</a>
+    <a class="no-underline hover:text-foreground hover:underline" href="/collections/all">Shop</a>
+    {primary && (<><span aria-hidden="true">/</span> <a class="no-underline hover:text-foreground hover:underline" href={`/collections/${primary.handle}`}>{primary.name}</a></>)}
   </nav>
   <Customizer product={product} />
 
@@ -113,9 +144,13 @@ const jsonLd = [
 
   {related.length > 0 && (
     <section aria-labelledby="related" class="mt-12">
-      <h2 id="related" class="mb-4 text-lg">More {primary.name.toLowerCase()}</h2>
+      <h2 id="related" class="mb-4 text-lg">{relatedTitle}</h2>
       <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">{related.map((p) => <ProductCard product={p} />)}</ul>
     </section>
+  )}
+
+  {!isFrame(product) && (
+    <div class="mt-12"><FrameChoice /></div>
   )}
 </Layout>
 

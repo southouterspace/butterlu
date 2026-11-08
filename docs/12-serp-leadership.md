@@ -115,6 +115,23 @@ February; godparent spring season by January; first Father's Day by early March;
 Christmas 2027 by September; pregnancy announcement pages for the January peak by
 October 2027.
 
+## 4b. Two products, many designs (Justin, 2026-11-08)
+
+Butterlu sells two products: the scalloped frame and the rounded frame, each with any
+words and any of 44 backgrounds. The store is shaped around that:
+
+- **Two frame pages** (`/products/scalloped-picture-frame`, `/products/rounded-picture-frame`):
+  the customizer from blank-ish wording, one price, and the designs drawn on that frame.
+  Marked up as a `ProductGroup` (`variesBy` pattern) whose variants are its designs.
+- **Design pages** keep one page per exact search (godmother, Mimi, ultrasound), because
+  those are what rank. Each opens its frame with the design loaded, offers 8 wording
+  ideas to tap, says which frame it is, and shows the two frames below. Marked up as a
+  `Product` with `isVariantOf` its frame's group and `pattern` set to the design.
+- **Categories are hubs**: the two frames first, then "Designs to start from" (cards show
+  the frame, not a price), then the copy and questions.
+- **One price** for both frames and every design (`FRAME_PRICE_CENTS`, PROPOSED $35.95).
+- **Shopping feed**: one item per page, `item_group_id` = its frame, `pattern` = the design.
+
 ## 5. Page standards (what every page ships with)
 
 Collection page:
@@ -156,3 +173,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 |---|---|---|
 | 2026-11-08 | Baseline snapshot taken; nothing changed yet | all |
 | 2026-11-08 (stage only) | Wave 1: about 330 words of copy and 6 FAQs under each collection grid, CollectionPage with ItemList and FAQPage markup, sibling collection links; new Mimi, Nana, Papa, Abuela and mother of the groom pages with 3 FAQs each; Organization `sameAs` to the Etsy shop; Merchant Center feed at `/feeds/google-products.xml`. Not public until a Release. | 7 collections, 5 new products, home |
+| 2026-11-08 (stage only) | Two products, many designs (§4b): frame pages, designs as variants with wording ideas, category hubs, one price, feed grouped by frame. | all products and collections |

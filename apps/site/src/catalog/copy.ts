@@ -5,6 +5,8 @@ import data from './copy.json';
 import { COLLECTIONS, PRODUCTS } from './products';
 
 export type Faq = readonly [question: string, answer: string];
+/** Text for some of the sides (top, bottom, left, right), loaded into the customizer on tap. */
+export type Idea = Partial<Record<'top' | 'bottom' | 'left' | 'right', string>>;
 export interface CollectionCopy {
   body: string[];
   faq: Faq[];
@@ -14,7 +16,7 @@ export interface CollectionCopy {
 // JSON imports type arrays as string[][], not tuples; the checks below fail the build on a
 // mistyped handle or a FAQ that isn't a question and answer pair.
 const collections = data.collections as unknown as Record<string, CollectionCopy>;
-const products = data.products as unknown as Record<string, { faq?: Faq[] }>;
+const products = data.products as unknown as Record<string, { faq?: Faq[]; ideas?: Idea[] }>;
 
 const productHandles = new Set(PRODUCTS.map((p) => p.handle));
 const collectionHandles = new Set(COLLECTIONS.map((c) => c.handle));
@@ -28,7 +30,14 @@ for (const [handle, c] of Object.entries(collections)) {
 for (const [handle, p] of Object.entries(products)) {
   if (!productHandles.has(handle)) throw new Error(`copy.json: no product "${handle}"`);
   if (badFaq(p.faq ?? [])) throw new Error(`copy.json: ${handle} has a malformed FAQ`);
+  for (const idea of p.ideas ?? []) {
+    const lines = Object.entries(idea);
+    if (!idea.top && !idea.bottom) throw new Error(`copy.json: ${handle} has an idea with no top or bottom line`);
+    if (lines.some(([side, text]) => !['top', 'bottom', 'left', 'right'].includes(side) || typeof text !== 'string' || text.length > 60))
+      throw new Error(`copy.json: ${handle} has an idea with a bad side or a line over 60 characters`);
+  }
 }
 
 export const collectionCopy = (handle: string): CollectionCopy | undefined => collections[handle];
 export const productFaq = (handle: string): Faq[] => products[handle]?.faq ?? [];
+export const productIdeas = (handle: string): Idea[] => products[handle]?.ideas ?? [];

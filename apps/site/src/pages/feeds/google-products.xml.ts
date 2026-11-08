@@ -1,10 +1,11 @@
 // Google Merchant Center product feed (RSS 2.0 with the g: namespace), built with the
 // site. Merchant Center fetches it on a schedule once the owner adds it as a data source:
-// https://www.butterlu.com/feeds/google-products.xml. One item per preset page; every
-// page is the same configurable frame, so items share material, size and shipping.
+// https://www.butterlu.com/feeds/google-products.xml. Butterlu sells two frames; each
+// design page is a variant of one of them, so items share item_group_id with their frame
+// and differ by pattern (the design). Items share material, size, price and shipping.
 // docs/12-serp-leadership.md §3.1.
 import type { APIRoute } from 'astro';
-import { CURRENCY, PRODUCTS, SHOP } from '../../catalog/products';
+import { CURRENCY, PRODUCTS, SHOP, frameFor, isFrame } from '../../catalog/products';
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const tag = (name: string, value: string | number) => `      <g:${name}>${esc(String(value))}</g:${name}>`;
@@ -25,7 +26,7 @@ export const GET: APIRoute = ({ site }) => {
       tag('condition', 'new'),
       tag('identifier_exists', 'no'),
       tag('google_product_category', 'Home & Garden > Decor > Picture Frames'),
-      tag('product_type', `Picture Frames > ${p.collections[0] ?? 'all'}`),
+      tag('product_type', `Picture Frames > ${frameFor(p).name}`),
       tag('material', 'Wood and glass'),
       tag('is_bundle', 'no'),
       // Made to order: the handling time matches SHOP.dispatch. Transit time is set in
@@ -36,6 +37,8 @@ export const GET: APIRoute = ({ site }) => {
       '        <g:country>US</g:country>',
       `        <g:price>0.00 ${CURRENCY.toUpperCase()}</g:price>`,
       '      </g:shipping>',
+      tag('item_group_id', frameFor(p).handle),
+      tag('pattern', isFrame(p) ? 'Your own words' : p.name),
       tag('custom_label_0', p.clusterId),
       '    </item>',
     ].join('\n');

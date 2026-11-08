@@ -1,6 +1,6 @@
 ---
-// A product tile in the shadcn Card shape, rendered as static HTML.
-import { type Product, formatPrice } from '../catalog/products';
+// A frame or design tile in the shadcn Card shape, rendered as static HTML.
+import { type Product, formatPrice, frameFor, isFrame } from '../catalog/products';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
 import { cardClass, cn } from './ui/variants';
@@ -20,7 +20,8 @@ const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPref
     <div class="bg-muted p-3 sm:p-5" set:html={svg} />
     <div class="grid gap-1 p-3 sm:p-4">
       <Heading class="text-sm leading-snug font-medium tracking-normal group-hover:underline sm:text-base">{product.name}</Heading>
-      <span class="text-sm text-muted-foreground">{formatPrice(product.priceCents)}</span>
+      {/* A design is a starting point on one of the two frames, not a product of its own, so it shows no price. */}
+      <span class="text-sm text-muted-foreground">{isFrame(product) ? `${formatPrice(product.priceCents)}, any words` : `${frameFor(product).name.replace(' picture frame', '')} frame design`}</span>
     </div>
   </a>
 </li>

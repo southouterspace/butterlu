@@ -17,7 +17,7 @@ const catalog = plans('catalog.json');
 // The first page listed for a pageKey is its main page and takes its old URLs; later
 // pages on the same pageKey are extra exact-search pages.
 const productByPage = new Map();
-for (const p of PRODUCTS) if (!productByPage.has(p.pageKey)) productByPage.set(p.pageKey, p);
+for (const p of PRODUCTS) if (p.kind !== 'frame' && !productByPage.has(p.pageKey)) productByPage.set(p.pageKey, p);
 const decisionByPage = new Map(decisions.rows.map((r) => [r.pageKey, r]));
 const newProducts = new Set(PRODUCTS.map((p) => p.handle));
 const newCollections = new Set(COLLECTIONS.map((c) => c.handle));

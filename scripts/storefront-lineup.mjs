@@ -17,7 +17,8 @@ const decisions = await read('decisions.json');
 // The first page for a pageKey is its main page; later ones are extra exact-search pages.
 const built = new Map();
 const extras = new Map();
-for (const p of PRODUCTS) {
+// The two frame pages aren't clusters.json pages; only designs map to clusters.
+for (const p of PRODUCTS.filter((p) => p.kind !== 'frame')) {
   if (!built.has(p.pageKey)) built.set(p.pageKey, p);
   else extras.set(p.pageKey, [...(extras.get(p.pageKey) ?? []), p.handle]);
 }
@@ -90,7 +91,7 @@ const rows = clusters.rows.map((c) => {
 });
 
 decisions._schema.row.handle = 'built pages only: the /products/<handle> URL';
-decisions._schema.row.priceCents = 'built pages only: price in cents, Etsy parity from the preset listing';
+decisions._schema.row.priceCents = 'built pages only: price in cents, the one frame price (FRAME_PRICE_CENTS)';
 decisions._schema.row.redirectTo =
   'pageKey that takes this page\'s old URLs when build is false, or "collection:<handle>" when no built page fits';
 decisions._schema.row.extraPages =

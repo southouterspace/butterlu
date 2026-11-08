@@ -7,7 +7,8 @@
 // selected, so the page reads and works before the script runs.
 import { BACKGROUNDS, FONTS, SHAPES, SIDES } from '@butterlu/frame';
 import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS } from '@butterlu/frame/design';
-import { type Product, SHOP, formatPrice } from '../catalog/products';
+import { type Product, SHOP, formatPrice, frameFor, isFrame } from '../catalog/products';
+import { type Idea, productIdeas } from '../catalog/copy';
 import { productMedia } from '../catalog/media';
 import { groupedBackgrounds } from '../lib/background-groups';
 import ProductGallery from './media/ProductGallery.astro';
@@ -38,6 +39,10 @@ const groups = groupedBackgrounds();
 const pickerId = `bg-picker-${product.handle}`;
 const config = { handle: product.handle, preset };
 const price = formatPrice(product.priceCents);
+const frame = frameFor(product);
+// Wording ideas load into the text fields with one tap; the frame stays the same product.
+const ideas: Idea[] = productIdeas(product.handle);
+const ideaLabel = (i: Idea) => SIDES.flatMap((s) => (i[s] ? [i[s]] : [])).join(' · ');
 const media = productMedia(product.handle);
 const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
 ---
@@ -53,6 +58,9 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
       <h1 class="text-2xl md:text-3xl">{product.name}</h1>
       <p class="mt-1 text-lg font-semibold">{price}</p>
       <p class="mt-2 text-muted-foreground">{product.intro}</p>
+      {!isFrame(product) && (
+        <p class="mt-2 text-sm text-muted-foreground">A design for our <a href={`/products/${frame.handle}`}>{frame.name.toLowerCase()}</a>. Change the shape, background or words and the price stays the same.</p>
+      )}
     </div>
 
     {media.length > 0 && <ProductGallery media={media} name={product.name} />}
@@ -60,6 +68,18 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
     <fieldset>
       <legend class={legend}>Your words</legend>
       <p class="mb-3 text-sm text-muted-foreground">Keep ours, change them, or leave a side blank. Text shrinks to fit.</p>
+      {/* Hidden until the script mounts it: the buttons only work with it. */}
+      {ideas.length > 0 && (
+        <div class="mb-4" data-ideas hidden>
+          <p class="mb-2 text-sm font-medium" id="ideas-label">Wording ideas <span class="font-normal text-muted-foreground">· tap one to try it in place of your words</span></p>
+          <ul class="flex flex-wrap gap-2" aria-labelledby="ideas-label">
+            {ideas.map((idea) => (
+              <li><button type="button" class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-9 max-w-full py-1.5 text-left whitespace-normal')} data-idea={JSON.stringify(idea)}>{ideaLabel(idea)}</button></li>
+            ))}
+          </ul>
+          <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'mt-1 px-0')} data-idea-undo hidden>Undo, bring my words back</button>
+        </div>
+      )}
       <div class="grid gap-3">
         {SIDES.map((side) => (
           <div class="grid gap-1.5">

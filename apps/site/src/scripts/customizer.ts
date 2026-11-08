@@ -148,6 +148,7 @@ export function mountCustomizer(root: HTMLElement) {
 
   function reset() {
     const p = config.preset;
+    clearIdeaUndo();
     (field('shape') as RadioNodeList).value = p.shape;
     (field('background') as RadioNodeList).value = p.backgroundId;
     for (const side of SIDES) {
@@ -172,6 +173,7 @@ export function mountCustomizer(root: HTMLElement) {
   });
 
   let customized = false;
+  let clearIdeaUndo = () => {};
   form.addEventListener('input', () => {
     if (!customized) track('customize');
     customized = true;
@@ -179,6 +181,46 @@ export function mountCustomizer(root: HTMLElement) {
     render();
   });
   resetButton?.addEventListener('click', reset);
+
+  // A wording idea fills every side it names and clears the rest; fonts stay as chosen.
+  // The words it replaced come back with Undo until the shopper types again.
+  const ideasBox = root.querySelector<HTMLElement>('[data-ideas]');
+  const undoIdea = root.querySelector<HTMLButtonElement>('[data-idea-undo]');
+  let beforeIdea: Partial<Record<Side, string>> | null = null;
+  const setTexts = (texts: Partial<Record<Side, string>>) => {
+    for (const side of SIDES) (field(`text-${side}`) as HTMLInputElement).value = texts[side] ?? '';
+  };
+  if (ideasBox) ideasBox.hidden = false;
+  clearIdeaUndo = () => {
+    beforeIdea = null;
+    if (undoIdea) undoIdea.hidden = true;
+  };
+  ideasBox?.addEventListener('click', (e) => {
+    const button = (e.target as Element | null)?.closest<HTMLButtonElement>('[data-idea]');
+    if (!button) return;
+    beforeIdea ??= Object.fromEntries(SIDES.map((side) => [side, value(`text-${side}`)]));
+    setTexts(JSON.parse(button.dataset.idea ?? '{}') as Partial<Record<Side, string>>);
+    if (!customized) track('customize');
+    customized = true;
+    status.dataset.kind = '';
+    render();
+    if (undoIdea) undoIdea.hidden = false;
+    status.textContent = 'Wording idea added. Edit any line to make it yours.';
+  });
+  undoIdea?.addEventListener('click', () => {
+    if (beforeIdea) setTexts(beforeIdea);
+    beforeIdea = null;
+    undoIdea.hidden = true;
+    status.dataset.kind = '';
+    render();
+    status.textContent = 'Your words are back.';
+    (field('text-top') as HTMLInputElement).focus();
+  });
+  // Typing makes the current words the shopper's own, so there's nothing to undo.
+  form.addEventListener('input', () => {
+    beforeIdea = null;
+    if (undoIdea) undoIdea.hidden = true;
+  });
 
   const swatchValue = (e: Event) =>
     (e.target as Element | null)?.closest('label')?.querySelector<HTMLInputElement>('input[name="background"]')?.value ?? '';

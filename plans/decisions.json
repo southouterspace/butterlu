@@ -11,7 +11,7 @@
       "redirectTo": "pageKey that takes this page's old URLs when build is false, or \"collection:<handle>\" when no built page fits",
       "note": "optional owner note",
       "handle": "built pages only: the /products/<handle> URL",
-      "priceCents": "built pages only: price in cents, Etsy parity from the preset listing",
+      "priceCents": "built pages only: price in cents, the one frame price (FRAME_PRICE_CENTS)",
       "extraPages": "built pages only, optional: more /products/<handle> pages on the same pageKey, each preset for one exact search; old URLs go to handle"
     }
   },
@@ -26,7 +26,7 @@
       "shape": "scalloped",
       "background": "sage-stripes",
       "presetFrom": 693902312,
-      "priceCents": 3795,
+      "priceCents": 3595,
       "redirectTo": null,
       "note": "launch tier, 10604 favourites over 27 listings"
     },
@@ -69,7 +69,7 @@
       "shape": "scalloped",
       "background": "blush-stripes",
       "presetFrom": 506350688,
-      "priceCents": 3795,
+      "priceCents": 3595,
       "redirectTo": null,
       "note": "launch tier, 4250 favourites over 4 listings"
     },
@@ -139,7 +139,7 @@
       "shape": "scalloped",
       "background": "white-shiplap",
       "presetFrom": 627247659,
-      "priceCents": 3795,
+      "priceCents": 3595,
       "redirectTo": null,
       "note": "launch tier, 2134 favourites over 22 listings"
     },
@@ -173,7 +173,7 @@
       "shape": "scalloped",
       "background": "light-blue-stripes",
       "presetFrom": 226797672,
-      "priceCents": 3795,
+      "priceCents": 3595,
       "redirectTo": null,
       "note": "launch tier, 1352 favourites over 17 listings"
     },
@@ -227,7 +227,7 @@
       "shape": "scalloped",
       "background": "yellow-checkers",
       "presetFrom": 506697625,
-      "priceCents": 3795,
+      "priceCents": 3595,
       "redirectTo": null,
       "note": "launch tier, 972 favourites over 10 listings"
     },
@@ -239,7 +239,7 @@
       "shape": "scalloped",
       "background": "light-blue",
       "presetFrom": 551630150,
-      "priceCents": 3795,
+      "priceCents": 3595,
       "redirectTo": null,
       "note": "launch tier, 946 favourites over 43 listings"
     },
@@ -251,7 +251,7 @@
       "shape": "rounded-rectangle",
       "background": "whitewashed-wood",
       "presetFrom": 483294076,
-      "priceCents": 3795,
+      "priceCents": 3595,
       "redirectTo": null,
       "note": "later tier, 838 favourites over 7 listings"
     },
@@ -1012,5 +1012,5 @@
   ],
   "status": "proposed",
   "proposedBy": "agent, from apps/site/src/catalog/products.ts via scripts/storefront-lineup.mjs",
-  "proposedAt": "2026-11-08T15:25:26.956Z"
+  "proposedAt": "2026-11-08T16:03:32.809Z"
 }

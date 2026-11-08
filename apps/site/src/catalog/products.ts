@@ -12,11 +12,17 @@ import type { FrameSpec } from '@butterlu/frame';
 export interface Product {
   /** URL slug: /products/<handle>. Old Shopify handles 301 here (public/_redirects). */
   handle: string;
+  /**
+   * 'frame' for the two real products (scalloped and rounded). Everything else is a
+   * design: one frame preset for one search (godmother, Mimi, ultrasound), sold as that
+   * frame and marked up as its variant (docs/12 §4b).
+   */
+  kind?: 'frame';
   /** plans/clusters.json pageKey and clusterId this page builds. */
   pageKey: string;
   clusterId: string;
-  /** Etsy listing whose wording and look seeded the preset. */
-  etsyListingId: number;
+  /** Etsy listing whose wording and look seeded the preset. None on the two frames. */
+  etsyListingId?: number;
   name: string;
   /** Without the " | Butterlu" suffix; lint-dist checks the rendered title fits 60 chars. */
   seoTitle: string;
@@ -41,6 +47,11 @@ export interface Collection {
 }
 
 export const CURRENCY = 'usd';
+/**
+ * One price for both frames and every design on them. PROPOSED (2026-11-08): Etsy
+ * listings were $35.95 or $37.95 for the same frame; the owner confirms.
+ */
+export const FRAME_PRICE_CENTS = 3595;
 export const SHOP = {
   name: 'Butterlu',
   /** Shown on product pages and the shipping page. PROPOSED, the owner confirms. */
@@ -105,7 +116,47 @@ export const COLLECTIONS: Collection[] = [
   },
 ];
 
-export const PRODUCTS: Product[] = [
+/** The two products Butterlu sells. Every design page is one of these with a preset. */
+const FRAME_PAGES: Product[] = [
+  {
+    handle: 'scalloped-picture-frame',
+    kind: 'frame',
+    pageKey: 'frame/any/scalloped',
+    clusterId: 'F01',
+    name: 'Scalloped picture frame',
+    seoTitle: 'Personalized Scalloped Picture Frame',
+    seoDescription: 'A personalized scalloped picture frame for a 4x6 photo. Write your own words on any side, pick from 44 backgrounds, free US shipping.',
+    intro: 'Our scalloped frame with your words on any side. Start from scratch here, or pick one of the designs below.',
+    goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a blank frame'],
+    priceCents: FRAME_PRICE_CENTS,
+    preset: {
+      shape: 'scalloped',
+      backgroundId: 'blush-checkers',
+      sides: { top: { text: 'Our Happy Place', fontId: script }, bottom: { text: 'Est. 2026', fontId: sans } },
+    },
+    collections: [],
+  },
+  {
+    handle: 'rounded-picture-frame',
+    kind: 'frame',
+    pageKey: 'frame/any/rounded-rectangle',
+    clusterId: 'F02',
+    name: 'Rounded picture frame',
+    seoTitle: 'Personalized Rounded Picture Frame',
+    seoDescription: 'A personalized rounded picture frame for a 4x6 photo. Write your own words on any side, pick from 44 backgrounds, free US shipping.',
+    intro: 'Our rounded frame with your words on any side. Start from scratch here, or pick one of the designs below.',
+    goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a blank frame'],
+    priceCents: FRAME_PRICE_CENTS,
+    preset: {
+      shape: 'rounded-rectangle',
+      backgroundId: 'navy-stripes',
+      sides: { top: { text: 'Home Sweet Home', fontId: script }, bottom: { text: 'The Garcia Family', fontId: serif } },
+    },
+    collections: [],
+  },
+];
+
+const DESIGN_PAGES: Product[] = [
   {
     handle: 'grandparent-pregnancy-announcement-frame',
     pageKey: 'frame/grandparents-to-be/announcement',
@@ -116,7 +167,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'Tell them they’re going to be grandparents. A personalized ultrasound picture frame with your wording, in two shapes and 44 backgrounds.',
     intro: 'The reveal that ends in happy tears. Put the ultrasound photo in the frame, wrap it, and watch them read it.',
     goodFor: ['Telling your parents the news', 'First grandchild reveals', 'Ultrasound or sonogram photos'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'sage-stripes',
@@ -134,7 +185,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized wedding picture frame for dad, mom or the parents of the couple. Your words, both frame shapes, 44 backgrounds.',
     intro: 'A thank-you for the people who got you here. Change the words for mom, the groom’s parents or both sets of parents.',
     goodFor: ['Father or mother of the bride', 'Parents of the groom', 'Wedding thank-you gifts'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'white-linen',
@@ -152,7 +203,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized picture frame for grandma with the name the grandkids call her. Mimi, Gigi, Nana or your own. Made to order.',
     intro: 'Mimi, Gigi, Nana, Grammy: put her name on it. A frame for the photo of her favorite people.',
     goodFor: ['Mother’s Day and birthdays', 'Gifts from the grandkids', 'Any grandma name'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'blush-checkers',
@@ -170,7 +221,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'Ask her to be godmother with a personalized picture frame. Add a photo of the baby and your own wording. Two shapes, 44 backgrounds.',
     intro: 'The sweetest way to ask. Add a photo of the baby and let the frame pop the question.',
     goodFor: ['Asking a godmother', 'Baptism and christening plans', 'A keepsake she’ll keep'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'blush-stripes',
@@ -188,7 +239,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized godfather picture frame for a baptism or christening day. Your wording on two frame shapes and 44 backgrounds.',
     intro: 'A thank-you for standing up on the big day. A photo from the baptism looks perfect in it.',
     goodFor: ['Baptism and christening gifts', 'From the baby or the parents', 'Godfather proposals too'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'navy-stripes',
@@ -206,7 +257,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized godmother picture frame from the baby, for a baptism or christening. Your wording, two shapes, 44 backgrounds.',
     intro: 'From the baby to the godmother who will always be there. Frame a photo from the day.',
     goodFor: ['Baptism and christening gifts', 'From the baby or the parents', 'Godmother birthdays'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'pink-toile',
@@ -224,7 +275,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized Christmas picture frame for grandpa from the grandkids. Change the wording, pick a background, add a 4x6 photo.',
     intro: 'The gift under the tree he’ll keep on his desk all year. Change “little girl” to “little buddy” or anything you like.',
     goodFor: ['Christmas from the grandkids', 'A first Christmas as grandpa', 'Papa, Pop, Grandad'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'maroon-checkers',
@@ -242,7 +293,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized birthday picture frame for grandpa or papa from the grandkids. Your words, two shapes, 44 backgrounds.',
     intro: 'Happy birthday from the people who call him Papa. Add the grandkids’ names or a favorite saying.',
     goodFor: ['Birthdays', 'Gifts from the grandkids', 'Father’s Day too'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'gray-shiplap',
@@ -260,7 +311,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized engagement or wedding picture frame for the couple. Add names and a date. Bridal shower and engagement gift.',
     intro: 'For the newly engaged or the just married. Add their names, their date or their new last name.',
     goodFor: ['Engagement gifts', 'Bridal showers', 'Wedding gifts for the couple'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'white-shiplap',
@@ -278,7 +329,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized picture frame for an aunt or uncle: birthdays, new nieces and nephews, or just because. Two shapes, 44 backgrounds.',
     intro: 'For the fun aunt, the favorite uncle, or both. Change the wording to their names or a nickname only the kids use.',
     goodFor: ['Birthdays', 'From a niece or nephew', 'New aunt and uncle announcements'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'blue-checkers',
@@ -296,7 +347,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized ultrasound picture frame for a pregnancy reveal or a new grandma. Add the due date. Two shapes, 44 backgrounds.',
     intro: 'For the first photo of the newest family member. Add the due date, or a name if you know it.',
     goodFor: ['Pregnancy reveals', 'Gifts for a grandma-to-be', 'Sonogram keepsakes'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'light-blue-stripes',
@@ -314,7 +365,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized Father’s Day picture frame for grandpa from the grandkids. Your wording on two frame shapes and 44 backgrounds.',
     intro: 'Father’s Day for the man who did it twice. Add the grandkids’ names along the sides.',
     goodFor: ['Father’s Day', 'A first Father’s Day as grandpa', 'From the grandkids'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'olive-green-stripes',
@@ -332,7 +383,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized picture frame for grandpa with the name the grandkids call him. Papa, Pop, Grandad or your own. Made to order.',
     intro: 'Papa, Pop, Grandad: put his name on it. A frame for a photo with the grandkids.',
     goodFor: ['Birthdays and holidays', 'Gifts from the grandkids', 'Any grandpa name'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'brown-wood-plank',
@@ -350,7 +401,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized Christmas picture frame for Gigi, Mimi or Nana from the grandkids. Your wording, two shapes, 44 backgrounds.',
     intro: 'A Christmas keepsake from the grandkids. Change Gigi to whatever they call her.',
     goodFor: ['Christmas from the grandkids', 'Any grandma name', 'A first Christmas as grandma'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'green-toile',
@@ -368,7 +419,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized twin pregnancy ultrasound frame. Add the due date or the babies’ names. Two frame shapes, 44 backgrounds.',
     intro: 'Two heartbeats, one frame. Add the due date or both names.',
     goodFor: ['Twin pregnancy reveals', 'Gifts for expecting parents', 'Sonogram keepsakes'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'yellow-checkers',
@@ -386,7 +437,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized newborn picture frame with the baby’s name and birth date. Baby shower and new baby gift. Two shapes, 44 backgrounds.',
     intro: 'For the first photo home. Add the baby’s name, birth date or weight along any side.',
     goodFor: ['New baby gifts', 'Baby showers', 'Nursery decor'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'light-blue',
@@ -404,7 +455,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'Tell great-grandma or great-grandpa the news with a personalized ultrasound picture frame. Your wording, two shapes, 44 backgrounds.',
     intro: 'Another generation on the way. Change it to great-grandpa, or both of them.',
     goodFor: ['Pregnancy reveals', 'Great-grandma and great-grandpa', 'Ultrasound photos'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'whitewashed-wood',
@@ -422,7 +473,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized picture frame for both godparents, for a baptism or christening. Your wording, two shapes, 44 backgrounds.',
     intro: 'One frame for both of them. Add their names and the baptism date.',
     goodFor: ['Baptism and christening gifts', 'For a godparent couple', 'From the baby or the parents'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'blue-toile',
@@ -440,7 +491,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized pet memorial picture frame for a dog or cat. Add their name and years, pick a background, and frame a favorite photo.',
     intro: 'For the dog or cat who was family. Put their name on top and their years on the sides.',
     goodFor: ['Dog and cat memorials', 'Sympathy gifts', 'Their name and years'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'whitewashed-wood',
@@ -464,7 +515,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized Mimi picture frame from the grandkids. Change every word, check it in the live preview, and get free shipping in the US.',
     intro: 'For the grandma who goes by Mimi. Put her name across the top, sign it from the grandkids, and add a favorite 4x6 photo.',
     goodFor: ['Mother’s Day and birthdays', 'Gifts from the grandkids', 'A first gift from a new grandbaby', 'Christmas for Mimi'],
-    priceCents: 3795,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'pink-stripes',
@@ -482,7 +533,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized Nana picture frame with her name and the grandkids’ love. See your words in the live preview before you buy. Free shipping in the US.',
     intro: 'For the grandma everyone calls Nana. Add her name, a line from the grandkids, and the photo she’ll want to show off.',
     goodFor: ['Mother’s Day and birthdays', 'From a grandson or granddaughter', 'A brand new Nana', 'Christmas from the grandkids'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'sage-checkers',
@@ -500,7 +551,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized Papa picture frame from the grandkids for Father’s Day, birthdays or Christmas. Live preview of your words and free shipping in the US.',
     intro: 'For the grandpa the grandkids call Papa. Put his name on it, sign it from the kids, and frame a photo of them together.',
     goodFor: ['Father’s Day and birthdays', 'Gifts from the grandkids', 'A first Father’s Day as Papa', 'Christmas'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'rounded-rectangle',
       backgroundId: 'navy-stripes',
@@ -518,7 +569,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized Abuela picture frame in English, Spanish or both. See every word in the live preview before you buy. Free shipping in the US.',
     intro: 'For the abuela at the center of every family gathering. Write it in English, Spanish or both, and add a 4x6 photo of her with the grandkids.',
     goodFor: ['Mother’s Day and birthdays', 'Gifts from the grandkids', 'English, Spanish or both', 'Christmas'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'pink-toile',
@@ -536,7 +587,7 @@ export const PRODUCTS: Product[] = [
     seoDescription: 'A personalized mother of the groom picture frame to thank her for raising him. Change any word in the live preview. Free shipping in the US.',
     intro: 'A thank-you for the groom’s mom on the wedding day. Sign it from the bride, the groom or both, and add a photo from the day.',
     goodFor: ['Mother of the groom', 'From the bride or the groom', 'Rehearsal dinner or wedding morning', 'Wedding thank-you gifts'],
-    priceCents: 3595,
+    priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'white-linen',
@@ -546,15 +597,26 @@ export const PRODUCTS: Product[] = [
   },
 ];
 
-/** Product handles in the order the home page features them (most favourited first). */
-export const FEATURED = PRODUCTS.slice(0, 8).map((p) => p.handle);
+/** Every page at /products/<handle>: the two frames, then the designs. Checkout prices by handle. */
+export const PRODUCTS: Product[] = [...FRAME_PAGES, ...DESIGN_PAGES];
+export const FRAMES = FRAME_PAGES;
+export const DESIGNS = DESIGN_PAGES;
+
+/** The frame a design is drawn on: the one matching its preset's shape. */
+export function frameFor(p: Product): Product {
+  return FRAME_PAGES.find((f) => f.preset.shape === p.preset.shape)!;
+}
+export const isFrame = (p: Product) => p.kind === 'frame';
+
+/** Design handles in the order the home page features them (most favourited first). */
+export const FEATURED = DESIGN_PAGES.slice(0, 8).map((p) => p.handle);
 
 export function productByHandle(handle: string): Product | undefined {
   return PRODUCTS.find((p) => p.handle === handle);
 }
 
 export function collectionProducts(handle: string): Product[] {
-  return PRODUCTS.filter((p) => p.collections.includes(handle));
+  return DESIGN_PAGES.filter((p) => p.collections.includes(handle));
 }
 
 export function formatPrice(cents: number): string {

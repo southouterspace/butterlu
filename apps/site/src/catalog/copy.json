@@ -292,6 +292,40 @@
      "Can I order one for Mimi and Papa together?",
      "Yes. Write “Mimi and Papa” across the top, or pair it with our Papa picture frame."
     ]
+   ],
+   "ideas": [
+    {
+     "top": "I Love My Mimi",
+     "bottom": "Love, Noah"
+    },
+    {
+     "top": "Happy Mother’s Day, Mimi",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "Mimi’s Favorite People",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Spoiled Rotten by Mimi",
+     "bottom": "And Proud of It"
+    },
+    {
+     "top": "Hi Mimi, I’m New Here",
+     "bottom": "Love, Baby Mia, 2027"
+    },
+    {
+     "top": "Mimi and Me",
+     "bottom": "Best Friends Since 2024"
+    },
+    {
+     "top": "Merry Christmas, Mimi",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "Happy Birthday, Mimi",
+     "bottom": "We Love You to the Moon"
+    }
    ]
   },
   "nana-picture-frame": {
@@ -308,6 +342,40 @@
      "Does it work for a brand new Nana?",
      "Yes. Frame a photo from the hospital or the first visit, and add the baby’s name and birth date on the sides."
     ]
+   ],
+   "ideas": [
+    {
+     "top": "Nana’s Little Sunshines",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Happy Mother’s Day, Nana",
+     "bottom": "Love, Ava and Noah"
+    },
+    {
+     "top": "Nana’s House Rules",
+     "bottom": "Ice Cream Before Dinner"
+    },
+    {
+     "top": "Brand New Nana",
+     "bottom": "Est. 2027"
+    },
+    {
+     "top": "Hugs from Nana Fix Everything",
+     "bottom": "Love, Mia"
+    },
+    {
+     "top": "Merry Christmas, Nana",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "Nana and Me",
+     "bottom": "Best Friends Forever"
+    },
+    {
+     "top": "Happy Birthday, Nana",
+     "bottom": "We Love You"
+    }
    ]
   },
   "papa-picture-frame": {
@@ -324,6 +392,40 @@
      "Which shape suits a grandpa?",
      "Both work. The rounded rectangle with a wood or stripe background is a simple choice, and the preview shows each one with your words."
     ]
+   ],
+   "ideas": [
+    {
+     "top": "I Love My Papa",
+     "bottom": "Love, Mia"
+    },
+    {
+     "top": "If Papa Can’t Fix It",
+     "bottom": "No One Can"
+    },
+    {
+     "top": "Happy Father’s Day, Papa",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "Papa’s Little Buddies",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Papa and Me",
+     "bottom": "Partners in Crime Since 2024"
+    },
+    {
+     "top": "First Father’s Day as Papa",
+     "bottom": "June 2027"
+    },
+    {
+     "top": "Merry Christmas, Papa",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "Happy Birthday, Papa",
+     "bottom": "We Love You More"
+    }
    ]
   },
   "abuela-picture-frame": {
@@ -340,6 +442,40 @@
      "Is there a matching frame for Abuelo?",
      "Any of our grandpa frames can say Abuelo. Open the Papa picture frame and change the name."
     ]
+   ],
+   "ideas": [
+    {
+     "top": "Te Quiero Mucho, Abuela",
+     "bottom": "Con Cariño, Mateo y Sofía"
+    },
+    {
+     "top": "Los Tesoros de Abuela",
+     "bottom": "Mateo, Sofía y Lucas"
+    },
+    {
+     "top": "Feliz Día de las Madres, Abuela",
+     "bottom": "Te Queremos"
+    },
+    {
+     "top": "Happy Mother’s Day, Abuela",
+     "bottom": "Love, Mateo and Sofía"
+    },
+    {
+     "top": "Abuela’s Little Loves",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Feliz Navidad, Abuela",
+     "bottom": "Navidad 2026"
+    },
+    {
+     "top": "Feliz Cumpleaños, Abuela",
+     "bottom": "Con Amor, Mateo y Sofía"
+    },
+    {
+     "top": "Abuela, Eres Mi Todo",
+     "bottom": "Love, Sofía"
+    }
    ]
   },
   "mother-of-the-groom-frame": {
@@ -356,6 +492,799 @@
      "When should I give it to her?",
      "The rehearsal dinner or the morning of the wedding are both good moments. Frame an old photo of her with the groom, and she can swap in a wedding photo later."
     ]
+   ],
+   "ideas": [
+    {
+     "top": "Thank You for Raising My Best Friend",
+     "bottom": "Love, Alex"
+    },
+    {
+     "top": "Mom, Thank You for Everything",
+     "bottom": "Sam and Alex, June 2027"
+    },
+    {
+     "top": "Mother of the Groom",
+     "bottom": "June 14, 2027"
+    },
+    {
+     "top": "Thank You for Sharing Your Son",
+     "bottom": "Love, Alex"
+    },
+    {
+     "top": "Today I Marry Your Son",
+     "bottom": "Thank You for Everything"
+    },
+    {
+     "top": "Always Your Little Boy",
+     "bottom": "Love, Sam, June 2027"
+    },
+    {
+     "top": "Gaining a Family, Starting with You",
+     "bottom": "Love, Alex, 2027"
+    },
+    {
+     "top": "Thank You for Your Love and Support",
+     "bottom": "The Carter Wedding, 2027"
+    }
+   ]
+  },
+  "grandparent-pregnancy-announcement-frame": {
+   "ideas": [
+    {
+     "top": "You’re Going to Be Grandparents",
+     "bottom": "Baby Arriving June 2027"
+    },
+    {
+     "top": "Guess Who’s Getting a Grandbaby",
+     "bottom": "See You in Spring 2027"
+    },
+    {
+     "top": "Best Parents Get Promoted",
+     "bottom": "To Grandparents in 2027"
+    },
+    {
+     "top": "Our Family Is Growing",
+     "bottom": "Baby Coming March 2027"
+    },
+    {
+     "top": "Your First Grandbaby Is on the Way",
+     "bottom": "Love, Jess and Sam"
+    },
+    {
+     "top": "Another Grandbaby Is on the Way",
+     "bottom": "Arriving Fall 2027"
+    },
+    {
+     "top": "New Grandparents Loading",
+     "bottom": "Due Date: May 2027"
+    },
+    {
+     "top": "I Can’t Wait to Meet You",
+     "bottom": "Love, Baby Carter, Due 2027"
+    }
+   ]
+  },
+  "father-of-the-bride-frame": {
+   "ideas": [
+    {
+     "top": "Thank You for Walking Me Down the Aisle",
+     "bottom": "Love, Emma"
+    },
+    {
+     "top": "Thank You for Everything, Dad",
+     "bottom": "Emma and Jake, June 2027"
+    },
+    {
+     "top": "Father of the Bride",
+     "bottom": "June 14, 2027"
+    },
+    {
+     "top": "Forever Your Little Girl",
+     "bottom": "Love, Emma"
+    },
+    {
+     "top": "Dad, Thank You for Every Step",
+     "bottom": "Love, Emma, 2027"
+    },
+    {
+     "top": "Mother of the Bride",
+     "bottom": "Love, Emma and Jake"
+    },
+    {
+     "top": "Thank You to the Best Parents",
+     "bottom": "Emma and Jake, Married 2027"
+    },
+    {
+     "top": "Parents of the Groom",
+     "bottom": "The Carter Wedding, 2027"
+    }
+   ]
+  },
+  "personalized-grandma-frame": {
+   "ideas": [
+    {
+     "top": "Gigi’s Favorite People",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Nana’s Little Sunshines",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "Happy Mother’s Day, Grammy",
+     "bottom": "Love, Ava and Noah"
+    },
+    {
+     "top": "Spoiled by Grandma",
+     "bottom": "Since 2024"
+    },
+    {
+     "top": "Mimi, You’re the Best",
+     "bottom": "Happy Birthday 2027"
+    },
+    {
+     "top": "Grammy’s Bragging Rights",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "I Love You to the Moon, Gigi",
+     "bottom": "Love, Ava"
+    },
+    {
+     "top": "Our Hearts Belong to Nana"
+    }
+   ]
+  },
+  "godmother-proposal-frame": {
+   "ideas": [
+    {
+     "top": "Will You Be My Madrina?",
+     "bottom": "Love, Baby Lucas"
+    },
+    {
+     "top": "Wanted: One Fabulous Godmother",
+     "bottom": "Must Love Me Forever"
+    },
+    {
+     "top": "I Picked You to Be My Godmother",
+     "bottom": "Baptism Spring 2027"
+    },
+    {
+     "top": "Every Little One Needs a Godmother",
+     "bottom": "Will You Be Mine?"
+    },
+    {
+     "top": "¿Quieres Ser Mi Madrina?",
+     "bottom": "Con Amor, Sofía"
+    },
+    {
+     "top": "Will You Help Guide Me in Faith?",
+     "bottom": "Be My Godmother"
+    },
+    {
+     "top": "Will You Stand by Me at My Baptism?",
+     "bottom": "Baptism June 2027"
+    },
+    {
+     "top": "Auntie, Will You Be My Godmother?",
+     "bottom": "Love, Baby Mia"
+    }
+   ]
+  },
+  "godfather-baptism-frame": {
+   "ideas": [
+    {
+     "top": "Thank You for Being My Godfather",
+     "bottom": "Baptized June 2027"
+    },
+    {
+     "top": "Padrino, Gracias por Tu Amor",
+     "bottom": "Con Cariño, Mateo"
+    },
+    {
+     "top": "My Godfather, My Hero",
+     "bottom": "Love, Lucas"
+    },
+    {
+     "top": "Best Godfather Ever",
+     "bottom": "Baptism Day 2027"
+    },
+    {
+     "top": "Lucky to Have You in My Corner",
+     "bottom": "Love, Your Godchild"
+    },
+    {
+     "top": "Faith, Love and My Godfather",
+     "bottom": "Christened 2027"
+    },
+    {
+     "top": "Will You Be My Godfather?",
+     "bottom": "Love, Baby Mia"
+    },
+    {
+     "top": "¿Quieres Ser Mi Padrino?",
+     "bottom": "Con Amor, Lucas"
+    }
+   ]
+  },
+  "godmother-baptism-frame": {
+   "ideas": [
+    {
+     "top": "Thank You for Being My Godmother",
+     "bottom": "Baptized June 2027"
+    },
+    {
+     "top": "Madrina, Te Quiero Mucho",
+     "bottom": "Con Cariño, Sofía"
+    },
+    {
+     "top": "My Godmother, My Guardian Angel",
+     "bottom": "Love, Mia"
+    },
+    {
+     "top": "Best Godmother Ever",
+     "bottom": "Baptism Day 2027"
+    },
+    {
+     "top": "Lucky to Have You by My Side",
+     "bottom": "Love, Lucas"
+    },
+    {
+     "top": "Gracias por Ser Mi Madrina",
+     "bottom": "Bautizo 2027"
+    },
+    {
+     "top": "Faith, Love and My Godmother",
+     "bottom": "Christened 2027"
+    },
+    {
+     "top": "Happy Birthday, Godmother",
+     "bottom": "Love, Your Godchild"
+    }
+   ]
+  },
+  "grandpa-christmas-frame": {
+   "ideas": [
+    {
+     "top": "Grandpa’s Little Buddy",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "Merry Christmas, Grandpa",
+     "bottom": "Love, Ava and Noah"
+    },
+    {
+     "top": "Our First Christmas with Grandpa",
+     "bottom": "Love, Baby Mia, 2026"
+    },
+    {
+     "top": "Grandpa’s Little Elves",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Santa’s Got Nothing on Grandpa",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "Pop’s Christmas Crew",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "All I Want for Christmas Is Grandpa",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "Papa’s Favorite Christmas Gift",
+     "bottom": "Merry Christmas 2026"
+    }
+   ]
+  },
+  "grandpa-birthday-frame": {
+   "ideas": [
+    {
+     "top": "Happy Birthday, Grandpa",
+     "bottom": "Love, Ava, Noah and Mia"
+    },
+    {
+     "top": "Aged to Perfection",
+     "bottom": "Happy Birthday, Grandad"
+    },
+    {
+     "top": "Happy 70th Birthday, Papa",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "Another Year Older, Still Our Favorite",
+     "bottom": "Happy Birthday, Pop"
+    },
+    {
+     "top": "Papa’s Birthday Crew",
+     "bottom": "Love, Ava and Noah"
+    },
+    {
+     "top": "Best Papa Since 2015",
+     "bottom": "Happy Birthday"
+    },
+    {
+     "top": "Grandpa, You’re One of a Kind",
+     "bottom": "Happy Birthday 2027"
+    },
+    {
+     "top": "Happy Father’s Day, Papa",
+     "bottom": "Love, the Grandkids"
+    }
+   ]
+  },
+  "engagement-frame-for-couple": {
+   "ideas": [
+    {
+     "top": "Sam and Alex",
+     "bottom": "Engaged October 2026"
+    },
+    {
+     "top": "We Said Yes",
+     "bottom": "October 12, 2026"
+    },
+    {
+     "top": "The Carters",
+     "bottom": "Est. 2027"
+    },
+    {
+     "top": "Happily Ever After Starts Here",
+     "bottom": "Sam and Alex, 2027"
+    },
+    {
+     "top": "Two Hearts, One Love",
+     "bottom": "Married June 14, 2027"
+    },
+    {
+     "top": "Officially Off the Market",
+     "bottom": "Engaged 2026"
+    },
+    {
+     "top": "Mr. & Mr.",
+     "bottom": "Est. 2027"
+    },
+    {
+     "top": "Mrs. & Mrs.",
+     "bottom": "Est. 2027"
+    }
+   ]
+  },
+  "aunt-uncle-picture-frame": {
+   "ideas": [
+    {
+     "top": "Best Aunt Ever",
+     "bottom": "Love, Ava"
+    },
+    {
+     "top": "Best Aunt and Uncle Ever",
+     "bottom": "Love, Mia"
+    },
+    {
+     "top": "Uncle Mike’s Favorite Kid",
+     "bottom": "Don’t Tell the Others"
+    },
+    {
+     "top": "Like a Mom, Only Cooler",
+     "bottom": "Happy Birthday, Auntie"
+    },
+    {
+     "top": "Uncle by Blood, Buddy by Choice",
+     "bottom": "Love, Noah"
+    },
+    {
+     "top": "Promoted to Aunt and Uncle",
+     "bottom": "Baby Coming 2027"
+    },
+    {
+     "top": "I Love My Auntie",
+     "bottom": "Love, Noah"
+    },
+    {
+     "top": "My Aunt, My Best Friend",
+     "bottom": "Happy Birthday 2027"
+    }
+   ]
+  },
+  "love-at-first-sight-ultrasound-frame": {
+   "ideas": [
+    {
+     "top": "Hello, Little One",
+     "bottom": "Due May 2027"
+    },
+    {
+     "top": "Loved Before You Were Born",
+     "bottom": "Baby Carter, Due 2027"
+    },
+    {
+     "top": "Our Greatest Adventure Begins",
+     "bottom": "Baby Due Spring 2027"
+    },
+    {
+     "top": "First Glimpse of Our Baby",
+     "bottom": "Coming June 2027"
+    },
+    {
+     "top": "Waiting to Meet You",
+     "bottom": "Due Date: April 2027"
+    },
+    {
+     "top": "Grandma’s Newest Love",
+     "bottom": "Arriving Fall 2027"
+    },
+    {
+     "top": "Baby Riley",
+     "bottom": "Due September 2027"
+    },
+    {
+     "top": "Our Hearts Are Already Full",
+     "bottom": "Baby Due 2027"
+    }
+   ]
+  },
+  "grandpa-fathers-day-frame": {
+   "ideas": [
+    {
+     "top": "Happy Father’s Day, Papa",
+     "bottom": "Love, Ava and Noah"
+    },
+    {
+     "top": "First Father’s Day as Grandpa",
+     "bottom": "June 2027"
+    },
+    {
+     "top": "Twice the Dad, Twice the Love",
+     "bottom": "Happy Father’s Day"
+    },
+    {
+     "top": "Happy Father’s Day, Grandad",
+     "left": "Ava",
+     "right": "Noah"
+    },
+    {
+     "top": "We Love You, Grandpa",
+     "bottom": "Father’s Day 2027"
+    },
+    {
+     "top": "Grandpa’s Favorite People",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Best Pop by Par",
+     "bottom": "Happy Father’s Day"
+    },
+    {
+     "top": "Our Hero, Our Grandpa",
+     "bottom": "Love, the Grandkids"
+    }
+   ]
+  },
+  "grandpa-picture-frame": {
+   "ideas": [
+    {
+     "top": "Papa’s Little Buddies",
+     "bottom": "Ava and Noah"
+    },
+    {
+     "top": "Grandad and Me",
+     "bottom": "Best Friends Since 2023"
+    },
+    {
+     "top": "World’s Best Grandpa",
+     "bottom": "As Voted by the Grandkids"
+    },
+    {
+     "top": "Pop’s Favorite People",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Fishing Buddies for Life",
+     "bottom": "Grandpa and Noah"
+    },
+    {
+     "top": "Grandpa’s Pride and Joy",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "We Love You, Papa",
+     "bottom": "Ava, Noah and Mia"
+    },
+    {
+     "top": "Grandpa’s Hugs Are the Best"
+    }
+   ]
+  },
+  "gigi-christmas-frame": {
+   "ideas": [
+    {
+     "top": "Gigi’s Little Elves",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "Merry Christmas, Nana",
+     "bottom": "Love, Ava, Noah and Mia"
+    },
+    {
+     "top": "Our First Christmas with Gigi",
+     "bottom": "Love, Baby Mia, 2026"
+    },
+    {
+     "top": "All I Want for Christmas Is Gigi",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "The Best Gift Is Time with Gigi",
+     "bottom": "Love, the Grandkids"
+    },
+    {
+     "top": "Merry and Bright with Mimi",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "Baking Cookies with Grammy",
+     "bottom": "Christmas 2026"
+    },
+    {
+     "top": "Gigi’s Favorite Gifts",
+     "bottom": "Ava, Noah and Mia"
+    }
+   ]
+  },
+  "twins-ultrasound-frame": {
+   "ideas": [
+    {
+     "top": "Two Little Hearts",
+     "bottom": "Due Spring 2027"
+    },
+    {
+     "top": "Surprise, It’s Twins",
+     "bottom": "Arriving June 2027"
+    },
+    {
+     "top": "Double Trouble on the Way",
+     "bottom": "Twins Coming 2027"
+    },
+    {
+     "top": "Two Heartbeats, One Big Love",
+     "bottom": "Due August 2027"
+    },
+    {
+     "top": "Baby A and Baby B",
+     "bottom": "Coming Fall 2027"
+    },
+    {
+     "top": "Riley and Jordan",
+     "bottom": "Due May 2027"
+    },
+    {
+     "top": "Two Grandbabies on the Way",
+     "bottom": "Arriving 2027"
+    },
+    {
+     "top": "Twice the Love, Twice the Fun",
+     "bottom": "Twins Due 2027"
+    }
+   ]
+  },
+  "baby-name-frame": {
+   "ideas": [
+    {
+     "top": "Riley James",
+     "bottom": "Born March 3, 2027"
+    },
+    {
+     "top": "Hello, World",
+     "bottom": "7 lbs 4 oz, 20 in"
+    },
+    {
+     "top": "Welcome Home, Baby Riley",
+     "bottom": "March 3, 2027"
+    },
+    {
+     "top": "Our Little Miracle",
+     "bottom": "Riley, Born 2027",
+     "left": "7 lbs 2 oz",
+     "right": "19 in"
+    },
+    {
+     "top": "Dreams Do Come True",
+     "bottom": "Riley, Est. 2027"
+    },
+    {
+     "top": "Brand New and Already Loved",
+     "bottom": "March 3, 2027, 6:42 AM"
+    },
+    {
+     "top": "The Newest Member of the Family",
+     "bottom": "Born Spring 2027"
+    },
+    {
+     "top": "Our Greatest Blessing",
+     "bottom": "Riley Jordan Carter"
+    }
+   ]
+  },
+  "great-grandparent-announcement-frame": {
+   "ideas": [
+    {
+     "top": "Promoted to Great Grandpa",
+     "bottom": "Coming 2027"
+    },
+    {
+     "top": "Promoted to Great Grandparents",
+     "bottom": "Baby Due June 2027"
+    },
+    {
+     "top": "From Grand to Great Grand",
+     "bottom": "Coming 2027"
+    },
+    {
+     "top": "Another Generation on the Way",
+     "bottom": "Arriving Spring 2027"
+    },
+    {
+     "top": "You’re Going to Be a Great Grandma",
+     "bottom": "Due Fall 2027"
+    },
+    {
+     "top": "Four Generations Coming Soon",
+     "bottom": "Baby Carter, Due 2027"
+    },
+    {
+     "top": "Great Grandma, Here I Come",
+     "bottom": "See You in May 2027"
+    },
+    {
+     "top": "Your Family Keeps Growing",
+     "bottom": "Great Grandbaby Due 2027"
+    }
+   ]
+  },
+  "godparents-baptism-frame": {
+   "ideas": [
+    {
+     "top": "Thank You for Being My Godparents",
+     "bottom": "Baptized June 2027"
+    },
+    {
+     "top": "Padrinos, Gracias por Su Amor",
+     "bottom": "Bautizo 2027"
+    },
+    {
+     "top": "Godparents Maria and Luis",
+     "bottom": "Baptism Day, June 2027"
+    },
+    {
+     "top": "My Godparents, My Guardian Angels",
+     "bottom": "Love, Mia"
+    },
+    {
+     "top": "Mis Padrinos, Mi Bendición",
+     "bottom": "Con Amor, Mateo"
+    },
+    {
+     "top": "Lucky to Have Two of You",
+     "bottom": "Love, Your Godchild"
+    },
+    {
+     "top": "Faith, Family and My Godparents",
+     "bottom": "Christened 2027"
+    },
+    {
+     "top": "Will You Be My Godparents?",
+     "bottom": "Love, Baby Lucas"
+    }
+   ]
+  },
+  "pet-memorial-frame": {
+   "ideas": [
+    {
+     "top": "Always by Our Side",
+     "bottom": "Bella",
+     "left": "2010",
+     "right": "2025"
+    },
+    {
+     "top": "In Loving Memory",
+     "bottom": "Max"
+    },
+    {
+     "top": "Until We Meet Again",
+     "bottom": "Luna",
+     "left": "2013",
+     "right": "2026"
+    },
+    {
+     "top": "If Love Could Have Saved You",
+     "bottom": "You Would Have Lived Forever"
+    },
+    {
+     "top": "Forever Our Best Friend",
+     "bottom": "Charlie"
+    },
+    {
+     "top": "Paw Prints on Our Hearts",
+     "bottom": "Daisy, 2011 to 2025"
+    },
+    {
+     "top": "Gone from Our Home, Never Our Hearts",
+     "bottom": "Bear"
+    },
+    {
+     "top": "Loved Every Day",
+     "bottom": "Cooper, 2009 to 2024"
+    }
+   ]
+  },
+  "scalloped-picture-frame": {
+   "ideas": [
+    {
+     "top": "Home Sweet Home",
+     "bottom": "The Carters, Est. 2019"
+    },
+    {
+     "top": "Best Friends Forever",
+     "bottom": "Ava and Mia"
+    },
+    {
+     "top": "Thank You for Helping Me Grow",
+     "bottom": "Love, Noah, 2026"
+    },
+    {
+     "top": "Happy Anniversary",
+     "bottom": "10 Years and Counting"
+    },
+    {
+     "top": "Our Little Family",
+     "bottom": "Est. 2020"
+    },
+    {
+     "top": "Friends Who Became Family",
+     "bottom": "Since 2015"
+    },
+    {
+     "top": "Making Memories Together",
+     "bottom": "Summer 2026"
+    },
+    {
+     "top": "You Are So Loved"
+    }
+   ]
+  },
+  "rounded-picture-frame": {
+   "ideas": [
+    {
+     "top": "The Carter Family",
+     "bottom": "Est. 2018"
+    },
+    {
+     "top": "Life Is Better with Friends",
+     "bottom": "Ava, Mia and Zoe"
+    },
+    {
+     "top": "Best Teacher Ever",
+     "bottom": "Love, Noah, 2026"
+    },
+    {
+     "top": "Together Is My Favorite Place to Be",
+     "bottom": "Happy Anniversary"
+    },
+    {
+     "top": "Home Is Wherever We’re Together"
+    },
+    {
+     "top": "Besties Since 2012",
+     "bottom": "Ava and Mia"
+    },
+    {
+     "top": "Love You More",
+     "bottom": "Always and Forever"
+    },
+    {
+     "top": "Our Happy Place",
+     "bottom": "Lake House, Summer 2026"
+    }
    ]
   }
  }

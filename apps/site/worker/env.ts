@@ -17,4 +17,8 @@ export interface Env {
    * "log" (default) records what would be sent. Nothing sends email yet.
    */
   RECOVERY_EMAILS?: string;
+  /** Orders database (migrations/0001_orders.sql). Stage only for now; without it orders are only logged. */
+  ORDERS?: D1Database;
+  /** Password for the private order list at /admin/orders. Without it /admin is a 404. */
+  ADMIN_PASSWORD?: string;
 }

@@ -72,3 +72,55 @@ test('an expired session is recorded, never emailed, and Stripe is not called', 
   expect(await (await handleWebhook(req, env, fake)).json()).toEqual({ received: true, recovery: 'eligible' });
   expect(called).toBe(false);
 });
+
+function fakeDb(fail = false) {
+  const calls: { sql: string; args: unknown[] }[] = [];
+  const db = {
+    prepare: (sql: string) => ({ bind: (...args: unknown[]) => ({ sql, args }) }),
+    batch: async (stmts: { sql: string; args: unknown[] }[]) => {
+      if (fail) throw new Error('down');
+      calls.push(...stmts);
+      return stmts.map(() => ({ meta: { changes: 1 } }));
+    },
+  };
+  return { db: db as unknown as D1Database, calls };
+}
+
+async function paidRequest() {
+  const payload = JSON.stringify({ type: 'checkout.session.completed', livemode: false, data: { object: { id: 'cs_test_9', payment_status: 'paid', amount_total: 3795 } } });
+  const t = Math.floor(Date.now() / 1000);
+  return new Request('https://shop.test/api/stripe/webhook', {
+    method: 'POST',
+    body: payload,
+    headers: { 'stripe-signature': `t=${t},v1=${await signatureFor(secret, String(t), payload)}` },
+  });
+}
+
+const oneLine = (async () => Response.json({ data: [{ quantity: 1, amount_total: 3795, price: { product: { name: 'Frame', metadata: {} } } }] })) as unknown as typeof fetch;
+
+test('a paid order is saved once per session, and a failed save asks Stripe to retry', async () => {
+  const ok = fakeDb();
+  const env = { ASSETS: {} as Fetcher, STRIPE_SECRET_KEY: 'sk_test_abc', STRIPE_WEBHOOK_SECRET: secret, ORDERS: ok.db } as Env;
+  expect((await handleWebhook(await paidRequest(), env, oneLine)).status).toBe(200);
+  expect(ok.calls.map((c) => c.sql.split(' (')[0])).toEqual(['INSERT OR IGNORE INTO orders', 'INSERT OR IGNORE INTO order_lines']);
+  expect(ok.calls[0]!.args[0]).toBe('cs_test_9');
+
+  const down = fakeDb(true);
+  const res = await handleWebhook(await paidRequest(), { ...env, ORDERS: down.db }, oneLine);
+  expect(res.status).toBe(500);
+});
+
+test('a bank debit that settles later marks the saved order paid', async () => {
+  const payload = JSON.stringify({ type: 'checkout.session.async_payment_succeeded', livemode: false, data: { object: { id: 'cs_test_9' } } });
+  const t = Math.floor(Date.now() / 1000);
+  const req = new Request('https://shop.test/api/stripe/webhook', {
+    method: 'POST',
+    body: payload,
+    headers: { 'stripe-signature': `t=${t},v1=${await signatureFor(secret, String(t), payload)}` },
+  });
+  const runs: unknown[][] = [];
+  const db = { prepare: () => ({ bind: (...a: unknown[]) => ({ run: async () => { runs.push(a); return { meta: { changes: 1 } }; } }) }) } as unknown as D1Database;
+  const res = await handleWebhook(req, { ASSETS: {} as Fetcher, STRIPE_WEBHOOK_SECRET: secret, ORDERS: db } as Env);
+  expect(await res.json()).toEqual({ received: true, payment: 'paid' });
+  expect(runs).toEqual([['paid', 'cs_test_9']]);
+});

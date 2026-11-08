@@ -1,9 +1,11 @@
 // POST /api/stripe/webhook. Verifies Stripe's signature, then turns each paid line
-// back into the FrameSpec the frame MCP prints from. For now it logs the order;
-// docs/10 has the next step (D1 order table, proof review, print files).
+// back into the FrameSpec the frame MCP prints from, and saves the order to D1
+// (orders.ts) for the private order list. docs/10 has the next steps (proof
+// review, print files).
 import { describeDesign, designFromMetadata } from '@butterlu/frame/design';
 import type { Env } from './env';
 import { track, validFid } from './events';
+import { orderRows, saveOrder, setPaymentStatus, type PaidSession } from './orders';
 
 export const TOLERANCE_SECONDS = 300;
 
@@ -77,9 +79,26 @@ export async function handleWebhook(request: Request, env: Env, fetcher: typeof 
     return Response.json({ error: 'bad signature' }, { status: 400 });
   }
   const event = JSON.parse(payload) as { type?: string; livemode?: boolean; data?: { object?: SessionLike } };
-  if (event.type !== 'checkout.session.completed' && event.type !== 'checkout.session.expired') return Response.json({ received: true });
+  const HANDLED = ['checkout.session.completed', 'checkout.session.expired', 'checkout.session.async_payment_succeeded', 'checkout.session.async_payment_failed'];
+  if (!HANDLED.includes(event.type ?? '')) return Response.json({ received: true });
   if (event.livemode && env.STRIPE_ALLOW_LIVE !== 'true') return Response.json({ received: true, ignored: 'live event while in test mode' });
   const session = event.data?.object ?? {};
+
+  if (event.type === 'checkout.session.async_payment_succeeded' || event.type === 'checkout.session.async_payment_failed') {
+    // A bank debit settled or failed after checkout. The order was saved unpaid and held.
+    if (!session.id || !env.ORDERS) return Response.json({ received: true });
+    const status = event.type.endsWith('succeeded') ? 'paid' : 'failed';
+    try {
+      await setPaymentStatus(env.ORDERS, session.id, status);
+    } catch (err) {
+      console.error('payment status not saved', session.id, err);
+      return Response.json({ error: 'cannot save the payment status' }, { status: 500 });
+    }
+    if (status === 'paid') {
+      track(env, { name: 'order_paid', page: 'success', fid: fidOf(session), value: session.amount_total ?? 0, detail: 'settled_later' });
+    }
+    return Response.json({ received: true, payment: status });
+  }
 
   if (event.type === 'checkout.session.expired') {
     // Abandoned checkout. Record the decision only: no email address, no recovery link.
@@ -101,13 +120,25 @@ export async function handleWebhook(request: Request, env: Env, fetcher: typeof 
     const design = designFromMetadata(product?.metadata ?? {});
     return {
       handle: product?.metadata?.handle ?? null,
+      name: product?.name ?? null,
       quantity: li.quantity,
+      amountTotal: li.amount_total,
       design: design.ok ? design.spec : null,
       summary: design.ok ? describeDesign(design.spec) : null,
       errors: design.ok ? [] : design.errors,
     };
   });
-  console.log('order paid', JSON.stringify({ session: id, lines }));
+  console.log('order paid', JSON.stringify({ session: id, lines: lines.map(({ handle, quantity, summary, errors }) => ({ handle, quantity, summary, errors })) }));
+  if (env.ORDERS) {
+    // A failed save answers 500 so Stripe retries: an order must never be lost.
+    // Saving is idempotent on the session id, so a retry never duplicates it.
+    try {
+      await saveOrder(env.ORDERS, orderRows({ ...(session as PaidSession), id }, lines));
+    } catch (err) {
+      console.error('order not saved', id, err);
+      return Response.json({ error: 'cannot save the order' }, { status: 500 });
+    }
+  }
   // Recorded once the order is read, so a retried delivery that failed above isn't counted.
   // Async methods (bank debits) complete unpaid; those count when they settle (docs/11).
   if (session.payment_status === 'paid' || session.payment_status === 'no_payment_required') {

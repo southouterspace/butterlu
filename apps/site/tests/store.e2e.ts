@@ -76,3 +76,12 @@ test('old URLs redirect to the new pages', async ({ app }) => {
   expect(res.status).toBe(301);
   expect(res.headers.get('location')).toContain('/collections/all');
 });
+
+test('the order list is private: no sign-in, no orders', async ({ app }) => {
+  const res = await fetch(new URL('/admin/orders', app.baseUrl));
+  // 401 asks for the password; 404 means the list isn't switched on here.
+  expect([401, 404].includes(res.status)).toBe(true);
+  expect((await res.text()).includes('session_id')).toBe(false);
+  const post = await fetch(new URL('/admin/orders/cs_test_x', app.baseUrl), { method: 'POST', body: new URLSearchParams({ status: 'shipped' }) });
+  expect([401, 404].includes(post.status)).toBe(true);
+});

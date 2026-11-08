@@ -70,8 +70,16 @@ Stripe `checkout.session.completed` → `POST /api/stripe/webhook`:
 
 1. Verifies the HMAC signature with a 5-minute tolerance, using `STRIPE_WEBHOOK_SECRET`.
 2. Fetches the line items, decodes each design and logs the order.
-3. Next steps:
-   - Write the order to D1 (`orders`, `order_lines`).
+3. Saves it to D1 (`orders`, `order_lines`, `migrations/0001_orders.sql`), once per
+   Checkout Session. A failed save answers 500 so Stripe retries. A bank debit that
+   settles later updates `payment_status` (`async_payment_succeeded` / `_failed`), and the
+   order list shows unpaid orders on hold. Stage only: production has no database yet.
+4. The private order list at `/admin/orders` shows each order's design, address and
+   customer, and Asli sets its status (new, proofing, printing, shipped, cancelled),
+   carrier, tracking and a note. Sign-in is HTTP Basic with the `ADMIN_PASSWORD` Worker
+   secret; without it `/admin` is a 404. Cloudflare Access replaces it once butterlu.com
+   is on the account.
+5. Next steps:
    - An agent calls the frame MCP: `plan_site_order` with the line's metadata, then
      `render_frame` for the print PDF.
    - The proof goes to Asli for review, then to print.

@@ -79,6 +79,28 @@ function workersDev(urls = []) {
   return url && !url.startsWith('http') ? `https://${url}` : url;
 }
 
+// A secret or setting changed in the Cloudflare dashboard marks the Worker as
+// "last deployed from the dashboard". Wrangler then diffs against the dashboard
+// before deploying, and the diff needs reads the Worker-scoped stage token lacks,
+// so every later deploy fails ("Unable to fetch bindings, routes, or services
+// metadata"). Re-saving one setting through the API, unchanged, clears the mark.
+async function clearDashboardMark(workerName) {
+  const api = `https://api.cloudflare.com/client/v4/accounts/${process.env.CLOUDFLARE_ACCOUNT_ID}/workers`;
+  const headers = { authorization: `Bearer ${process.env.CLOUDFLARE_API_TOKEN}` };
+  const getJson = (path) => fetch(`${api}${path}`, { headers }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
+  const lastFrom = async () => (await getJson(`/services/${workerName}`))?.result?.default_environment?.script?.last_deployed_from;
+  const before = await lastFrom();
+  if (before === undefined) return console.log(`deploy: could not read how ${workerName} was last changed; deploying as is`);
+  if (before !== 'dash') return;
+  const settings = await getJson(`/scripts/${workerName}/settings`);
+  if (typeof settings?.result?.logpush !== 'boolean') fail(`${workerName} was last changed in the dashboard and its settings could not be read; re-save any setting through the API, then deploy again`);
+  const form = new FormData();
+  form.append('settings', new Blob([JSON.stringify({ logpush: settings.result.logpush })], { type: 'application/json' }));
+  const res = await fetch(`${api}/scripts/${workerName}/settings`, { method: 'PATCH', headers, body: form }).catch(() => null);
+  if (!res?.ok || (await lastFrom()) === 'dash') fail(`${workerName} was last changed in the dashboard and re-saving its settings did not clear that (HTTP ${res?.status ?? 'none'})`);
+  console.log(`deploy: ${workerName} was last changed in the dashboard; re-saved its settings through the API so wrangler can deploy`);
+}
+
 const ENVIRONMENTS = {
   preview: {
     precondition: () => {
@@ -92,6 +114,7 @@ const ENVIRONMENTS = {
     precondition: onCleanSyncedMain,
     check: 'validate',
     mustReach: true,
+    before: () => clearDashboardMark('butterlu-site-stage'),
     deploy: () => workersDev(wrangler(['deploy', '--env='], 'deploy')?.targets),
   },
   production: {
@@ -132,6 +155,7 @@ const blocked = env.precondition();
 if (blocked) fail(blocked);
 
 run('bun', ['run', env.check]);
+await env.before?.();
 const url = env.deploy();
 if (!url) fail('wrangler reported no URL');
 

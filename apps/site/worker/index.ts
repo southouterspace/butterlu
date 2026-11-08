@@ -1,3 +1,4 @@
+import { handleAdmin } from './admin';
 import { checkKey, createCheckout } from './checkout';
 import type { Env } from './env';
 import { handleEvent } from './events';
@@ -17,6 +18,8 @@ export default {
     }
     if (pathname === '/api/stripe/webhook' && method === 'POST') return handleWebhook(request, env);
     if (pathname.startsWith('/media/') && (method === 'GET' || method === 'HEAD')) return serveMedia(request, env);
+    const admin = await handleAdmin(request, env);
+    if (admin) return admin;
     if (pathname.startsWith('/api/')) return Response.json({ error: 'not found' }, { status: 404 });
     return env.ASSETS.fetch(request);
   },

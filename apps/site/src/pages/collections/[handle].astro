@@ -1,7 +1,9 @@
 ---
 import Layout from '../../Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import { buttonVariants } from '../../components/ui/variants';
 import { COLLECTIONS, type Collection, PRODUCTS, collectionProducts } from '../../catalog/products';
+import { collectionCopy } from '../../catalog/copy';
 
 export function getStaticPaths() {
   const all: Collection = {
@@ -19,19 +21,52 @@ interface Props {
 }
 const { collection } = Astro.props;
 const products = collection.handle === 'all' ? PRODUCTS : collectionProducts(collection.handle);
-const jsonLd = [
+// Copy, FAQ and sibling links below the grid (docs/12-serp-leadership.md §5).
+const copy = collectionCopy(collection.handle);
+const related = (copy?.related ?? []).map((h) => COLLECTIONS.find((c) => c.handle === h)).filter((c): c is Collection => Boolean(c));
+const productUrl = (handle: string) => new URL(`/products/${handle}`, Astro.site).href;
+const jsonLd: object[] = [
   {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: collection.name,
     description: collection.seoDescription,
-    hasPart: products.map((p) => ({ '@type': 'Product', name: p.name, url: new URL(`/products/${p.handle}`, Astro.site).href })),
+    url: new URL(`/collections/${collection.handle}`, Astro.site).href,
+    mainEntity: {
+      '@type': 'ItemList',
+      numberOfItems: products.length,
+      itemListElement: products.map((p, i) => ({ '@type': 'ListItem', position: i + 1, url: productUrl(p.handle), name: p.name })),
+    },
   },
 ];
+if (copy?.faq.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: copy.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+  });
+}
 ---
 <Layout title={`${collection.seoTitle} | Butterlu`} description={collection.seoDescription} jsonLd={jsonLd}>
   <h1 class="text-2xl md:text-3xl">{collection.name}</h1>
   <p class="mt-2 max-w-[60ch] text-muted-foreground">{collection.intro}</p>
   <ul class="mt-6 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{products.map((p, i) => <ProductCard product={p} eager={i < 4} headingLevel="h2" />)}</ul>
+  {copy && (
+    <div class="mt-12 grid gap-10 border-t pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14">
+      <section class="prose" aria-label={`About ${collection.name.toLowerCase()}`}>{copy.body.map((para) => <p>{para}</p>)}</section>
+      {copy.faq.length > 0 && (
+        <section class="prose" aria-labelledby="faq">
+          <h2 id="faq">Questions</h2>
+          {copy.faq.map(([q, a]) => (<><h3>{q}</h3><p>{a}</p></>))}
+        </section>
+      )}
+    </div>
+  )}
+  {related.length > 0 && (
+    <nav aria-labelledby="more" class="mt-10 border-t pt-6">
+      <h2 id="more" class="mb-3 text-lg">You might also like</h2>
+      <ul class="flex flex-wrap gap-2">{related.map((c) => <li><a class={buttonVariants({ variant: 'outline' })} href={`/collections/${c.handle}`}>{c.name}</a></li>)}</ul>
+    </nav>
+  )}
 </Layout>
 

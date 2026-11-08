@@ -11,7 +11,8 @@
       "redirectTo": "pageKey that takes this page's old URLs when build is false, or \"collection:<handle>\" when no built page fits",
       "note": "optional owner note",
       "handle": "built pages only: the /products/<handle> URL",
-      "priceCents": "built pages only: price in cents, Etsy parity from the preset listing"
+      "priceCents": "built pages only: price in cents, Etsy parity from the preset listing",
+      "extraPages": "built pages only, optional: more /products/<handle> pages on the same pageKey, each preset for one exact search; old URLs go to handle"
     }
   },
   "decidedBy": null,
@@ -39,6 +40,9 @@
       "presetFrom": 512288952,
       "priceCents": 3595,
       "redirectTo": null,
+      "extraPages": [
+        "mother-of-the-groom-frame"
+      ],
       "note": "launch tier, 8894 favourites over 44 listings"
     },
     {
@@ -51,6 +55,10 @@
       "presetFrom": 795301379,
       "priceCents": 3595,
       "redirectTo": null,
+      "extraPages": [
+        "mimi-picture-frame",
+        "abuela-picture-frame"
+      ],
       "note": "launch tier, 7147 favourites over 39 listings"
     },
     {
@@ -179,6 +187,9 @@
       "presetFrom": 805343785,
       "priceCents": 3595,
       "redirectTo": null,
+      "extraPages": [
+        "papa-picture-frame"
+      ],
       "note": "launch tier, 1147 favourites over 3 listings"
     },
     {
@@ -203,6 +214,9 @@
       "presetFrom": 796124933,
       "priceCents": 3595,
       "redirectTo": null,
+      "extraPages": [
+        "nana-picture-frame"
+      ],
       "note": "launch tier, 986 favourites over 15 listings"
     },
     {
@@ -998,5 +1012,5 @@
   ],
   "status": "proposed",
   "proposedBy": "agent, from apps/site/src/catalog/products.ts via scripts/storefront-lineup.mjs",
-  "proposedAt": "2026-11-04T12:26:43.539Z"
+  "proposedAt": "2026-11-08T15:25:26.956Z"
 }

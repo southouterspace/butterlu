@@ -51,3 +51,20 @@ test('hashed build assets are cached for a year', async ({ app }) => {
   const res = await fetch(new URL(asset!, app.baseUrl));
   expect(res.headers.get('cache-control')).toBe('public, max-age=31536000, immutable');
 });
+
+test('collection pages list their products as an ItemList and show their questions', async ({ app }) => {
+  const html = await (await fetch(new URL('/collections/godparent-frames', app.baseUrl))).text();
+  expect(html.includes('"@type":"ItemList"')).toBe(true);
+  expect(html.includes('"@type":"FAQPage"')).toBe(true);
+  expect(/<h2 id="faq">Questions<\/h2>/.test(html)).toBe(true);
+});
+
+test('the Merchant Center feed lists every product with price and free US shipping', async ({ app }) => {
+  const [feed, catalog] = await Promise.all([
+    fetch(new URL('/feeds/google-products.xml', app.baseUrl)).then((r) => r.text()),
+    fetch(new URL('/products.json', app.baseUrl)).then((r) => r.json() as Promise<{ products: { handle: string }[] }>),
+  ]);
+  expect((feed.match(/<item>/g) ?? []).length).toBe(catalog.products.length);
+  expect(feed.includes('<g:price>0.00 USD</g:price>')).toBe(true);
+  expect(/<g:price>\d+\.\d{2} USD<\/g:price>/.test(feed)).toBe(true);
+});

@@ -142,7 +142,7 @@ Product page:
   10 on 4% of searches weighted by priority, top 3 on none.
 - **Search Console and Bing Webmaster Tools**: the ground truth for impressions, clicks
   and position per query. **Owner:** verify the domain (a DNS record, or a meta tag we
-  add once you have the code). Submit `/sitemap-index.xml`.
+  add once you have the code). Submit `/sitemap.xml`.
 - **Funnel events** (shipped, docs/11): landing views record the referrer host, so Google
   visits can be followed to checkout and orders.
 - **Merchant Center**: Shopping impressions and clicks once the feed is live.
@@ -155,3 +155,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | Date | Change | Pages |
 |---|---|---|
 | 2026-11-08 | Baseline snapshot taken; nothing changed yet | all |
+| 2026-11-08 (stage only) | Wave 1: about 330 words of copy and 6 FAQs under each collection grid, CollectionPage with ItemList and FAQPage markup, sibling collection links; new Mimi, Nana, Papa, Abuela and mother of the groom pages with 3 FAQs each; Organization `sameAs` to the Etsy shop; Merchant Center feed at `/feeds/google-products.xml`. Not public until a Release. | 7 collections, 5 new products, home |

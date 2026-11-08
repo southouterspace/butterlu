@@ -3,6 +3,7 @@ import Layout from '../../Layout.astro';
 import Customizer from '../../components/Customizer.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { getImage } from 'astro:assets';
+import { productFaq } from '../../catalog/copy';
 import { productMedia } from '../../catalog/media';
 import { COLLECTIONS, CURRENCY, PRODUCTS, type Product, SHOP, collectionProducts } from '../../catalog/products';
 
@@ -26,6 +27,7 @@ const photos = await Promise.all(
 );
 const rendered = { src: `/products/${product.handle}.jpg`, width: 1200, height: 1200 };
 const images = [...photos.map((p) => ({ src: p.src, width: Number(p.attributes.width), height: Number(p.attributes.height) })), rendered];
+const faq = productFaq(product.handle);
 const related = collectionProducts(primary.handle).filter((p) => p.handle !== product.handle).slice(0, 4);
 
 // Product, Offer, shipping and returns markup: what Google's free listings and AI
@@ -69,6 +71,15 @@ const jsonLd = [
       { '@type': 'ListItem', position: 3, name: product.name, item: url },
     ],
   },
+  ...(faq.length
+    ? [
+        {
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+        },
+      ]
+    : []),
 ];
 ---
 <Layout title={`${product.seoTitle} | Butterlu`} description={product.seoDescription} jsonLd={jsonLd} ogType="product" image={{ ...images[0]!, alt: product.name }}>
@@ -92,6 +103,13 @@ const jsonLd = [
       </ol>
     </div>
   </section>
+
+  {faq.length > 0 && (
+    <section aria-labelledby="faq" class="prose mt-12 border-t pt-8">
+      <h2 id="faq">Questions</h2>
+      {faq.map(([q, a]) => (<><h3>{q}</h3><p>{a}</p></>))}
+    </section>
+  )}
 
   {related.length > 0 && (
     <section aria-labelledby="related" class="mt-12">

@@ -1,6 +1,8 @@
 // The store's catalog: one configurable frame (two shapes, 44 backgrounds, text on
-// any side), sold through search-intent pages that each preset it. Every page here
-// is a row with build: true in plans/decisions.json (PROPOSED, gate G2). Prices are
+// any side), sold through search-intent pages that each preset it. Every pageKey here
+// is a row with build: true in plans/decisions.json (PROPOSED, gate G2). The first page
+// listed for a pageKey is its main page and takes the cluster's old Shopify URLs; later
+// pages on the same pageKey are extra exact-search pages (docs/12 §4). Prices are
 // Etsy parity, from each page's preset listing in plans/clusters.json.
 //
 // This file is plain TypeScript with no Astro imports, so the checkout Worker reads
@@ -450,6 +452,97 @@ export const PRODUCTS: Product[] = [
       },
     },
     collections: ['pet-loss-memorial'],
+  },
+  // Exact-search pages from docs/12-serp-leadership.md §4, wave 1 (2026-11-08).
+  {
+    handle: 'mimi-picture-frame',
+    pageKey: 'frame/grandma/everyday',
+    clusterId: 'P003',
+    etsyListingId: 796122233,
+    name: 'Mimi picture frame',
+    seoTitle: 'Mimi Picture Frame: Personalized Grandma Gift',
+    seoDescription: 'A personalized Mimi picture frame from the grandkids. Change every word, check it in the live preview, and get free shipping in the US.',
+    intro: 'For the grandma who goes by Mimi. Put her name across the top, sign it from the grandkids, and add a favorite 4x6 photo.',
+    goodFor: ['Mother’s Day and birthdays', 'Gifts from the grandkids', 'A first gift from a new grandbaby', 'Christmas for Mimi'],
+    priceCents: 3795,
+    preset: {
+      shape: 'scalloped',
+      backgroundId: 'pink-stripes',
+      sides: { top: { text: 'Mimi’s Little Loves', fontId: script }, bottom: { text: 'Ava, Noah and Mia', fontId: sans } },
+    },
+    collections: ['grandparent-frames'],
+  },
+  {
+    handle: 'nana-picture-frame',
+    pageKey: 'frame/grandma/christmas',
+    clusterId: 'P016',
+    etsyListingId: 742353482,
+    name: 'Nana picture frame',
+    seoTitle: 'Nana Picture Frame: Personalized Grandma Gift',
+    seoDescription: 'A personalized Nana picture frame with her name and the grandkids’ love. See your words in the live preview before you buy. Free shipping in the US.',
+    intro: 'For the grandma everyone calls Nana. Add her name, a line from the grandkids, and the photo she’ll want to show off.',
+    goodFor: ['Mother’s Day and birthdays', 'From a grandson or granddaughter', 'A brand new Nana', 'Christmas from the grandkids'],
+    priceCents: 3595,
+    preset: {
+      shape: 'rounded-rectangle',
+      backgroundId: 'sage-checkers',
+      sides: { top: { text: 'I Love My Nana', fontId: script } },
+    },
+    collections: ['grandparent-frames'],
+  },
+  {
+    handle: 'papa-picture-frame',
+    pageKey: 'frame/grandpa/fathers-day',
+    clusterId: 'P014',
+    etsyListingId: 781420144,
+    name: 'Papa picture frame',
+    seoTitle: 'Papa Picture Frame: Personalized Grandpa Gift',
+    seoDescription: 'A personalized Papa picture frame from the grandkids for Father’s Day, birthdays or Christmas. Live preview of your words and free shipping in the US.',
+    intro: 'For the grandpa the grandkids call Papa. Put his name on it, sign it from the kids, and frame a photo of them together.',
+    goodFor: ['Father’s Day and birthdays', 'Gifts from the grandkids', 'A first Father’s Day as Papa', 'Christmas'],
+    priceCents: 3595,
+    preset: {
+      shape: 'rounded-rectangle',
+      backgroundId: 'navy-stripes',
+      sides: { top: { text: 'Papa’s Pride and Joy', fontId: script }, bottom: { text: 'Love, Ava and Noah', fontId: serif } },
+    },
+    collections: ['grandparent-frames'],
+  },
+  {
+    handle: 'abuela-picture-frame',
+    pageKey: 'frame/grandma/everyday',
+    clusterId: 'P003',
+    etsyListingId: 800570881,
+    name: 'Abuela picture frame',
+    seoTitle: 'Abuela Picture Frame: Personalized Grandma Gift',
+    seoDescription: 'A personalized Abuela picture frame in English, Spanish or both. See every word in the live preview before you buy. Free shipping in the US.',
+    intro: 'For the abuela at the center of every family gathering. Write it in English, Spanish or both, and add a 4x6 photo of her with the grandkids.',
+    goodFor: ['Mother’s Day and birthdays', 'Gifts from the grandkids', 'English, Spanish or both', 'Christmas'],
+    priceCents: 3595,
+    preset: {
+      shape: 'scalloped',
+      backgroundId: 'pink-toile',
+      sides: { top: { text: 'Te Amo, Abuela', fontId: script } },
+    },
+    collections: ['grandparent-frames'],
+  },
+  {
+    handle: 'mother-of-the-groom-frame',
+    pageKey: 'frame/parents-of-couple/wedding',
+    clusterId: 'P002',
+    etsyListingId: 494431214,
+    name: 'Mother of the groom picture frame',
+    seoTitle: 'Mother of the Groom Picture Frame: Wedding Gift',
+    seoDescription: 'A personalized mother of the groom picture frame to thank her for raising him. Change any word in the live preview. Free shipping in the US.',
+    intro: 'A thank-you for the groom’s mom on the wedding day. Sign it from the bride, the groom or both, and add a photo from the day.',
+    goodFor: ['Mother of the groom', 'From the bride or the groom', 'Rehearsal dinner or wedding morning', 'Wedding thank-you gifts'],
+    priceCents: 3595,
+    preset: {
+      shape: 'scalloped',
+      backgroundId: 'white-linen',
+      sides: { top: { text: 'Thank You for Raising Him', fontId: script }, bottom: { text: 'Love, Sam and Alex', fontId: serif } },
+    },
+    collections: ['wedding-thank-you-frames'],
   },
 ];
 

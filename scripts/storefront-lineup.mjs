@@ -14,7 +14,13 @@ const read = async (f) => JSON.parse(await readFile(new URL(`../plans/${f}`, imp
 const clusters = await read('clusters.json');
 const decisions = await read('decisions.json');
 
-const built = new Map(PRODUCTS.map((p) => [p.pageKey, p]));
+// The first page for a pageKey is its main page; later ones are extra exact-search pages.
+const built = new Map();
+const extras = new Map();
+for (const p of PRODUCTS) {
+  if (!built.has(p.pageKey)) built.set(p.pageKey, p);
+  else extras.set(p.pageKey, [...(extras.get(p.pageKey) ?? []), p.handle]);
+}
 const parts = (pageKey) => {
   const [type, recipient, occasion = null] = pageKey.split('/');
   return { type, recipient, occasion };
@@ -64,6 +70,7 @@ const rows = clusters.rows.map((c) => {
       presetFrom: p.etsyListingId,
       priceCents: p.priceCents,
       redirectTo: null,
+      ...(extras.has(c.pageKey) ? { extraPages: extras.get(c.pageKey) } : {}),
       note: `${c.tier} tier, ${c.favorers} favourites over ${c.listingCount} listings`,
     };
   }
@@ -86,6 +93,8 @@ decisions._schema.row.handle = 'built pages only: the /products/<handle> URL';
 decisions._schema.row.priceCents = 'built pages only: price in cents, Etsy parity from the preset listing';
 decisions._schema.row.redirectTo =
   'pageKey that takes this page\'s old URLs when build is false, or "collection:<handle>" when no built page fits';
+decisions._schema.row.extraPages =
+  'built pages only, optional: more /products/<handle> pages on the same pageKey, each preset for one exact search; old URLs go to handle';
 decisions.status = 'proposed';
 decisions.proposedBy = 'agent, from apps/site/src/catalog/products.ts via scripts/storefront-lineup.mjs';
 decisions.proposedAt = new Date().toISOString();

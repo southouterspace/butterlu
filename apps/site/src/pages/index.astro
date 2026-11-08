@@ -10,7 +10,16 @@ const featured = FEATURED.map((h) => productByHandle(h)!);
 const hero = featured[0]!;
 const heroSvg = frameSvg(hero.preset, placementsAtBuild(hero.preset), { idPrefix: 'hero', label: `${hero.name}, as designed` });
 const jsonLd = [
-  { '@context': 'https://schema.org', '@type': 'Organization', name: 'Butterlu', alternateName: 'Butterlu Gifts', url: Astro.site?.href },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'Butterlu',
+    alternateName: ['Butterlu Gifts', 'Boutique Butterlu'],
+    url: Astro.site?.href,
+    // Profiles that are Butterlu's, so Google ties the brand together (docs/12 §3.6).
+    // Add Instagram and Facebook once the owner confirms them.
+    sameAs: ['https://www.etsy.com/shop/ButterLu'],
+  },
   { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Butterlu', url: Astro.site?.href },
 ];
 ---

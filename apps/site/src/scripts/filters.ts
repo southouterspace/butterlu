@@ -1,0 +1,70 @@
+// Filter chips on category pages (components/FilterBar.astro). One choice per facet;
+// pressing the chosen chip again clears it. The choice is kept in the query string
+// with replaceState, so a menu link like ?for=grandma opens filtered and a reload or
+// shared link keeps it. Cards carry their tags as data attributes (ProductCard).
+
+type Param = 'for' | 'occasion' | 'frame';
+const PARAMS: Param[] = ['for', 'occasion', 'frame'];
+const ATTR: Record<Param, string> = { for: 'data-for', occasion: 'data-occasion', frame: 'data-frame' };
+
+export function mountFilters(root: Document = document) {
+  const bar = root.querySelector<HTMLElement>('[data-filters]');
+  if (!bar) return;
+  const cards = [...root.querySelectorAll<HTMLElement>('[data-card]')];
+  const chips = [...bar.querySelectorAll<HTMLButtonElement>('[data-filter]')];
+  const status = bar.querySelector<HTMLElement>('[data-filter-status]')!;
+  const clear = bar.querySelector<HTMLButtonElement>('[data-filter-clear]')!;
+  const empty = root.querySelector<HTMLElement>('[data-filter-empty]');
+  const offered = (p: Param, v: string) => chips.some((c) => c.dataset.filter === p && c.dataset.value === v);
+
+  const state: Partial<Record<Param, string>> = {};
+  const params = new URLSearchParams(location.search);
+  // Only values this page offers; anything else in the URL is ignored.
+  for (const p of PARAMS) {
+    const v = params.get(p);
+    if (v && offered(p, v)) state[p] = v;
+  }
+
+  const apply = () => {
+    let shown = 0;
+    for (const card of cards) {
+      const match = PARAMS.every((p) => !state[p] || (card.getAttribute(ATTR[p]) ?? '').split(' ').includes(state[p]!));
+      card.hidden = !match;
+      if (match) shown++;
+    }
+    for (const c of chips) c.setAttribute('aria-pressed', String(state[c.dataset.filter as Param] === c.dataset.value));
+    const any = PARAMS.some((p) => state[p]);
+    clear.hidden = !any;
+    if (empty) empty.hidden = shown > 0;
+    const text = any ? `Showing ${shown} of ${cards.length} designs` : `Showing all ${cards.length} designs`;
+    status.textContent = text;
+  };
+
+  const sync = () => {
+    const url = new URL(location.href);
+    for (const p of PARAMS) {
+      if (state[p]) url.searchParams.set(p, state[p]!);
+      else url.searchParams.delete(p);
+    }
+    history.replaceState(history.state, '', url);
+  };
+
+  bar.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement;
+    const clearing = Boolean(target.closest('[data-filter-clear]'));
+    if (clearing) {
+      for (const p of PARAMS) delete state[p];
+    } else {
+      const chip = target.closest<HTMLButtonElement>('[data-filter]');
+      if (!chip) return;
+      const p = chip.dataset.filter as Param;
+      state[p] = state[p] === chip.dataset.value ? undefined : chip.dataset.value;
+    }
+    sync();
+    apply();
+    // Clear hides itself; keep keyboard focus on the bar.
+    if (clearing) status.focus();
+  });
+
+  apply();
+}

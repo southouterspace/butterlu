@@ -23,6 +23,24 @@ test('a category leads with the two frames, and a wording idea fills the frame',
   await expect(screen.getByRole('status').getByText('Your words are back.')).toBeVisible();
 });
 
+test('shoppers can filter designs by who it is for, occasion and frame', async ({ app, screen }) => {
+  // A menu link opens a category already filtered to one person.
+  await app.open('/collections/grandparent-frames?for=grandpa');
+  await expect(screen.getByRole('button', /^Grandpa/)).toHaveAttribute('aria-pressed', 'true');
+  await expect(screen.getByRole('status').getByText(/^Showing \d+ of \d+ designs$/)).toBeVisible();
+  await expect(screen.getByRole('link', /Grandpa Christmas frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /Mimi picture frame/)).toBeHidden();
+  await screen.getByRole('button', 'Clear filters').click();
+  await expect(screen.getByRole('link', /Mimi picture frame/)).toBeVisible();
+
+  // Shop all combines an occasion with a frame shape.
+  await app.open('/collections/all?occasion=christmas');
+  await expect(screen.getByRole('link', /Gigi Christmas frame/)).toBeVisible();
+  await screen.getByRole('button', /^Rounded/).click();
+  await expect(screen.getByRole('link', /Gigi Christmas frame/)).toBeHidden();
+  await expect(screen.getByRole('link', /Grandpa Christmas frame/)).toBeVisible();
+});
+
 test('the customizer previews new words and refuses a frame with none', async ({ app, screen }) => {
   await app.open(PRODUCT);
   const top = screen.getByRole('textbox', /^Top/);

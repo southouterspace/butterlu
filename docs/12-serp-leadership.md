@@ -132,6 +132,32 @@ words and any of 44 backgrounds. The store is shaped around that:
 - **One price** for both frames and every design (`FRAME_PRICE_CENTS`, $39 with free US shipping, set by the owner 2026-11-08).
 - **Shopping feed**: one item per page, `item_group_id` = its frame, `pattern` = the design.
 
+## 4c. Shop-by taxonomy (owner said build it, 2026-11-08)
+
+Shoppers browse an organized tree instead of one long list of designs. The source is
+`apps/site/src/catalog/taxonomy.ts`; the build fails on an untagged design or a tag that
+contradicts its category.
+
+- **Who it's for** (first menu): Grandparents (Grandma, Grandpa, Both grandparents,
+  Great-grandparents), Godparents (Godmother, Godfather, Both godparents), Weddings
+  (Parents of the couple, The couple), Aunts and uncles, New baby, Pets. Each group opens
+  its existing category page; a person opens it filtered (`?for=grandma`).
+- **Occasion** (second menu): only occasions with a design. Pregnancy announcements,
+  Baptisms, Weddings and Pet memorials open the category page that holds those designs (the
+  build checks each tagged design is on it); the rest open Shop all filtered (`?occasion=christmas`). Pet memorials becomes
+  "In memory" once other memorial designs exist.
+- **Frame** is the third filter (`?frame=scalloped`), from each design's preset shape.
+- Each design is tagged once with a person and with the occasions in its "good for" list.
+- **No new indexed pages.** A filtered view keeps its category's canonical URL and is
+  built from the same HTML, so filters never split ranking. A new indexable category is
+  added only for a searched term with 3 or more designs that no category covers yet
+  (wave 2 adds Parents, Christmas and memorial designs this way).
+- Where it shows: header menus (desktop panels, phone sheet sections), filter chips on
+  every category page (painted with the page and applied before first paint, so no
+  layout shift), a "Who is it for?" block on the home page, "Shop more designs" links on
+  each design page (only links that open more than that design), and the feed's `product_type`
+  (Picture Frames > frame > group > person).
+
 ## 5. Page standards (what every page ships with)
 
 Collection page:
@@ -175,3 +201,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | 2026-11-08 (stage only) | Wave 1: about 330 words of copy and 6 FAQs under each collection grid, CollectionPage with ItemList and FAQPage markup, sibling collection links; new Mimi, Nana, Papa, Abuela and mother of the groom pages with 3 FAQs each; Organization `sameAs` to the Etsy shop; Merchant Center feed at `/feeds/google-products.xml`. Not public until a Release. | 7 collections, 5 new products, home |
 | 2026-11-08 (stage only) | Two products, many designs (§4b): frame pages, designs as variants with wording ideas, category hubs, one price, feed grouped by frame. | all products and collections |
 | 2026-11-08 (stage only) | Price set by the owner: $39 with free US shipping for both frames and every design (was $35.95 proposed). Product pages, checkout and the Shopping feed read the one constant. | all products, feed |
+| 2026-11-08 (stage only) | Shop-by taxonomy (§4c): who-it's-for and occasion menus, filter chips on categories, home page block, design-page links, feed product_type. No new indexed URLs. | all pages, feed |

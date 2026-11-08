@@ -1,5 +1,6 @@
 ---
-import { COLLECTIONS } from './catalog/products';
+import { COLLECTIONS, FRAMES } from './catalog/products';
+import { OCCASIONS, RECIPIENT_GROUPS, groupHref, occasionHref, recipientHref } from './catalog/taxonomy';
 import Icon from './components/ui/Icon.astro';
 import { badgeVariants, buttonVariants, cn } from './components/ui/variants';
 import './styles/global.css';
@@ -22,14 +23,11 @@ const { title, description, jsonLd = [], noindex = false, image, ogType = 'websi
 // strip it for the canonical, og:url and the nav's current-page match.
 const path = Astro.url.pathname.replace(/(?:\/index)?\.html$/, '') || '/';
 const canonical = new URL(path, Astro.site);
-const nav = [
-  { href: '/collections/all', label: 'Shop all' },
-  { href: '/collections/grandparent-frames', label: 'Grandparents' },
-  { href: '/collections/new-grandparent-to-be', label: 'Announcements' },
-  { href: '/collections/godparent-frames', label: 'Godparents' },
-  { href: '/collections/wedding-thank-you-frames', label: 'Weddings' },
-  { href: '/collections/baby-frames', label: 'Baby' },
-];
+// Shop menus (docs/12 §4c): who it's for, then occasion. Groups open their category;
+// a person or occasion without its own category opens the page filtered.
+const current = (href: string) => (path === href ? 'page' : undefined);
+const menuLink = 'block rounded-2xl px-3 py-2 text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted';
+const triggerClass = cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'text-muted-foreground');
 // Funnel step for the page-view beacon (docs/11). `path` above already has the
 // build file name (/index.html, /cart.html) stripped.
 const page = path;
@@ -72,6 +70,8 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
     <link rel="preload" href={interLatin} as="font" type="font/woff2" crossorigin />
     <!-- Playfair is the wordmark's face as well as a frame font, so every page wants it early. -->
     <link rel="preload" href="/fonts/playfair-display-bold.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- Filter chips need script (components/FilterBar.astro); without it the full grid shows. -->
+    <noscript><style>[data-filters] { display: none; }</style></noscript>
     {jsonLd.map((data) => <script type="application/ld+json" set:html={JSON.stringify(data)} />)}
   </head>
   <body class="flex min-h-svh flex-col" data-page-type={pageType} data-handle={pageHandle}>
@@ -85,7 +85,9 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
         <a class="font-brand text-2xl font-bold tracking-tight text-foreground no-underline" href="/" aria-label="Butterlu home">Butterlu</a>
         <nav class="ml-6 hidden lg:block" aria-label="Shop">
           <ul class="flex items-center gap-1">
-            {nav.map((n) => <li><a class={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'text-muted-foreground aria-[current=page]:bg-muted aria-[current=page]:text-foreground')} href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a></li>)}
+            <li><button type="button" class={triggerClass} popovertarget="menu-for">Who it’s for <Icon name="chevron-down" class="size-4" /></button></li>
+            <li><button type="button" class={triggerClass} popovertarget="menu-occasion">Occasion <Icon name="chevron-down" class="size-4" /></button></li>
+            <li><a class={cn(triggerClass, 'aria-[current=page]:bg-muted aria-[current=page]:text-foreground')} href="/collections/all" aria-current={current('/collections/all')}>Shop all</a></li>
           </ul>
         </nav>
         <a class={cn(buttonVariants({ variant: 'ghost', size: 'default' }), 'ml-auto -mr-2')} href="/cart">
@@ -95,6 +97,33 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
         </a>
       </div>
     </header>
+    <nav id="menu-for" popover class="shop-panel" aria-labelledby="menu-for-title">
+      <p id="menu-for-title" class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Who it’s for</p>
+      <ul class="grid gap-x-6 gap-y-5 sm:grid-cols-3">
+        {RECIPIENT_GROUPS.map((g) => (
+          <li>
+            <a class={cn(menuLink, 'font-medium')} href={groupHref(g)} aria-current={current(groupHref(g))}>{g.label}</a>
+            {g.children.length > 1 && (
+              <ul class="mt-0.5 text-sm">
+                {g.children.map((r) => <li><a class={menuLink} href={recipientHref(r)}>{r.label}{r.hint && <span class="block text-xs text-muted-foreground">{r.hint}</span>}</a></li>)}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <nav id="menu-occasion" popover class="shop-panel" aria-label="Occasion">
+      <div class="grid gap-6 sm:grid-cols-[2fr_1fr]">
+        <div>
+          <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Occasion</p>
+          <ul class="grid gap-0.5 text-sm sm:grid-cols-2">{OCCASIONS.map((o) => <li><a class={menuLink} href={occasionHref(o)} aria-current={current(occasionHref(o))}>{o.label}</a></li>)}</ul>
+        </div>
+        <div>
+          <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Start from a frame</p>
+          <ul class="grid gap-0.5 text-sm">{FRAMES.map((f) => <li><a class={menuLink} href={`/products/${f.handle}`}>{f.name}</a></li>)}</ul>
+        </div>
+      </div>
+    </nav>
     <div id="site-menu" popover class="site-menu">
       <div class="flex items-center justify-between p-4">
         <span class="font-brand text-xl font-bold">Butterlu</span>
@@ -103,9 +132,28 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
         </button>
       </div>
       <nav aria-label="Shop (menu)" class="px-2">
-        <ul class="grid gap-0.5">
-          {nav.map((n) => <li><a class="flex h-11 items-center rounded-2xl px-3 text-base font-medium text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted" href={n.href} aria-current={path === n.href ? 'page' : undefined}>{n.label}</a></li>)}
-        </ul>
+        <a class="flex h-11 items-center rounded-2xl px-3 text-base font-medium text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted" href="/collections/all" aria-current={current('/collections/all')}>Shop all</a>
+        <details open class="menu-section">
+          <summary>Who it’s for <Icon name="chevron-down" class="size-4" /></summary>
+          <ul class="grid gap-0.5 pb-2">
+            {RECIPIENT_GROUPS.map((g) => (
+              <li>
+                <a class="flex h-10 items-center rounded-2xl px-3 text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted" href={groupHref(g)} aria-current={current(groupHref(g))}>{g.label}</a>
+                {g.children.length > 1 && (
+                  <ul class="mb-1 ml-3 grid gap-0.5 border-l pl-2 text-sm">
+                    {g.children.map((r) => <li><a class="flex h-9 items-center rounded-2xl px-3 text-muted-foreground no-underline hover:bg-muted hover:text-foreground" href={recipientHref(r)}>{r.label}</a></li>)}
+                  </ul>
+                )}
+              </li>
+            ))}
+          </ul>
+        </details>
+        <details class="menu-section">
+          <summary>Occasion <Icon name="chevron-down" class="size-4" /></summary>
+          <ul class="grid gap-0.5 pb-2">
+            {OCCASIONS.map((o) => <li><a class="flex h-10 items-center rounded-2xl px-3 text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted" href={occasionHref(o)} aria-current={current(occasionHref(o))}>{o.label}</a></li>)}
+          </ul>
+        </details>
         <ul class="mt-4 grid gap-0.5 border-t pt-4">
           <li><a class="flex h-10 items-center rounded-2xl px-3 text-sm text-muted-foreground no-underline hover:bg-muted" href="/pages/shipping-returns">Shipping and returns</a></li>
           <li><a class="flex h-10 items-center rounded-2xl px-3 text-sm text-muted-foreground no-underline hover:bg-muted" href="/pages/faq">Questions</a></li>
@@ -192,6 +240,47 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
     .site-menu:popover-open {
       translate: -100% 0;
     }
+  }
+  /* Desktop shop menus: a panel under the header on the native popover API. */
+  /* Absolute, not the popover's default fixed: the header doesn't stick, so the panel
+     scrolls away with it. */
+  .shop-panel {
+    position: absolute;
+    inset: 4.25rem 0 auto 0;
+    margin: 0 auto;
+    width: min(56rem, calc(100vw - 2rem));
+    max-height: calc(100dvh - 5.5rem);
+    overflow: auto;
+    padding: 1.25rem 1.5rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 1.75rem;
+    background: var(--popover);
+    color: var(--popover-foreground);
+    box-shadow: 0 12px 40px oklch(0 0 0 / 0.12);
+  }
+  .menu-section {
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+  .menu-section > summary {
+    display: flex;
+    height: 2.75rem;
+    cursor: pointer;
+    list-style: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--muted-foreground);
+  }
+  .menu-section > summary::-webkit-details-marker {
+    display: none;
+  }
+  .menu-section[open] > summary svg {
+    rotate: 180deg;
   }
   .site-menu::backdrop {
     background: oklch(0 0 0 / 0.3);

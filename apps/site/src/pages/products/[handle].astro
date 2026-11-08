@@ -6,6 +6,8 @@ import { getImage } from 'astro:assets';
 import { productFaq } from '../../catalog/copy';
 import { productMedia } from '../../catalog/media';
 import FrameChoice from '../../components/FrameChoice.astro';
+import { buttonVariants } from '../../components/ui/variants';
+import { occasionCount, occasionHref, recipientCount, recipientHref, tagsFor } from '../../catalog/taxonomy';
 import { COLLECTIONS, CURRENCY, DESIGNS, PRODUCTS, type Product, SHOP, collectionProducts, frameFor, isFrame } from '../../catalog/products';
 
 export function getStaticPaths() {
@@ -32,6 +34,14 @@ const photos = await Promise.all(
 const rendered = { src: `/products/${product.handle}.jpg`, width: 1200, height: 1200 };
 const images = [...photos.map((p) => ({ src: p.src, width: Number(p.attributes.width), height: Number(p.attributes.height) })), rendered];
 const faq = productFaq(product.handle);
+// Who it's for and occasions, for the "Shop more designs" links (docs/12 §4c).
+const tags = tagsFor(product);
+const shopMore = tags
+  ? [
+      { href: recipientHref(tags.for), label: `For ${tags.for.label.toLowerCase()}`, count: recipientCount(tags.for) },
+      ...tags.occasions.map((o) => ({ href: occasionHref(o), label: o.label, count: occasionCount(o) })),
+    ].filter((l, i, all) => l.count > 1 && all.findIndex((m) => m.href === l.href) === i)
+  : [];
 const related = isFrame(product)
   ? DESIGNS.filter((d) => d.preset.shape === product.preset.shape)
   : collectionProducts(primary!.handle).filter((p) => p.handle !== product.handle).slice(0, 4);
@@ -147,6 +157,13 @@ const jsonLd = [
       <h2 id="related" class="mb-4 text-lg">{relatedTitle}</h2>
       <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">{related.map((p) => <ProductCard product={p} />)}</ul>
     </section>
+  )}
+
+  {shopMore.length > 0 && (
+    <nav aria-labelledby="shop-by" class="mt-10">
+      <h2 id="shop-by" class="mb-3 text-lg">Shop more designs</h2>
+      <ul class="flex flex-wrap gap-2">{shopMore.map((l) => <li><a class={buttonVariants({ variant: 'outline' })} href={l.href}>{l.label}</a></li>)}</ul>
+    </nav>
   )}
 
   {!isFrame(product) && (

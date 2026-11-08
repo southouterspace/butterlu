@@ -6,6 +6,7 @@
 // docs/12-serp-leadership.md §3.1.
 import type { APIRoute } from 'astro';
 import { CURRENCY, PRODUCTS, SHOP, frameFor, isFrame } from '../../catalog/products';
+import { tagsFor } from '../../catalog/taxonomy';
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const tag = (name: string, value: string | number) => `      <g:${name}>${esc(String(value))}</g:${name}>`;
@@ -26,7 +27,8 @@ export const GET: APIRoute = ({ site }) => {
       tag('condition', 'new'),
       tag('identifier_exists', 'no'),
       tag('google_product_category', 'Home & Garden > Decor > Picture Frames'),
-      tag('product_type', `Picture Frames > ${frameFor(p).name}`),
+      // The shop's own tree, frame first, then who it's for (docs/12 §4c).
+      tag('product_type', ['Picture Frames', frameFor(p).name, tagsFor(p)?.group.label, tagsFor(p)?.for.label].filter(Boolean).join(' > ')),
       tag('material', 'Wood and glass'),
       tag('is_bundle', 'no'),
       // Made to order: the handling time matches SHOP.dispatch. Transit time is set in

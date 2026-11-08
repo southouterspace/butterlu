@@ -68,3 +68,12 @@ test('the Merchant Center feed lists every product with price and free US shippi
   expect(feed.includes('<g:price>0.00 USD</g:price>')).toBe(true);
   expect(/<g:price>\d+\.\d{2} USD<\/g:price>/.test(feed)).toBe(true);
 });
+
+test('every page carries the shop-by menus, and filtered views keep the category canonical', async ({ app }) => {
+  const html = await (await fetch(new URL('/collections/grandparent-frames?for=grandma', app.baseUrl))).text();
+  expect(html.includes('popovertarget="menu-for"')).toBe(true);
+  expect(html.includes('href="/collections/grandparent-frames?for=grandma"')).toBe(true);
+  expect(html.includes('href="/collections/all?occasion=christmas"')).toBe(true);
+  expect(/<link rel="canonical" href="https:\/\/www\.butterlu\.com\/collections\/grandparent-frames">/.test(html)).toBe(true);
+});
+

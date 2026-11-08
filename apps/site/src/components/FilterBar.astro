@@ -1,0 +1,39 @@
+---
+// Filter chips over a grid of design cards: who it's for, occasion and frame. Shown from
+// the first paint so nothing shifts; hidden only for visitors without script, who see the
+// full grid. src/scripts/filters.ts makes the chips work.
+// The chosen filters live in the query string (?for=grandma&occasion=christmas) and
+// the page's canonical stays the category, so a filtered view is never indexed.
+import type { Facet } from '../catalog/taxonomy';
+import { cn } from './ui/variants';
+
+interface Props {
+  facets: Facet[];
+  /** Total designs in the grid. */
+  total: number;
+}
+const { facets, total } = Astro.props;
+const chip =
+  'inline-flex h-9 items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-muted aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background';
+---
+{facets.length > 0 && (
+  <div data-filters class="mb-5 grid gap-3">
+    {facets.map((f) => (
+      <div role="group" aria-label={f.label} class="flex flex-wrap items-center gap-2">
+        <span class="w-full text-xs font-medium tracking-wide text-muted-foreground uppercase sm:w-28">{f.label}</span>
+        {f.options.map((o) => (
+          <button type="button" class={chip} data-filter={f.param} data-value={o.key} aria-pressed="false">
+            {o.label}
+          </button>
+        ))}
+      </div>
+    ))}
+    <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
+      <span data-filter-status role="status" tabindex="-1">Showing all {total} designs</span>
+      <button type="button" data-filter-clear hidden class={cn('underline underline-offset-4 hover:text-foreground')}>Clear filters</button>
+    </p>
+  </div>
+)}
+<p data-filter-empty hidden class="mb-5 rounded-3xl bg-muted/60 p-5 text-sm">
+  No designs match all of those yet. Any of our designs can be changed to fit, or start from one of the two frames above.
+</p>

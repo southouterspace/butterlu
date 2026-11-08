@@ -1,6 +1,7 @@
 ---
 // A frame or design tile in the shadcn Card shape, rendered as static HTML.
 import { type Product, formatPrice, frameFor, isFrame } from '../catalog/products';
+import { tagsFor } from '../catalog/taxonomy';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
 import { cardClass, cn } from './ui/variants';
@@ -13,9 +14,17 @@ interface Props {
 }
 const { product, headingLevel = 'h3', eager = false } = Astro.props;
 const Heading = headingLevel;
+// Category filters read these (src/scripts/filters.ts); the two frames carry none.
+const tags = tagsFor(product);
 const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: `card-${product.handle}`, photoHint: false, size: 'card', lazy: !eager });
 ---
-<li class={cn(cardClass, 'shadow-sm transition-shadow hover:shadow-md')}>
+<li
+  class={cn(cardClass, 'shadow-sm transition-shadow hover:shadow-md')}
+  data-card={tags ? '' : undefined}
+  data-for={tags ? `${tags.group.key} ${tags.for.key}` : undefined}
+  data-occasion={tags?.occasions.map((o) => o.key).join(' ')}
+  data-frame={tags?.frame.key}
+>
   <a href={`/products/${product.handle}`} class="group flex h-full flex-col text-foreground no-underline">
     <div class="bg-muted p-3 sm:p-5" set:html={svg} />
     <div class="grid gap-1 p-3 sm:p-4">

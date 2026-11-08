@@ -16,6 +16,7 @@ earlier step produced. That makes the plan auditable before a single mutation fi
 | `product-options.json` | `scripts/product-options.mjs` (shapes, backgrounds) | new site product, editor |
 | `decisions.json` | **the owner** — gate G2 | new site catalog, 301s |
 | `seo-copy.json`, `descriptions.json`, `redirects.json`, `reviews.json` | Shopify-era loops, dropped 2026-10-12 | — |
+| `serp/` | rank-tracking agents (`plans/serp/README.md`) | `scripts/serp-report.mjs`, `docs/12` |
 | `run-log.jsonl` | every loop | humans, debugging |
 
 `run-log.jsonl` is append-only: one JSON object per line with `ts`, `loop`, `item`,

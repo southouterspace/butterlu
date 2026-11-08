@@ -1,0 +1,3666 @@
+{
+ "generated": "2026-11-08",
+ "method": {
+  "search": "firecrawl_search, location United States, limit 10, sources web",
+  "scrape": "firecrawl_scrape markdown+rawHtml, onlyMainContent false, basic proxy only; fields parsed locally from rawHtml (JSON-LD, headings, images) plus manual review of markdown",
+  "exclusions": "etsy.com never opened (listed in serp_top10 from search results only); Amazon/Walmart/Pinterest/forums not scraped",
+  "caveats": [
+   "Rankings come from Firecrawl's search index, not a logged-in, geolocated Google session. Trust the page-type mix over exact positions.",
+   "main_copy_words_est = deduplicated prose lines of 20+ words, excluding nav, newsletter and product-card names, adjusted by hand. Treat it as \u00b125%.",
+   "No backlink or volume data.",
+   "2 pages blocked (Michaels, Pottery Barn)."
+  ]
+ },
+ "clusters": [
+  {
+   "query": "grandparent pregnancy announcement frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "amazon.com/sonogram-frame-grandparents/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 2,
+     "url": "etsy.com/listing/1749397782",
+     "type": "etsy listing (not opened)"
+    },
+    {
+     "pos": 3,
+     "url": "pinterest.com/ideas/pregnancy-announcement-picture-frame",
+     "type": "pinterest"
+    },
+    {
+     "pos": 4,
+     "url": "walmart.com/ip/Grandparent-Reveal-Keepsake...",
+     "type": "marketplace PDP"
+    },
+    {
+     "pos": 5,
+     "url": "amazon.com/clp/B0D2W4RYGQ",
+     "type": "marketplace PDP"
+    },
+    {
+     "pos": 6,
+     "url": "michaels.com/makerplace/product/promoted-to-grandma-and-grandpa-picture-frame...",
+     "type": "marketplace PDP (Michaels MakerPlace)"
+    },
+    {
+     "pos": 7,
+     "url": "etsy.com/market/grandparent_pregnancy_announcement_frame",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 8,
+     "url": "pinterest.com/ideas/pregnancy-announcement-frame",
+     "type": "pinterest"
+    },
+    {
+     "pos": 9,
+     "url": "noordinarygift.co.uk/products/grandparents-promotion-pregnancy-reveal-keepsake-frame",
+     "type": "DTC PDP (UK)"
+    },
+    {
+     "pos": 10,
+     "url": "m.shein.com/...",
+     "type": "marketplace PDP"
+    }
+   ],
+   "pages": [
+    {
+     "key": "noordinarygift",
+     "url": "https://noordinarygift.co.uk/products/grandparents-promotion-pregnancy-reveal-keepsake-frame",
+     "rank": 9,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "Grandparents Promotion Pregnancy Reveal Baby Scan Keepsake Frame \u2013 No Ordinary Gift",
+     "title_len": 83,
+     "meta_description": "An engraved photo frame, perfect to add a baby scan image as a gift for new grandparents. This frame makes a unique keepsake to announce the arrival of a new little one.",
+     "h1": [
+      "Grandparents Promotion Pregnancy Reveal Baby Scan Keepsake Frame"
+     ],
+     "heading_outline": [
+      "h2: Reset your password",
+      "h3: Personalised Embroidered Gifts",
+      "h3: Forever Flowers",
+      "h3: Baubles & Decorations",
+      "h3: Homeware",
+      "h3: Baubles",
+      "h3: Personalised Christmas Homeware",
+      "h3: Personalised Christmas Sacks",
+      "h3: Hanging Decorations",
+      "h3: 1st Wedding Anniversary Gifts | Paper",
+      "h3: 2nd Wedding Anniversary Gifts | Cotton",
+      "h3: 3rd Wedding Anniversary Gifts | Leather",
+      "h3: 4th Wedding Anniversary Gifts | Linen",
+      "h3: 5th Wedding Anniversary Gifts | Wood",
+      "h3: 10th Wedding Anniversary Gifts | Tin",
+      "h3: 25th Wedding Anniversary Gifts | Silver",
+      "h3: 50th Wedding Anniversary Gifts | Gold",
+      "h3: First Christmas Decorations",
+      "h3: Childrens Prints & Decor",
+      "h3: Baby Photo Gifts",
+      "h3: New Baby Keepsake Gifts",
+      "h3: Regional settings",
+      "h2: Your cart",
+      "h3: Your cart is empty",
+      "h3: Key Features"
+     ],
+     "n_h2": 8,
+     "n_h3": 49,
+     "main_copy_words_est": 830,
+     "body_words_excl_nav_footer_auto": 1999,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Offer",
+      "Product",
+      "Thing"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "store-level 4.9 from 6,298 reviews (Judge.me); no product-level rating",
+     "price": "\u00a339",
+     "products_listed": 1,
+     "personalisation": "engraved text fields, no live preview",
+     "delivery_promise": "'Current Dispatch Times: Next Working Day'; 'Order today for dispatch by Monday 9th November'",
+     "sibling_category_links": 86,
+     "sibling_category_sample": [
+      "/cdn/shop/files/2702_1.jpg",
+      "/cdn/shop/files/2702_2.jpg",
+      "/collections/1st-wedding-anniversary-gifts-paper",
+      "/collections/7th-wedding-anniversary-gifts-copper",
+      "/collections/a-nutcracker-christmas-gifts",
+      "/collections/all",
+      "/collections/all-products",
+      "/collections/anniversary-cards",
+      "/collections/anniversary-gifts",
+      "/collections/anniversary-prints"
+     ],
+     "images": 66,
+     "images_with_alt": 35,
+     "alt_samples": [
+      "Embroidered Initials Washed Finish Cosmetic Pouch",
+      "Mother's Day Forever Tulips Keepsake in Mini Tin",
+      "Couple's Photo Memory Bauble",
+      "Personalised Couples Names Velvet Cushion"
+     ],
+     "distinctive": "UK store ranking in a US-located search: weak US competition. Bare Product+Offer JSON-LD. Dated dispatch countdown."
+    }
+   ],
+   "blocked_or_skipped": [
+    {
+     "url": "https://www.michaels.com/makerplace/product/promoted-to-grandma-and-grandpa-picture-frame-personalized-baby-name-and-year-new-grandparents-pregnancy-announcement-gift-640286104870977542",
+     "rank": 6,
+     "status": "blocked: all Firecrawl engines failed (basic proxy); not retried"
+    }
+   ],
+   "winners_have_in_common": "Marketplaces hold 8 of 10 slots (Amazon x2, Walmart, Michaels MakerPlace, Shein, Etsy x2, plus 2 Pinterest). The only independent shop that ranks is UK-based (#9): a PDP showing 6,298 store reviews and a 'dispatch next working day' line. No US DTC collection page ranks. Evidence is thin (1 page scraped)."
+  },
+  {
+   "query": "father of the bride gift",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "groovygroomsmengifts.com/collections/father-bride-gifts",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 2,
+     "url": "lovegeorgie.com/collections/father-of-the-bride-or-groom",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 3,
+     "url": "uk.pinterest.com/memorythreadco/father-of-the-bride-gift",
+     "type": "pinterest"
+    },
+    {
+     "pos": 4,
+     "url": "reddit.com/r/weddingplanning/...",
+     "type": "forum"
+    },
+    {
+     "pos": 5,
+     "url": "amazon.com/dad-wedding-gift-groom/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 6,
+     "url": "theknot.com/content/father-of-the-bride-gift-ideas",
+     "type": "editorial listicle"
+    },
+    {
+     "pos": 7,
+     "url": "facebook.com/groups/...",
+     "type": "forum"
+    },
+    {
+     "pos": 8,
+     "url": "weddingwire.com/wedding-forums/...",
+     "type": "forum"
+    },
+    {
+     "pos": 9,
+     "url": "waterford.com/en-us/collections/father-of-the-bride-or-groom-gifts",
+     "type": "brand collection"
+    },
+    {
+     "pos": 10,
+     "url": "thegartergirl.com/blogs/...",
+     "type": "DTC blog"
+    }
+   ],
+   "pages": [
+    {
+     "key": "groovygroomsmen",
+     "url": "https://www.groovygroomsmengifts.com/collections/father-bride-gifts",
+     "rank": 1,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Father of the Bride Gifts: 140 Wedding Day Gifts for Dad - Groovy Groomsmen Gifts",
+     "title_len": 81,
+     "meta_description": "Personalized father of the bride gifts engraved with his name and your wedding date. Whiskey decanters, keepsake boxes and wood watches. Ships in 1-2 days.",
+     "h1": [
+      "Father of the Bride Gifts"
+     ],
+     "heading_outline": [
+      "h2: Father of the Bride Gifts - Gift Guide & FAQs",
+      "h3: Not sure where to start?",
+      "h2: Browse Father of the Bride Gifts by Type",
+      "h2: How to Choose a Meaningful Father of the Bride Gift",
+      "h3: The Toast He Will Never Forget",
+      "h2: How Much Should You Spend on a Father of the Bride Gift?",
+      "h2: Who Are You Shopping For?",
+      "h2: Browse Wedding Party Gifts by Role",
+      "h2: Frequently Asked Questions",
+      "h2: Let Customers Speak For Us!",
+      "h2: More Groomsmen Gift Ideas",
+      "h2: OVER 100,000 SATISFIED GROOMS SERVED",
+      "h2: Don't wait until the week before",
+      "h2: Contact us!"
+     ],
+     "n_h2": 12,
+     "n_h3": 2,
+     "main_copy_words_est": 1580,
+     "body_words_excl_nav_footer_auto": 2682,
+     "faq": {
+      "present": true,
+      "visible_questions": 7,
+      "note": "FAQPage JSON-LD, 7 questions incl. delivery time and returns"
+     },
+     "jsonld_types": [
+      "Answer",
+      "Brand",
+      "BreadcrumbList",
+      "ContactPoint",
+      "FAQPage",
+      "ItemList",
+      "ListItem",
+      "OnlineStore",
+      "Person",
+      "PostalAddress",
+      "Question",
+      "WebPage"
+     ],
+     "microdata_types": [
+      "ItemList"
+     ],
+     "jsonld_faqpage_questions": 7,
+     "jsonld_itemlist_elements": 40,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "site badge '4.9 stars from 17,800+ reviews' (not marked up)",
+     "price": "26 price points",
+     "products_listed": 140,
+     "personalisation": "Customily script (live preview) on PDPs",
+     "delivery_promise": "Most orders ship in 1-2 days; free US shipping over $75; in meta description too ('Ships in 1-2 days')",
+     "sibling_category_links": 53,
+     "sibling_category_sample": [
+      "/collections/accessories",
+      "/collections/bachelor-party-gifts",
+      "/collections/bachelor-party-shirts",
+      "/collections/bar-groomsmen-gift-ideas",
+      "/collections/baseball-groomsmen-gifts",
+      "/collections/best-man-gifts",
+      "/collections/bottle-opener-groomsmen-gifts",
+      "/collections/bride-gifts",
+      "/collections/caricature-gifts",
+      "/collections/cheap-affordable-groomsmen-gifts"
+     ],
+     "images": 436,
+     "images_with_alt": 412,
+     "alt_samples": [
+      "Groovy Groomsmen Gifts",
+      "Muscle Duffle groomsmen gift bag monogrammed RH in the back of a red farm truck",
+      "Personalized golf towel, divot tool and tumbler for a groomsman",
+      "To the 9's cufflink gift set with monogrammed cufflinks, money clip and tie bar on a wood box engraved Ollie"
+     ],
+     "distinctive": "The strongest collection page seen. Count in the title ('140 Wedding Day Gifts for Dad'). Guide sections: how to choose, budget, who are you shopping for, browse by type, browse by wedding-party role. 'Don't wait until the week before' deadline nudge. 412 of 436 images have long scene-describing alt text. 53 sibling collections."
+    },
+    {
+     "key": "lovegeorgie",
+     "url": "https://lovegeorgie.com/collections/father-of-the-bride-or-groom",
+     "rank": 2,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Shop Father of the Bride & Father of the Groom Wedding Gifts - Love, Georgie",
+     "title_len": 76,
+     "meta_description": "Create a personalized Father of the Bride gift at Love, Georgie. We make engravable gifts for Father of the Groom, too. Dad will love it because it's personal. Shop today!",
+     "h1": [
+      "Personalized Gifts for Father of the Bride or Groom"
+     ],
+     "heading_outline": [
+      "h2: Currency"
+     ],
+     "n_h2": 1,
+     "n_h3": 0,
+     "main_copy_words_est": 20,
+     "body_words_excl_nav_footer_auto": 1330,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ItemList",
+      "ListItem",
+      "Organization"
+     ],
+     "microdata_types": [
+      "ItemList"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 21,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "per-card stars, e.g. 5.0 (11), 5.0 (6)",
+     "price": "$38-$68",
+     "products_listed": 30,
+     "personalisation": "handwriting/photo engraving",
+     "delivery_promise": "none found on page",
+     "sibling_category_links": 88,
+     "sibling_category_sample": [
+      "/collections/accessories",
+      "/collections/all",
+      "/collections/anniversary-gifts",
+      "/collections/aunt-gifts",
+      "/collections/bachelor-party-gifts",
+      "/collections/bachelorette-party-gifts",
+      "/collections/bar-and-wine",
+      "/collections/birthday-gifts",
+      "/collections/bridal-shower-gifts",
+      "/collections/bride"
+     ],
+     "images": 154,
+     "images_with_alt": 117,
+     "alt_samples": [
+      "Love, Georgie",
+      "Event featuring personalized jewelry with women gathered around a table with 'Love. Georgie' branding, seated on a couch.",
+      "Event or workshop with people around a table with cake and flowers, against a teal wall with 'good things happen here' text.",
+      "Your Pet's Paw Print Necklace \u2013 Necklace \u2013 Love, Georgie"
+     ],
+     "distinctive": "Thin page that ranks #2 anyway: one-sentence intro, ItemList(21) JSON-LD, 88 sibling collection links (aunt-gifts, bride, bridesmaids)."
+    },
+    {
+     "key": "theknot_fob",
+     "url": "https://www.theknot.com/content/father-of-the-bride-gift-ideas",
+     "rank": 6,
+     "page_type": "editorial listicle",
+     "platform": "magento",
+     "title_tag": "34 Best Father-of-the-Bride Gifts for 2026",
+     "title_len": 42,
+     "meta_description": "Discover the best father of the bride gifts, from sentimental keepsake tie patches to personalized whiskey decanters and gifts from the groom.",
+     "h1": [
+      "34 Sentimental Father-of-the-Bride Gifts from His Daughter or the Couple"
+     ],
+     "heading_outline": [
+      "h2: The Best Father-of-the-Bride Gift Ideas in 2026 and 2027",
+      "h2: Sentimental Father-of-the-Bride Gifts From His Daughter",
+      "h3: Father-Daughter Dance Artwork",
+      "h3: Sentimental Tie Patch",
+      "h3: \"I Loved You First\" Cufflinks",
+      "h3: Engraved Tumbler",
+      "h3: Keepsake Fishing Lure",
+      "h3: Customized Baseball",
+      "h3: Engraved Classic Leather Watch",
+      "h3: Personalized Watch Box",
+      "h3: Heartfelt Handkerchief Message",
+      "h3: Father-of-the-Bride Socks",
+      "h3: Personalized Belt",
+      "h3: Men's Pampering Gift Set",
+      "h3: Illustrated Wedding Portrait",
+      "h3: Personalized Poetry Keepsake",
+      "h3: Iron Figurine of Father and Daughter",
+      "h3: Engraved Wallet Card Inserts",
+      "h3: Personalized Leather Wallet",
+      "h3: \"Like Father, Like Daughter\" Mug",
+      "h3: Father-of-the-Bride Shirt",
+      "h3: Fill-in-the-Blank Book",
+      "h2: Practical Father-of-the-Bride Gift Ideas From His Future In-Law or the Couple",
+      "h3: Personalized Whiskey Decanter",
+      "h3: Monthly Whiskey Subscription"
+     ],
+     "n_h2": 5,
+     "n_h3": 37,
+     "main_copy_words_est": 3000,
+     "body_words_excl_nav_footer_auto": 4196,
+     "faq": {
+      "present": true,
+      "visible_questions": 2,
+      "note": "'Who buys' and 'When do you give', no FAQPage markup"
+     },
+     "jsonld_types": [
+      "Article",
+      "BreadcrumbList",
+      "CollectionPage",
+      "EntryPoint",
+      "ImageObject",
+      "ItemList",
+      "ListItem",
+      "Organization",
+      "Person",
+      "ReadAction",
+      "Thing",
+      "ViewAction",
+      "WebPage"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 37,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "n/a",
+     "price": "$16-$895",
+     "products_listed": 34,
+     "personalisation": "n/a",
+     "delivery_promise": "n/a",
+     "sibling_category_links": 2,
+     "sibling_category_sample": [
+      "/registry/store/collections/big-ticket-finds",
+      "/registry/store/collections/wedding-registry-essentials"
+     ],
+     "images": 137,
+     "images_with_alt": 136,
+     "alt_samples": [
+      "Get The Knot app",
+      "Explore Budget Advisor",
+      "Give guests more options with Venmo",
+      "Enter for a chance to win your wedding look"
+     ],
+     "distinctive": "Not top 3 (Pinterest and Reddit are #3-4), included as the editorial benchmark. Lists 'Best for X' picks at the top, then one H3 per product. Article + ItemList(37) JSON-LD. Affiliate links go to Etsy and Personalization Mall, so a product listed here gets a second route into this SERP."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Two DTC collection pages hold #1-2. Both have ItemList JSON-LD and 50-90 sibling collection links. #1 adds ~1,600 words of guide, a 7-question FAQPage, a product count in the title, ship time in the meta description, and a site-wide 4.9/17,800-review badge. #2 has almost no copy, so breadth and authority carry it. No frame-specific page ranks."
+  },
+  {
+   "query": "personalized grandma picture frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "amazon.com/grandmother-picture-frame/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 2,
+     "url": "28collective.com/collections/grandparents-gifts",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 3,
+     "url": "etsy.com/market/grandma_frames",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 4,
+     "url": "zazzle.com/grandma+picture+frames",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 5,
+     "url": "walmart.com/c/kp/great-grandma-picture-frame",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 6,
+     "url": "pinterest.com/ideas/picture-frame-for-grandparents",
+     "type": "pinterest"
+    },
+    {
+     "pos": 7,
+     "url": "snaphappymom.com/grandma-picture-frames",
+     "type": "blog listicle"
+    },
+    {
+     "pos": 8,
+     "url": "personalizationmall.com/Personalized-Grandparent-Picture-Frames-d1707.dept",
+     "type": "national brand category"
+    },
+    {
+     "pos": 9,
+     "url": "shutterfly.com/a/photo-frame-for-grandparents",
+     "type": "national brand landing"
+    },
+    {
+     "pos": 10,
+     "url": "hallmark.com/.../grandma-is-a-gift-picture-frame-4x6-1CAP1312.html",
+     "type": "national brand PDP"
+    }
+   ],
+   "pages": [
+    {
+     "key": "28collective_gp",
+     "url": "https://28collective.com/collections/grandparents-gifts",
+     "rank": 2,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Gifts for Grandparents \u2014 28 Collective",
+     "title_len": 38,
+     "meta_description": "Find heartfelt, personalized gifts for grandparents! Custom keepsakes, home d\u00e9cor, and more\u2014perfect for birthdays, holidays, or just to say I love you.",
+     "h1": [
+      "Gifts for Grandparents",
+      "Sign up & Save"
+     ],
+     "heading_outline": [
+      "h2: Personalized Grandma's Garden Bird House",
+      "h2: Personalized Grandchild Gift from Above Picture Frame",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Bird Feeder",
+      "h2: Personalized \"Brag Board\" Wooden Photo Bar",
+      "h2: Personalized Grandma's Rays of Sunshine Garden Flag",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Tree Swing",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Wooden Photo Bar",
+      "h2: Personalized \"Grandmas Are Blessings\" Wind Chime",
+      "h2: Personalized \"Grandma\" Picture Frame",
+      "h2: Personalized Welcome to Grandma & Grandpa\u2019s House Doormat",
+      "h2: Personalized Playing Cards & Dice Set",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Serving Tray",
+      "h2: Personalized Grandma's Blessing Bible Cover",
+      "h2: Personalized \"I Love My Grandma\" Picture Frame",
+      "h2: Personalized \"Grandma's Nice List\" Christmas Garden Flag",
+      "h2: Personalized \"I Love You a Bushel and a Peck...\" Picture Frame",
+      "h2: Personalized First Grandmother's Day Picture Frame",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Picture Frame",
+      "h2: Personalized \"Grandma's Garden\" Wooden Photo Bar",
+      "h2: Personalized Grandpa's Heart of Gold Bible Cover",
+      "h2: Grandpa's Fishing Buddy Picture Frame",
+      "h2: Personalized Grandma's Little Peeps Spring Garden Flag",
+      "h2: Personalized Grandma's Favorite Flock Summer Garden Flag",
+      "h2: Personalized Grandchildren Wall Sign",
+      "h2: You recently viewed"
+     ],
+     "n_h2": 30,
+     "n_h3": 0,
+     "main_copy_words_est": 0,
+     "body_words_excl_nav_footer_auto": 1360,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none on cards",
+     "price": "10 price points (~$25-$60)",
+     "products_listed": 29,
+     "personalisation": "engraved, text only",
+     "delivery_promise": "Free Shipping + Personalization (banner)",
+     "sibling_category_links": 61,
+     "sibling_category_sample": [
+      "/collections/all",
+      "/collections/anniversary-gifts",
+      "/collections/baby-kids",
+      "/collections/birthday-gifts",
+      "/collections/bridesmaid-gifts",
+      "/collections/child-memorial-gifts",
+      "/collections/christmas-decor",
+      "/collections/coworkers-employees",
+      "/collections/dad-memorial-gifts",
+      "/collections/engagement-gifts"
+     ],
+     "images": 114,
+     "images_with_alt": 109,
+     "alt_samples": [
+      "Best Selling Gifts for Her",
+      "Best Selling Gifts for Him",
+      "Shop Gifts for the Home",
+      "Shop Gifts for the Garden"
+     ],
+     "distinctive": "A grandparents-wide page (not grandma-only) ranks #2 for grandma and #2 for the Christmas query. No intro copy, just card excerpts (~250 words). Each product name is an H2. JSON-LD: BreadcrumbList and WebSite only. 61 sibling collections."
+    },
+    {
+     "key": "pmall_grandparent_dept",
+     "url": "https://www.personalizationmall.com/Personalized-Grandparent-Picture-Frames-d1707.dept",
+     "rank": 8,
+     "page_type": "collection",
+     "platform": "magento",
+     "title_tag": "Grandparents Picture Frames & Photo Albums | Personalization Mall",
+     "title_len": 65,
+     "meta_description": "Surprise grandma & grandpa with beautiful personalized grandparents picture frames, photo albums & wall art from PersonalizationMall.com.",
+     "h1": [
+      "Grandparents Picture Frames & Photo Albums"
+     ],
+     "heading_outline": [
+      "h3: Sports",
+      "h3: Brands",
+      "h3: Characters",
+      "h2: Sign Up & Get $10 Off"
+     ],
+     "n_h2": 1,
+     "n_h3": 3,
+     "main_copy_words_est": 0,
+     "body_words_excl_nav_footer_auto": 946,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ListItem"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none on grid",
+     "price": "$7.79-$34+",
+     "products_listed": 68,
+     "personalisation": "text personalisation",
+     "delivery_promise": "none on this page",
+     "sibling_category_links": 148,
+     "sibling_category_sample": [
+      "/Best-Selling-Christmas-Gifts-d1440.dept",
+      "/Best-Selling-Gifts-for-Women-d1226.dept",
+      "/Best-Selling-Personalized-Baby-Gifts-d1318.dept",
+      "/Best-Selling-Personalized-Gifts-for-Men-d1229.dept",
+      "/Best-Selling-Personalized-Grandparent-Gift-Ideas-d1802.dept",
+      "/Best-Selling-Personalized-Kids-Gifts-d1444.dept",
+      "/Best-Selling-Personalized-Wedding-Gifts-d1428.dept",
+      "/Best-Selling-Sympathy-Gifts-d2196.dept",
+      "/Brother-Gifts-d2216.dept",
+      "/Christmas-Mugs-d1907.dept"
+     ],
+     "images": 140,
+     "images_with_alt": 139,
+     "alt_samples": [
+      "For Her",
+      "For Him",
+      "For Baby",
+      "For Kids"
+     ],
+     "distinctive": "Table-layout category with zero copy and BreadcrumbList only. 148 category links: authority plus breadth."
+    },
+    {
+     "key": "hallmark_grandma",
+     "url": "https://www.hallmark.com/house-and-home/decor/picture-frames/grandma-is-a-gift-picture-frame-4x6-1CAP1312.html",
+     "rank": 10,
+     "page_type": "product",
+     "platform": "magento",
+     "title_tag": "Grandma Is a Gift Picture Frame, 4x6 - Picture Frames | Hallmark",
+     "title_len": 64,
+     "meta_description": "Give your grandma this unique striped picture frame to display a family photo. With a sweet caption, this horizontal 4x6 photo holder in olive green makes a great gift.",
+     "h1": [
+      "Grandma Is a Gift Picture Frame, 4x6"
+     ],
+     "heading_outline": [
+      "h2: Find a store",
+      "h2: Account",
+      "h2: Shop by category",
+      "h2: Gifts & Ornaments",
+      "h2: Cards",
+      "h2: Shop by Price",
+      "h2: Special Offers",
+      "h2: Collection",
+      "h2: Theme",
+      "h2: Pop Culture",
+      "h2: Feature",
+      "h2: Explore",
+      "h2: Cards for Anyone",
+      "h2: Cards for Her",
+      "h2: Cards for Him",
+      "h2: Card Collections",
+      "h2: Shop by Category",
+      "h2: Key Occasions",
+      "h2: Good Times",
+      "h2: Tough Times",
+      "h2: Holidays",
+      "h2: Card Categories",
+      "h2: Holiday & Occasions",
+      "h2: Category",
+      "h2: Brand"
+     ],
+     "n_h2": 73,
+     "n_h3": 0,
+     "main_copy_words_est": 150,
+     "body_words_excl_nav_footer_auto": 739,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Brand",
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Organization",
+      "Person",
+      "Product",
+      "Rating",
+      "review"
+     ],
+     "microdata_types": [
+      "SiteNavigationElement"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "0 reviews",
+     "price": "$26.99",
+     "products_listed": 1,
+     "personalisation": "none (fixed caption)",
+     "delivery_promise": "'Arrives 11/13\u201311/17' (dated estimate); free shipping on $30+ with rewards",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 27,
+     "images_with_alt": 27,
+     "alt_samples": [
+      "Hallmark logo",
+      "Grandma Is a Gift Picture Frame  image number 1",
+      "Grandma Is a Gift Picture Frame  image number 2",
+      "Grandma Is a Gift Picture Frame  image number 3"
+     ],
+     "distinctive": "Brand authority alone: not personalised, 0 reviews, ~150 words."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Collections that cover grandparents in general beat grandma-only pages. 28 Collective (#2) and Personalization Mall (#8) both have zero intro copy, BreadcrumbList-only JSON-LD, 29-68 products and 60-150 category links. Hallmark ranks a 0-review, non-personalised $27 PDP. What wins here is catalogue depth and domain strength, not on-page polish."
+  },
+  {
+   "query": "godmother proposal frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "amazon.com/godmother-frame/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 2,
+     "url": "walmart.com/c/kp/godparents-picture-frames",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 3,
+     "url": "etsy.com/listing/558103008",
+     "type": "etsy listing (not opened)"
+    },
+    {
+     "pos": 4,
+     "url": "pinterest.com/ideas/godmother-photo-frame",
+     "type": "pinterest"
+    },
+    {
+     "pos": 5,
+     "url": "stunninggift4u.com/product/godmother-gift/",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 6,
+     "url": "pictureperfectscrabble.ie/products/will-you-be-my-godmother-frame",
+     "type": "DTC PDP (Ireland)"
+    },
+    {
+     "pos": 7,
+     "url": "tiktok.com/discover/godmother-proposal-frame-ideas",
+     "type": "social"
+    },
+    {
+     "pos": 8,
+     "url": "engraveitstudio.com.au/products/godmother-wood-and-acrylic-frame...",
+     "type": "DTC PDP (Australia)"
+    },
+    {
+     "pos": 9,
+     "url": "pinterest.com/pin/71987294036303050",
+     "type": "pinterest"
+    },
+    {
+     "pos": 10,
+     "url": "tiktok.com/@diywithjenna/...",
+     "type": "social"
+    }
+   ],
+   "pages": [
+    {
+     "key": "stunninggift4u",
+     "url": "https://stunninggift4u.com/product/godmother-gift/",
+     "rank": 5,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "Godmother Gift, Gift For Godmother, Will You Be My Godmother, Personalized Photo Frame, Godmother Proposal, Baptism Gift - Personalized Gifts",
+     "title_len": 141,
+     "meta_description": "Finding a godmother who will shower your child with love, guidance, and support is a true blessing. Our Godmother Gift is the perfect way to express your",
+     "h1": [
+      "Godmother Gift, Gift For Godmother, Will You Be My Godmother, Personalized Photo Frame, Godmother Proposal, Baptism Gift"
+     ],
+     "heading_outline": [
+      "h3: Canvas Print Size Guideline",
+      "h2: Customer Reviews",
+      "h3: Related products",
+      "h3: Join Our Mailing List",
+      "h3: Shop by category",
+      "h3: Login"
+     ],
+     "n_h2": 1,
+     "n_h3": 5,
+     "main_copy_words_est": 360,
+     "body_words_excl_nav_footer_auto": 849,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "ImageObject",
+      "Offer",
+      "Organization",
+      "Place",
+      "PostalAddress",
+      "Product",
+      "ProductGroup",
+      "WebPage",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": true,
+     "reviews_shown": "'No reviews' on product",
+     "price": "$49.95-$219.95 (canvas sizes)",
+     "products_listed": 1,
+     "personalisation": "photo upload + 'Preview Your Customize' render",
+     "delivery_promise": "'Estimated delivery from 11/15/2026 to 11/22/2026'",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 74,
+     "images_with_alt": 49,
+     "alt_samples": [
+      "Stunning Gift Store",
+      "Custom Song Lyric Wall Art | Personalize Picture with Music Lyrics on Canvas",
+      "personalized photo blanket stunning gift store",
+      "photo pillow personalized gifts stunning gift store"
+     ],
+     "distinctive": "136-character keyword-stuffed title, and the H1 repeats it. ProductGroup JSON-LD. Wins on exact-match words with weak US competition."
+    },
+    {
+     "key": "ppscrabble",
+     "url": "https://pictureperfectscrabble.ie/products/will-you-be-my-godmother-frame",
+     "rank": 6,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "Will You Be My Godmother/Godfather Frame | Proposal Gift | Irish Made \u2013 Picture Perfect Scrabble",
+     "title_len": 96,
+     "meta_description": "Ask that special someone to be Godmother or Godfather with our personalised frame. Thoughtful proposal gift, handmade in Ireland.",
+     "h1": [
+      "Will you be my Godmother/Godfather frame",
+      "WELCOME TO PICTURE PERFECT SCRABBLE!"
+     ],
+     "heading_outline": [
+      "h2: \ud83d\udce6 Please note: No frames will be made until after 11th November.",
+      "h2: Item added to your cart",
+      "h2: Will you be my Godmother/Godfather frame",
+      "h3: About Us",
+      "h3: Quick Links",
+      "h3: Policies",
+      "h3: Get in Touch",
+      "h3: Newtownforbes, Co. Longford"
+     ],
+     "n_h2": 5,
+     "n_h3": 5,
+     "main_copy_words_est": 170,
+     "body_words_excl_nav_footer_auto": 599,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Offer",
+      "Organization",
+      "Product",
+      "Thing"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none on page (links to Trustpilot)",
+     "price": "\u20ac35",
+     "products_listed": 1,
+     "personalisation": "personaliser with photo upload",
+     "delivery_promise": "approx. 5-10 working days",
+     "sibling_category_links": 38,
+     "sibling_category_sample": [
+      "/collections/all",
+      "/collections/all-frames",
+      "/collections/anniversary",
+      "/collections/anniversary-frames",
+      "/collections/baby-cards",
+      "/collections/baby-frames",
+      "/collections/baby-new-arrival-prints",
+      "/collections/best-sellers",
+      "/collections/birthday",
+      "/collections/birthday-cards"
+     ],
+     "images": 59,
+     "images_with_alt": 54,
+     "alt_samples": [
+      "Picture Perfect Scrabble",
+      "Will you be my Godmother/Godfather frame Picture Perfect Scrabble",
+      "Will you be my Godmother/Godfather frame",
+      "Irish Owned and Operated"
+     ],
+     "distinctive": "Irish shop ranking in a US-located search. Title covers both godmother and godfather."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Weak SERP. Positions 1-4 are Amazon, Walmart, Etsy and Pinterest, and the independent PDPs that rank are a US print shop with a 136-character stuffed title and 0 product reviews, plus shops in Ireland (#6) and Australia (#8). Both scraped pages have a photo-upload personaliser. Matching the exact words is enough to rank. This is the most winnable product-page SERP in the set."
+  },
+  {
+   "query": "godfather gift baptism",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "christeninggowns.com/collections/godparents-gifts",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 2,
+     "url": "reddit.com/r/Gifts/...",
+     "type": "forum"
+    },
+    {
+     "pos": 3,
+     "url": "grandparentgiftcompany.com/collections/godparent-gifts/baby-kids-baby-kids-baptism-christening-gifts",
+     "type": "DTC collection (tag-filtered)"
+    },
+    {
+     "pos": 4,
+     "url": "babybeauandbelle.com/blogs/bbb/godparent-gift-etiquette",
+     "type": "DTC blog article"
+    },
+    {
+     "pos": 5,
+     "url": "facebook.com/groups/...",
+     "type": "forum"
+    },
+    {
+     "pos": 6,
+     "url": "amazon.com/baptism-gifts-godparents/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 7,
+     "url": "burbvus.us/blogs/noticias/top-baptism-gifts-from-godparents",
+     "type": "DTC blog"
+    },
+    {
+     "pos": 8,
+     "url": "personalizedfavors.com/collections/gifts-for-godparents",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 9,
+     "url": "quora.com/...",
+     "type": "forum"
+    },
+    {
+     "pos": 10,
+     "url": "wrapsify.com/blogs/news/personalised-godfather-gift-ideas-for-baptism",
+     "type": "DTC blog listicle"
+    }
+   ],
+   "pages": [
+    {
+     "key": "christeninggowns",
+     "url": "https://christeninggowns.com/collections/godparents-gifts",
+     "rank": 1,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Godparents Gifts \u2013 Christeninggowns.com",
+     "title_len": 39,
+     "meta_description": "Share a lovely keepsake Baby Beau &amp; Belle garment as a memorable Godparents Gift. We will wrap all of your special items\u00a0for a beautiful presentation if you order one of our unique christening gift boxes. Your Godparents Gifts\u00a0will arrive carefully packaged in the box - pressed, folded and wrapped in tissue.\u00a0Browse",
+     "h1": [
+      "Godparents Gifts"
+     ],
+     "heading_outline": [
+      "h3: Shop by Style",
+      "h3: Boys Collections",
+      "h3: Girls Collections",
+      "h3: Boys",
+      "h3: Girls",
+      "h3: 14k Gold Rose Cross With Chain",
+      "h3: Gift Wrap | Ivory Gift Box",
+      "h3: Baby Boy Blessing Gift Set",
+      "h3: Mom & Daughter Bracelet Set",
+      "h3: Baby Girl Blessing Gift Set",
+      "h3: Cross Burp Cloth",
+      "h3: Cream Luster Pearl Necklace with Gold Cross",
+      "h3: 14k Gold & Stone Cross Earrings",
+      "h3: 14K Solid Gold Baptism Charm with Chain",
+      "h3: Girls Cross Bib",
+      "h3: Silver Baby Rattle",
+      "h3: Cream Luster Pearl Bracelet with Gold Cross",
+      "h3: Poppy Silly Lamb Buddy | Pacifier Holder",
+      "h3: Gift Card",
+      "h3: Personalized Cross Blanket",
+      "h3: 14k Gold Etched Blessing Charm With Chain",
+      "h3: 14k Gold Fancy Cross with Chain",
+      "h3: Boys Cross Bib",
+      "h3: 14k Gold Cylindrical Cross Charm With Chain",
+      "h3: Elijah Personalized Blanket"
+     ],
+     "n_h2": 0,
+     "n_h3": 41,
+     "main_copy_words_est": 25,
+     "body_words_excl_nav_footer_auto": 538,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "CollectionPage",
+      "ContactPoint",
+      "ImageObject",
+      "ItemList",
+      "ListItem",
+      "Organization",
+      "PostalAddress",
+      "Product",
+      "WebSite"
+     ],
+     "microdata_types": [
+      "Organization"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 32,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none",
+     "price": "28 price points (gift boxes to 14k gold)",
+     "products_listed": 47,
+     "personalisation": "add-personalisation option on some items",
+     "delivery_promise": "gift-box packaging promised in the meta description",
+     "sibling_category_links": 67,
+     "sibling_category_sample": [
+      "/collections/all-accessories",
+      "/collections/all-boys",
+      "/collections/all-girls",
+      "/collections/all-girls-baptism-outfits",
+      "/collections/all-girls-christening-gowns",
+      "/collections/baby-boy-christening-gowns",
+      "/collections/baby-girl-christening-bonnets",
+      "/collections/baby-headbands",
+      "/collections/bestsellers",
+      "/collections/bow-ties-boutonnieres"
+     ],
+     "images": 53,
+     "images_with_alt": 36,
+     "alt_samples": [
+      "Logo with a gold emblem featuring lilies and a cross inside an oval, above the words \"Christening Gowns\" in gold text.",
+      "Elegant gold text on a dark background reads \"Christening Gowns.",
+      "Solid gold cross with gold leaves and rose gold rose detail on chain",
+      "Three stacked ivory gift boxes of varying sizes, each adorned with a cream-colored ribbon bow. These elegant Gift Wrap | Ivory Gift Boxes are set against a neutral background, making them perfect for any special occasion."
+     ],
+     "distinctive": "One sentence of copy. CollectionPage + ItemList(32) + Product JSON-LD. The same company's blog (babybeauandbelle) holds #4, so the brand has 2 of the top 4."
+    },
+    {
+     "key": "ggc_godparent",
+     "url": "https://www.grandparentgiftcompany.com/collections/godparent-gifts/baby-kids-baby-kids-baptism-christening-gifts",
+     "rank": 3,
+     "page_type": "collection (Shopify tag filter)",
+     "platform": "shopify",
+     "title_tag": "Gifts For Godparents | Godfather And Godmother Gifts Tagged \"Baby/Kids. Baby/Kids: Baptism & Christening Gifts\" - The Grandparent Gift Co.",
+     "title_len": 138,
+     "meta_description": "Thank godparents for accepting a special role in your child's life with thoughtful gifts. From birth to baptism, get great godparent gifts today! Tagged \"Baby/Kids. Baby/Kids: Baptism & Christening Gifts\".",
+     "h1": [
+      "Godparent Gifts"
+     ],
+     "heading_outline": [
+      "h3: Thank You Gifts for Godparents",
+      "h3: Baptism and Christening Gifts for Godparents",
+      "h2: Features",
+      "h2: Gift Styles",
+      "h2: Recipient",
+      "h2: Occasions",
+      "h2: For My Godmother Gift: Green Stained Glass Cross",
+      "h2: God Chose You Godfather: Handmade Clear Stained Glass Cross",
+      "h2: God Chose You Godmother: Handmade Clear Stained Glass Cross",
+      "h2: My Godmother Picture Frame 4x6",
+      "h2: My Godfather Picture Frame 4x6",
+      "h2: Godfather Gift: Handmade Pewter Coin",
+      "h2: Godmother Gift: Handmade Pewter Coin",
+      "h2: Godfather You are Loved Pewter Keychain and Card",
+      "h2: Special Godparent Gift: Godparent Angel",
+      "h2: Godmother You are Loved Pewter Keychain and Card",
+      "h2: For My Godfather Gift: Blue Stained Glass Cross",
+      "h2: Country",
+      "h2: Search"
+     ],
+     "n_h2": 18,
+     "n_h3": 4,
+     "main_copy_words_est": 200,
+     "body_words_excl_nav_footer_auto": 763,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none",
+     "price": "6 price points (~$20-$50)",
+     "products_listed": 12,
+     "personalisation": "limited",
+     "delivery_promise": "$5.95 flat / free over $49 (site banner)",
+     "sibling_category_links": 4,
+     "sibling_category_sample": [
+      "/collections/godparent-gifts",
+      "/collections/our-best-selling-gifts",
+      "/collections/pet-loss-gifts",
+      "/collections/shop-all"
+     ],
+     "images": 32,
+     "images_with_alt": 28,
+     "alt_samples": [
+      "The Grandparent Gift Co Logo, Return to Home Page",
+      "Godmother Gift - Handmade 4 1/4\" green stained glass cross and \"For My Godmother\" sentiment in white box with clear lid.",
+      "Handmade 4 1/4\" clear stained glass cross and \"For My Godfather\" sentiment in white box with clear lid.",
+      "Handmade 4 1/4\" clear stained glass cross and \"For My Godmother\" sentiment in white box with clear lid."
+     ],
+     "distinctive": "A tag-filtered URL ranks, with the auto 'Tagged \"Baby/Kids...\"' suffix in the title. Two H3 copy blocks: 'Thank You Gifts for Godparents' and 'Baptism and Christening Gifts for Godparents'. Includes a 'My Godfather Picture Frame 4x6'."
+    },
+    {
+     "key": "babybeauandbelle_blog",
+     "url": "https://babybeauandbelle.com/blogs/bbb/godparent-gift-etiquette",
+     "rank": 4,
+     "page_type": "blog article",
+     "platform": "shopify",
+     "title_tag": "Godparent Gift Etiquette \u2013 Baby Beau and Belle",
+     "title_len": 46,
+     "meta_description": "For first-timers, godparent gift etiquette can be a little confusing. At Baby Beau and Belle, we are here to help you get it right for the special day!",
+     "h1": [
+      "Godparent Gift Etiquette"
+     ],
+     "heading_outline": [
+      "h3: Shop by Style",
+      "h3: Shop by Collection",
+      "h3: Girls Accessories",
+      "h3: Boys Accessories",
+      "h3: Heirloom Gifts",
+      "h3: Holiday",
+      "h2: What Is the Obligation of Godparents?",
+      "h2: What Is the Etiquette for Godparents?",
+      "h2: What Do Godparents Pay for at a Baptism?",
+      "h2: Do Godparents Pay for the Baptism Party?",
+      "h2: What Is an Appropriate Baptism Gift?",
+      "h3: Shop Our Most-Loved Baptism Gifts for Godchildren",
+      "h2: What Do Godparents Gift at Baptism?",
+      "h2: What Are Traditional Catholic Baptism Gifts?",
+      "h2: Baptism Gifts for Boys and Girls",
+      "h3: Baptism Gift for Godson Ideas",
+      "h3: Baptism Gift for Goddaughter Ideas",
+      "h2: What Do You Get a Godparent as a Gift from Their Godchild?",
+      "h2: How Do You Thank Godparents?",
+      "h2: Godparent Gift FAQs for 2025",
+      "h3: What\u2019s a popular personalized baptism gift?",
+      "h3: Do godparents always buy the baptism outfit?",
+      "h3: What should a godparent say at a baptism?",
+      "h3: Are godparents expected to pay for anything besides a gift?",
+      "h3: What\u2019s a modern twist on a traditional gift?"
+     ],
+     "n_h2": 13,
+     "n_h3": 19,
+     "main_copy_words_est": 1200,
+     "body_words_excl_nav_footer_auto": 1738,
+     "faq": {
+      "present": true,
+      "visible_questions": 5,
+      "note": "question-style H2s, FAQPage JSON-LD with 5 questions"
+     },
+     "jsonld_types": [
+      "Answer",
+      "Article",
+      "BreadcrumbList",
+      "ContactPoint",
+      "FAQPage",
+      "ImageObject",
+      "ListItem",
+      "Organization",
+      "Person",
+      "PostalAddress",
+      "Question",
+      "WebPage",
+      "WebSite"
+     ],
+     "microdata_types": [
+      "Article"
+     ],
+     "jsonld_faqpage_questions": 5,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "n/a",
+     "price": "product carousels",
+     "products_listed": 29,
+     "personalisation": "n/a",
+     "delivery_promise": "free US shipping over $250 (banner)",
+     "sibling_category_links": 75,
+     "sibling_category_sample": [
+      "/collections/18-24-months",
+      "/collections/2-3t",
+      "/collections/3-6-months",
+      "/collections/6-9-months",
+      "/collections/9-12-months",
+      "/collections/accessories",
+      "/collections/all-boys",
+      "/collections/all-girls",
+      "/collections/baby-bonnets",
+      "/collections/baby-boy-sweaters"
+     ],
+     "images": 86,
+     "images_with_alt": 76,
+     "alt_samples": [
+      "Baby Beau and Belle",
+      "Girls Outfits",
+      "Boys Outfits",
+      "Occasions"
+     ],
+     "distinctive": "Etiquette article whose H2s are People-Also-Ask questions ('What do godparents pay for at a baptism?'), with shoppable product carousels inside."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Christening specialists win. #1 is a godparents collection with 47 products, CollectionPage/ItemList/Product JSON-LD and one sentence of copy. The same company's etiquette blog post (question-style H2s, 5-question FAQPage) takes #4. #3 is a Shopify tag-filter URL with ~200 words and a 'My Godfather Picture Frame 4x6'. Godfather-only intent is folded into 'godparents'."
+  },
+  {
+   "query": "grandpa picture frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "amazon.com/grandpa-picture-frame/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 2,
+     "url": "giftsforyounow.com/personalized-grandpa-frames_2080.aspx",
+     "type": "national brand category"
+    },
+    {
+     "pos": 3,
+     "url": "hallmark.com/.../grandpa-makes-life-fun-picture-frame-4x6-1CAP1311.html",
+     "type": "national brand PDP"
+    },
+    {
+     "pos": 4,
+     "url": "walmart.com/c/kp/personalized-grandpa-frames",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 5,
+     "url": "pinterest.com/shopping/grandpa-picture-frame",
+     "type": "pinterest"
+    },
+    {
+     "pos": 6,
+     "url": "target.com/p/pearhead-me-and-my-grandpa-picture-frame",
+     "type": "retailer PDP"
+    },
+    {
+     "pos": 7,
+     "url": "personalizationmall.com/Personalized-5x7-Grandpa-Picture-Frames-Wonderful-Grandpa-i54302.item",
+     "type": "national brand PDP"
+    },
+    {
+     "pos": 8,
+     "url": "ebay.com/b/Grandfather-Picture-Frames",
+     "type": "marketplace"
+    },
+    {
+     "pos": 9,
+     "url": "snaphappymom.com/grandpa-picture-frames",
+     "type": "blog listicle"
+    },
+    {
+     "pos": 10,
+     "url": "markandgraham.com/shop/gift-shops/photo-frame---album+gifts-for-grandparents",
+     "type": "national brand category"
+    }
+   ],
+   "pages": [
+    {
+     "key": "giftsforyounow_grandpa",
+     "url": "https://www.giftsforyounow.com/personalized-grandpa-frames_2080.aspx",
+     "rank": 2,
+     "page_type": "collection",
+     "platform": "magento",
+     "title_tag": "Grandpa Picture Frames | GiftsForYouNow",
+     "title_len": 39,
+     "meta_description": "Show Granddad how special he is with one of our personalized Grandpa picture frames. Choose the message, names and even dates on your favorite frame design. Shop today!",
+     "h1": [
+      "Grandpa Picture Frames"
+     ],
+     "heading_outline": [
+      "h2: Personalized Grandpa Picture Frames"
+     ],
+     "n_h2": 1,
+     "n_h3": 0,
+     "main_copy_words_est": 90,
+     "body_words_excl_nav_footer_auto": 481,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "REVIEWS.io badge reading '0 reviews', plus 4.8 text",
+     "price": "$16.99-$46.99",
+     "products_listed": 14,
+     "personalisation": "'Item offers personalized preview' badge on cards",
+     "delivery_promise": "none on page",
+     "sibling_category_links": 92,
+     "sibling_category_sample": [
+      "/Custom-Printed-Throw-Pillows_1277.aspx",
+      "/Custom-Printed-Wall-Signs_1271.aspx",
+      "/Gifts-For-Grandfathers_110.aspx",
+      "/Gifts-For-Pet-And-Animal-Lovers_48.aspx",
+      "/Housewarming-Gifts_374.aspx",
+      "/Outdoor-Decor_1184.aspx",
+      "/Personalized-Baby-Blankets_425.aspx",
+      "/Personalized-Baby-Gifts_185.aspx",
+      "/Personalized-Baptism-Gifts_257.aspx",
+      "/Personalized-Beer-Glasses_1218.aspx"
+     ],
+     "images": 26,
+     "images_with_alt": 23,
+     "alt_samples": [
+      "Personalized Gifts",
+      "Help",
+      "My Account",
+      "Personalized Father's Day Gifts | My Dad Is My Hero 2019"
+     ],
+     "distinctive": "No JSON-LD. About 90 words of intro, duplicated in the markup. Ranks #2 with 14 products on domain age."
+    },
+    {
+     "key": "hallmark_grandpa",
+     "url": "https://www.hallmark.com/house-and-home/decor/picture-frames/grandpa-makes-life-fun-picture-frame-4x6-1CAP1311.html",
+     "rank": 3,
+     "page_type": "product",
+     "platform": "magento",
+     "title_tag": "Grandpa Makes Life Fun Picture Frame, 4x6 - Picture Frames | Hallmark",
+     "title_len": 69,
+     "meta_description": "Give grandpa a favorite way to display a photo of his grandkids with this yellow and white striped picture frame. With a sweet caption, this 4x6 photo holder makes a great gift.",
+     "h1": [
+      "Grandpa Makes Life Fun Picture Frame, 4x6"
+     ],
+     "heading_outline": [
+      "h2: Find a store",
+      "h2: Account",
+      "h2: Shop by category",
+      "h2: Gifts & Ornaments",
+      "h2: Cards",
+      "h2: Shop by Price",
+      "h2: Special Offers",
+      "h2: Collection",
+      "h2: Theme",
+      "h2: Pop Culture",
+      "h2: Feature",
+      "h2: Explore",
+      "h2: Cards for Anyone",
+      "h2: Cards for Her",
+      "h2: Cards for Him",
+      "h2: Card Collections",
+      "h2: Shop by Category",
+      "h2: Key Occasions",
+      "h2: Good Times",
+      "h2: Tough Times",
+      "h2: Holidays",
+      "h2: Card Categories",
+      "h2: Holiday & Occasions",
+      "h2: Category",
+      "h2: Brand"
+     ],
+     "n_h2": 72,
+     "n_h3": 0,
+     "main_copy_words_est": 130,
+     "body_words_excl_nav_footer_auto": 681,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Brand",
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Organization",
+      "Person",
+      "Product",
+      "Rating",
+      "review"
+     ],
+     "microdata_types": [
+      "SiteNavigationElement"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "0 reviews",
+     "price": "$26.99",
+     "products_listed": 1,
+     "personalisation": "none",
+     "delivery_promise": "'Arrives 11/13\u201311/17'",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 26,
+     "images_with_alt": 26,
+     "alt_samples": [
+      "Hallmark logo",
+      "Grandpa Makes Life Fun Picture Frame  image number 1",
+      "Grandpa Makes Life Fun Picture Frame  image number 2",
+      "Grandpa Makes Life Fun Picture Frame  image number 3"
+     ],
+     "distinctive": "Same template as the grandma frame: authority, not content."
+    },
+    {
+     "key": "pmall_grandpa_item",
+     "url": "https://www.personalizationmall.com/Personalized-5x7-Grandpa-Picture-Frames-Wonderful-Grandpa-i54302.item?productid=16235",
+     "rank": 7,
+     "page_type": "product",
+     "platform": "magento",
+     "title_tag": "Personalized 5x7 Grandpa Picture Frames - Wonderful Grandpa",
+     "title_len": 59,
+     "meta_description": "Free personalization & fast shipping. Buy Wonderful Grandpa Personalized Grandpa Picture Frames you can customize with your own text.",
+     "h1": [
+      "Wonderful Grandpa Personalized Photo Frame- 5 x 7"
+     ],
+     "heading_outline": [
+      "h3: Sports",
+      "h3: Brands",
+      "h3: Characters",
+      "h2: Bulk Pricing, Custom Logo or Design",
+      "h3: Select Item: 5x7 Frame",
+      "h2: Product Overview:",
+      "h2: Product Details:",
+      "h2: May We also Suggest:",
+      "h2: Recently Viewed Products:",
+      "h2: Customer Reviews:",
+      "h2: Share This Item",
+      "h2: Sign Up & Get $10 Off"
+     ],
+     "n_h2": 8,
+     "n_h3": 4,
+     "main_copy_words_est": 930,
+     "body_words_excl_nav_footer_auto": 1562,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "AggregateRating",
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Product"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [
+      {
+       "ratingValue": "4.8",
+       "reviewCount": "33"
+      }
+     ],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "4.8 from 33 reviews (AggregateRating JSON-LD) with full review text on page",
+     "price": "$22.79 (JSON-LD); size options to ~$48",
+     "products_listed": 1,
+     "personalisation": "text personalisation",
+     "delivery_promise": "'Ships In: 1-2 days'; meta 'Free personalization & fast shipping'",
+     "sibling_category_links": 136,
+     "sibling_category_sample": [
+      "/Best-Selling-Christmas-Gifts-d1440.dept",
+      "/Best-Selling-Gifts-for-Women-d1226.dept",
+      "/Best-Selling-Personalized-Baby-Gifts-d1318.dept",
+      "/Best-Selling-Personalized-Gifts-for-Men-d1229.dept",
+      "/Best-Selling-Personalized-Kids-Gifts-d1444.dept",
+      "/Best-Selling-Personalized-Wedding-Gifts-d1428.dept",
+      "/Best-Selling-Sympathy-Gifts-d2196.dept",
+      "/Brother-Gifts-d2216.dept",
+      "/Christmas-Mugs-d1907.dept",
+      "/Christmas-Photo-Gifts-d2120.dept"
+     ],
+     "images": 150,
+     "images_with_alt": 149,
+     "alt_samples": [
+      "For Her",
+      "For Him",
+      "For Baby",
+      "For Kids"
+     ],
+     "distinctive": "Title = '[size] [recipient] Picture Frames - [design name]', so one design per URL, the same model as Butterlu's presets. Bulk-pricing block. Customer reviews rendered in HTML."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "National personalisation brands. #2 is a 14-product category with ~90 words and no JSON-LD. #3 is a Hallmark PDP with 0 reviews. #7 is a Personalization Mall PDP (4.8 from 33 reviews in AggregateRating, 'Ships In: 1-2 days', title pattern '[size] Grandpa Picture Frames - [design]'). Ships-fast language and a personalised-preview badge recur. Domain authority dominates, as in September."
+  },
+  {
+   "query": "aunt picture frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "amazon.com/aunt-picture-frame/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 2,
+     "url": "walmart.com/c/kp/aunt-picture-frames",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 3,
+     "url": "macys.com/shop/featured/aunt-picture-frame",
+     "type": "retailer search landing"
+    },
+    {
+     "pos": 4,
+     "url": "pinterest.com/ideas/aunt-frame",
+     "type": "pinterest"
+    },
+    {
+     "pos": 5,
+     "url": "zazzle.com/aunt+photo+display",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 6,
+     "url": "michaels.com/makerplace/product/auntie's-bestie-picture-frame...",
+     "type": "marketplace PDP"
+    },
+    {
+     "pos": 7,
+     "url": "etsy.com/market/aunt_picture_frame",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 8,
+     "url": "grandparentgiftcompany.com/products/my-aunt-picture-frame-4x6",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 9,
+     "url": "personalizationmall.com/Personalized-Aunt-Picture-Frames-4x6-i41450.item",
+     "type": "national brand PDP"
+    },
+    {
+     "pos": 10,
+     "url": "giftsforyounow.com/engraved-worlds-coolest-glass-picture-frame-g921561-aunt.aspx",
+     "type": "national brand PDP"
+    }
+   ],
+   "pages": [
+    {
+     "key": "macys_aunt",
+     "url": "https://www.macys.com/shop/featured/aunt-picture-frame",
+     "rank": 3,
+     "page_type": "retailer search landing",
+     "platform": "magento",
+     "title_tag": "Aunt Picture Frame - Macy's",
+     "title_len": 27,
+     "meta_description": "Shop for and buy aunt picture frame online at Macy's. Find aunt picture frame at Macy's",
+     "h1": [
+      "\"aunt picture frame\""
+     ],
+     "heading_outline": [
+      "h3: Galvanized Metal Picture Frame - I Love Us - 4\" x 6\"",
+      "h3: First Holy Communion Picture Frame - 4\" x 6\"",
+      "h3: Thank Heaven Aluminum Frame, 4\" x 6\"",
+      "h3: Aluminum Thank Heaven Frame, 4\" x 6\"",
+      "h3: Babys First Christmas Signature Statement Photo Frame, 5\" x 7\"",
+      "h3: My First Birthday Picture Frame - 4\" x 6\"",
+      "h3: Brushed Metal I Love My Great Grandma Picture Frame - Sentiments Collection, 4\" x 6\"",
+      "h3: Solo Baby Hand and Footprint Kit, Baby Keepsake Picture Frames, Baby Handprint Kit, Newbor",
+      "h3: Holy Baptism Picture Frame - 4\" x 6\"",
+      "h3: Trio Baby Sonogram Picture Frame, Baby Ultrasound Picture Frames for Baby Nursery, Mom to ",
+      "h3: Brushed Metal I Love My Grandpa Picture Frame - Sentiments Collection - 4\" x 6\"",
+      "h3: Nova Baby's First Year Photo Frame, 12 Months Newborn Baby Picture Frame, Monthly Birthday",
+      "h3: Big Brother Silver Plated Picture Frame - Me and My Big Brother Design - 6\" x 4\"",
+      "h3: Solo Baby Sonogram Picture Frame, Modern Ultrasound Picture Frames, Pregnancy Announcement",
+      "h3: Happily Ever After 5\" x 7\" Picture Frame",
+      "h3: Inkless Baby Hand And Footprint Kit Frame, Mess Free Baby Picture Frame for Newborn"
+     ],
+     "n_h2": 0,
+     "n_h3": 16,
+     "main_copy_words_est": 0,
+     "body_words_excl_nav_footer_auto": 410,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none",
+     "price": "$18.90+ (19 price points)",
+     "products_listed": 17,
+     "personalisation": "none",
+     "delivery_promise": "none specific",
+     "sibling_category_links": 1173,
+     "sibling_category_sample": [
+      "/customer-service/category/para-ayuda/",
+      "/customer-service/category/shipping-delivery",
+      "/shop/all-brands/beauty",
+      "/shop/all-brands/handbags-accessories",
+      "/shop/all-brands/jewelry",
+      "/shop/all-brands/kids",
+      "/shop/all-brands/mens",
+      "/shop/all-brands/shoe-brands",
+      "/shop/all-brands/watches",
+      "/shop/all-brands/womens"
+     ],
+     "images": 117,
+     "images_with_alt": 114,
+     "alt_samples": [
+      "macys logo",
+      "Ask AI",
+      "Toys R Us",
+      "Shop now"
+     ],
+     "distinctive": "Auto-generated '/shop/featured/<query>' page. H1 is the quoted query, no JSON-LD, and most items aren't aunt-specific. Pure domain authority."
+    },
+    {
+     "key": "ggc_aunt_frame",
+     "url": "https://www.grandparentgiftcompany.com/products/my-aunt-picture-frame-4x6",
+     "rank": 8,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "My Aunt White Tabletop Picture Frame - The Grandparent Gift Co.",
+     "title_len": 63,
+     "meta_description": "What an adorable gift for an aunt! A 4x6 double white tabletop frame with poem for a beloved aunt and a space for a 4x6 horizontal photograph. A wonderful gift that will make any aunt smile. Perfect gift for Christmas, Birthday, all occasions.",
+     "h1": [
+      "My Aunt Picture Frame 4x6"
+     ],
+     "heading_outline": [
+      "h2: Sentiment",
+      "h2: Product Story",
+      "h2: Product Overview",
+      "h2: Customer Reviews",
+      "h2: Country",
+      "h2: Search",
+      "h2: Get it now, pay later"
+     ],
+     "n_h2": 11,
+     "n_h3": 0,
+     "main_copy_words_est": 150,
+     "body_words_excl_nav_footer_auto": 598,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Brand",
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Organization",
+      "Product",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": true,
+     "reviews_shown": "'No reviews'",
+     "price": "$22.99",
+     "products_listed": 1,
+     "personalisation": "none (fixed poem)",
+     "delivery_promise": "$5.95 flat rate; free ground over $49",
+     "sibling_category_links": 3,
+     "sibling_category_sample": [
+      "/collections/our-best-selling-gifts",
+      "/collections/pet-loss-gifts",
+      "/collections/shop-all"
+     ],
+     "images": 19,
+     "images_with_alt": 15,
+     "alt_samples": [
+      "The Grandparent Gift Co Logo, Return to Home Page",
+      "White 4x6 double wood frame with \"Aunt Love\" sentiment and gray satin ribbon on the left and space for a photo on the right.",
+      "White 4x6 double wood frame with &quot;Aunt Love&quot; sentiment and gray satin ribbon on the left and space for a photo on the right.",
+      "Aunt Love artwork and sentiment."
+     ],
+     "distinctive": "'Product Story' section: the poem was written by the owner. Product JSON-LD with priceValidUntil. Descriptive alt ('White 4x6 double wood frame with \"Aunt Love\" sentiment...')."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Marketplaces and authority: Amazon, Walmart, Macy's (an auto query page with no copy or schema and mostly irrelevant items), Zazzle, Michaels, Etsy. The independent PDPs at #8-10 are $22.99-type frames with 0 reviews and ~150 words. Etsy's market page is #7 (it was #1 for the longer aunt query in September)."
+  },
+  {
+   "query": "love at first sight ultrasound frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "amazon.com/clp/B00WTX68PC",
+     "type": "marketplace PDP (Pearhead)"
+    },
+    {
+     "pos": 2,
+     "url": "pearhead.com/products/love-at-first-sight-sono-frame-with-beige-mat",
+     "type": "brand PDP"
+    },
+    {
+     "pos": 3,
+     "url": "hobbylobby.com/.../love-at-first-sight-sonogram-frame/p/39747",
+     "type": "retailer PDP"
+    },
+    {
+     "pos": 4,
+     "url": "pinterest.com/ideas/love-at-first-sight-sonogram-frame",
+     "type": "pinterest"
+    },
+    {
+     "pos": 5,
+     "url": "etsy.com/listing/1903460259",
+     "type": "etsy listing (not opened)"
+    },
+    {
+     "pos": 6,
+     "url": "bumpboxes.com/products/pearhead-sonogram-frame-love-at-first-sight",
+     "type": "retailer PDP"
+    },
+    {
+     "pos": 7,
+     "url": "westcoastkids.ca/love-at-first-sight-sonogram-frame",
+     "type": "retailer PDP (CA)"
+    },
+    {
+     "pos": 8,
+     "url": "walmart.com/c/kp/love-at-first-sight-sonogram-picture-frame",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 9,
+     "url": "preciousmoments.com/products/love-at-first-sight-elephant-4-x-6-photo-frame-resin-glass",
+     "type": "brand PDP"
+    },
+    {
+     "pos": 10,
+     "url": "target.com/p/pearhead-love-at-first-sight-sonogram-picture-frame-rustic-white",
+     "type": "retailer PDP"
+    }
+   ],
+   "pages": [
+    {
+     "key": "pearhead_lafs",
+     "url": "https://www.pearhead.com/products/love-at-first-sight-sono-frame-with-beige-mat",
+     "rank": 2,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "love at first sight sono frame with beige mat \u2013 Pearhead",
+     "title_len": 56,
+     "meta_description": "Adorable Design: Crafted with a white finish and taupe script, Pearhead\u2019s Sonogram frame offers a timeless look that highlights the sentiment of \"Love at First Sight\"\u00a0 Pregnancy Announcement Frame: Surprise your loved ones with this thoughtful keepsake as part of your pregnancy announcement\u2014 It's a heartfelt way to cel",
+     "h1": [
+      "love at first sight sono frame with beige mat"
+     ],
+     "heading_outline": [
+      "h3: you may also like",
+      "h2: Reviews",
+      "h3: Rating Snapshot",
+      "h3: Overall Rating",
+      "h3: Review this Product",
+      "h3: Filter Reviews",
+      "h3: Memorable gift",
+      "h3: I can't wait to put in sonogram scan",
+      "h3: Adorable memory for parents",
+      "h3: Great Sonogram Frame!",
+      "h3: Cute",
+      "h3: Perfect for our ultrasound photo",
+      "h3: Capture your love",
+      "h3: Lovely!",
+      "h2: Currency"
+     ],
+     "n_h2": 2,
+     "n_h3": 13,
+     "main_copy_words_est": 700,
+     "body_words_excl_nav_footer_auto": 1399,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "AggregateRating",
+      "ImageObject",
+      "Offer",
+      "Person",
+      "Product",
+      "Rating"
+     ],
+     "microdata_types": [
+      "Organization"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [
+      {
+       "ratingValue": "5.0",
+       "reviewCount": 14
+      }
+     ],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": true,
+     "reviews_shown": "14 reviews, 5.0 (AggregateRating) with rating snapshot",
+     "price": "$9.99",
+     "products_listed": 1,
+     "personalisation": "none",
+     "delivery_promise": "none on page",
+     "sibling_category_links": 41,
+     "sibling_category_sample": [
+      "/cdn/shop/files/75053_WHITE_ALT1_c77309b4-2047-4e62-bb3c-c829f411462c_1800x1800.jpg",
+      "/cdn/shop/files/75053_WHITE_ALT2_1800x1800.jpg",
+      "/cdn/shop/files/75053_WHITE_ALT3_1800x1800.jpg",
+      "/cdn/shop/files/75053_main_1800x1800.jpg",
+      "/cdn/shop/files/75053_pkg_1800x1800.jpg",
+      "/collections/b2s",
+      "/collections/baby",
+      "/collections/baby-books",
+      "/collections/baby-photo-props",
+      "/collections/baby-toys"
+     ],
+     "images": 32,
+     "images_with_alt": 24,
+     "alt_samples": [
+      "Pearhead",
+      "love at first sight sono frame with beige mat"
+     ],
+     "distinctive": "The query is this product's name, so exact-match H1. The same SKU also holds #1 on Amazon, #6, and #10 on Target."
+    },
+    {
+     "key": "hobbylobby_lafs",
+     "url": "https://www.hobbylobby.com/party-supplies/centerpieces-table-decor/love-at-first-sight-sonogram-frame/p/39747",
+     "rank": 3,
+     "page_type": "product",
+     "platform": "other",
+     "title_tag": "Love At First Sight Sonogram Frame | Hobby Lobby | 590513",
+     "title_len": 57,
+     "meta_description": "Celebrate your upcoming little one with an adorable frame to preserve your first visual memories.&nbsp;This wonderful Love At First Sight Sonogram Frame features a solid blue&nbsp;MDF frame with a wood print background and blue polka dots in two shades.&nbsp;The photo opening features a glass insert, and the cutout is shaped like a standard sonogram.&nbsp;Display this frame on your desk, dresser, mantel, and more to anticipate the arrival of your bundle of joy!",
+     "h1": [
+      "Love At First Sight Sonogram Frame"
+     ],
+     "heading_outline": [
+      "h2: Image Thumbnail Picker",
+      "h3: Description",
+      "h3: Product Details",
+      "h3: Shipping & Returns",
+      "h2: You Might Also Like",
+      "h2: Love At First Sight Sonogram Frame",
+      "h2: Baby Bottle Coin Bank",
+      "h2: Mini Baby Bottles",
+      "h2: Oh Baby Wood Blocks",
+      "h2: Clothespins",
+      "h2: Pacifiers",
+      "h2: Blue Baby Decorative Clips",
+      "h2: Baby Blocks",
+      "h2: Mommy To Be Chair Sign",
+      "h2: Diaper Pins",
+      "h2: Frequently Bought Together",
+      "h2: Teddy Bear Gingham Napkins - Small",
+      "h2: Teddy Bear Paper Plates - Small",
+      "h2: 1 Samuel 1:27 Wood Sign",
+      "h2: Checkered Flag Napkins",
+      "h2: Checkered Flag Balloons",
+      "h2: Anti-Pill Fleece Fabric",
+      "h2: Rudolph Bumble Mini Snow Globe",
+      "h2: 2026 Baby's First Christmas Photo Frame Ornament",
+      "h2: Baseball Glove & Baseball Ornament"
+     ],
+     "n_h2": 26,
+     "n_h3": 13,
+     "main_copy_words_est": 160,
+     "body_words_excl_nav_footer_auto": 785,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "AggregateRating",
+      "Brand",
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Organization",
+      "Product",
+      "SearchAction",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [
+      {
+       "ratingValue": 5,
+       "reviewCount": 2
+      }
+     ],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "2 reviews, 5.0 (AggregateRating)",
+     "price": "$3.99 sale",
+     "products_listed": 1,
+     "personalisation": "none",
+     "delivery_promise": "ships within 1-2 business days + 3-4 days transit; free shipping $69+",
+     "sibling_category_links": 3,
+     "sibling_category_sample": [
+      "/gift-cards/c/14",
+      "/party-supplies/c/75",
+      "/party-supplies/centerpieces-table-decor/c/75-203"
+     ],
+     "images": 40,
+     "images_with_alt": 17,
+     "alt_samples": [
+      "Hobby Lobby - Home",
+      "Love At First Sight Sonogram Frame view 1",
+      "Facebook",
+      "Instagram"
+     ],
+     "distinctive": "Exact-phrase product name. AggregateRating with only 2 reviews."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "A product-name query: Pearhead's SKU holds #1 (Amazon), #2 (pearhead.com), #6 and #10. The winners are exact-match PDPs at $4-10 with AggregateRating on 2-14 reviews. A personalised $25-38 frame is competing with a commodity SKU here. Rank only by putting the exact phrase on the product page, and expect low purchase intent for custom work."
+  },
+  {
+   "query": "great grandparents pregnancy announcement",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "walmart.com/c/kp/great-grandparents-announcement",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 2,
+     "url": "pinterest.com/ideas/great-great-grandparents-announcement",
+     "type": "pinterest"
+    },
+    {
+     "pos": 3,
+     "url": "amazon.com/maternity-announcements-great-grandparents/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 4,
+     "url": "etsy.com/market/baby_announcement_great_grandparent",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 5,
+     "url": "reddit.com/r/BabyBumps/...",
+     "type": "forum"
+    },
+    {
+     "pos": 6,
+     "url": "happiestbaby.com/blogs/pregnancy/pregnancy-announcement-parents",
+     "type": "brand blog listicle"
+    },
+    {
+     "pos": 7,
+     "url": "community.whattoexpect.com/...",
+     "type": "forum"
+    },
+    {
+     "pos": 8,
+     "url": "pinterest.com/ideas/great-grandparent-pregnancy-announcement",
+     "type": "pinterest"
+    },
+    {
+     "pos": 9,
+     "url": "thebump.com/a/pregnancy-announcements-for-grandparents",
+     "type": "editorial listicle"
+    },
+    {
+     "pos": 10,
+     "url": "zazzle.com/for+grandparents+pregnancy+announcement+cards",
+     "type": "marketplace search"
+    }
+   ],
+   "pages": [
+    {
+     "key": "happiestbaby_blog",
+     "url": "https://www.happiestbaby.com/blogs/pregnancy/pregnancy-announcement-parents",
+     "rank": 6,
+     "page_type": "blog listicle",
+     "platform": "shopify",
+     "title_tag": "Grandparent Pregnancy Announcements",
+     "title_len": 35,
+     "meta_description": "There\u2019s no news like baby news\u2014and some of the most excited recipients around are the grandparents-to-be. Here\u2019s how to tell your parents you\u2019re pregnant.",
+     "h1": [
+      "30 Fun Ways to Announce Your Pregnancy to Your Parents",
+      "An error occurred."
+     ],
+     "heading_outline": [
+      "h2: There\u2019s no news like baby news\u2014and some of the most excited recipients around are the gran",
+      "h2: Simple Grandparent Pregnancy Announcement Gift",
+      "h2: Booties for the Cutie Pregnancy Announcement",
+      "h2: Grandparent Pregnancy Announcement Surprise Box",
+      "h2: Pregnancy Announcement Grandparent Bling",
+      "h2: Golfing Grandparent Pregnancy Announcement",
+      "h2: Wearable Pregnancy Announcement for Grandparents",
+      "h2: Scratch-Off Pregnancy Announcement for Grandparents",
+      "h2: Write a Letter From the Baby to Announce Your Pregnancy to Your Parents",
+      "h2: Grandparent Pregnancy Announcement Mug",
+      "h2: \u2026 Or a Grandparent Pregnancy Announcement Bottle of Wine",
+      "h2: Frame an Ultrasound Picture to Announce Your Pregnancy to Your Parents",
+      "h2: Wrap Your Grandparent Pregnancy Announcement in a Tiny Package",
+      "h2: Use a Puzzle For Your Parent Pregnancy Announcement",
+      "h2: Let Your Parents Crack Open Your Pregnancy Announcement",
+      "h2: Grandparent Pregnancy Announcement Onesie",
+      "h2: Make a Cozy Pregnancy Announcement to Your Parents",
+      "h2: Pacifier + Note Grandparent Pregnancy Announcement",
+      "h2: Have Big Sibling Wear a Telling Outfit",
+      "h2: Give Your Parents a Pregnancy Announcement Coupon",
+      "h2: Bake (or Buy) a Grandparent Pregnancy Announcement Cake",
+      "h2: \u2026Or Announce Your Pregnancy to Parents With a Cake Topper",
+      "h2: Wrap a Pack of Diapers to Tell Your Parents You\u2019re Pregnant",
+      "h2: Play Baby Charades to Announce Your Pregnancy to Your Parents",
+      "h2: Challenge Your Parents to a Game of Scrabble"
+     ],
+     "n_h2": 37,
+     "n_h3": 19,
+     "main_copy_words_est": 1650,
+     "body_words_excl_nav_footer_auto": 2258,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BlogPosting",
+      "BreadcrumbList",
+      "EntryPoint",
+      "ImageObject",
+      "ListItem",
+      "Organization",
+      "Person",
+      "SearchAction",
+      "WebPage",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "n/a",
+     "price": "n/a",
+     "products_listed": 30,
+     "personalisation": "n/a",
+     "delivery_promise": "n/a",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 49,
+     "images_with_alt": 47,
+     "alt_samples": [
+      "Jenny Studenroth Gerson",
+      "pregnancy-announcement-parents-grandparents",
+      "[object Object]",
+      "Image"
+     ],
+     "distinctive": "'30 Fun Ways to Announce Your Pregnancy to Your Parents', one H2 per idea. Grandparent-generic, nothing great-grandparent-specific."
+    },
+    {
+     "key": "thebump_listicle",
+     "url": "https://www.thebump.com/a/pregnancy-announcements-for-grandparents",
+     "rank": 9,
+     "page_type": "editorial listicle",
+     "platform": "magento",
+     "title_tag": "30 Best Pregnancy Announcements for Grandparents",
+     "title_len": 48,
+     "meta_description": "Searching for the best pregnancy announcement gifts for grandparents? Browse our favorite options, from cute cards to personalized presents and meaningful keepsakes.",
+     "h1": [
+      "30 Unique Pregnancy Announcements for Grandparents"
+     ],
+     "heading_outline": [
+      "h2: Good News Company Grandparent Pregnancy Announcement",
+      "h2: Mud Pie Hello Grandparents Baby Announcement Set",
+      "h2: Jayour Store Pregnancy Announcement Lottery Scratch-Off Tickets",
+      "h2: Shop Amy Zhang Granny Panties New Grandma Card",
+      "h2: Kendra Scott Mattie Bar Pendant Necklace In 18k Gold Vermeil",
+      "h2: North Beach Art Pregnancy Announcement Grandparents",
+      "h2: Pearhead \u201cGrandparents\u201d Picture Frame in Grey",
+      "h2: The Pretty Little Mess Baby Announcement Wine Labels",
+      "h2: Levi and Leah Hello Grandma and Grandpa Onesie",
+      "h2: Jo Faulkner Greatest Gifts Grandparent Tray",
+      "h2: One 19 Stationery Baseball Pregnancy Announcement",
+      "h2: Minted Coming Soon Snap",
+      "h2: Alp Tee Design Promoted To Grandma Grandpa Shirts",
+      "h2: Pearhead \u201cYou\u2019re Going To Be A Grandma\u201d Pregnancy Reveal Spoon",
+      "h2: JNCandleCo Pregnancy Announcement Candle",
+      "h2: Now Thats Personal Promoted to Grandparents Personalized Golf Balls",
+      "h2: Christmas Haus Shop New Grandma And Grandpa Personalized Ornament",
+      "h2: Lark Crafts A Grandparent\u2019s Keepsake Album",
+      "h2: Sugar Mommas Sweets Pgh Pregnancy Announcement Cookie Set",
+      "h2: Daisy Blossom Creation Vintage Grandparent Countdown Blocks Weeks",
+      "h2: Good News Company Pregnancy Announcement Bun in the Oven",
+      "h2: Pearhead Changeable Felt Letter Board Set",
+      "h2: Ink Paper Print Guess What Pregnancy Announcement Card",
+      "h2: Chronicle Books Letters to My Grandchild",
+      "h2: BRVO glass New Grandparents Glass Set Wine and Whiskey"
+     ],
+     "n_h2": 30,
+     "n_h3": 8,
+     "main_copy_words_est": 2300,
+     "body_words_excl_nav_footer_auto": 2483,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Article",
+      "BreadcrumbList",
+      "ImageObject",
+      "ListItem",
+      "Organization",
+      "Person",
+      "WebPage"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "n/a",
+     "price": "23 price points",
+     "products_listed": 30,
+     "personalisation": "n/a",
+     "delivery_promise": "n/a",
+     "sibling_category_links": 1,
+     "sibling_category_sample": [
+      "/shop/lists"
+     ],
+     "images": 152,
+     "images_with_alt": 25,
+     "alt_samples": [
+      "profile picture of Martina Garvey",
+      "Getty Images family looking at sonogram picture together",
+      "welcome box amazon",
+      "dad kissing baby at home"
+     ],
+     "distinctive": "Also grandparent-generic. 152 images, only 25 with alt."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "No product or collection page from a shop ranks. It's aggregators (Walmart, Amazon, Etsy, Zazzle), forums and two 30-idea listicles (1,650-2,300 words) that are about grandparents in general. Google treats this as an ideas query. This confirms docs/03: a dedicated great-grandparent collection page would be chasing an intent Google doesn't serve with shops."
+  },
+  {
+   "query": "personalized christmas frame for grandparents",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "etsy.com/market/grandparents_picture_frame",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 2,
+     "url": "28collective.com/collections/grandparents-gifts",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 3,
+     "url": "personalizationmall.com/Personalized-Christmas-Picture-Frames-Photo-Albums-d1102.dept",
+     "type": "national brand category"
+    },
+    {
+     "pos": 4,
+     "url": "pinterest.com/ideas/personalized-picture-frames-for-grandparents",
+     "type": "pinterest"
+    },
+    {
+     "pos": 5,
+     "url": "shutterfly.com/a/photo-frame-for-grandparents",
+     "type": "national brand landing"
+    },
+    {
+     "pos": 6,
+     "url": "markandgraham.com/shop/gift-shops/photo-frame---album+gifts-for-grandparents",
+     "type": "national brand category"
+    },
+    {
+     "pos": 7,
+     "url": "pinterest.com/ideas/picture-frame-for-grandparents",
+     "type": "pinterest"
+    },
+    {
+     "pos": 8,
+     "url": "etsy.com/market/1st_christmas_grandparents_frame",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 9,
+     "url": "facebook.com/groups/...",
+     "type": "social"
+    },
+    {
+     "pos": 10,
+     "url": "amazon.com/clp/B0888NW5B9",
+     "type": "marketplace PDP"
+    }
+   ],
+   "pages": [
+    {
+     "key": "pmall_christmas_dept",
+     "url": "https://www.personalizationmall.com/Personalized-Christmas-Picture-Frames-Photo-Albums-d1102.dept",
+     "rank": 3,
+     "page_type": "collection",
+     "platform": "magento",
+     "title_tag": "Christmas Picture Frames & Photo Albums | Personalization Mall",
+     "title_len": 62,
+     "meta_description": "Capture holiday memories with Christmas photo frames & albums. Create personalized Christmas picture frames for 2026 with family names & more.",
+     "h1": [
+      "Personalized Christmas Picture Frames"
+     ],
+     "heading_outline": [
+      "h3: Sports",
+      "h3: Brands",
+      "h3: Characters",
+      "h2: Create Unique Christmas Photo Frames",
+      "h2: Types of Christmas Picture Frames",
+      "h3: Celebrate Your Love",
+      "h3: Celebrate Your Family",
+      "h3: Celebrate A New Family Addition",
+      "h3: Celebrate A New Home",
+      "h3: Celebrate The Year",
+      "h2: Sign Up & Get $10 Off"
+     ],
+     "n_h2": 3,
+     "n_h3": 8,
+     "main_copy_words_est": 540,
+     "body_words_excl_nav_footer_auto": 1365,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ListItem"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none on grid",
+     "price": "$9.99-$91.99",
+     "products_listed": 35,
+     "personalisation": "text personalisation",
+     "delivery_promise": "in the copy: 'With 1-2 shipping on most items, your frames will arrive just in time...'",
+     "sibling_category_links": 144,
+     "sibling_category_sample": [
+      "/Best-Selling-Christmas-Gifts-d1440.dept",
+      "/Best-Selling-Gifts-for-Women-d1226.dept",
+      "/Best-Selling-Personalized-Baby-Gifts-d1318.dept",
+      "/Best-Selling-Personalized-Gifts-for-Men-d1229.dept",
+      "/Best-Selling-Personalized-Kids-Gifts-d1444.dept",
+      "/Best-Selling-Personalized-Wedding-Gifts-d1428.dept",
+      "/Best-Selling-Sympathy-Gifts-d2196.dept",
+      "/Brother-Gifts-d2216.dept",
+      "/Christmas-Mugs-d1907.dept",
+      "/Christmas-Photo-Gifts-d2120.dept"
+     ],
+     "images": 137,
+     "images_with_alt": 136,
+     "alt_samples": [
+      "For Her",
+      "For Him",
+      "For Baby",
+      "For Kids"
+     ],
+     "distinctive": "Below-grid copy: H2 'Create Unique Christmas Photo Frames' and H2 'Types of Christmas Picture Frames' with 5 H3s (Love, Family, New Family Addition, New Home, The Year). Year in the meta ('for 2026'). Recipient-generic, yet ranks for the grandparents query."
+    },
+    {
+     "key": "shutterfly_gp",
+     "url": "https://www.shutterfly.com/a/photo-frame-for-grandparents/",
+     "rank": 5,
+     "page_type": "programmatic landing (/a/)",
+     "platform": "magento",
+     "title_tag": "Photo Frame For Grandparents | Shutterfly",
+     "title_len": 41,
+     "meta_description": "Show your grandparents how much you love them with custom photo frames from Shutterfly. Create a beautiful display of your favorite memories and cherish them for years to come.",
+     "h1": [
+      "Photo Frame For Grandparents"
+     ],
+     "heading_outline": [
+      "h2: Best Sellers",
+      "h2: Related Searches",
+      "h2: Top Collections",
+      "h2: Today's Deals",
+      "h2: Experience the Shutterfly Difference",
+      "h3: Create your way",
+      "h3: 100% happiness guaranteed",
+      "h3: Quality you can see",
+      "h2: HELP",
+      "h2: RESOURCES",
+      "h2: CORPORATE",
+      "h2: PRODUCTS & SERVICES"
+     ],
+     "n_h2": 9,
+     "n_h3": 3,
+     "main_copy_words_est": 0,
+     "body_words_excl_nav_footer_auto": 376,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Brand",
+      "BreadcrumbList",
+      "CollectionPage",
+      "ItemList",
+      "ListItem",
+      "Offer",
+      "Product"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 5,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none",
+     "price": "$11.99-$214.99",
+     "products_listed": 12,
+     "personalisation": "full photo builder (Shutterfly)",
+     "delivery_promise": "Free Shipping on Orders $99+ (banner)",
+     "sibling_category_links": 6,
+     "sibling_category_sample": [
+      "/collections/Disney/",
+      "/collections/chris-loves-julia/",
+      "/collections/disney",
+      "/collections/disney/",
+      "/collections/leanne-ford/",
+      "/collections/little-sleepies/"
+     ],
+     "images": 100,
+     "images_with_alt": 50,
+     "alt_samples": [
+      "Go to the Shutterfly home page.",
+      "Custom circular Christmas ornament displaying a family portrait with whimsical holiday illustrations and seasonal d\u00e9cor.",
+      "Personalized layflat photo book with wedding photos, showcasing seamless panoramic pages and premium print quality",
+      "Personalized New Year photo card featuring family portrait, custom 2026 design, and premium holiday greeting card style"
+     ],
+     "distinctive": "Programmatic '/a/<query>/' page: CollectionPage + ItemList + Product/Offer JSON-LD, 'Related Searches' link block, no copy."
+    },
+    {
+     "key": "28collective_gp",
+     "url": "https://28collective.com/collections/grandparents-gifts",
+     "rank": 2,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Gifts for Grandparents \u2014 28 Collective",
+     "title_len": 38,
+     "meta_description": "Find heartfelt, personalized gifts for grandparents! Custom keepsakes, home d\u00e9cor, and more\u2014perfect for birthdays, holidays, or just to say I love you.",
+     "h1": [
+      "Gifts for Grandparents",
+      "Sign up & Save"
+     ],
+     "heading_outline": [
+      "h2: Personalized Grandma's Garden Bird House",
+      "h2: Personalized Grandchild Gift from Above Picture Frame",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Bird Feeder",
+      "h2: Personalized \"Brag Board\" Wooden Photo Bar",
+      "h2: Personalized Grandma's Rays of Sunshine Garden Flag",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Tree Swing",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Wooden Photo Bar",
+      "h2: Personalized \"Grandmas Are Blessings\" Wind Chime",
+      "h2: Personalized \"Grandma\" Picture Frame",
+      "h2: Personalized Welcome to Grandma & Grandpa\u2019s House Doormat",
+      "h2: Personalized Playing Cards & Dice Set",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Serving Tray",
+      "h2: Personalized Grandma's Blessing Bible Cover",
+      "h2: Personalized \"I Love My Grandma\" Picture Frame",
+      "h2: Personalized \"Grandma's Nice List\" Christmas Garden Flag",
+      "h2: Personalized \"I Love You a Bushel and a Peck...\" Picture Frame",
+      "h2: Personalized First Grandmother's Day Picture Frame",
+      "h2: Personalized \"Grandchildren Make Life Grand\" Picture Frame",
+      "h2: Personalized \"Grandma's Garden\" Wooden Photo Bar",
+      "h2: Personalized Grandpa's Heart of Gold Bible Cover",
+      "h2: Grandpa's Fishing Buddy Picture Frame",
+      "h2: Personalized Grandma's Little Peeps Spring Garden Flag",
+      "h2: Personalized Grandma's Favorite Flock Summer Garden Flag",
+      "h2: Personalized Grandchildren Wall Sign",
+      "h2: You recently viewed"
+     ],
+     "n_h2": 30,
+     "n_h3": 0,
+     "main_copy_words_est": 0,
+     "body_words_excl_nav_footer_auto": 1360,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ListItem",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none on cards",
+     "price": "10 price points (~$25-$60)",
+     "products_listed": 29,
+     "personalisation": "engraved, text only",
+     "delivery_promise": "Free Shipping + Personalization (banner)",
+     "sibling_category_links": 61,
+     "sibling_category_sample": [
+      "/collections/all",
+      "/collections/anniversary-gifts",
+      "/collections/baby-kids",
+      "/collections/birthday-gifts",
+      "/collections/bridesmaid-gifts",
+      "/collections/child-memorial-gifts",
+      "/collections/christmas-decor",
+      "/collections/coworkers-employees",
+      "/collections/dad-memorial-gifts",
+      "/collections/engagement-gifts"
+     ],
+     "images": 114,
+     "images_with_alt": 109,
+     "alt_samples": [
+      "Best Selling Gifts for Her",
+      "Best Selling Gifts for Him",
+      "Shop Gifts for the Home",
+      "Shop Gifts for the Garden"
+     ],
+     "distinctive": "A grandparents-wide page (not grandma-only) ranks #2 for grandma and #2 for the Christmas query. No intro copy, just card excerpts (~250 words). Each product name is an H2. JSON-LD: BreadcrumbList and WebSite only. 61 sibling collections."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "No grandparent+Christmas-specific page exists among the winners. Ranking pages are a grandparents collection (28 Collective, #2), a recipient-generic Christmas frames category with ~540 words of H2/H3 copy and a year in the meta (Personalization Mall, #3), and a Shutterfly programmatic landing with ItemList/Product JSON-LD and no copy (#5). Etsy holds #1 and #8. A page that is actually about grandparents and Christmas would face little like-for-like competition."
+  },
+  {
+   "query": "daddys little girl picture frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "amazon.com/daddys-girls-frame/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 2,
+     "url": "embossedgraphics.com/Daddys-Little-Girl-Engraved-Picture-Frame",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 3,
+     "url": "northlandframesandgifts.com/daddys-little-girl-tabletop-picture-frame...",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 4,
+     "url": "walmart.com/c/kp/daddys-little-girl-picture-frame",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 5,
+     "url": "etsy.com/market/daddys_girl_frame",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 6,
+     "url": "amazon.com/live/video/...",
+     "type": "marketplace video"
+    },
+    {
+     "pos": 7,
+     "url": "28collective.com/products/personalized-daddys-girls-picture-frame",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 8,
+     "url": "giftsin24.com/Daddys-Little-Girl-Engraved-Picture-Frame",
+     "type": "DTC PDP (same catalog as #2)"
+    },
+    {
+     "pos": 9,
+     "url": "giftshire.com/products/daddys-girl-photo-personalized-frame-father-daughter",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 10,
+     "url": "hallmark.com/.../daddy-and-me-picture-frame-4x6-1FRG6024.html",
+     "type": "national brand PDP"
+    }
+   ],
+   "pages": [
+    {
+     "key": "embossedgraphics",
+     "url": "https://www.embossedgraphics.com/Daddys-Little-Girl-Engraved-Picture-Frame",
+     "rank": 2,
+     "page_type": "product",
+     "platform": "other",
+     "title_tag": "Embossed Graphics",
+     "title_len": 17,
+     "meta_description": "Personalized stationery, napkins and notepads shipped in 24 hours",
+     "h1": [
+      "Daddys Little Girl Engraved Picture Frame"
+     ],
+     "heading_outline": [
+      "h2: Our Best Sellers",
+      "h2: Part of the Embossed Graphics family"
+     ],
+     "n_h2": 2,
+     "n_h3": 0,
+     "main_copy_words_est": 60,
+     "body_words_excl_nav_footer_auto": 470,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Product"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "'Be the first to review'",
+     "price": "$29.95, sale $25.46",
+     "products_listed": 1,
+     "personalisation": "engraved name",
+     "delivery_promise": "'When Will It Arrive?' delivery-date estimator with an order-by cutoff",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 20,
+     "images_with_alt": 14,
+     "alt_samples": [
+      "Logo",
+      "Daddys Little Girl Engraved Picture Frame",
+      "Full Size",
+      "Family Personalized Soap Set of 3 - Engraved"
+     ],
+     "distinctive": "Title tag is only 'Embossed Graphics' and the meta description talks about stationery, yet it ranks #2. The URL slug and H1 carry the exact phrase. The same catalog shows up again at #8 (giftsin24.com)."
+    },
+    {
+     "key": "northland",
+     "url": "https://www.northlandframesandgifts.com/daddys-little-girl-tabletop-picture-frame-holds-4x6-photo-multiple-color-options/",
+     "rank": 3,
+     "page_type": "product",
+     "platform": "bigcommerce",
+     "title_tag": "Baby Frame Table Top Frame Holds 5x7\" Picture",
+     "title_len": 45,
+     "meta_description": "Baby Picture Frames are the best way to display your kids happy memories! As the leader in Personalized School Picture Frames we know how to make the best quality School Frames money can buy.  Personalize with any name (up to 13 characters)",
+     "h1": [
+      "Daddy's Little Girl Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options"
+     ],
+     "heading_outline": [
+      "h3: Daddy's Little Boy Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options",
+      "h3: Daddy and Me Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options",
+      "h3: Little Fish Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options",
+      "h3: Little League Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options",
+      "h2: Footer Start",
+      "h3: About",
+      "h3: Categories",
+      "h3: Brands"
+     ],
+     "n_h2": 1,
+     "n_h3": 7,
+     "main_copy_words_est": 380,
+     "body_words_excl_nav_footer_auto": 701,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "Offer",
+      "Product"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": true,
+     "reviews_shown": "0 reviews",
+     "price": "$29.95-$39.95",
+     "products_listed": 1,
+     "personalisation": "any name up to 13 characters",
+     "delivery_promise": "made to order within 2-3 business days; shipping 1-5 business days",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 30,
+     "images_with_alt": 23,
+     "alt_samples": [
+      "Northland Frames and Gifts",
+      "customizeImage",
+      "thumbImages0",
+      "thumbImages1"
+     ],
+     "distinctive": "Title tag doesn't match the page ('Baby Frame Table Top Frame Holds 5x7\" Picture'). The exact phrase in the H1 and URL slug carries it. Sibling 'Daddy's Little Boy' and 'Daddy and Me' frames are linked."
+    },
+    {
+     "key": "28collective_daddy",
+     "url": "https://28collective.com/products/personalized-daddys-girls-picture-frame",
+     "rank": 7,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "Personalized \"Daddy's Girls\" Picture Frame \u2014 28 Collective",
+     "title_len": 58,
+     "meta_description": "This Daddy's Girls picture frame is a must-have gift for a girl dad! This picture frame reads Daddy's Girls and is personalized with his daughters' names",
+     "h1": [
+      "Personalized \"Daddy's Girls\" Picture Frame",
+      "Sign up & Save"
+     ],
+     "heading_outline": [
+      "h2: You may also like",
+      "h2: Personalized \"Forever Your Little Girl\" Picture Frame",
+      "h2: Daddy's Little Girl Picture Frame",
+      "h2: Personalized Daddy Est Picture Frame",
+      "h2: Personalized First Father's Day Picture Frame",
+      "h2: Happy First Father's Day as My Daddy Picture Frame",
+      "h2: Customer reviews",
+      "h2: Follow us",
+      "h2: Subscribe",
+      "h2: Country",
+      "h2: Added to your cart:"
+     ],
+     "n_h2": 12,
+     "n_h3": 0,
+     "main_copy_words_est": 345,
+     "body_words_excl_nav_footer_auto": 787,
+     "faq": {
+      "present": true,
+      "visible_questions": 3,
+      "note": "photo size, hang or stand, can you print my photo; no FAQPage markup"
+     },
+     "jsonld_types": [
+      "AggregateRating",
+      "Brand",
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Organization",
+      "Product",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [
+      {
+       "ratingValue": "5",
+       "reviewCount": 1
+      }
+     ],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": true,
+     "reviews_shown": "1 review, 5.0 (AggregateRating)",
+     "price": "$29.99",
+     "products_listed": 1,
+     "personalisation": "engraved daughters' names",
+     "delivery_promise": "'Ships in 1-2 Business Days'; free shipping + personalisation",
+     "sibling_category_links": 60,
+     "sibling_category_sample": [
+      "/collections/all",
+      "/collections/anniversary-gifts",
+      "/collections/baby-kids",
+      "/collections/birthday-gifts",
+      "/collections/bridesmaid-gifts",
+      "/collections/child-memorial-gifts",
+      "/collections/christmas-decor",
+      "/collections/coworkers-employees",
+      "/collections/dad-memorial-gifts",
+      "/collections/engagement-gifts"
+     ],
+     "images": 53,
+     "images_with_alt": 45,
+     "alt_samples": [
+      "Best Selling Gifts for Her",
+      "Best Selling Gifts for Him",
+      "Shop Gifts for the Home",
+      "Shop Gifts for the Garden"
+     ],
+     "distinctive": "Closest analogue to a Butterlu product page: ~$30, 4x6/5x7, a 3-question FAQ, 6 related dad frames."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Small engraving shops' PDPs rank #2, #3, #7, #8 and #9. Their on-page basics are poor (generic or mismatched title tags, 60-380 words, 0-1 reviews). What they share is the exact phrase in the URL slug and H1, $25-40 pricing, Product+Offer JSON-LD, and a ship-time or delivery-date estimator. The most winnable product-page SERP alongside godmother."
+  },
+  {
+   "query": "pet memorial picture frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "wagsandwillows.com/collections/pet-memorial-frames",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 2,
+     "url": "petmemoryshop.com/collections/pet-memorial-photo-frames",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 3,
+     "url": "amazon.com/stores/BANBERRYDESIGNS/...",
+     "type": "marketplace brand store"
+    },
+    {
+     "pos": 4,
+     "url": "laurelbox.com/products/pet-memorial-custom-photo-frame",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 5,
+     "url": "etchedinmyheart.com/",
+     "type": "DTC home page"
+    },
+    {
+     "pos": 6,
+     "url": "pinterest.com/ideas/pet-memorial-frames",
+     "type": "pinterest"
+    },
+    {
+     "pos": 7,
+     "url": "lifesongmilestones.com/collections/pet-photo-frames",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 8,
+     "url": "amazon.com/stores/BANBERRYDESIGNS/...",
+     "type": "marketplace brand store"
+    },
+    {
+     "pos": 9,
+     "url": "hearttoheartsympathygifts.com/pet-memorial-frames.html",
+     "type": "DTC category"
+    },
+    {
+     "pos": 10,
+     "url": "etsy.com/market/pet_memorial_frame",
+     "type": "etsy market (not opened)"
+    }
+   ],
+   "pages": [
+    {
+     "key": "wagsandwillows",
+     "url": "https://wagsandwillows.com/collections/pet-memorial-frames",
+     "rank": 1,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Pet Memorial Frames - Dog Memorial Frames - Cat Memorial Frames \u2013 Wags and Willows",
+     "title_len": 82,
+     "meta_description": "Dog Memorial Frames, Cat Memorial Frames At Wags &amp; Willows, we understand the deep bond between you and your furry companions. Our collection of pet memorial frames is designed to help you honor and remember the special moments you shared with your pets. These beautiful frames are perfect for displaying your favori",
+     "h1": [
+      "Collection: Pet Memorial Frames"
+     ],
+     "heading_outline": [
+      "h2: Item added to your cart",
+      "h2: Filter:",
+      "h2: Sort by:",
+      "h2: 52 products",
+      "h2: Filter and sort",
+      "h2: Filter",
+      "h3: Pet Memorial Shadow box, Dog Memorial Frame, Paw Print Holder",
+      "h3: Pet memorial shadow box, Pet memory box, pet memorial frame",
+      "h3: Lighted Pet memorial frame",
+      "h3: Pet Memorial, Dog Memorial Frame, Cat Memorial",
+      "h3: Dog Memorial Shadow Box",
+      "h3: Pet Memorial pawprint holder frame",
+      "h3: Pet Collar Memorial Frame, Dog Memorial , Cat Memorial, Loss of Pet Gift, Pet Memorial Sha",
+      "h3: Pet Memorial frame Dog Memorial Frame",
+      "h3: Granddog Photo frame",
+      "h3: Pet Memorial frame for paw print",
+      "h3: Pet Memorial Shadowbox",
+      "h3: Pet Memorial Shadowbox for pawprint",
+      "h3: Pet Memorial Shadowbox for Cats and Dogs",
+      "h3: Pet Memorial, Dog Memorial Picture frame",
+      "h2: Collapsible content",
+      "h3: Pet Memorials FAQ",
+      "h3: Frequently Asked Questions (FAQ)",
+      "h3: Pet Urns FAQ",
+      "h2: Dog Memorial Frames, Cat Memorial Frames"
+     ],
+     "n_h2": 13,
+     "n_h3": 36,
+     "main_copy_words_est": 1590,
+     "body_words_excl_nav_footer_auto": 2711,
+     "faq": {
+      "present": true,
+      "visible_questions": 24,
+      "note": "3 accordion FAQ blocks under the grid (Pet Memorials FAQ 12, general, Pet Urns); no FAQPage markup"
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ItemList",
+      "ListItem",
+      "Organization",
+      "SearchAction",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 16,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none on grid",
+     "price": "~$25-$90 (8 price points)",
+     "products_listed": 52,
+     "personalisation": "text personalisation on PDPs; no preview on collection",
+     "delivery_promise": "Fast, Free Shipping over $50 (banner); FAQ: processed within 1-3 business days",
+     "sibling_category_links": 26,
+     "sibling_category_sample": [
+      "/collections/cat-urns",
+      "/collections/ceramic-pet-urns",
+      "/collections/cups-tumblers-mugs",
+      "/collections/custom-pet-urns",
+      "/collections/dog-urns",
+      "/collections/gift-card-pet-memorial-gifts-dog-memorial-gifts-cat-memorial-gifts",
+      "/collections/keyrings-and-ornaments",
+      "/collections/kitchen-towels",
+      "/collections/large-dog-urns",
+      "/collections/personalized-pet-id-tags"
+     ],
+     "images": 23,
+     "images_with_alt": 17,
+     "alt_samples": [
+      "Wags and Willows",
+      "Pet Memorial Shadow box, Dog Memorial Frame, Paw Print Holder - Wags and Willows",
+      "Pet memorial shadow box, Pet memory box, pet memorial frame - Wags and Willows",
+      "Lighted Pet memorial frame - Wags and Willows"
+     ],
+     "distinctive": "Title stuffs dog/cat variants (83 chars); meta description is the first 300 chars of the intro, unedited. Copy (~1,600 words) sits below the product grid. 26 sibling collections (urns by species, shadow boxes, keepsakes)."
+    },
+    {
+     "key": "petmemoryshop",
+     "url": "https://petmemoryshop.com/collections/pet-memorial-photo-frames",
+     "rank": 2,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Pet Memorial Photo Frames | Cherish Lasting Memories - Pet Memory Shop",
+     "title_len": 70,
+     "meta_description": "Discover unique pet memorial photo frames at Pet Memory Shop. Perfect for cherishing and displaying your beloved pet's photographs with elegance and love. Our frames honor your furry friend's memory, keeping those precious moments alive. Shop now for a heartfelt tribute to your pet.",
+     "h1": [
+      "Collection: Pet Memorial Photo Frames"
+     ],
+     "heading_outline": [
+      "h2: Sort by:",
+      "h2: 18 products",
+      "h2: Filter:",
+      "h2: Filter and sort",
+      "h2: Filter",
+      "h3: \"You Left Pawprints On My Heart\" Keepsake Memorial Photo Frame",
+      "h3: Paw Prints Pet Memorial Wall Frame With Clay Imprint Kit (Espresso)",
+      "h3: Pet Pawprints Wall Picture Frame and Clay Impression Kit, Distressed White",
+      "h3: \"You Were My Favorite Hello and My Hardest Goodbye\" Pet Memorial Picture Frame",
+      "h3: \"No Longer by My Side Forever in My Heart\" Memorial Ceramic Picture Frame",
+      "h3: \"Pawprints Left By You\" Pet Memorial Frame with Pet Tag or Ash Vial",
+      "h3: \"No Longer By Our Side, Forever In Our Hearts\" Memorial Picture Frame",
+      "h3: \"Pawprints Left By You\" 5\" x 7\" Memorial Plaque & Photo Frame",
+      "h3: \"You Have Left My Life, But You Will Never Leave My Heart\" Engraved Leather Picture Frame",
+      "h3: Custom Engraved \"No Longer by My Side Forever in My Heart\" Memorial Photo Frame",
+      "h3: Pawprints Remembered Pet Memorial 5\"x7\" Picture Frame with Hanging Pendant",
+      "h3: \"Forever In Our Hearts\" Pet Memorial Picture Frame",
+      "h3: \"The Paw Prints I Left In Your Heart\" Memorial Picture Frame",
+      "h3: \"When I Needed a Hand I Found Your Paw\" Ceramic Photo Frame",
+      "h3: No Longer By My Side, Forever In My Heart - Picture Frame (5 Sizes Available)",
+      "h3: Pet Memorial Ceramic Picture Frame No Longer Cuddling By My Side Furever in My Heart Loss",
+      "h3: Paw Prints Pet Wall Frame With Clay Imprint Kit (Espresso)",
+      "h3: Pet Pawprints Wall Picture Frame and Clay Impression Kit (Distressed White)",
+      "h2: Pet Loss Support",
+      "h2: Partnerships"
+     ],
+     "n_h2": 11,
+     "n_h3": 36,
+     "main_copy_words_est": 0,
+     "body_words_excl_nav_footer_auto": 981,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Organization"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "per-card star counts, 14-84 reviews per product (most 55-84)",
+     "price": "$29.99-$89.99",
+     "products_listed": 18,
+     "personalisation": "engraving on some PDPs; none on collection",
+     "delivery_promise": "Free US Shipping on orders $100+ (banner)",
+     "sibling_category_links": 20,
+     "sibling_category_sample": [
+      "/collections/candles-lighting-aromatherapy",
+      "/collections/cat-urns",
+      "/collections/custom-pet-urns",
+      "/collections/custom-picture-text-memorials",
+      "/collections/dog-urns",
+      "/collections/memorial-jewelry",
+      "/collections/memorial-necklaces",
+      "/collections/memorial-pendants",
+      "/collections/memorial-plaques",
+      "/collections/memorial-wind-chimes"
+     ],
+     "images": 30,
+     "images_with_alt": 19,
+     "alt_samples": [
+      "Pet Memory Shop",
+      "\"You Left Pawprints On My Heart\" Keepsake Memorial Photo Frame",
+      "Paw Prints Pet Memorial Wall Frame With Clay Imprint Kit (Espresso)",
+      "Pet Pawprints Wall Picture Frame and Clay Impression Kit, Distressed White"
+     ],
+     "distinctive": "Unchanged since the September snapshot: zero copy, Organization-only JSON-LD, ranks #2 on per-product review counts + a deep memorial catalogue (20 sibling collections)."
+    },
+    {
+     "key": "laurelbox_pet",
+     "url": "https://www.laurelbox.com/products/pet-memorial-custom-photo-frame",
+     "rank": 4,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "Pet Memorial Custom Photo Frame | Pets | laurelbox",
+     "title_len": 50,
+     "meta_description": "Remember your pet's memory with a Custom Photo Frame from laurelbox. Personalize this frame to honor your beloved companion. Explore pet memorial frames today.",
+     "h1": [
+      "Pet Memorial Custom Photo Frame"
+     ],
+     "heading_outline": [
+      "h2: Sign in or create account",
+      "h2: Currency",
+      "h3: CUSTOM ENGRAVING",
+      "h3: Recommended gift pairings",
+      "h2: Testimonials",
+      "h3: Recently viewed",
+      "h2: build a laurelbox",
+      "h2: WIND CHIMES",
+      "h2: Personalized gifts",
+      "h2: Sign up and save"
+     ],
+     "n_h2": 9,
+     "n_h3": 3,
+     "main_copy_words_est": 700,
+     "body_words_excl_nav_footer_auto": 1626,
+     "faq": {
+      "present": false,
+      "visible_questions": 0,
+      "note": "shipping/packaging Q&A-style notes but no FAQ block"
+     },
+     "jsonld_types": [
+      "AggregateRating",
+      "Brand",
+      "BreadcrumbList",
+      "Comment",
+      "ListItem",
+      "Offer",
+      "Organization",
+      "Person",
+      "PostalAddress",
+      "Product",
+      "Rating",
+      "Review"
+     ],
+     "microdata_types": [
+      "Organization"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [
+      {
+       "ratingValue": "5.0",
+       "reviewCount": 4
+      }
+     ],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "4 reviews, 5.0 (product); site testimonials",
+     "price": "$33",
+     "products_listed": 1,
+     "personalisation": "Zepto personaliser: engraved name + phrase choice, no live render",
+     "delivery_promise": "Orders ship within 1-3 business days; transit table Standard 4-8 / Priority 2-5 business days",
+     "sibling_category_links": 25,
+     "sibling_category_sample": [
+      "/collections/bestsellers",
+      "/collections/commemorative-candles",
+      "/collections/corporate-listings",
+      "/collections/dad-loss-support-gifts",
+      "/collections/difficult-season",
+      "/collections/family-member-loss-1",
+      "/collections/housewarmers",
+      "/collections/infant-and-child-loss",
+      "/collections/infertility-and-pregnancy-loss",
+      "/collections/infertility-support"
+     ],
+     "images": 31,
+     "images_with_alt": 21,
+     "alt_samples": [
+      "Pet Memorial Custom Photo Frame",
+      "Laurelbox home",
+      "Pet Memorial Custom Photo Frame featuring a sleeping dog image, engraved text &quot;FOREVER LOVED Sam&quot; on clear acrylic.",
+      "Pet Memorial Custom Photo Frame featuring a sleeping dog, engraved text &"
+     ],
+     "distinctive": "Product + AggregateRating + Review JSON-LD with just 4 reviews. Gift-box packaging and free card are the pitch. 25 sibling collections in nav."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Same as September: niche DTC collections hold #1-2 (plus #7 and #9). #1 has 52 products and ~1,600 words of accordion FAQ (24 questions, no FAQPage markup). #2 has 18 products, zero copy and per-card review counts of 14-84. The laurelbox PDP (#4) ranks on 4 reviews with Review/AggregateRating markup. Shared traits: memorial-only catalogues with 20-26 sibling collections, $25-90 pricing, and free-shipping thresholds."
+  },
+  {
+   "query": "engagement picture frame",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "markandgraham.com/shop/gift-shops/photo-frame---album+personalized-wedding-gifts/...",
+     "type": "national brand category"
+    },
+    {
+     "pos": 2,
+     "url": "potterybarn.com/shop/gifts/picture-frames+engagement-gifts/...",
+     "type": "national brand category"
+    },
+    {
+     "pos": 3,
+     "url": "hallmark.com/.../engagement-ceramic-picture-frame-4x6-501146.html",
+     "type": "national brand PDP"
+    },
+    {
+     "pos": 4,
+     "url": "saraboocreek.com/products/personalized-message-engagement-frame",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 5,
+     "url": "theknot.com/content/engagement-photo-frame",
+     "type": "editorial listicle"
+    },
+    {
+     "pos": 6,
+     "url": "ie.pinterest.com/engagement_gift/engagement-frames",
+     "type": "pinterest"
+    },
+    {
+     "pos": 7,
+     "url": "amazon.com/engagement-frame/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 8,
+     "url": "lifetimecreations.net/personalized-engagement-picture-frame/",
+     "type": "DTC PDP"
+    },
+    {
+     "pos": 9,
+     "url": "pinterest.com/ideas/engagement-picture-frame",
+     "type": "pinterest"
+    },
+    {
+     "pos": 10,
+     "url": "walmart.com/c/kp/engagement-frame",
+     "type": "marketplace search"
+    }
+   ],
+   "pages": [
+    {
+     "key": "markandgraham",
+     "url": "https://www.markandgraham.com/shop/gift-shops/photo-frame---album+personalized-wedding-gifts/producttype-m-product-type-ff00060e1a2129fe20202f2020-1/",
+     "rank": 1,
+     "page_type": "collection",
+     "platform": "magento",
+     "title_tag": "Photo Frame / Album Wedding + Engagement | Mark and Graham",
+     "title_len": 58,
+     "meta_description": "Mark and Graham offers one of a kind custom wedding gifts. Give an engraved wedding gift to commemorate a special union by adding a traditional monogram or adding a unique personalization.",
+     "h1": [
+      "Photo Frame / Album - Wedding + Engagement"
+     ],
+     "heading_outline": [
+      "h2: Want even more inspiration?",
+      "h2: Thank you for signing up!",
+      "h2: Sign up to get emails from our family of brands",
+      "h2: Thank You!",
+      "h2: Your submission has been received.",
+      "h3: How Can We Help?",
+      "h3: About Us",
+      "h3: B2B Programs",
+      "h3: Catalog",
+      "h3: Resources",
+      "h3: The Key Rewards + Card",
+      "h3: Customer Service",
+      "h3: Corporate Gifting"
+     ],
+     "n_h2": 5,
+     "n_h3": 10,
+     "main_copy_words_est": 0,
+     "body_words_excl_nav_footer_auto": 586,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "ContactPoint",
+      "ListItem",
+      "Organization",
+      "PostalAddress",
+      "SearchAction",
+      "WebSite"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "none",
+     "price": "$16.97-$139",
+     "products_listed": 20,
+     "personalisation": "monogram/engraving",
+     "delivery_promise": "free shipping offers only",
+     "sibling_category_links": 200,
+     "sibling_category_sample": [
+      "/shop/engagement-wedding-shop/",
+      "/shop/gift-shops/",
+      "/shop/gift-shops/b2b-best-sellers",
+      "/shop/gift-shops/baby-shower-gifts/",
+      "/shop/gift-shops/backpack+briefcase---messenger-bag+personalized-business-gifts/producttype-m-product-type-ff0008141e282f37fe202f202020-2",
+      "/shop/gift-shops/bar-cocktail-gifts/",
+      "/shop/gift-shops/bbq-gifts/",
+      "/shop/gift-shops/best-selling-gifts/",
+      "/shop/gift-shops/birthday-gifts/",
+      "/shop/gift-shops/black+photo-frame---album+personalized-wedding-gifts/color-attr-m-color-ff0012fe5f-1+producttype-m-product-type-ff00060e1a2129fe20202f2020-1/"
+     ],
+     "images": 218,
+     "images_with_alt": 205,
+     "alt_samples": [
+      "Thanksgiving >",
+      "Deck the Halls >",
+      "Holiday Entertaining >",
+      "Gifts Guide>"
+     ],
+     "distinctive": "Williams-Sonoma group authority. Zero copy, no Product/ItemList markup, 200 category links."
+    },
+    {
+     "key": "hallmark_engagement",
+     "url": "https://www.hallmark.com/house-and-home/decor/picture-frames/engagement-ceramic-picture-frame-4x6-501146.html",
+     "rank": 3,
+     "page_type": "product",
+     "platform": "magento",
+     "title_tag": "Engagement Ceramic Picture Frame, 4x6 - Picture Frames | Hallmark",
+     "title_len": 65,
+     "meta_description": "Capture the momentous thing and the ring with this sweet picture frame for an engagement photo. Ceramic frame holds a 4x6 photo and features an embossed heart and message.",
+     "h1": [
+      "Engagement Ceramic Picture Frame, 4x6"
+     ],
+     "heading_outline": [
+      "h2: Find a store",
+      "h2: Account",
+      "h2: Shop by category",
+      "h2: Gifts & Ornaments",
+      "h2: Cards",
+      "h2: Shop by Price",
+      "h2: Special Offers",
+      "h2: Collection",
+      "h2: Theme",
+      "h2: Pop Culture",
+      "h2: Feature",
+      "h2: Explore",
+      "h2: Cards for Anyone",
+      "h2: Cards for Her",
+      "h2: Cards for Him",
+      "h2: Card Collections",
+      "h2: Shop by Category",
+      "h2: Key Occasions",
+      "h2: Good Times",
+      "h2: Tough Times",
+      "h2: Holidays",
+      "h2: Card Categories",
+      "h2: Holiday & Occasions",
+      "h2: Category",
+      "h2: Brand"
+     ],
+     "n_h2": 68,
+     "n_h3": 1,
+     "main_copy_words_est": 80,
+     "body_words_excl_nav_footer_auto": 707,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Brand",
+      "BreadcrumbList",
+      "ListItem",
+      "Offer",
+      "Organization",
+      "Person",
+      "Product",
+      "Rating",
+      "review"
+     ],
+     "microdata_types": [
+      "SiteNavigationElement"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "0 reviews",
+     "price": "$19.99",
+     "products_listed": 1,
+     "personalisation": "none",
+     "delivery_promise": "'Arrives 11/13\u201311/17'",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 24,
+     "images_with_alt": 24,
+     "alt_samples": [
+      "Hallmark logo",
+      "Malden Engagement Photo Picture Frame  image number 1",
+      "Malden Engagement Photo Picture Frame  image number 2",
+      "Malden Engagement Photo Picture Frame  image number 3"
+     ],
+     "distinctive": "Third Hallmark PDP in the top 10 with 0 reviews and under 160 words."
+    },
+    {
+     "key": "saraboocreek",
+     "url": "https://www.saraboocreek.com/products/personalized-message-engagement-frame",
+     "rank": 4,
+     "page_type": "product",
+     "platform": "shopify",
+     "title_tag": "Engagement Picture Frame w/ Personalized Message of your choice & Enga \u2013 SaraBoo Creek",
+     "title_len": 86,
+     "meta_description": "Holds 3 7/16\" x 4 7/8\" Photo; Outside Dimensions 4 1/4 x 9 3/4\" Perfect for that newly engaged couple in your life, this frame allows you to make it entirely their own - Choose short message for black oval (She Said Yes! will be standard otherwise), indicate the date of engagement, and add initials to the champagne gla",
+     "h1": [
+      "Engagement Picture Frame w/ Personalized Message of your choice & Engaged Date"
+     ],
+     "heading_outline": [
+      "h2: Other Collections",
+      "h3: Custom Signs",
+      "h3: Personalized Ornaments",
+      "h3: Picture Frames & More",
+      "h2: Recommended products",
+      "h3: Explore",
+      "h3: LOCATIONS",
+      "h3: GIFTS FOR",
+      "h3: INTERESTS",
+      "h3: MAILING LIST",
+      "h2: Cart",
+      "h3: Join us and get nice things"
+     ],
+     "n_h2": 3,
+     "n_h3": 9,
+     "main_copy_words_est": 380,
+     "body_words_excl_nav_footer_auto": 676,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "Brand",
+      "Offer",
+      "Product"
+     ],
+     "microdata_types": [],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": true,
+     "reviews_shown": "none",
+     "price": "$23.95",
+     "products_listed": 1,
+     "personalisation": "message, engagement date and initials typed into a text box",
+     "delivery_promise": "2-5 business days estimated production time",
+     "sibling_category_links": 32,
+     "sibling_category_sample": [
+      "/cdn/shop/files/EngagedPersonalizedFrame2.jpg",
+      "/cdn/shop/files/EngagedPersonalizedFrame3.jpg",
+      "/cdn/shop/files/EngagedPersonalizedFrame4.jpg",
+      "/cdn/shop/files/EngagedPersonalizedFrame5.jpg",
+      "/cdn/shop/files/EngagedPersonalizedFrame6.jpg",
+      "/cdn/shop/files/EngagedPersonalizedFrame7.jpg",
+      "/cdn/shop/files/EngagedPersonalizedFrame9.jpg",
+      "/cdn/shop/files/ShesaidyesFrame.png",
+      "/collections/all",
+      "/collections/baby"
+     ],
+     "images": 45,
+     "images_with_alt": 25,
+     "alt_samples": [
+      "Engagement Picture Frame w/ Personalized Message of your choice & Engaged Date",
+      "Engaged Ornament - Personalized Engagement Ornament",
+      "Engaged Picture Frame in White - Customized with Engagement year",
+      "Engaged Picture Frame in Gray - Customized with Engagement Date"
+     ],
+     "distinctive": "Title cut off at 70 characters ('...& Enga \u2013 SaraBoo Creek'). The shop has physical stores, so the brand gets local signals."
+    }
+   ],
+   "blocked_or_skipped": [
+    {
+     "url": "https://www.potterybarn.com/shop/gifts/picture-frames+engagement-gifts/primarycatname-m-category-ff000815181ffe20-1/",
+     "rank": 2,
+     "status": "blocked: all Firecrawl engines failed (basic proxy); not retried"
+    }
+   ],
+   "winners_have_in_common": "Premium home brands hold #1-2 (Mark & Graham, whose category page has zero copy, and Pottery Barn), and Hallmark has a 0-review PDP at #3. Independent PDPs at #4 and #8 are $20-30 frames personalised with names and date via a text box, with production-time promises. Authority-heavy at the top, but #4-8 is reachable."
+  },
+  {
+   "query": "miscarriage memorial gift",
+   "serp_top10": [
+    {
+     "pos": 1,
+     "url": "hearttoheartsympathygifts.com/miscarriage-gifts.html",
+     "type": "DTC category"
+    },
+    {
+     "pos": 2,
+     "url": "laurelbox.com/collections/infertility-and-pregnancy-loss",
+     "type": "DTC collection"
+    },
+    {
+     "pos": 3,
+     "url": "reddit.com/r/Mommit/...",
+     "type": "forum"
+    },
+    {
+     "pos": 4,
+     "url": "happiestbaby.com/blogs/parents/miscarriage-gifts",
+     "type": "brand blog listicle"
+    },
+    {
+     "pos": 5,
+     "url": "etsy.com/market/miscarriage_memorial",
+     "type": "etsy market (not opened)"
+    },
+    {
+     "pos": 6,
+     "url": "pinterest.com/jewelofhavana/...",
+     "type": "pinterest"
+    },
+    {
+     "pos": 7,
+     "url": "miscarriagehopedesk.org/33-thoughtful-gift-ideas-for-miscarriage/",
+     "type": "nonprofit listicle"
+    },
+    {
+     "pos": 8,
+     "url": "amazon.com/miscarriage-memorial/s",
+     "type": "marketplace search"
+    },
+    {
+     "pos": 9,
+     "url": "tommys.org/...",
+     "type": "charity info"
+    },
+    {
+     "pos": 10,
+     "url": "mend.org/keepsakes",
+     "type": "nonprofit shop"
+    }
+   ],
+   "pages": [
+    {
+     "key": "hearttoheart_misc",
+     "url": "https://www.hearttoheartsympathygifts.com/miscarriage-gifts.html",
+     "rank": 1,
+     "page_type": "collection",
+     "platform": "magento",
+     "title_tag": "Miscarriage Gifts",
+     "title_len": 17,
+     "meta_description": "Help comfort someone in honoring a miscarriage in a thoughtful, respectful way with a gift that shows you care. See our selection of caring options here.",
+     "h1": [
+      "Miscarriage Gifts"
+     ],
+     "heading_outline": [
+      "h2: Sympathy Messages and Quotes",
+      "h2: Sympathy and Grief Resources",
+      "h2: What Our Customers Say",
+      "h2: Join Our Newsletter",
+      "h2: Shop With Confidence",
+      "h2: Social",
+      "h2: Ask Heart to Heart"
+     ],
+     "n_h2": 7,
+     "n_h3": 0,
+     "main_copy_words_est": 150,
+     "body_words_excl_nav_footer_auto": 677,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [],
+     "microdata_types": [
+      "BreadcrumbList",
+      "ListItem",
+      "SiteNavigationElement",
+      "WebPage"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "site testimonials block ('What Our Customers Say'); no per-product counts",
+     "price": "$29.99-$69.99",
+     "products_listed": 42,
+     "personalisation": "some engraved items",
+     "delivery_promise": "Free Shipping On All Items (banner)",
+     "sibling_category_links": 0,
+     "sibling_category_sample": [],
+     "images": 44,
+     "images_with_alt": 43,
+     "alt_samples": [
+      "Baby Loss Memory Wind Chime - I Carried You",
+      "Angel of Mine - Miscarriage and Baby Loss Figurine",
+      "Remembrance Angel - Hold You In Heaven",
+      "Comfort of Heaven Sympathy Angel - When God Calls Little Children"
+     ],
+     "distinctive": "Title is just 'Miscarriage Gifts' (17 chars). No JSON-LD at all (microdata Breadcrumb/WebPage only). Adds 'Sympathy Messages and Quotes' and 'Grief Resources' link sections: helpful-content signals. 43/44 images with product-name alt."
+    },
+    {
+     "key": "laurelbox_loss",
+     "url": "https://www.laurelbox.com/collections/infertility-and-pregnancy-loss",
+     "rank": 2,
+     "page_type": "collection",
+     "platform": "shopify",
+     "title_tag": "Miscarriage Gifts - Miscarriage Care Packages | laurelbox",
+     "title_len": 57,
+     "meta_description": "Shop miscarriage gifts from laurelbox. View our full collection of sympathy gifts including miscarriage care packages. Find the perfect gift today!",
+     "h1": [
+      "Miscarriage & Pregnancy Loss Gifts"
+     ],
+     "heading_outline": [
+      "h2: Sign in or create account",
+      "h2: Currency",
+      "h2: Miscarriage Support Gifts",
+      "h2: Testimonials",
+      "h2: build a laurelbox",
+      "h2: WIND CHIMES",
+      "h2: Personalized gifts",
+      "h2: Sign up and save"
+     ],
+     "n_h2": 10,
+     "n_h3": 0,
+     "main_copy_words_est": 360,
+     "body_words_excl_nav_footer_auto": 1102,
+     "faq": {
+      "present": false,
+      "visible_questions": 0
+     },
+     "jsonld_types": [
+      "BreadcrumbList",
+      "CollectionPage",
+      "ImageObject",
+      "ListItem",
+      "Organization",
+      "PostalAddress"
+     ],
+     "microdata_types": [
+      "Organization"
+     ],
+     "jsonld_faqpage_questions": 0,
+     "jsonld_itemlist_elements": 0,
+     "jsonld_aggregate_rating": [],
+     "offer_shippingDetails": false,
+     "offer_hasMerchantReturnPolicy": false,
+     "offer_priceValidUntil": false,
+     "reviews_shown": "per-card counts 2-42; testimonial quotes",
+     "price": "$8-$39+",
+     "products_listed": 33,
+     "personalisation": "Zepto personaliser on PDPs",
+     "delivery_promise": "Orders ship within 1-3 business days (banner)",
+     "sibling_category_links": 26,
+     "sibling_category_sample": [
+      "/collections/bereaved-mothers",
+      "/collections/bestsellers",
+      "/collections/commemorative-candles",
+      "/collections/corporate-listings",
+      "/collections/dad-loss-support-gifts",
+      "/collections/difficult-season",
+      "/collections/family-member-loss-1",
+      "/collections/housewarmers",
+      "/collections/infant-and-child-loss",
+      "/collections/infertility-and-pregnancy-loss"
+     ],
+     "images": 81,
+     "images_with_alt": 71,
+     "alt_samples": [
+      "Laurelbox home",
+      "Soft pink gradient background with subtle stripes, suitable for a sympathy gift or memorial keepsake presentation.",
+      "A condolence gift box containing a candle, seed packet, necklace, and four soaps in pastel colors.",
+      "I Carry You in My Heart candle with custom label for Jordan, white frosted glass, held in hands, featuring blue star design."
+     ],
+     "distinctive": "~360 words with bolded keyword phrases and a link to their blog guide. H1 'Miscarriage & Pregnancy Loss Gifts' differs from title 'Miscarriage Gifts - Miscarriage Care Packages'. CollectionPage JSON-LD. 26 sibling loss collections (infant and child loss, bereaved mothers, dad loss)."
+    }
+   ],
+   "blocked_or_skipped": [],
+   "winners_have_in_common": "Sympathy-gift specialists hold #1-2 with broad loss collections (33-42 products, $8-70). #1 has no JSON-LD, ~150 words of copy and grief-resource links. #2 has ~360 words with a link to a blog guide, CollectionPage markup and per-card review counts of 2-42. The rest of the top 10 is advice content (forums, nonprofits, a brand blog). Empathetic copy and resource links matter more than markup."
+  }
+ ],
+ "cross_cluster_stats": {
+  "collection_pages": {
+   "n": 13,
+   "copy_words_median": 90,
+   "copy_words_range": [
+    0,
+    1590
+   ],
+   "with_visible_faq": 2,
+   "with_FAQPage_schema": 1,
+   "with_AggregateRating": 0,
+   "with_ItemList": 4,
+   "with_BreadcrumbList": 11,
+   "with_Product": 1,
+   "with_no_jsonld": 2,
+   "with_shippingDetails": 0,
+   "with_returnPolicy": 0,
+   "products_listed_median": 33
+  },
+  "product_pages": {
+   "n": 15,
+   "copy_words_median": 345,
+   "copy_words_range": [
+    60,
+    930
+   ],
+   "with_visible_faq": 1,
+   "with_FAQPage_schema": 0,
+   "with_AggregateRating": 5,
+   "with_ItemList": 0,
+   "with_BreadcrumbList": 10,
+   "with_Product": 15,
+   "with_no_jsonld": 0,
+   "with_shippingDetails": 0,
+   "with_returnPolicy": 0,
+   "products_listed_median": null
+  },
+  "editorial_pages": {
+   "n": 2,
+   "copy_words_median": 2650.0,
+   "copy_words_range": [
+    2300,
+    3000
+   ],
+   "with_visible_faq": 1,
+   "with_FAQPage_schema": 0,
+   "with_AggregateRating": 0,
+   "with_ItemList": 1,
+   "with_BreadcrumbList": 2,
+   "with_Product": 0,
+   "with_no_jsonld": 0,
+   "with_shippingDetails": 0,
+   "with_returnPolicy": 0,
+   "products_listed_median": null,
+   "note": "plus blog pages"
+  }
+ },
+ "observations": [
+  "0 of 34 unique scraped pages put shippingDetails or hasMerchantReturnPolicy in Offer JSON-LD.",
+  "FAQPage JSON-LD on 2 pages only (Groovy Groomsmen collection, Baby Beau & Belle blog). Visible FAQ on 5.",
+  "AggregateRating present on 5 of 15 product pages, with review counts of 1-33; no collection page marks up ratings.",
+  "Delivery promise visible on most winners. Phrasing is either 'Ships in 1-2 (business) days' or a dated 'Arrives 11/13-11/17' / 'Estimated delivery ...'.",
+  "Exact-phrase H1 + URL slug is the common factor on the weak SERPs (daddy's little girl, godmother, love at first sight), even where the title tag is broken."
+ ]
+}

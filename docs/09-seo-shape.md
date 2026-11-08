@@ -10,6 +10,7 @@ Status words: **Shipped** means it is on main and stage. **Plan** means the work
 - Grandparents, pregnancy announcements, godparents and weddings carry about 80% of Etsy favourites. The site already has a page for each. The biggest gaps are **Mom and Dad** and a **Christmas** page across recipients.
 - Product pages could not appear in Google's merchant listings because they had no product image. **Shipped:** every product now has a 1200 px JPEG drawn at build time from its preset, used in the Product markup and as the link preview image. Asli's own photos will lead once she sends them.
 - Performance is the other half of the shape, and it is measured, budgeted and tested (§7).
+- Which searches to lead, what the winners look like and how rank is tracked: docs/12 (2026-11-08).
 
 ## 2. Where the demand is (Etsy, lifetime, 619 active listings)
 

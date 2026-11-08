@@ -1,0 +1,378 @@
+{
+ "_schema": "Tracked Google searches for butterlu.com. One row per query: the cluster it belongs to, the page meant to rank for it, priority 1 (highest) to 3. Snapshots in plans/serp/snapshots/ record the top 10 for each. Edit this list as pages are added.",
+ "updated": "2026-11-08",
+ "queries": [
+  {
+   "query": "grandparent pregnancy announcement frame",
+   "cluster": "grandparents-to-be",
+   "target": "/collections/new-grandparent-to-be",
+   "priority": 1
+  },
+  {
+   "query": "pregnancy announcement for grandparents",
+   "cluster": "grandparents-to-be",
+   "target": "/collections/new-grandparent-to-be",
+   "priority": 1
+  },
+  {
+   "query": "ultrasound picture frame for grandparents",
+   "cluster": "grandparents-to-be",
+   "target": "/collections/new-grandparent-to-be",
+   "priority": 1
+  },
+  {
+   "query": "first grandchild announcement gift",
+   "cluster": "grandparents-to-be",
+   "target": "/collections/new-grandparent-to-be",
+   "priority": 1
+  },
+  {
+   "query": "promoted to grandparents frame",
+   "cluster": "grandparents-to-be",
+   "target": "/collections/new-grandparent-to-be",
+   "priority": 1
+  },
+  {
+   "query": "father of the bride gift",
+   "cluster": "parents-of-couple",
+   "target": "/collections/wedding-thank-you-frames",
+   "priority": 1
+  },
+  {
+   "query": "mother of the bride gift from daughter",
+   "cluster": "parents-of-couple",
+   "target": "/collections/wedding-thank-you-frames",
+   "priority": 1
+  },
+  {
+   "query": "father of the bride picture frame",
+   "cluster": "parents-of-couple",
+   "target": "/collections/wedding-thank-you-frames",
+   "priority": 1
+  },
+  {
+   "query": "wedding gift for parents frame",
+   "cluster": "parents-of-couple",
+   "target": "/collections/wedding-thank-you-frames",
+   "priority": 1
+  },
+  {
+   "query": "parents of the bride thank you gift",
+   "cluster": "parents-of-couple",
+   "target": "/collections/wedding-thank-you-frames",
+   "priority": 1
+  },
+  {
+   "query": "personalized grandma picture frame",
+   "cluster": "grandma",
+   "target": "/collections/grandparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "grandma picture frame",
+   "cluster": "grandma",
+   "target": "/collections/grandparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "gift for grandma from grandkids",
+   "cluster": "grandma",
+   "target": "/collections/grandparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "mimi picture frame",
+   "cluster": "grandma",
+   "target": "/collections/grandparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "gigi gift personalized",
+   "cluster": "grandma",
+   "target": "/collections/grandparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "nana picture frame",
+   "cluster": "grandma",
+   "target": "/collections/grandparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "godmother proposal frame",
+   "cluster": "godmother",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "godmother gift baptism",
+   "cluster": "godmother",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "will you be my godmother gift",
+   "cluster": "godmother",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "godmother picture frame",
+   "cluster": "godmother",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "godfather gift baptism",
+   "cluster": "godfather",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "godfather picture frame",
+   "cluster": "godfather",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "will you be my godfather gift",
+   "cluster": "godfather",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "godparents gift personalized",
+   "cluster": "godfather",
+   "target": "/collections/godparent-frames",
+   "priority": 1
+  },
+  {
+   "query": "grandpa picture frame",
+   "cluster": "grandpa",
+   "target": "/products/grandpa-picture-frame",
+   "priority": 2
+  },
+  {
+   "query": "personalized grandpa frame",
+   "cluster": "grandpa",
+   "target": "/products/grandpa-picture-frame",
+   "priority": 2
+  },
+  {
+   "query": "papa picture frame",
+   "cluster": "grandpa",
+   "target": "/products/grandpa-picture-frame",
+   "priority": 2
+  },
+  {
+   "query": "grandpa christmas gift frame",
+   "cluster": "grandpa",
+   "target": "/products/grandpa-picture-frame",
+   "priority": 2
+  },
+  {
+   "query": "grandpa birthday gift",
+   "cluster": "grandpa",
+   "target": "/products/grandpa-picture-frame",
+   "priority": 2
+  },
+  {
+   "query": "first fathers day as grandpa gift",
+   "cluster": "grandpa",
+   "target": "/products/grandpa-picture-frame",
+   "priority": 2
+  },
+  {
+   "query": "engagement picture frame",
+   "cluster": "couple-engagement",
+   "target": "/products/engagement-frame-for-couple",
+   "priority": 2
+  },
+  {
+   "query": "personalized engagement frame",
+   "cluster": "couple-engagement",
+   "target": "/products/engagement-frame-for-couple",
+   "priority": 2
+  },
+  {
+   "query": "engagement gift for couple frame",
+   "cluster": "couple-engagement",
+   "target": "/products/engagement-frame-for-couple",
+   "priority": 2
+  },
+  {
+   "query": "aunt picture frame",
+   "cluster": "aunt-uncle",
+   "target": "/collections/aunt-uncle-frames",
+   "priority": 2
+  },
+  {
+   "query": "personalized aunt gift from niece",
+   "cluster": "aunt-uncle",
+   "target": "/collections/aunt-uncle-frames",
+   "priority": 2
+  },
+  {
+   "query": "uncle picture frame",
+   "cluster": "aunt-uncle",
+   "target": "/collections/aunt-uncle-frames",
+   "priority": 2
+  },
+  {
+   "query": "aunt brag board frame",
+   "cluster": "aunt-uncle",
+   "target": "/collections/aunt-uncle-frames",
+   "priority": 2
+  },
+  {
+   "query": "great aunt gift",
+   "cluster": "aunt-uncle",
+   "target": "/collections/aunt-uncle-frames",
+   "priority": 2
+  },
+  {
+   "query": "love at first sight ultrasound frame",
+   "cluster": "baby",
+   "target": "/collections/baby-frames",
+   "priority": 2
+  },
+  {
+   "query": "sonogram picture frame",
+   "cluster": "baby",
+   "target": "/collections/baby-frames",
+   "priority": 2
+  },
+  {
+   "query": "twins ultrasound frame",
+   "cluster": "baby",
+   "target": "/collections/baby-frames",
+   "priority": 2
+  },
+  {
+   "query": "baby name picture frame",
+   "cluster": "baby",
+   "target": "/collections/baby-frames",
+   "priority": 2
+  },
+  {
+   "query": "great grandparents pregnancy announcement",
+   "cluster": "great-grandparent",
+   "target": "/products/great-grandparent-announcement-frame",
+   "priority": 3
+  },
+  {
+   "query": "great grandma picture frame",
+   "cluster": "great-grandparent",
+   "target": "/products/great-grandparent-announcement-frame",
+   "priority": 3
+  },
+  {
+   "query": "first mom then grandma now great grandma",
+   "cluster": "great-grandparent",
+   "target": "/products/great-grandparent-announcement-frame",
+   "priority": 3
+  },
+  {
+   "query": "christmas picture frame for grandma",
+   "cluster": "christmas",
+   "target": "/collections/christmas-frames (planned)",
+   "priority": 2
+  },
+  {
+   "query": "personalized christmas frame for grandparents",
+   "cluster": "christmas",
+   "target": "/collections/christmas-frames (planned)",
+   "priority": 2
+  },
+  {
+   "query": "first christmas as grandparents gift",
+   "cluster": "christmas",
+   "target": "/collections/christmas-frames (planned)",
+   "priority": 2
+  },
+  {
+   "query": "daddys little girl picture frame",
+   "cluster": "mom-dad",
+   "target": "/collections/mom-dad-frames (planned)",
+   "priority": 2
+  },
+  {
+   "query": "first fathers day picture frame",
+   "cluster": "mom-dad",
+   "target": "/collections/mom-dad-frames (planned)",
+   "priority": 2
+  },
+  {
+   "query": "new dad gift frame",
+   "cluster": "mom-dad",
+   "target": "/collections/mom-dad-frames (planned)",
+   "priority": 2
+  },
+  {
+   "query": "mom picture frame personalized",
+   "cluster": "mom-dad",
+   "target": "/collections/mom-dad-frames (planned)",
+   "priority": 2
+  },
+  {
+   "query": "pet memorial picture frame",
+   "cluster": "memorial",
+   "target": "/collections/pet-loss-memorial + memorial (planned)",
+   "priority": 3
+  },
+  {
+   "query": "dog loss frame personalized",
+   "cluster": "memorial",
+   "target": "/collections/pet-loss-memorial + memorial (planned)",
+   "priority": 3
+  },
+  {
+   "query": "rainbow bridge picture frame",
+   "cluster": "memorial",
+   "target": "/collections/pet-loss-memorial + memorial (planned)",
+   "priority": 3
+  },
+  {
+   "query": "miscarriage memorial gift",
+   "cluster": "memorial",
+   "target": "/collections/pet-loss-memorial + memorial (planned)",
+   "priority": 3
+  },
+  {
+   "query": "grandpa in heaven frame",
+   "cluster": "memorial",
+   "target": "/collections/pet-loss-memorial + memorial (planned)",
+   "priority": 3
+  },
+  {
+   "query": "maid of honor gift from bride frame",
+   "cluster": "wedding-party",
+   "target": "(none yet)",
+   "priority": 3
+  },
+  {
+   "query": "mother of the groom gift frame",
+   "cluster": "wedding-party",
+   "target": "(none yet)",
+   "priority": 3
+  },
+  {
+   "query": "butterlu",
+   "cluster": "brand",
+   "target": "/",
+   "priority": 1
+  },
+  {
+   "query": "butterlu gifts",
+   "cluster": "brand",
+   "target": "/",
+   "priority": 1
+  },
+  {
+   "query": "boutique butterlu",
+   "cluster": "brand",
+   "target": "/",
+   "priority": 1
+  }
+ ]
+}

@@ -1,0 +1,5477 @@
+{
+ "pages": [
+  {
+   "url": "https://www.happiestbaby.com/blogs/pregnancy/pregnancy-announcement-parents",
+   "query": "pregnancy announcement for grandparents",
+   "pos": 1,
+   "pageType": "editorial-listicle",
+   "ownerType": "other",
+   "segment": "editorial/other",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Grandparent Pregnancy Announcements",
+   "titleLen": 35,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.25,
+    "brandPosition": "none",
+    "brand": "Happiest Baby",
+    "year": null,
+    "count": null,
+    "separator": null
+   },
+   "metaDescription": "There\u2019s no news like baby news\u2014and some of the most excited recipients around are the grandparents-to-be. Here\u2019s how to tell your parents you\u2019re pregnant.",
+   "descLen": 154,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.happiestbaby.com/blogs/pregnancy/pregnancy-announcement-parents",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "ogTitle": "30 Fun Ways to Announce Your Pregnancy to Your Parents",
+   "ogType": null,
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "30 Fun Ways to Announce Your Pregnancy to Your Parents",
+   "h1Count": 3,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 4,
+    "parseErrors": 0,
+    "types": {
+     "Organization": 2,
+     "WebSite": 1,
+     "SearchAction": 1,
+     "EntryPoint": 1,
+     "BlogPosting": 1,
+     "Person": 1,
+     "ImageObject": 1,
+     "WebPage": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 4
+    },
+    "reviewCount": 0,
+    "breadcrumb": 4,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 6,
+    "website": true,
+    "searchAction": true,
+    "videoObject": false,
+    "article": true
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "extra canonical tags come from embedded YouTube iframes (rendered DOM artefact)"
+   ]
+  },
+  {
+   "url": "https://www.groovygroomsmengifts.com/collections/father-bride-gifts",
+   "query": "father of the bride gift",
+   "pos": 1,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Father of the Bride Gifts: 140 Wedding Day Gifts for Dad - Groovy Groomsmen Gifts",
+   "titleLen": 81,
+   "titlePattern": {
+    "startsWithQuery": true,
+    "containsQuery": true,
+    "queryWordsCovered": 0.8,
+    "brandPosition": "end",
+    "brand": "Groovy Groomsmen Gifts",
+    "year": null,
+    "count": "140",
+    "separator": "-"
+   },
+   "metaDescription": "Personalized father of the bride gifts engraved with his name and your wedding date. Whiskey decanters, keepsake boxes and wood watches. Ships in 1-2 days.",
+   "descLen": 155,
+   "descSignals": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.groovygroomsmengifts.com/collections/father-bride-gifts",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "ogTitle": "Father of the Bride Gifts",
+   "ogType": "product.group",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Father of the Bride Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 6,
+    "parseErrors": 0,
+    "types": {
+     "OnlineStore": 2,
+     "Person": 1,
+     "PostalAddress": 2,
+     "ItemList": 1,
+     "ListItem": 42,
+     "FAQPage": 1,
+     "Question": 7,
+     "Answer": 7,
+     "WebPage": 1,
+     "Brand": 1,
+     "ContactPoint": 1,
+     "BreadcrumbList": 1
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": 7,
+    "itemList": 40,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 4,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "ItemList"
+   ],
+   "ogPriceMeta": false,
+   "notes": [
+    "Shopify collection og:type product.group"
+   ]
+  },
+  {
+   "url": "https://www.kennedyblue.com/blogs/weddings/mother-of-the-bride-gifts",
+   "query": "mother of the bride gift from daughter",
+   "pos": 1,
+   "pageType": "editorial-listicle",
+   "ownerType": "other",
+   "segment": "editorial/other",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "30 Thoughtful Mother Of The Bride Gift Ideas She\u2019ll Actually Love \u2013 Kennedy Blue",
+   "titleLen": 80,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.71,
+    "brandPosition": "end",
+    "brand": "Kennedy Blue",
+    "year": null,
+    "count": "30",
+    "separator": "\u2013"
+   },
+   "metaDescription": "Personalized Gifts | Affordable Ideas | Sentimental Presents | Jewelry for Mom | Cozy Clothing Show your mom how much you appreciate her support on your wedding day. From delicate jewelry to cozy socks, we can help you find the perfect mother of the bride gift! *This post may contain affiliate links. While we may recei",
+   "descLen": 320,
+   "descSignals": {
+    "price": true,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.kennedyblue.com/blogs/weddings/mother-of-the-bride-gifts",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "30 Thoughtful Mother Of The Bride Gift Ideas She\u2019ll Actually Love",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "30 Thoughtful Mother Of The Bride Gift Ideas She\u2019ll Actually Love",
+   "h1Count": 2,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 4,
+    "parseErrors": 0,
+    "types": {
+     "Article": 1,
+     "WebPage": 1,
+     "Person": 1,
+     "Organization": 2,
+     "LocalBusiness": 1,
+     "PostalAddress": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 3
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 5,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": true
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 320 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://28collective.com/products/personalized-father-of-the-bride-glass-picture-frame",
+   "query": "father of the bride picture frame",
+   "pos": 1,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Personalized Father of the Bride Glass Picture Frame \u2014 28 Collective",
+   "titleLen": 68,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 1.0,
+    "brandPosition": "end",
+    "brand": "28 Collective",
+    "year": null,
+    "count": null,
+    "separator": "\u2014"
+   },
+   "metaDescription": "This father of the bride picture frame is engraved with a heartfelt poem and personalized with the bride\u2019s name. A thoughtful gift for dad on your wedding day!",
+   "descLen": 159,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": "https://28collective.com/products/personalized-father-of-the-bride-glass-picture-frame",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Personalized Father of the Bride Glass Picture Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Personalized Father of the Bride Glass Picture Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 3,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 3,
+     "Product": 1,
+     "Brand": 1,
+     "Offer": 1,
+     "Organization": 1,
+     "WebSite": 1
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Personalized Father of the Bride Glass Picture Frame",
+     "imageCount": 1,
+     "sku": "2800239-10-DadWeddingDay",
+     "brand": "28 Collective",
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": 49.99,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "http://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2027-11-8",
+     "itemCondition": false,
+     "seller": true
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 0,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "priceValidUntil set to 2027-11-8"
+   ]
+  },
+  {
+   "url": "https://www.target.com/s/grandparent+photo+frame",
+   "query": "grandma picture frame",
+   "pos": 1,
+   "pageType": "marketplace-category",
+   "ownerType": "marketplace",
+   "segment": "marketplace",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Grandparent Photo Frames: Sentiment & Sonogram Options",
+   "titleLen": 54,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.0,
+    "brandPosition": "none",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": ":"
+   },
+   "metaDescription": "Discover a variety of grandparent photo frames, including 4\"x6\" Me and My Grandpa and 28.75\" Family Collage. Choose from wood photo frames, sonogram options, and sentimental designs by Pearhead and Northlight.",
+   "descLen": 209,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.target.com/s/grandparent+photo+frame",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": null,
+   "h1Count": 0,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 0,
+    "parseErrors": 0,
+    "types": {},
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 209 chars (will truncate)",
+    "no JSON-LD, no og tags, no H1 in rendered HTML; search-results URL (/s/) indexed and ranking",
+    "title/description appear hand- or AI-written for this search page, unlike the templated uncle page"
+   ]
+  },
+  {
+   "url": "https://www.grandparentgiftcompany.com/collections/grandma-gifts-1",
+   "query": "gift for grandma from grandkids",
+   "pos": 1,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Thoughtful Gifts for Grandma - The Grandparent Gift Co.",
+   "titleLen": 55,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.6,
+    "brandPosition": "end",
+    "brand": "The Grandparent Gift Co.",
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Grandmas love our thoughtful gifts for her. From new grandma frames to first grandchild gifts, first Christmas ornaments for grandma and personalized poem frames, we have gifts grandparents love. Shop Mother's Day for Grandma and other family occasions.",
+   "descLen": 253,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.grandparentgiftcompany.com/collections/grandma-gifts-1",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "ogTitle": "Grandma Gifts",
+   "ogType": "product.group",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Grandma Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 2,
+     "WebSite": 1
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 253 chars (will truncate)",
+    "Shopify collection og:type product.group"
+   ]
+  },
+  {
+   "url": "https://www.grandparentgiftcompany.com/collections/gigi-gifts-1",
+   "query": "gigi gift personalized",
+   "pos": 1,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Gifts for Gigi - The Grandparent Gift Co.",
+   "titleLen": 41,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.67,
+    "brandPosition": "end",
+    "brand": "The Grandparent Gift Co.",
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "If her grandma name is Gigi, she will love our Gigi gifts. From handprint frames for grandchildren, to Gigi photo frames and framed poems, her heart will melt. Shop our personalized grandparent gifts for even more wonderful, personal gifts for Gigi.",
+   "descLen": 249,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.grandparentgiftcompany.com/collections/gigi-gifts-1",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "ogTitle": "Gigi Gifts",
+   "ogType": "product.group",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Gigi Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 2,
+     "WebSite": 1
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 249 chars (will truncate)",
+    "Shopify collection og:type product.group"
+   ]
+  },
+  {
+   "url": "https://christeninggowns.com/collections/godparents-gifts",
+   "query": "godmother gift baptism",
+   "pos": 1,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Godparents Gifts \u2013 Christeninggowns.com",
+   "titleLen": 39,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.0,
+    "brandPosition": "end",
+    "brand": "Christeninggowns.com",
+    "year": null,
+    "count": null,
+    "separator": "\u2013"
+   },
+   "metaDescription": "Share a lovely keepsake Baby Beau & Belle garment as a memorable Godparents Gift. We will wrap all of your special items for a beautiful presentation if you order one of our unique christening gift boxes. Your Godparents Gifts will arrive carefully packaged in the box - pressed, folded and wrapped in tissue. Browse",
+   "descLen": 316,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": false
+   },
+   "canonical": "https://christeninggowns.com/collections/godparents-gifts",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Godparents Gifts",
+   "ogType": "website",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Godparents Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 3,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 34,
+     "WebSite": 1,
+     "Organization": 1,
+     "ContactPoint": 1,
+     "PostalAddress": 1,
+     "CollectionPage": 1,
+     "ItemList": 1,
+     "Product": 32,
+     "ImageObject": 32
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Girls Cross Bib",
+     "imageCount": 1,
+     "sku": null,
+     "brand": null,
+     "gtin": false,
+     "productEntities": 32,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": false,
+    "itemList": 32,
+    "collectionPage": true,
+    "organization": true,
+    "orgSameAs": 0,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "Organization"
+   ],
+   "ogPriceMeta": false,
+   "notes": [
+    "32 Product entities marked up on a category page",
+    "meta description 316 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://28collective.com/products/personalized-i-love-my-grandpa-picture-frame",
+   "query": "personalized grandpa frame",
+   "pos": 1,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Personalized \"I Love My Grandpa\" Picture Frame \u2014 28 Collective",
+   "titleLen": 62,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 1.0,
+    "brandPosition": "end",
+    "brand": "28 Collective",
+    "year": null,
+    "count": null,
+    "separator": "\u2014"
+   },
+   "metaDescription": "Show grandpa how much he is loved this Fathers Day with this personalized I love my Grandpa picture frame. Personalized with his grandchildren\u2019s names.",
+   "descLen": 151,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": "https://28collective.com/products/personalized-i-love-my-grandpa-picture-frame",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Personalized \"I Love My Grandpa\" Picture Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Personalized \"I Love My Grandpa\" Picture Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 3,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 3,
+     "Product": 1,
+     "Brand": 1,
+     "Offer": 1,
+     "Organization": 1,
+     "WebSite": 1
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Personalized \"I Love My Grandpa\" Picture Frame",
+     "imageCount": 1,
+     "sku": "2800280-11-ILoveMyGrandpa",
+     "brand": "28 Collective",
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": 29.99,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "http://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2027-11-8",
+     "itemCondition": false,
+     "seller": true
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 0,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "priceValidUntil set to 2027-11-8"
+   ]
+  },
+  {
+   "url": "https://www.michaels.com/makerplace/product/papa-picture-frame-we-love-our-papa-personalized-picture-frame-papa-gift-personalized-papa-gift-i-love-my-papa-373629097465970688",
+   "query": "papa picture frame",
+   "pos": 1,
+   "pageType": "marketplace-listing",
+   "ownerType": "marketplace",
+   "segment": "marketplace",
+   "status": "blocked",
+   "note": "Firecrawl (basic) returned no content: all engines failed; recorded as blocked, not retried"
+  },
+  {
+   "url": "https://www.markandgraham.com/shop/gift-shops/photo-frame---album+personalized-wedding-gifts/producttype-m-product-type-ff00060e1a2129fe20202f2020-1/",
+   "query": "engagement picture frame",
+   "pos": 1,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Photo Frame / Album Wedding + Engagement | Mark and Graham",
+   "titleLen": 58,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.67,
+    "brandPosition": "end",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Mark and Graham offers one of a kind custom wedding gifts. Give an engraved wedding gift to commemorate a special union by adding a traditional monogram or adding a unique personalization.",
+   "descLen": 188,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.markandgraham.com/shop/gift-shops/photo-frame---album+personalized-wedding-gifts/producttype-m-product-type-ff00060e1a2129fe20202f2020-1/",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Photo Frame / Album - Wedding + Engagement",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "WebSite": 1,
+     "SearchAction": 1,
+     "Organization": 1,
+     "PostalAddress": 1,
+     "ContactPoint": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 3
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 7,
+    "website": true,
+    "searchAction": true,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 188 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://www.personalizationmall.com/Personalized-Picture-Frames-Our-Engagement-p15227.prod",
+   "query": "personalized engagement frame",
+   "pos": 1,
+   "pageType": "brand-product",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Personalized Picture Frames - Our Engagement",
+   "titleLen": 44,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.67,
+    "brandPosition": "none",
+    "brand": "personalizationmall.com",
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Free personalization & fast shipping. Buy Our Engagement Personalized Picture Frames you can customize with your own text for the newly engaged couple.",
+   "descLen": 151,
+   "descSignals": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.personalizationmall.com/Personalized-Picture-Frames-Our-Engagement-p15227.prod",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Our Engagement Personalized Photo Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "Our Engagement Personalized Photo Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "Product": 1,
+     "AggregateRating": 1,
+     "Offer": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 3
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Our Engagement Personalized Photo Frame",
+     "imageCount": 1,
+     "sku": null,
+     "brand": null,
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": "19.99",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "https://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null,
+     "itemCondition": false,
+     "seller": false
+    },
+    "aggregateRating": {
+     "ratingValue": "4.8",
+     "reviewCount": "327"
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": true,
+   "notes": [
+    "extra canonical tags come from Google Customer Reviews badge iframe (rendered DOM artefact); site uses Google Customer Reviews"
+   ]
+  },
+  {
+   "url": "https://www.bloomingdales.com/shop/gifts/wedding-engagement/Home_decor_type_m/Picture%20Frames?id=19485",
+   "query": "engagement gift for couple frame",
+   "pos": 1,
+   "pageType": "marketplace-category",
+   "ownerType": "marketplace",
+   "segment": "marketplace",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Picture Frames Engagement Gifts & Wedding Gift Ideas - Bloomingdale's",
+   "titleLen": 69,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.4,
+    "brandPosition": "end",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Shop Wedding & Engagement Gifts at Bloomingdale's. Free Shipping and Free Returns or buy online and pick up in store.",
+   "descLen": 117,
+   "descSignals": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.bloomingdales.com/shop/gifts/wedding-engagement/Home_decor_type_m/Picture%20Frames?id=19485",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Engagement Gifts & Wedding Gift Ideas",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 1,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 3
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": []
+  },
+  {
+   "url": "https://www.target.com/s/uncle+picture+frame",
+   "query": "uncle picture frame",
+   "pos": 1,
+   "pageType": "marketplace-category",
+   "ownerType": "marketplace",
+   "segment": "marketplace",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "\"uncle picture frame\" : Target",
+   "titleLen": 30,
+   "titlePattern": {
+    "startsWithQuery": true,
+    "containsQuery": true,
+    "queryWordsCovered": 1.0,
+    "brandPosition": "end",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": ":"
+   },
+   "metaDescription": "Shop Target for uncle picture frame you will love at great low prices. Choose from Same Day Delivery, Drive Up or Order Pickup plus free shipping on orders $35+.",
+   "descLen": 161,
+   "descSignals": {
+    "price": true,
+    "shipping": true,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.target.com/s/uncle+picture+frame",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": null,
+   "h1Count": 0,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 0,
+    "parseErrors": 0,
+    "types": {},
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "no JSON-LD, no og tags, no H1 in rendered HTML; search-results URL (/s/) indexed and ranking"
+   ]
+  },
+  {
+   "url": "https://www.personalizationmall.com/Personalized-Baby-Picture-Frames-Personalized-Baby-Photo-Albums-d1164.dept",
+   "query": "baby name picture frame",
+   "pos": 1,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Baby Picture Frames, Albums & Photo Prints | Personalization Mall",
+   "titleLen": 65,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.5,
+    "brandPosition": "end",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Easily create personalized baby picture frames, photo albums, canvas prints & more using baby's name, birth info & photos at PersonalizationMall.com.",
+   "descLen": 149,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.personalizationmall.com/Personalized-Baby-Picture-Frames-Personalized-Baby-Photo-Albums-d1164.dept",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Baby Picture Frames, Photo Albums & Prints",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 1,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 1
+    },
+    "reviewCount": 0,
+    "breadcrumb": 1,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "extra canonical tags come from Google Customer Reviews badge iframe (rendered DOM artefact); site uses Google Customer Reviews"
+   ]
+  },
+  {
+   "url": "https://wagsandwillows.com/collections/pet-memorial-frames",
+   "query": "pet memorial picture frame",
+   "pos": 1,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Pet Memorial Frames - Dog Memorial Frames - Cat Memorial Frames \u2013 Wags and Willows",
+   "titleLen": 82,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.5,
+    "brandPosition": "end",
+    "brand": "Wags and Willows ",
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Dog Memorial Frames, Cat Memorial Frames At Wags & Willows, we understand the deep bond between you and your furry companions. Our collection of pet memorial frames is designed to help you honor and remember the special moments you shared with your pets. These beautiful frames are perfect for displaying your favori",
+   "descLen": 316,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://wagsandwillows.com/collections/pet-memorial-frames",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Pet Memorial Frames - Dog Memorial Frames - Cat Memorial Frames",
+   "ogType": "website",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Collection: Pet Memorial Frames",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 5,
+    "parseErrors": 1,
+    "types": {
+     "WebSite": 1,
+     "SearchAction": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 18,
+     "ItemList": 1,
+     "Organization": 1
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": false,
+    "itemList": 16,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 9,
+    "website": true,
+    "searchAction": true,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "1 JSON-LD block(s) fail to parse",
+    "meta description 316 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://www.hearttoheartsympathygifts.com/miscarriage-gifts.html",
+   "query": "miscarriage memorial gift",
+   "pos": 1,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Miscarriage Gifts",
+   "titleLen": 17,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.33,
+    "brandPosition": "none",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": null
+   },
+   "metaDescription": "Help comfort someone in honoring a miscarriage in a thoughtful, respectful way with a gift that shows you care. See our selection of caring options here.",
+   "descLen": 153,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": false
+   },
+   "canonical": null,
+   "canonicalType": "missing",
+   "robots": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Miscarriage Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 0,
+    "parseErrors": 0,
+    "types": {},
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "BreadcrumbList",
+    "ListItem",
+    "SiteNavigationElement",
+    "WebPage"
+   ],
+   "ogPriceMeta": false,
+   "notes": []
+  },
+  {
+   "url": "https://lovegeorgie.com/collections/father-of-the-bride-or-groom",
+   "query": "father of the bride gift",
+   "pos": 2,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Shop Father of the Bride & Father of the Groom Wedding Gifts - Love, Georgie",
+   "titleLen": 76,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.8,
+    "brandPosition": "end",
+    "brand": "Love, Georgie",
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Create a personalized Father of the Bride gift at Love, Georgie. We make engravable gifts for Father of the Groom, too. Dad will love it because it's personal. Shop today!",
+   "descLen": 171,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://lovegeorgie.com/collections/father-of-the-bride-or-groom",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "ogTitle": "Personalized Gifts for Father of the Bride or Groom",
+   "ogType": "product.group",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Personalized Gifts for Father of the Bride or Groom",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 3,
+    "parseErrors": 0,
+    "types": {
+     "Organization": 1,
+     "ItemList": 1,
+     "ListItem": 23,
+     "BreadcrumbList": 1
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": false,
+    "itemList": 21,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 25,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "ItemList"
+   ],
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 171 chars (will truncate)",
+    "Shopify collection og:type product.group"
+   ]
+  },
+  {
+   "url": "https://thelittleroseshop.com/collections/catholic-baptism-gifts-godparent",
+   "query": "godmother gift baptism",
+   "pos": 2,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Godparent Baptism Gifts | Gifts That Honor Their Role",
+   "titleLen": 53,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.33,
+    "brandPosition": "none",
+    "brand": "The Little Rose Shop",
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Looking for godparent baptism gifts? Browse faith-filled keepsakes from The Little Rose Shop that celebrate the gift of spiritual parenthood.",
+   "descLen": 141,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": false
+   },
+   "canonical": "https://thelittleroseshop.com/collections/catholic-baptism-gifts-godparent",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Godparent Baptism Gifts | Gifts That Honor Their Role",
+   "ogType": "product.group",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Godparent Baptism Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 4,
+    "parseErrors": 0,
+    "types": {
+     "ItemList": 1,
+     "CollectionPage": 2,
+     "ListItem": 26,
+     "BreadcrumbList": 1,
+     "WebSite": 1,
+     "Organization": 1,
+     "FAQPage": 1,
+     "Question": 5,
+     "Answer": 5
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": 5,
+    "itemList": 24,
+    "collectionPage": true,
+    "organization": true,
+    "orgSameAs": 11,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "Shopify collection og:type product.group"
+   ]
+  },
+  {
+   "url": "https://www.yoursurprise.com/godparent-gifts",
+   "query": "godparents gift personalized",
+   "pos": 2,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Personalised godparent gifts | YourSurprise",
+   "titleLen": 43,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.0,
+    "brandPosition": "end",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Surprise your little one's godmother, godfather or godparents-to-be with a personalised gift featuring the photo, name and/or text of your choice. Create yours now!",
+   "descLen": 164,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.yoursurprise.com/godparent-gifts",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "ogTitle": "Personalised godparent gifts | YourSurprise",
+   "ogType": "website",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Gifts for godparents",
+   "h1Count": 1,
+   "hreflang": [
+    "cs-CZ",
+    "da-DK",
+    "de-AT",
+    "de-CH",
+    "de-DE",
+    "de-LU",
+    "en-AU",
+    "en-CA",
+    "en-GB",
+    "en-IE",
+    "en-IS",
+    "en-NL",
+    "en-SG",
+    "en-US",
+    "es-ES",
+    "fi-FI",
+    "fr-BE",
+    "fr-CA",
+    "fr-CH",
+    "fr-FR",
+    "fr-LU",
+    "hu-HU",
+    "it-IT",
+    "nl-BE",
+    "nl-NL",
+    "no-NO",
+    "pl-PL",
+    "pt-PT",
+    "ro-RO",
+    "sk-SK",
+    "sl-SI",
+    "sv-SE",
+    "x-default"
+   ],
+   "jsonld": {
+    "blocks": 1,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 2
+    },
+    "reviewCount": 0,
+    "breadcrumb": 2,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": []
+  },
+  {
+   "url": "https://www.giftsforyounow.com/personalized-grandpa-frames_2080.aspx",
+   "query": "grandpa picture frame",
+   "pos": 2,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Grandpa Picture Frames | GiftsForYouNow",
+   "titleLen": 39,
+   "titlePattern": {
+    "startsWithQuery": true,
+    "containsQuery": true,
+    "queryWordsCovered": 0.67,
+    "brandPosition": "end",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Show Granddad how special he is with one of our personalized Grandpa picture frames. Choose the message, names and even dates on your favorite frame design. Shop today!",
+   "descLen": 168,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://www.giftsforyounow.com/personalized-grandpa-frames_2080.aspx",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Grandpa Picture Frames",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 0,
+    "parseErrors": 0,
+    "types": {},
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "extra canonical tags come from Google Customer Reviews badge iframe (rendered DOM artefact); site uses Google Customer Reviews",
+    "meta description 168 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://jdevlinglassart.com/products/grandpa-frame-papa-gift-custom-picture-frame-multiple-sizes-clear-glass-photo-frame-for-grandfather-dad-fathers-day-pic-319-ep601-series",
+   "query": "personalized grandpa frame",
+   "pos": 2,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Three Line Personalized Grandpa Picture Frame | J. Devlin \u2013 J Devlin Glass Art",
+   "titleLen": 78,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 1.0,
+    "brandPosition": "end",
+    "brand": "J Devlin Glass Art",
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Three Line Personalized Grandpa Picture Frame by J. Devlin. Three custom lines of white frosted engraving. 4 \u00d7 6, 5 \u00d7 7 or 8 \u00d7 10 in., horizontal or vertical.",
+   "descLen": 158,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": "https://jdevlinglassart.com/products/grandpa-frame-papa-gift-custom-picture-frame-multiple-sizes-clear-glass-photo-frame-for-grandfather-dad-fathers-day-pic-319-ep601-series",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Three Line Personalized Grandpa Picture Frame | J. Devlin",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Three Line Personalized Grandpa Picture Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "Organization": 1,
+     "Product": 1,
+     "Brand": 1,
+     "Offer": 6
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Three Line Personalized Grandpa Picture Frame",
+     "imageCount": 1,
+     "sku": "Pic 319-46H EP601",
+     "brand": "J Devlin Glass Art",
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 6,
+     "type": [
+      "Offer"
+     ],
+     "price": 48.95,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "http://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null,
+     "itemCondition": false,
+     "seller": false
+    },
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 9,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": true,
+   "notes": []
+  },
+  {
+   "url": "https://www.potterybarn.com/shop/gifts/picture-frames+engagement-gifts/primarycatname-m-category-ff000815181ffe20-1/",
+   "query": "engagement picture frame",
+   "pos": 2,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Picture Frames Engagement Gifts | Pottery Barn",
+   "titleLen": 46,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.67,
+    "brandPosition": "end",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "",
+   "descLen": 0,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.potterybarn.com/shop/gifts/picture-frames+engagement-gifts/primarycatname-m-category-ff000815181ffe20-1/",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Picture Frames Engagement Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 3,
+    "parseErrors": 0,
+    "types": {
+     "WebSite": 1,
+     "SearchAction": 1,
+     "Organization": 1,
+     "PostalAddress": 1,
+     "ContactPoint": 1,
+     "BreadcrumbList": 2,
+     "ListItem": 6
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 7,
+    "website": true,
+    "searchAction": true,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "no meta description"
+   ]
+  },
+  {
+   "url": "https://stunninggift4u.com/product-category/gifts-for-aunt/",
+   "query": "personalized aunt gift from niece",
+   "pos": 2,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "finalUrl": "https://stunninggift4u.com/product-category/gifts-for-aunt/?awe_page=1",
+   "title": "Gifts For Aunt - Best Personalized Gifts Of 2026",
+   "titleLen": 48,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.4,
+    "brandPosition": "none",
+    "brand": "Stunning Gift Store",
+    "year": "2026",
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Show your appreciation with our Gifts For Aunt collection, featuring a variety of thoughtful and unique items. From personalized keepsakes and charming home decor to special accessories, our selection is designed to honor the unique relationship you have with your aunt. Whether for a birthday, holiday, or simply to express your love, our high-quality gifts are perfect for making her feel valued and loved. Explore our collection to find a memorable gift that celebrates your aunt in a special way.",
+   "descLen": 500,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://stunninggift4u.com/product-category/gifts-for-aunt/",
+   "canonicalType": "self",
+   "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+   "ogTitle": "Gifts For Aunt - Best Personalized Gifts Of 2026",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Gifts For Aunt",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "Organization": 1,
+     "WebSite": 1,
+     "CollectionPage": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 4
+    },
+    "reviewCount": 0,
+    "breadcrumb": 4,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": true,
+    "organization": true,
+    "orgSameAs": 1,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 500 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://www.pearhead.com/products/love-at-first-sight-sono-frame-with-beige-mat",
+   "query": "love at first sight ultrasound frame",
+   "pos": 2,
+   "pageType": "brand-product",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "love at first sight sono frame with beige mat \u2013 Pearhead",
+   "titleLen": 56,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.83,
+    "brandPosition": "end",
+    "brand": "Pearhead",
+    "year": null,
+    "count": null,
+    "separator": "\u2013"
+   },
+   "metaDescription": "Adorable Design: Crafted with a white finish and taupe script, Pearhead\u2019s Sonogram frame offers a timeless look that highlights the sentiment of \"Love at First Sight\" Pregnancy Announcement Frame: Surprise your loved ones with this thoughtful keepsake as part of your pregnancy announcement\u2014 It's a heartfelt way to cel",
+   "descLen": 319,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.pearhead.com/products/love-at-first-sight-sono-frame-with-beige-mat",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "love at first sight sono frame with beige mat",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "love at first sight sono frame with beige mat",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 3,
+    "parseErrors": 0,
+    "types": {
+     "AggregateRating": 1,
+     "Rating": 8,
+     "Person": 8,
+     "ImageObject": 19,
+     "Product": 1,
+     "Offer": 1
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "love at first sight sono frame with beige mat",
+     "imageCount": 1,
+     "sku": "75053",
+     "brand": "Pearhead",
+     "gtin": true,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": 9.99,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "http://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2026-11-18",
+     "itemCondition": false,
+     "seller": false
+    },
+    "aggregateRating": {
+     "ratingValue": "5.0",
+     "reviewCount": 14
+    },
+    "reviewCount": 8,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "Organization"
+   ],
+   "ogPriceMeta": false,
+   "notes": [
+    "8 review objects lack @type (Review); likely ignored by Google",
+    "priceValidUntil set to 2026-11-18",
+    "meta description 319 chars (will truncate)",
+    "Product, AggregateRating and reviews split across separate JSON-LD blocks joined only by @id"
+   ]
+  },
+  {
+   "url": "https://normanshallmark.com/products/great-grandma-4x6-frame",
+   "query": "great grandma picture frame",
+   "pos": 2,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Great Grandma 4X6 Frame \u2013 Norman's Hallmark",
+   "titleLen": 43,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.75,
+    "brandPosition": "end",
+    "brand": "Norman's Hallmark",
+    "year": null,
+    "count": null,
+    "separator": "\u2013"
+   },
+   "metaDescription": "* White and tanl frame with printed tan \"Great Grandma Love you Always\" Sentiment. * Holds 1- 4X6 photo.",
+   "descLen": 104,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://normanshallmark.com/products/great-grandma-4x6-frame",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Great Grandma 4X6 Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Great Grandma 4X6 Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 7,
+    "parseErrors": 0,
+    "types": {
+     "Product": 7,
+     "Offer": 7,
+     "ImageObject": 7
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Great Grandma 4X6 Frame",
+     "imageCount": 1,
+     "sku": "80116-46",
+     "brand": "Malden",
+     "gtin": false,
+     "productEntities": 7,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": "16.99",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "https://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2026-11-18",
+     "itemCondition": false,
+     "seller": false
+    },
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "Organization"
+   ],
+   "ogPriceMeta": false,
+   "notes": [
+    "7 Product entities on one product page (related items also marked up)",
+    "priceValidUntil set to 2026-11-18"
+   ]
+  },
+  {
+   "url": "https://www.embossedgraphics.com/Daddys-Little-Girl-Engraved-Picture-Frame",
+   "query": "daddys little girl picture frame",
+   "pos": 2,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Embossed Graphics",
+   "titleLen": 17,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.0,
+    "brandPosition": "start",
+    "brand": null,
+    "year": null,
+    "count": null,
+    "separator": null
+   },
+   "metaDescription": "Personalized stationery, napkins and notepads shipped in 24 hours",
+   "descLen": 65,
+   "descSignals": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": null,
+   "canonicalType": "missing",
+   "robots": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Daddys Little Girl Engraved Picture Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "Product": 1,
+     "Offer": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 4
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Daddys Little Girl Engraved Picture Frame",
+     "imageCount": 1,
+     "sku": "pg4422",
+     "brand": null,
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": "25.46",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "http://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null,
+     "itemCondition": false,
+     "seller": false
+    },
+    "reviewCount": 0,
+    "breadcrumb": 4,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "sitewide generic title and description, still ranks #2 on H1 + Product schema"
+   ]
+  },
+  {
+   "url": "https://frameology.com/collections/gifts-for-mom",
+   "query": "mom picture frame personalized",
+   "pos": 2,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Gifts for Mom | Personalized Picture Frames & Photo Gifts \u2013 Frameology",
+   "titleLen": 70,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.75,
+    "brandPosition": "end",
+    "brand": "Frameology",
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Find the perfect gift for Mom. Upload a photo and we'll print, frame, and ship a personalized keepsake she'll love. Ideal for Mother's Day, birthdays, and more.",
+   "descLen": 160,
+   "descSignals": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": true
+   },
+   "canonical": "https://frameology.com/collections/gifts-for-mom",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Gifts for Mom | Personalized Picture Frames & Photo Gifts",
+   "ogType": "product.group",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Gifts for Moms",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 0,
+    "parseErrors": 0,
+    "types": {},
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "Shopify collection og:type product.group"
+   ]
+  },
+  {
+   "url": "https://petmemoryshop.com/collections/pet-memorial-photo-frames",
+   "query": "pet memorial picture frame",
+   "pos": 2,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Pet Memorial Photo Frames | Cherish Lasting Memories - Pet Memory Shop",
+   "titleLen": 70,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.5,
+    "brandPosition": "end",
+    "brand": "Pet Memory Shop",
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Discover unique pet memorial photo frames at Pet Memory Shop. Perfect for cherishing and displaying your beloved pet's photographs with elegance and love. Our frames honor your furry friend's memory, keeping those precious moments alive. Shop now for a heartfelt tribute to your pet.",
+   "descLen": 283,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": true,
+    "personalizationWord": false
+   },
+   "canonical": "https://petmemoryshop.com/collections/pet-memorial-photo-frames",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Pet Memorial Photo Frames | Cherish Lasting Memories - Pet Memory Shop",
+   "ogType": "website",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Collection: Pet Memorial Photo Frames",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 1,
+    "parseErrors": 0,
+    "types": {
+     "Organization": 1
+    },
+    "reviewCount": 0,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 9,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 283 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://remembermegiftsonline.com/the-rainbow-bridge-pet-memorial-frame/",
+   "query": "rainbow bridge picture frame",
+   "pos": 2,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Rainbow Bridge Frame | A Loving Pet Loss Keepsake",
+   "titleLen": 49,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.75,
+    "brandPosition": "none",
+    "brand": "Remember Me Gifts",
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Honor your beloved pet with our personalized Rainbow Bridge memorial frame. A comforting keepsake featuring the poem, their name, and your cherished photo.",
+   "descLen": 155,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": "https://remembermegiftsonline.com/the-rainbow-bridge-pet-memorial-frame/",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Rainbow Bridge Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "Rainbow Bridge Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "Product": 1,
+     "AggregateRating": 1,
+     "Offer": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 4
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Rainbow Bridge Frame",
+     "imageCount": 1,
+     "sku": null,
+     "brand": null,
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": 37.99,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "https://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null,
+     "itemCondition": false,
+     "seller": false
+    },
+    "aggregateRating": {
+     "ratingValue": 5,
+     "reviewCount": 4
+    },
+    "reviewCount": 0,
+    "breadcrumb": 4,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": true,
+   "notes": []
+  },
+  {
+   "url": "https://remembermegiftsonline.com/grandpas-light-memorial-frame/",
+   "query": "grandpa in heaven frame",
+   "pos": 2,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Grandpa Memorial Frame | Personalized Loss of Grandpa",
+   "titleLen": 53,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.5,
+    "brandPosition": "none",
+    "brand": "Remember Me Gifts",
+    "year": null,
+    "count": null,
+    "separator": "|"
+   },
+   "metaDescription": "Honor your grandpa's memory with a personalized alder wood memorial frame for loss of grandfather featuring a lighthouse sketch and heartfelt engraving.",
+   "descLen": 152,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": true
+   },
+   "canonical": "https://remembermegiftsonline.com/grandpas-light-memorial-frame/",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": "Grandpa's Light Memorial Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "Grandpa's Light Memorial Frame",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 1,
+    "parseErrors": 0,
+    "types": {
+     "BreadcrumbList": 1,
+     "ListItem": 4
+    },
+    "reviewCount": 0,
+    "breadcrumb": 4,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": null,
+   "ogPriceMeta": true,
+   "notes": []
+  },
+  {
+   "url": "https://wildlifewonders.com/butterfly-gifts/",
+   "query": "butterlu gifts",
+   "pos": 2,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "segment": "small-shop",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "260+ Butterfly Gift Ideas | Butterfly Home Decor | Butterfly Gift",
+   "titleLen": 65,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.0,
+    "brandPosition": "none",
+    "brand": null,
+    "year": null,
+    "count": "260+",
+    "separator": "|"
+   },
+   "metaDescription": "Our 260+ Butterfly Gift Ideas include Butterfly Home Decor featuring butterfly pillows and throws, Butterfly Bathroom Decor including shower curtains, Butterfly Kitchen Decor featuring teapots and bowls and Outdoor Butterfly Decor featuring Butterfly Benches and unique Hammock Swing Chairs.",
+   "descLen": 291,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://wildlifewonders.com/butterfly-gifts/",
+   "canonicalType": "self",
+   "robots": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Butterfly Gifts",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "WebSite": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 3
+    },
+    "reviewCount": 0,
+    "breadcrumb": 3,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": false,
+    "orgSameAs": 0,
+    "website": true,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "BreadcrumbList",
+    "ListItem",
+    "WebPage"
+   ],
+   "ogPriceMeta": false,
+   "notes": [
+    "meta description 291 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://www.hallmark.com/house-and-home/decor/picture-frames/malden-i-love-my-nana-picture-frame-4x6-8068746.html",
+   "query": "nana picture frame",
+   "pos": 3,
+   "pageType": "brand-product",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Malden I Love My Nana Picture Frame, 4x6 - Picture Frames | Hallmark",
+   "titleLen": 68,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": true,
+    "queryWordsCovered": 1.0,
+    "brandPosition": "end",
+    "brand": "Hallmark",
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Honor a nana's special kind of love with this white wood frame with a weathered look. The picture frame holds a 4x6 horizontal photo and includes an \"I Love My Nana\" caption.",
+   "descLen": 174,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.hallmark.com/house-and-home/decor/picture-frames/malden-i-love-my-nana-picture-frame-4x6-8068746.html",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "ogTitle": "Malden I Love My Nana Picture Frame, 4x6 for only USD 14.99 | Hallmark",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "product",
+   "h1": "Malden I Love My Nana Picture Frame, 4x6",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "Product": 1,
+     "Brand": 1,
+     "Offer": 1,
+     "Organization": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 4
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Malden I Love My Nana Picture Frame, 4x6",
+     "imageCount": 2,
+     "sku": "8068746",
+     "brand": "Malden",
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": "14.99",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "http://schema.org/OutOfStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null,
+     "itemCondition": false,
+     "seller": true
+    },
+    "reviewCount": 0,
+    "breadcrumb": 4,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "SiteNavigationElement"
+   ],
+   "ogPriceMeta": true,
+   "notes": [
+    "ranking product is marked OutOfStock",
+    "meta description 174 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://www.hallmark.com/house-and-home/decor/picture-frames/grandpa-makes-life-fun-picture-frame-4x6-1CAP1311.html",
+   "query": "grandpa picture frame",
+   "pos": 3,
+   "pageType": "brand-product",
+   "ownerType": "national-brand",
+   "segment": "national-brand",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "Grandpa Makes Life Fun Picture Frame, 4x6 - Picture Frames | Hallmark",
+   "titleLen": 69,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 1.0,
+    "brandPosition": "end",
+    "brand": "Hallmark",
+    "year": null,
+    "count": null,
+    "separator": "-"
+   },
+   "metaDescription": "Give grandpa a favorite way to display a photo of his grandkids with this yellow and white striped picture frame. With a sweet caption, this 4x6 photo holder makes a great gift.",
+   "descLen": 177,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.hallmark.com/house-and-home/decor/picture-frames/grandpa-makes-life-fun-picture-frame-4x6-1CAP1311.html",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "ogTitle": "Grandpa Makes Life Fun Picture Frame, 4x6 for only USD 26.99 | Hallmark",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "product",
+   "h1": "Grandpa Makes Life Fun Picture Frame, 4x6",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 2,
+    "parseErrors": 0,
+    "types": {
+     "Product": 1,
+     "Brand": 1,
+     "Offer": 1,
+     "Organization": 1,
+     "review": 1,
+     "Person": 1,
+     "Rating": 1,
+     "BreadcrumbList": 1,
+     "ListItem": 4
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "Grandpa Makes Life Fun Picture Frame, 4x6",
+     "imageCount": 4,
+     "sku": "1CAP1311",
+     "brand": "Hallmark",
+     "gtin": false,
+     "productEntities": 1,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "offer": {
+     "count": 1,
+     "type": [
+      "Offer"
+     ],
+     "price": "26.99",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "http://schema.org/InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null,
+     "itemCondition": false,
+     "seller": true
+    },
+    "reviewCount": 1,
+    "breadcrumb": 4,
+    "faqPage": false,
+    "itemList": false,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 0,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": false
+   },
+   "microdataItemtypes": [
+    "SiteNavigationElement"
+   ],
+   "ogPriceMeta": true,
+   "notes": [
+    "Review typed with lowercase 'review' (invalid type)",
+    "meta description 177 chars (will truncate)"
+   ]
+  },
+  {
+   "url": "https://www.oprahdaily.com/life/g26990324/gifts-for-grandpa/",
+   "query": "grandpa birthday gift",
+   "pos": 3,
+   "pageType": "editorial-listicle",
+   "ownerType": "media",
+   "segment": "editorial/other",
+   "status": "ok",
+   "httpStatus": 200,
+   "title": "54 Best Gifts for Grandpa for Father's Day 2026",
+   "titleLen": 47,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQuery": false,
+    "queryWordsCovered": 0.33,
+    "brandPosition": "none",
+    "brand": "Oprah Daily",
+    "year": "2026",
+    "count": "54",
+    "separator": null
+   },
+   "metaDescription": "Grandpa says he doesn\u2019t need anything\u2014but these thoughtful gifts might change his mind.",
+   "descLen": 87,
+   "descSignals": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "cta": false,
+    "personalizationWord": false
+   },
+   "canonical": "https://www.oprahdaily.com/life/g26990324/gifts-for-grandpa/",
+   "canonicalType": "self",
+   "robots": "noarchive,max-image-preview:large,max-snippet:-1,max-video-preview:30,index,follow",
+   "ogTitle": "Grandpa Says He Doesn\u2019t Need Anything. These Gifts Say Otherwise.",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "54 Gifts for Grandpa for Father's Day That\u2019ll Make Him Feel Appreciated",
+   "h1Count": 1,
+   "hreflang": false,
+   "jsonld": {
+    "blocks": 1,
+    "parseErrors": 0,
+    "types": {
+     "NewsArticle": 1,
+     "ImageObject": 4,
+     "WebPage": 1,
+     "NewsMediaOrganization": 2,
+     "PostalAddress": 1,
+     "Person": 38,
+     "ItemList": 1,
+     "ListItem": 20,
+     "Product": 18,
+     "Brand": 18,
+     "Review": 18,
+     "Thing": 2
+    },
+    "product": {
+     "type": [
+      "Product"
+     ],
+     "name": "My Life Story So Far",
+     "imageCount": 1,
+     "sku": null,
+     "brand": "UncommonGoods",
+     "gtin": false,
+     "productEntities": 18,
+     "hasVariant": null,
+     "productGroupID": null
+    },
+    "reviewCount": 18,
+    "breadcrumb": false,
+    "faqPage": false,
+    "itemList": 20,
+    "collectionPage": false,
+    "organization": true,
+    "orgSameAs": 6,
+    "website": false,
+    "searchAction": false,
+    "videoObject": false,
+    "article": true
+   },
+   "microdataItemtypes": [
+    "BreadcrumbList",
+    "ListItem"
+   ],
+   "ogPriceMeta": false,
+   "notes": [
+    "listicle marks up products with Review markup"
+   ]
+  },
+  {
+   "url": "https://www.macys.com/shop/featured/aunt-picture-frame",
+   "query": "aunt picture frame",
+   "pos": 3,
+   "pageType": "marketplace-category",
+   "ownerType": "marketplace",
+   "statusCode": 200,
+   "finalUrl": "https://www.macys.com/shop/featured/aunt-picture-frame",
+   "status": "ok",
+   "title": "Aunt Picture Frame - Macy's",
+   "titleLen": 27,
+   "titlePattern": {
+    "startsWithQuery": true,
+    "containsQueryPhrase": true,
+    "allQueryWords": true,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "-",
+    "over60": false
+   },
+   "metaDescription": "Shop for and buy aunt picture frame online at Macy's. Find aunt picture frame at Macy's",
+   "descLen": 87,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.macys.com/shop/featured/aunt-picture-frame",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Aunt Picture Frame - Macy's",
+   "ogType": "website",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "\"aunt picture frame\"",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 0,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [],
+   "microdataTypes": [],
+   "structuredData": {},
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "auto-generated /shop/featured/ search page; title = query + brand; templated description repeats query twice",
+    "no JSON-LD at all",
+    "og:image is the site logo"
+   ]
+  },
+  {
+   "url": "https://www.hobbylobby.com/party-supplies/centerpieces-table-decor/love-at-first-sight-sonogram-frame/p/39747",
+   "query": "love at first sight ultrasound frame",
+   "pos": 3,
+   "pageType": "marketplace-listing",
+   "ownerType": "marketplace",
+   "statusCode": 200,
+   "finalUrl": "https://www.hobbylobby.com/party-supplies/centerpieces-table-decor/love-at-first-sight-sonogram-frame/p/39747",
+   "status": "ok",
+   "title": "Love At First Sight Sonogram Frame | Hobby Lobby | 590513",
+   "titleLen": 57,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "middle",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Celebrate your upcoming little one with an adorable frame to preserve your first visual memories.&nbsp;This wonderful Love At First Sight Sonogram Frame features a solid blue&nbsp;MDF frame with a wood print background and blue polka dots in two shades.&nbsp;The photo opening features a glass insert, and the cutout is shaped like a standard sonogram.&nbsp;Display this frame on your desk, dresser, mantel, and more to anticipate the arrival of your bundle of joy!",
+   "descLen": 465,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.hobbylobby.com/party-supplies/centerpieces-table-decor/love-at-first-sight-sonogram-frame/p/39747",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "googlebot": null,
+   "ogTitle": "Love At First Sight Sonogram Frame | Hobby Lobby | 590513",
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Love At First Sight Sonogram Frame",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 4,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "AggregateRating",
+    "Brand",
+    "BreadcrumbList",
+    "ListItem",
+    "Offer",
+    "Organization",
+    "Product",
+    "SearchAction",
+    "WebSite"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Love At First Sight Sonogram Frame",
+     "imageCount": 5,
+     "sku": "590513",
+     "brand": "Brother Sister Design Studio",
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": 3.99,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": null,
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null
+    },
+    "AggregateRating": {
+     "ratingValue": 5,
+     "reviewCount": 2,
+     "ratingCount": null,
+     "count": 1
+    },
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 4
+    },
+    "Organization": {
+     "count": 2,
+     "sameAs": 0,
+     "name": "Hobby Lobby"
+    },
+    "WebSite": {
+     "searchAction": true,
+     "name": null
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "SKU (590513) appended to title",
+    "465-char description (truncated in SERP)",
+    "no availability in Offer"
+   ]
+  },
+  {
+   "url": "https://www.markandgraham.com/shop/personalized-baby-products/photo-frame---album+baby-gifts-keepsakes/producttype-m-product-type-ff00060e1a2129fe20202f2020-1/",
+   "query": "baby name picture frame",
+   "pos": 3,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "statusCode": 200,
+   "finalUrl": "https://www.markandgraham.com/shop/personalized-baby-products/photo-frame---album+baby-gifts-keepsakes/producttype-m-product-type-ff00060e1a2129fe20202f2020-1/",
+   "status": "ok",
+   "title": "Baby Picture Frames & Keepsake Frames | Mark and Graham",
+   "titleLen": 55,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Shop personalized baby picture frames at Mark and Graham. Find engraved & foil debossed keepsake frames & photo albums to exhibit your babies milestones.",
+   "descLen": 153,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.markandgraham.com/shop/personalized-baby-products/photo-frame---album+baby-gifts-keepsakes/producttype-m-product-type-ff00060e1a2129fe20202f2020-1/",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "googlebot": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Baby Picture Frames",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "ContactPoint",
+    "ListItem",
+    "Organization",
+    "PostalAddress",
+    "SearchAction",
+    "WebSite"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 3
+    },
+    "Organization": {
+     "count": 1,
+     "sameAs": 7,
+     "name": "Mark and Graham"
+    },
+    "WebSite": {
+     "searchAction": true,
+     "name": "Mark and Graham"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "no Product/ItemList markup on category; only Organization/WebSite(SearchAction)/BreadcrumbList"
+   ]
+  },
+  {
+   "url": "https://www.callie.com/personalized-first-mom-then-grandma-now-great-grandma-wooden-sign-with-birth-flowers-and-names-mothers-day-birthday-gift-for-mom-grandma",
+   "query": "first mom then grandma now great grandma",
+   "pos": 3,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.callie.com/personalized-first-mom-then-grandma-now-great-grandma-wooden-sign-with-birth-flowers-and-names-mothers-day-birthday-gift-for-mom-grandma",
+   "status": "ok",
+   "title": "Personalized First Mom Then Grandma Now Great Grandma Wooden Sign with Birth Flowers and Names Mother's Day Birthday Gift for Mom Grandma",
+   "titleLen": 137,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": true,
+    "allQueryWords": true,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": null,
+    "over60": true
+   },
+   "metaDescription": "[Heartfelt Birth Flower Design]:Each birth flower has a unique meaning and is thought to represent the qualities of people born in that particular month. Use these lovely flowers to represent each family member in the home, implying that the family will always be together, unified, and loving. Give your grandmother a one-of-a-kind floral sign featuring the names of her cherished grandchildren.",
+   "descLen": 396,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.callie.com/personalized-first-mom-then-grandma-now-great-grandma-wooden-sign-with-birth-flowers-and-names-mothers-day-birthday-gift-for-mom-grandma",
+   "canonicalType": "self",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+   "googlebot": null,
+   "ogTitle": "Personalized First Mom Then Grandma Now Great Grandma Wooden Sign with Birth Flowers and Names Mother's Day Birthday Gift for Mom Grandma",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Personalized First Mom Then Grandma Now Great Grandma Wooden Sign with Birth Flowers and Names Mother's Day Birthday Gift for Mom Grandma",
+   "h1Count": 1,
+   "hreflang": [
+    "de",
+    "en-AU",
+    "en-CA",
+    "en-GB",
+    "en-IE",
+    "en-US",
+    "es",
+    "fi",
+    "fr",
+    "it",
+    "nl",
+    "no",
+    "pl",
+    "sv",
+    "x-default"
+   ],
+   "hreflangPresent": true,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Brand",
+    "MerchantReturnPolicy",
+    "MonetaryAmount",
+    "Offer",
+    "OfferShippingDetails",
+    "Organization",
+    "Product"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Personalized First Mom Then Grandma Now Great Grandma Wooden Sign with Birth Flowers and Names Mother's Day Birthday Gift for Mom Grandma",
+     "imageCount": 8,
+     "sku": null,
+     "brand": "Callie",
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": "23.00",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": true,
+     "hasMerchantReturnPolicy": true,
+     "priceValidUntil": "2026-12-06"
+    },
+    "Organization": {
+     "count": 1,
+     "sameAs": 0,
+     "name": "Callie"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "137-char Etsy-style keyword-stuffed title with no brand",
+    "15 hreflang alternates",
+    "Offer has OfferShippingDetails + MerchantReturnPolicy type present in graph (return policy not attached to Offer)",
+    "priceValidUntil ~30 days out (rolling)",
+    "no AggregateRating"
+   ]
+  },
+  {
+   "url": "https://www.northlandframesandgifts.com/daddys-little-girl-tabletop-picture-frame-holds-4x6-photo-multiple-color-options/",
+   "query": "daddys little girl picture frame",
+   "pos": 3,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.northlandframesandgifts.com/daddys-little-girl-tabletop-picture-frame-holds-4x6-photo-multiple-color-options/",
+   "status": "ok",
+   "title": "Baby Frame Table Top Frame Holds 5x7\" Picture",
+   "titleLen": 45,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": null,
+    "over60": false
+   },
+   "metaDescription": "Baby Picture Frames are the best way to display your kids happy memories! As the leader in Personalized School Picture Frames we know how to make the best quality School Frames money can buy. Personalize with any name (up to 13 characters)",
+   "descLen": 239,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.northlandframesandgifts.com/daddys-little-girl-tabletop-picture-frame-holds-4x6-photo-multiple-color-options/",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Daddy's Little Girl Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "Daddy's Little Girl Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "Offer",
+    "Product"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Daddy's Little Girl Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Options",
+     "imageCount": 1,
+     "sku": null,
+     "brand": null,
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": "29.95",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2027-11-08"
+    },
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 0
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "<title> does not match the page: \"Baby Frame Table Top Frame Holds 5x7\" Picture\" vs H1/product \"Daddy's Little Girl ... Holds 4x6\" (templated/stale title)",
+    "BreadcrumbList with empty itemListElement",
+    "priceValidUntil exactly 1 year from crawl date (dynamic)",
+    "no sku/brand/rating"
+   ]
+  },
+  {
+   "url": "https://www.lifetimecreations.net/personalized-mothers-day-gifts/",
+   "query": "mom picture frame personalized",
+   "pos": 3,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.lifetimecreations.net/personalized-mothers-day-gifts/",
+   "status": "ok",
+   "title": "Personalized Mother's Day Gifts \u2014 Engraved in Indiana | Lifetime Creations",
+   "titleLen": 74,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "\u2014",
+    "over60": true
+   },
+   "metaDescription": "Shop personalized Mother's Day gifts engraved in Indiana \u2014 picture frames, wine glasses, tumblers, pillows & more. Ships fast, 60-day guarantee. She'll love it.",
+   "descLen": 160,
+   "descFlags": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "guarantee": true,
+    "cta": true
+   },
+   "canonical": "https://www.lifetimecreations.net/personalized-mothers-day-gifts/",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Mother's Day",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 4,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Answer",
+    "Audience",
+    "BreadcrumbList",
+    "CollectionPage",
+    "Country",
+    "FAQPage",
+    "ItemList",
+    "ListItem",
+    "LocalBusiness",
+    "Organization",
+    "PostalAddress",
+    "Question",
+    "Thing",
+    "WebSite"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 3
+    },
+    "FAQPage": {
+     "questions": 6
+    },
+    "ItemList": {
+     "count": 1,
+     "items": 24
+    },
+    "CollectionPage": 2,
+    "LocalBusiness": 1,
+    "Organization": {
+     "count": 2,
+     "sameAs": 0,
+     "name": "Lifetime Creations"
+    },
+    "WebSite": {
+     "searchAction": false,
+     "name": null
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "category page with CollectionPage + ItemList (24) + FAQPage (6 Q) + LocalBusiness",
+    "description carries \"Ships fast, 60-day guarantee\"",
+    "H1 just \"Mother's Day\""
+   ]
+  },
+  {
+   "url": "https://theremembrancecenter.com/products/pet-memorial-picture-frame-rainbow-bridge-3-5-x-5-photo",
+   "query": "rainbow bridge picture frame",
+   "pos": 3,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://theremembrancecenter.com/products/pet-memorial-picture-frame-rainbow-bridge-3-5-x-5-photo",
+   "status": "ok",
+   "title": "Pet Memorial Picture Frame - \"Rainbow Bridge\" - Hinged - 3.5\" X 5\" Pho \u2013 The Remembrance Center",
+   "titleLen": 95,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": true,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "-",
+    "over60": true
+   },
+   "metaDescription": "Express your sympathy with custom pet memorial gifts that will become treasured keepsakes and special remembrances of loving pets. Crafted from MDF, this hinged frame holds a 3 1/2\u2033 X 5\u2033 photo. It\u2019s a heartfelt tribute to the cherished companions who have crossed the Rainbow Bridge. The inscription reads: \u201cWe will meet",
+   "descLen": 320,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://theremembrancecenter.com/products/pet-memorial-picture-frame-rainbow-bridge-3-5-x-5-photo",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Pet Memorial Picture Frame - ",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Pet Memorial Picture Frame - \"Rainbow Bridge\" - Hinged - 3.5\" X 5\" Photo",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Offer",
+    "Organization",
+    "Product",
+    "Thing"
+   ],
+   "microdataTypes": [
+    "Product"
+   ],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Pet Memorial Picture Frame - &quot;Rainbow Bridge&quot; - Hinged - 3.5&quot; X 5&quot; Photo",
+     "imageCount": 1,
+     "sku": "WL272",
+     "brand": "Cathedral Art",
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": "23.95",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null
+    },
+    "Organization": {
+     "count": 1,
+     "sameAs": 8,
+     "name": "The Remembrance Center"
+    }
+   },
+   "microdataProduct": true,
+   "microdataAggregateRating": false,
+   "notes": [
+    "<title> truncated mid-word by theme (\"...3.5\\\" X 5\\\" Pho \u2013 The Remembrance Center\")",
+    "og:title cut at first double quote (\"Pet Memorial Picture Frame - \")",
+    "JSON-LD Product name HTML-entity-escaped (&quot;)",
+    "brand = supplier Cathedral Art (reseller of a stock frame)",
+    "no shippingDetails / return policy / rating"
+   ]
+  },
+  {
+   "url": "https://www.joyfulbutterfly.com/product-category/butterfly-gifts/",
+   "query": "butterlu gifts",
+   "pos": 3,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.joyfulbutterfly.com/product-category/butterfly-gifts/",
+   "status": "ok",
+   "title": "Butterfly Gifts - Joyful Butterfly",
+   "titleLen": 34,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "-",
+    "over60": false
+   },
+   "metaDescription": "Butterfly gifts for the butterfly lover! Each item is butterfly-themed and shows passion for butterflies and gardening. Order for yourself or a loved one!",
+   "descLen": 154,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.joyfulbutterfly.com/product-category/butterfly-gifts/",
+   "canonicalType": "self",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+   "googlebot": null,
+   "ogTitle": "Butterfly Gifts - Joyful Butterfly",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "Butterfly Themed Gifts",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "CollectionPage",
+    "EntryPoint",
+    "ImageObject",
+    "ListItem",
+    "Organization",
+    "PropertyValueSpecification",
+    "SearchAction",
+    "WebSite"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 2,
+     "items": 2
+    },
+    "CollectionPage": 1,
+    "Organization": {
+     "count": 1,
+     "sameAs": 1,
+     "name": "Joyful Butterfly"
+    },
+    "WebSite": {
+     "searchAction": true,
+     "name": "Joyful Butterfly"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": []
+  },
+  {
+   "url": "https://www.zazzle.com/grandma+picture+frames",
+   "query": "personalized grandma picture frame",
+   "pos": 4,
+   "pageType": "marketplace-category",
+   "ownerType": "marketplace",
+   "statusCode": 200,
+   "finalUrl": "https://www.zazzle.com/grandma+picture+frames",
+   "status": "ok",
+   "title": "Grandma Picture Frames | Zazzle",
+   "titleLen": 31,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Keep your memories safe with Zazzle's Grandma picture frames. Check out all of the different styles, colors, and shapes. Start shopping today!",
+   "descLen": 142,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.zazzle.com/grandma+picture+frames",
+   "canonicalType": "self",
+   "robots": "max-image-preview:large",
+   "googlebot": null,
+   "ogTitle": "Grandma Picture Frames | Zazzle",
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Popular Grandma Picture Frames",
+   "h1Count": 1,
+   "hreflang": [
+    "en",
+    "en-au",
+    "en-ca",
+    "en-gb",
+    "en-nz"
+   ],
+   "hreflangPresent": true,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "ListItem"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 4
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "only BreadcrumbList JSON-LD; no ItemList/Product",
+    "5 hreflang alternates",
+    "no og tags in rendered DOM"
+   ]
+  },
+  {
+   "url": "https://www.northlandframesandgifts.com/mimi-and-me-tabletop-picture-frame-holds-4x6-photo-multiple-color-option/",
+   "query": "mimi picture frame",
+   "pos": 4,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.northlandframesandgifts.com/mimi-and-me-tabletop-picture-frame-holds-4x6-photo-multiple-color-option/",
+   "status": "ok",
+   "title": "Mimi and Me Tabletop Photo Frame",
+   "titleLen": 32,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": null,
+    "over60": false
+   },
+   "metaDescription": "Mimi and Me picture frame! The best way to show mom you love her!",
+   "descLen": 65,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.northlandframesandgifts.com/mimi-and-me-tabletop-picture-frame-holds-4x6-photo-multiple-color-option/",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Mimi and Me Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Option",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "Mimi and Me Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Option",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "Offer",
+    "Product"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Mimi and Me Tabletop Picture Frame - Holds 4x6 Photo - Multiple Color Option",
+     "imageCount": 1,
+     "sku": null,
+     "brand": null,
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": "29.95",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2027-11-08"
+    },
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 0
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "<title> (32 chars) differs from H1; 65-char thin description",
+    "BreadcrumbList with empty itemListElement",
+    "priceValidUntil exactly 1 year from crawl date (dynamic)",
+    "no sku/brand/rating"
+   ]
+  },
+  {
+   "url": "https://babybeauandbelle.com/blogs/bbb/godparent-gift-etiquette",
+   "query": "godmother gift baptism",
+   "pos": 4,
+   "pageType": "blog-article",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://babybeauandbelle.com/blogs/bbb/godparent-gift-etiquette",
+   "status": "ok",
+   "title": "Godparent Gift Etiquette \u2013 Baby Beau and Belle",
+   "titleLen": 46,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "\u2013",
+    "over60": false
+   },
+   "metaDescription": "For first-timers, godparent gift etiquette can be a little confusing. At Baby Beau and Belle, we are here to help you get it right for the special day!",
+   "descLen": 151,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://babybeauandbelle.com/blogs/bbb/godparent-gift-etiquette",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Godparent Gift Etiquette",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Godparent Gift Etiquette",
+   "h1Count": 1,
+   "hreflang": [
+    "en",
+    "en-CA",
+    "x-default"
+   ],
+   "hreflangPresent": true,
+   "jsonldBlocks": 4,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Answer",
+    "Article",
+    "BreadcrumbList",
+    "ContactPoint",
+    "FAQPage",
+    "ImageObject",
+    "ListItem",
+    "Organization",
+    "Person",
+    "PostalAddress",
+    "Question",
+    "WebPage",
+    "WebSite"
+   ],
+   "microdataTypes": [
+    "Article"
+   ],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 3
+    },
+    "FAQPage": {
+     "questions": 5
+    },
+    "WebPage": 1,
+    "Article": 1,
+    "Organization": {
+     "count": 2,
+     "sameAs": 0,
+     "name": "Baby Beau and Belle"
+    },
+    "WebSite": {
+     "searchAction": false,
+     "name": "Baby Beau and Belle"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "FAQPage (5 Q) on blog article"
+   ]
+  },
+  {
+   "url": "https://www.zazzle.com/will+you+be+my+godmother+cards",
+   "query": "will you be my godmother gift",
+   "pos": 4,
+   "pageType": "marketplace-category",
+   "ownerType": "marketplace",
+   "statusCode": 200,
+   "finalUrl": "https://www.zazzle.com/will+you+be+my+godmother+cards",
+   "status": "ok",
+   "title": "Will You Be My Godmother Cards & Templates | Zazzle",
+   "titleLen": 51,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Create your own unique greeting on a Will You Be My Godmother card from Zazzle. Choose from thousands of customizable templates or create your own from scratch!",
+   "descLen": 160,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.zazzle.com/will+you+be+my+godmother+cards",
+   "canonicalType": "self",
+   "robots": "max-image-preview:large",
+   "googlebot": null,
+   "ogTitle": "Will You Be My Godmother Cards & Templates | Zazzle",
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Popular Will You Be My Godmother Cards",
+   "h1Count": 1,
+   "hreflang": [
+    "en",
+    "en-au",
+    "en-ca",
+    "en-gb",
+    "en-nz"
+   ],
+   "hreflangPresent": true,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "ListItem"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 2
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "only BreadcrumbList JSON-LD",
+    "ranks for \"gift\" query with a cards page"
+   ]
+  },
+  {
+   "url": "https://www.saraboocreek.com/products/personalized-message-engagement-frame",
+   "query": "engagement picture frame",
+   "pos": 4,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.saraboocreek.com/products/personalized-message-engagement-frame",
+   "status": "ok",
+   "title": "Engagement Picture Frame w/ Personalized Message of your choice & Enga \u2013 SaraBoo Creek",
+   "titleLen": 86,
+   "titlePattern": {
+    "startsWithQuery": true,
+    "containsQueryPhrase": true,
+    "allQueryWords": true,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "\u2013",
+    "over60": true
+   },
+   "metaDescription": "Holds 3 7/16\" x 4 7/8\" Photo; Outside Dimensions 4 1/4 x 9 3/4\" Perfect for that newly engaged couple in your life, this frame allows you to make it entirely their own - Choose short message for black oval (She Said Yes! will be standard otherwise), indicate the date of engagement, and add initials to the champagne gla",
+   "descLen": 320,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.saraboocreek.com/products/personalized-message-engagement-frame",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Engagement Picture Frame w/ Personalized Message of your choice & Engaged Date",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Brand",
+    "Offer",
+    "Product"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Engagement Picture Frame w/ Personalized Message of your choice &amp; Engaged Date",
+     "imageCount": 1,
+     "sku": "SQ0531387",
+     "brand": "SaraBoo Creek",
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": 23.95,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2030-01-01"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "<title> truncated mid-word by theme (\"...& Enga \u2013 SaraBoo Creek\")",
+    "priceValidUntil 2030-01-01 (far-future placeholder)",
+    "Product name HTML-entity-escaped (&amp;)",
+    "description is spec dump (photo size, dimensions)"
+   ]
+  },
+  {
+   "url": "https://www.happiestbaby.com/blogs/parents/miscarriage-gifts",
+   "query": "miscarriage memorial gift",
+   "pos": 4,
+   "pageType": "blog-article",
+   "ownerType": "other",
+   "statusCode": 200,
+   "finalUrl": "https://www.happiestbaby.com/blogs/parents/miscarriage-gifts",
+   "status": "ok",
+   "title": "Miscarriage Gifts: Pregnancy Loss Care Package Ideas",
+   "titleLen": 52,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": null,
+    "over60": false
+   },
+   "metaDescription": "When words don\u2019t feel like enough to comfort someone grieving a miscarriage, a thoughtful gesture can show how much you care.",
+   "descLen": 125,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.happiestbaby.com/blogs/parents/miscarriage-gifts",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "googlebot": "index, follow",
+   "ogTitle": "20+ Miscarriage Gift Ideas to Comfort Someone Coping With Pregnancy Loss",
+   "ogType": null,
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "20+ Miscarriage Gift Ideas to Comfort Someone Coping With Pregnancy Loss",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 4,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BlogPosting",
+    "BreadcrumbList",
+    "EntryPoint",
+    "ImageObject",
+    "ListItem",
+    "Organization",
+    "Person",
+    "SearchAction",
+    "WebPage",
+    "WebSite"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 4
+    },
+    "WebPage": 1,
+    "BlogPosting": 1,
+    "Organization": {
+     "count": 2,
+     "sameAs": 6,
+     "name": "Happiest Baby"
+    },
+    "WebSite": {
+     "searchAction": true,
+     "name": "Happiest Baby"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "H1 \"20+ Miscarriage Gift Ideas...\" differs from title"
+   ]
+  },
+  {
+   "url": "https://stunninggift4u.com/product/maid-of-honor-gift-from-bride/",
+   "query": "maid of honor gift from bride frame",
+   "pos": 4,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://stunninggift4u.com/product/maid-of-honor-gift-from-bride/",
+   "status": "ok",
+   "title": "Maid of Honor Gift from Bride, Personalized Wedding Photo Frame, Thank You Gift for Maid of Honor, Wedding Gift for Maid of Honor - Personalized Gifts",
+   "titleLen": 150,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": true,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": "-",
+    "over60": true
+   },
+   "metaDescription": "Celebrate the woman who stood beside you through every step of your wedding journey with a heartfelt Maid of Honor Gift from Bride. This personalized keepsake",
+   "descLen": 158,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://stunninggift4u.com/product/maid-of-honor-gift-from-bride/",
+   "canonicalType": "self",
+   "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+   "googlebot": null,
+   "ogTitle": "Maid of Honor Gift from Bride, Personalized Wedding Photo Frame, Thank You Gift for Maid of Honor, Wedding Gift for Maid of Honor - Personalized Gifts",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Maid of Honor Gift from Bride, Personalized Wedding Photo Frame, Thank You Gift for Maid of Honor, Wedding Gift for Maid of Honor",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "ImageObject",
+    "Offer",
+    "Organization",
+    "Place",
+    "PostalAddress",
+    "Product",
+    "ProductGroup",
+    "WebPage",
+    "WebSite"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 10,
+     "name": "Maid of Honor Gift from Bride, Personalized Wedding Photo Frame, Thank You Gift for Maid of Honor, Wedding Gift for Maid of Honor - Wrapped Canvas, 14x11 inches",
+     "imageCount": 1,
+     "sku": "PPODciR5gRGcjQ-CansH-Wrapped Canvas -14x11 inches",
+     "brand": null,
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "ProductGroup": {
+     "count": 1,
+     "variants": 10,
+     "variesBy": [
+      "https://schema.org/size"
+     ]
+    },
+    "Offer": {
+     "count": 10,
+     "types": [
+      "Offer"
+     ],
+     "price": "49.95",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": "2027-12-31"
+    },
+    "WebPage": 1,
+    "Organization": {
+     "count": 1,
+     "sameAs": 1,
+     "name": "Stunning Gift Store"
+    },
+    "WebSite": {
+     "searchAction": false,
+     "name": "Stunning Gift Store"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "ProductGroup with 10 variant Product nodes (variesBy size), each with own Offer",
+    "150-char title stacking 4 gift phrases",
+    "WooCommerce/Rank Math style; no rating, shipping or return markup"
+   ]
+  },
+  {
+   "url": "https://www.theknot.com/content/mother-of-the-groom-gifts",
+   "query": "mother of the groom gift frame",
+   "pos": 4,
+   "pageType": "editorial-listicle",
+   "ownerType": "media",
+   "statusCode": 200,
+   "finalUrl": "https://www.theknot.com/content/mother-of-the-groom-gifts",
+   "status": "ok",
+   "title": "The 31 Best Mother-of-the-Groom Gifts from Her Son & His Partner",
+   "titleLen": 64,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": "31",
+    "separator": null,
+    "over60": true
+   },
+   "metaDescription": "Thank the mother-of-the-groom with one of these thoughtful presents. Here are the best wedding gifts for the groom's mother that she'll surely treasure.",
+   "descLen": 152,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.theknot.com/content/mother-of-the-groom-gifts",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "The Best Mother-of-the-Groom Gifts That Show How Much You Love Her ",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "31 Happy-Tears-Worthy Mother-of-the-Groom Gifts",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 4,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Article",
+    "BreadcrumbList",
+    "CollectionPage",
+    "EntryPoint",
+    "ImageObject",
+    "ItemList",
+    "ListItem",
+    "Organization",
+    "Person",
+    "ReadAction",
+    "Thing",
+    "ViewAction",
+    "WebPage"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 3
+    },
+    "ItemList": {
+     "count": 1,
+     "items": 31
+    },
+    "CollectionPage": 1,
+    "WebPage": 3,
+    "Article": 1,
+    "Organization": {
+     "count": 1,
+     "sameAs": 5,
+     "name": "The Knot"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "count in title, different count/wording in H1",
+    "Article + ItemList of products"
+   ]
+  },
+  {
+   "url": "https://www.cambridgebutterfly.com/all-about-butterflies/",
+   "query": "butterlu",
+   "pos": 4,
+   "pageType": "other",
+   "ownerType": "other",
+   "statusCode": 200,
+   "finalUrl": "https://www.cambridgebutterfly.com/all-about-butterflies/",
+   "status": "ok",
+   "title": "All About Butterflies - Cambridge Butterfly Conservatory",
+   "titleLen": 56,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "-",
+    "over60": false
+   },
+   "metaDescription": null,
+   "descLen": 0,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.cambridgebutterfly.com/all-about-butterflies/",
+   "canonicalType": "self",
+   "robots": "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+   "googlebot": null,
+   "ogTitle": "All About Butterflies - Cambridge Butterfly Conservatory",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "All About Butterflies",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "EntryPoint",
+    "ImageObject",
+    "ListItem",
+    "PropertyValueSpecification",
+    "ReadAction",
+    "SearchAction",
+    "WebPage",
+    "WebSite"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 2
+    },
+    "WebPage": 1,
+    "WebSite": {
+     "searchAction": true,
+     "name": "Cambridge Butterfly Conservatory"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "no meta description"
+   ]
+  },
+  {
+   "url": "https://artistgifts.com/collections/butterfly-gifts",
+   "query": "butterlu gifts",
+   "pos": 4,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://artistgifts.com/collections/butterfly-gifts",
+   "status": "ok",
+   "title": "Butterfly Gifts for the Butterfly Lover - Many Unique Butterfly Gifts and Jewelry Styles \u2013 ArtistGifts",
+   "titleLen": 102,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "-",
+    "over60": true
+   },
+   "metaDescription": "Shop our beautiful and popular butterfly gifts. Our butterfly gift collection includes butterfly jewelry, butterfly umbrellas, butterfly silk scarves, butterfly travel mugs, butterfly music boxe and more! We have many gift options for your butterfly gift and can ship directly to your favorite butterfly lover.",
+   "descLen": 310,
+   "descFlags": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://artistgifts.com/collections/butterfly-gifts",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Butterfly Gifts for the Butterfly Lover - Many Unique Butterfly Gifts and Jewelry Styles",
+   "ogType": "website",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Collection: Butterfly Gifts",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Organization"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Organization": {
+     "count": 1,
+     "sameAs": 9,
+     "name": "ArtistGifts"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": []
+  },
+  {
+   "url": "https://www.michaels.com/makerplace/product/promoted-to-grandma-and-grandpa-picture-frame-personalized-baby-name-and-year-new-grandparents-pregnancy-announcement-gift-640286104870977536",
+   "query": "promoted to grandparents frame",
+   "pos": 5,
+   "pageType": "marketplace-listing",
+   "ownerType": "marketplace",
+   "status": "blocked",
+   "notes": [
+    "Firecrawl (basic proxy): all engines failed to retrieve; not retried with stealth/enhanced"
+   ]
+  },
+  {
+   "url": "https://www.theknot.com/content/mother-of-the-bride-gift-ideas",
+   "query": "mother of the bride gift from daughter",
+   "pos": 5,
+   "pageType": "editorial-listicle",
+   "ownerType": "media",
+   "statusCode": 200,
+   "finalUrl": "https://www.theknot.com/content/mother-of-the-bride-gift-ideas",
+   "status": "ok",
+   "title": "The 29 Best Mother-of-the-Bride Gifts To Say \"Thanks\"",
+   "titleLen": 53,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": "29",
+    "separator": null,
+    "over60": false
+   },
+   "metaDescription": "Looking for mother-of-the-bride gift ideas? Whether you're her daughter or future in-law, shop our list of unique, sentimental and luxury MOB presents.",
+   "descLen": 151,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.theknot.com/content/mother-of-the-bride-gift-ideas",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "29 Heartfelt Gifts to Celebrate the Mother of the Bride's Role in Your Wedding (and Life)",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "29 Mother-of-the-Bride Gifts That'll Earn You a Big Hug",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 4,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Article",
+    "BreadcrumbList",
+    "CollectionPage",
+    "EntryPoint",
+    "ImageObject",
+    "ItemList",
+    "ListItem",
+    "Organization",
+    "Person",
+    "ReadAction",
+    "Thing",
+    "ViewAction",
+    "WebPage"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 3
+    },
+    "ItemList": {
+     "count": 1,
+     "items": 32
+    },
+    "CollectionPage": 1,
+    "WebPage": 3,
+    "Article": 1,
+    "Organization": {
+     "count": 1,
+     "sameAs": 5,
+     "name": "The Knot"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "count in title, different count/wording in H1",
+    "Article + ItemList of products"
+   ]
+  },
+  {
+   "url": "https://ollieandhank.com/products/godmother-proposal-gifts-will-you-be-my-godmother-poem",
+   "query": "will you be my godmother gift",
+   "pos": 5,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://ollieandhank.com/products/godmother-proposal-gifts-will-you-be-my-godmother-poem",
+   "status": "ok",
+   "title": "Godmother Proposal Gifts | Will You Be My Godmother Poem",
+   "titleLen": 56,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": null,
+   "descLen": 0,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://ollieandhank.com/products/godmother-proposal-gifts-will-you-be-my-godmother-poem",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Godmother Proposal Gifts | Will You Be My Godmother Poem",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Godmother Proposal Gifts | Will You Be My Godmother Poem",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 0,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [],
+   "microdataTypes": [
+    "Offer",
+    "Organization",
+    "Product"
+   ],
+   "structuredData": {},
+   "microdataProduct": true,
+   "microdataAggregateRating": false,
+   "notes": [
+    "no meta description",
+    "no <meta name=\"description\"> (only og/twitter description)",
+    "no JSON-LD; microdata Product/Offer only",
+    "title taken from Firecrawl metadata (rendered DOM title polluted by blocked shop.app iframe)"
+   ]
+  },
+  {
+   "url": "https://www.personalizedgallery.com/products/grandpa-frame",
+   "query": "personalized grandpa frame",
+   "pos": 5,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.personalizedgallery.com/products/grandpa-frame",
+   "status": "ok",
+   "title": "Grandma Photo Frame \u2013 Grandpa Photo Frame - Personalized Gallery",
+   "titleLen": 64,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": true,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "\u2013",
+    "over60": true
+   },
+   "metaDescription": "Personalize a grandma picture frame and grandpa picture frame to surprise each grandparent \u2013 a thoughtful holiday and birthday gift for grandparents.",
+   "descLen": 149,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.personalizedgallery.com/products/grandpa-frame",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "googlebot": null,
+   "ogTitle": "Grandparent Picture Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "Grandparent Picture Frame",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "AggregateRating",
+    "Person",
+    "Product",
+    "Rating",
+    "Review"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Grandparent Picture Frame",
+     "imageCount": 1,
+     "sku": null,
+     "brand": null,
+     "gtinOrMpn": false,
+     "reviewProp": true
+    },
+    "AggregateRating": {
+     "ratingValue": "5.00",
+     "reviewCount": 16,
+     "ratingCount": null,
+     "count": 1
+    },
+    "ReviewCount": 16
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "<title> mismatched to URL/H1: URL grandpa-frame, title \"Grandma Photo Frame \u2013 Grandpa Photo Frame\", H1 \"Grandparent Picture Frame\"",
+    "Product with 16 Review nodes + AggregateRating 5.00 but NO Offer (not merchant-listing eligible)"
+   ]
+  },
+  {
+   "url": "https://www.thingsremembered.com/personalized-fathers-day-picture-frames-d2263.dept",
+   "query": "first fathers day picture frame",
+   "pos": 5,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "statusCode": 200,
+   "finalUrl": "https://www.thingsremembered.com/personalized-fathers-day-picture-frames-d2263.dept",
+   "status": "ok",
+   "title": "Personalized Father's Day Picture Frames | Things Remembered",
+   "titleLen": 60,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Find engraved picture frames and other exciting Father's Day gifts at Things Remembered. Personalize glass, silver, wood frames more!",
+   "descLen": 133,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.thingsremembered.com/personalized-fathers-day-picture-frames-d2263.dept",
+   "canonicalType": "self",
+   "robots": "NOINDEX, NOFOLLOW",
+   "googlebot": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Father's Day Picture Frames",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BreadcrumbList",
+    "ListItem"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 4
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "robots noindex",
+    "served HTML has <meta name=\"ROBOTS\" content=\"NOINDEX, NOFOLLOW\"> yet page ranks (likely bot/UA-specific serving or stale index)",
+    "category page has only BreadcrumbList; no og tags"
+   ]
+  },
+  {
+   "url": "https://www.personalcreations.com/mothers-day-picture-frames-pmompho",
+   "query": "mom picture frame personalized",
+   "pos": 5,
+   "pageType": "brand-category",
+   "ownerType": "national-brand",
+   "statusCode": 200,
+   "finalUrl": "https://www.personalcreations.com/mothers-day-picture-frames-pmompho",
+   "status": "ok",
+   "title": "Mother's Day Picture Frames | Personal Creations",
+   "titleLen": 48,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Capture precious memories with Mother's Day picture frames from Personal Creations. Find beautiful ways to display the moments that mean the most to her.",
+   "descLen": 153,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.personalcreations.com/mothers-day-picture-frames-pmompho",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "googlebot": null,
+   "ogTitle": "Mother's Day Picture Frames | Personal Creations",
+   "ogType": "website",
+   "ogImage": false,
+   "twitterCard": "summary_large_image",
+   "h1": "Mother's Day Picture Frames & Photo Gifts",
+   "h1Count": 1,
+   "hreflang": [
+    "en-gb",
+    "en-us",
+    "x-default"
+   ],
+   "hreflangPresent": true,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "AggregateOffer",
+    "Brand",
+    "BreadcrumbList",
+    "CollectionPage",
+    "ItemList",
+    "ListItem",
+    "Product"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 36,
+     "name": "This Is Love Plush Blanket",
+     "imageCount": 1,
+     "sku": 627429,
+     "brand": "Personal Creations",
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 36,
+     "types": [
+      "AggregateOffer"
+     ],
+     "price": 29.990000000000002,
+     "highPrice": 39.99,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null
+    },
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 1
+    },
+    "ItemList": {
+     "count": 1,
+     "items": 36
+    },
+    "CollectionPage": 1
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "category page carries 36 Product + AggregateOffer nodes inside ItemList (product markup on a category page); first item is a blanket, not a frame",
+    "no AggregateRating despite product nodes"
+   ]
+  },
+  {
+   "url": "https://www.etchedinmyheart.com/",
+   "query": "pet memorial picture frame",
+   "pos": 5,
+   "pageType": "dtc-category",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.etchedinmyheart.com/",
+   "status": "ok",
+   "title": "Pet Memorial Gifts | Personalized Picture Frames",
+   "titleLen": 48,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Beautiful Pet Memorial Gifts and Personalized Picture Frames, Jewelry, Pet Urns, Pet Memorial Stones, Wooden Plaques, Keepsake Boxes, Collage Picture Frames and more.",
+   "descLen": 166,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.etchedinmyheart.com/",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "googlebot": "INDEX, FOLLOW",
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Customer Testimonials",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 0,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [],
+   "microdataTypes": [
+    "AggregateRating",
+    "Offer",
+    "Product",
+    "Store"
+   ],
+   "structuredData": {},
+   "microdataProduct": true,
+   "microdataAggregateRating": true,
+   "notes": [
+    "homepage ranks for \"pet memorial picture frame\"",
+    "microdata Product/Offer/AggregateRating in homepage product grid (review markup on non-product page)",
+    "H1 is \"Customer Testimonials\"",
+    "no JSON-LD"
+   ]
+  },
+  {
+   "url": "https://www.chewy.com/cf-meet-me-at-rainbow-bridge-picture/dp/311518",
+   "query": "rainbow bridge picture frame",
+   "pos": 5,
+   "pageType": "marketplace-listing",
+   "ownerType": "marketplace",
+   "statusCode": 200,
+   "finalUrl": "https://www.chewy.com/cf-meet-me-at-rainbow-bridge-picture/dp/311518",
+   "status": "ok",
+   "title": "C&F Meet Me At the Rainbow Bridge Picture Frame, 6 x 4-in - Chewy.com",
+   "titleLen": 69,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": true,
+    "allQueryWords": true,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "-",
+    "over60": true
+   },
+   "metaDescription": "Buy C&F Meet Me At the Rainbow Bridge Picture Frame, 6 x 4-in at Chewy.com. FREE shipping and the BEST customer service!",
+   "descLen": 120,
+   "descFlags": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.chewy.com/cf-meet-me-at-rainbow-bridge-picture/dp/311518",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "C&F Meet Me At the Rainbow Bridge Picture Frame, 6 x 4-in - Chewy.com",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "C&F Meet Me At the Rainbow Bridge Picture Frame, 6 x 4-in",
+   "h1Count": 1,
+   "hreflang": [
+    "en-us",
+    "x-default"
+   ],
+   "hreflangPresent": true,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "AggregateRating",
+    "Brand",
+    "BreadcrumbList",
+    "DefinedRegion",
+    "ListItem",
+    "MerchantReturnPolicy",
+    "MonetaryAmount",
+    "Offer",
+    "OfferShippingDetails",
+    "Organization",
+    "Product",
+    "QuantitativeValue",
+    "ShippingDeliveryTime",
+    "Thing"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "C&F Meet Me At the Rainbow Bridge Picture Frame, 6 x 4-in",
+     "imageCount": 1,
+     "sku": "285148",
+     "brand": "C&F",
+     "gtinOrMpn": true,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": 16.49,
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": true,
+     "hasMerchantReturnPolicy": true,
+     "priceValidUntil": null
+    },
+    "AggregateRating": {
+     "ratingValue": 4.4167,
+     "reviewCount": 12,
+     "ratingCount": null,
+     "count": 1
+    },
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 4
+    },
+    "Organization": {
+     "count": 1,
+     "sameAs": 0,
+     "name": "Chewy"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "most complete merchant markup in set: Offer with OfferShippingDetails (delivery time, region), MerchantReturnPolicy, gtin, AggregateRating",
+    "\"FREE shipping\" promise in meta description"
+   ]
+  },
+  {
+   "url": "https://butterfly-conservation.org/butterflies/why-butterflies-matter",
+   "query": "butterlu",
+   "pos": 5,
+   "pageType": "other",
+   "ownerType": "other",
+   "statusCode": 200,
+   "finalUrl": "https://butterfly-conservation.org/butterflies/why-butterflies-matter",
+   "status": "ok",
+   "title": "Why butterflies matter | Butterfly Conservation",
+   "titleLen": 47,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": false
+   },
+   "metaDescription": "Butterflies conjure up images of sunshine, the warmth and colour of flowery meadows, and summer gardens teaming with life. Sadly, four butterflies became extinct during the last 150 years. Three-quarters of British butterflies are in decline.",
+   "descLen": 242,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://butterfly-conservation.org/butterflies/why-butterflies-matter",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Why butterflies matter",
+   "ogType": null,
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "Why butterflies matter",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 0,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [],
+   "microdataTypes": [],
+   "structuredData": {},
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": []
+  },
+  {
+   "url": "https://monarchbutterflygarden.net/twelve-days-of-butterflies-butterfly-gift-ideas-2024/",
+   "query": "butterlu gifts",
+   "pos": 5,
+   "pageType": "blog-article",
+   "ownerType": "media",
+   "statusCode": 200,
+   "finalUrl": "https://monarchbutterflygarden.net/twelve-days-of-butterflies-butterfly-gift-ideas-2024/",
+   "status": "ok",
+   "title": "Twelve Days Of Butterflies- Butterfly Gift Ideas For 2024 \u00bb Monarch Butterfly Garden- Pretty Pollinator Gardens",
+   "titleLen": 111,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": "2024",
+    "count": null,
+    "separator": "\u00bb",
+    "over60": true
+   },
+   "metaDescription": "Twelve Days of Butterflies is a Butterfly Gift Ideas list for the Christmas season to spread joy of monarch butterflies and pollinators. Garden gift ideas 2024",
+   "descLen": 159,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://monarchbutterflygarden.net/twelve-days-of-butterflies-butterfly-gift-ideas-2024/",
+   "canonicalType": "self",
+   "robots": "follow, index, max-snippet:-1, max-video-preview:-1, max-image-preview:large",
+   "googlebot": null,
+   "ogTitle": "Twelve Days Of Butterflies- Butterfly Gift Ideas For 2024 \u00bb Monarch Butterfly Garden- Pretty Pollinator Gardens",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Twelve days of Butterflies- Butterfly Gift Ideas for 2024",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "BlogPosting",
+    "BreadcrumbList",
+    "ImageObject",
+    "ListItem",
+    "Organization",
+    "Person",
+    "WebPage",
+    "WebSite"
+   ],
+   "microdataTypes": [
+    "BlogPosting",
+    "WPHeader"
+   ],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 3
+    },
+    "WebPage": 1,
+    "BlogPosting": 1,
+    "Organization": {
+     "count": 1,
+     "sameAs": 1,
+     "name": "Monarch Butterfly Garden LLC"
+    },
+    "WebSite": {
+     "searchAction": false,
+     "name": "Monarch Butterfly Garden LLC"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "stale year \"2024\" in title and H1"
+   ]
+  },
+  {
+   "url": "https://www.whattoexpect.com/pregnancy/pregnancy-announcement-for-grandparents/",
+   "query": "pregnancy announcement for grandparents",
+   "pos": 6,
+   "pageType": "blog-article",
+   "ownerType": "media",
+   "statusCode": 200,
+   "finalUrl": "https://www.whattoexpect.com/pregnancy/pregnancy-announcement-for-grandparents/",
+   "status": "ok",
+   "title": "How to Share Your Baby News With Grandparents-to-Be",
+   "titleLen": 51,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": null,
+    "over60": false
+   },
+   "metaDescription": "These cute baby announcement ideas for grandparents will help you break your pregnancy news.",
+   "descLen": 92,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.whattoexpect.com/pregnancy/pregnancy-announcement-for-grandparents/",
+   "canonicalType": "self",
+   "robots": "index,follow,max-image-preview:large",
+   "googlebot": null,
+   "ogTitle": "How to Share Your Baby News With Grandparents-to-Be",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "How to Share Your Baby News With Grandparents-to-Be",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 3,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Article",
+    "BreadcrumbList",
+    "ImageObject",
+    "ListItem",
+    "Organization",
+    "Person",
+    "PostalAddress",
+    "WebPage",
+    "imageobject"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 2
+    },
+    "WebPage": 1,
+    "Article": 1,
+    "Organization": {
+     "count": 2,
+     "sameAs": 0,
+     "name": "What to Expect"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "description 92 chars"
+   ]
+  },
+  {
+   "url": "https://www.notonthehighstreet.com/mirrorin/product/personalised-promoted-to-grandparents-photo-frame-gift",
+   "query": "promoted to grandparents frame",
+   "pos": 6,
+   "pageType": "marketplace-listing",
+   "ownerType": "marketplace",
+   "statusCode": 200,
+   "finalUrl": "https://www.notonthehighstreet.com/mirrorin/product/personalised-promoted-to-grandparents-photo-frame-gift",
+   "status": "ok",
+   "title": "Personalised Promoted To Grandparents Photo Frame Gift By Mirrorin",
+   "titleLen": 66,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": true,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": null,
+    "over60": true
+   },
+   "metaDescription": "Personalised Promoted To Grandparents Photo Frame Gift by Mirrorin, the perfect gift for \u00a322.00! Explore more unique gifts in our curated marketplace.",
+   "descLen": 150,
+   "descFlags": {
+    "price": true,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.notonthehighstreet.com/mirrorin/product/personalised-promoted-to-grandparents-photo-frame-gift",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Personalised Promoted To Grandparents Photo Frame Gift",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 1,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "AggregateRating",
+    "Brand",
+    "BreadcrumbList",
+    "DefinedRegion",
+    "ListItem",
+    "MerchantReturnPolicy",
+    "MonetaryAmount",
+    "Offer",
+    "OfferShippingDetails",
+    "Organization",
+    "Product",
+    "QuantitativeValue",
+    "ShippingDeliveryTime"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Personalised Promoted To Grandparents Photo Frame Gift",
+     "imageCount": 1,
+     "sku": 874577,
+     "brand": "Mirrorin",
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": "22",
+     "highPrice": null,
+     "currency": "GBP",
+     "availability": "InStock",
+     "shippingDetails": true,
+     "hasMerchantReturnPolicy": true,
+     "priceValidUntil": null
+    },
+    "AggregateRating": {
+     "ratingValue": 4.6,
+     "reviewCount": 9,
+     "ratingCount": null,
+     "count": 1
+    },
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 5
+    },
+    "Organization": {
+     "count": 1,
+     "sameAs": 0,
+     "name": "Mirrorin"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "price (\u00a322.00) in meta description",
+    "full OfferShippingDetails + MerchantReturnPolicy + AggregateRating 4.6/9",
+    "no canonical-other issues; no og tags in rendered DOM"
+   ]
+  },
+  {
+   "url": "https://wezoree.com/inspiration/17-wedding-photo-gift-ideas-for-parents/",
+   "query": "wedding gift for parents frame",
+   "pos": 6,
+   "pageType": "editorial-listicle",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://wezoree.com/inspiration/17-wedding-photo-gift-ideas-for-parents/",
+   "status": "ok",
+   "title": "15+ Top Wedding Photo Gifts For Family \u2764\ufe0f Blog Wezoree",
+   "titleLen": 54,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": null,
+    "count": "15+",
+    "separator": null,
+    "over60": false
+   },
+   "metaDescription": "Find out what to get your parents as a wedding thank-you gift, wedding gift ideas for groom's parents and bride's parents and the best wedding photo gifts for the family.",
+   "descLen": 170,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://wezoree.com/inspiration/17-wedding-photo-gift-ideas-for-parents/",
+   "canonicalType": "self",
+   "robots": "index, follow",
+   "googlebot": null,
+   "ogTitle": "15+ Top Wedding Photo Gifts For Family \u2764\ufe0f Blog Wezoree",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "17 Wedding Photo Gift Ideas For Parents",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "ImageObject",
+    "ItemList",
+    "ListItem",
+    "NewsArticle",
+    "Organization",
+    "Person",
+    "WebPage"
+   ],
+   "microdataTypes": [
+    "BreadcrumbList",
+    "ListItem"
+   ],
+   "structuredData": {
+    "ItemList": {
+     "count": 1,
+     "items": 2
+    },
+    "WebPage": 1,
+    "NewsArticle": 1,
+    "Organization": {
+     "count": 2,
+     "sameAs": 0,
+     "name": "Wezoree"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "title says \"15+\" while URL/H1 say 17",
+    "emoji (\u2764\ufe0f) in title",
+    "NewsArticle type for evergreen listicle; ItemList with only 2 items"
+   ]
+  },
+  {
+   "url": "https://www.groovygroomsmengifts.com/blogs/news/wedding-gifts-for-parents",
+   "query": "parents of the bride thank you gift",
+   "pos": 6,
+   "pageType": "editorial-listicle",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://www.groovygroomsmengifts.com/blogs/news/wedding-gifts-for-parents",
+   "status": "ok",
+   "title": "54 Heartfelt Wedding Gifts for Parents of the Bride & Groom (2026 Guide) - Groovy Groomsmen Gifts",
+   "titleLen": 97,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "end",
+    "year": "2026",
+    "count": "54",
+    "separator": "-",
+    "over60": true
+   },
+   "metaDescription": "54 heartfelt, personalized wedding gifts for parents of the bride and groom: keepsake boxes, framed maps, home signs, and entertaining sets. Most ready to engrave.",
+   "descLen": 163,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://www.groovygroomsmengifts.com/blogs/news/wedding-gifts-for-parents",
+   "canonicalType": "self",
+   "robots": "index,follow",
+   "googlebot": null,
+   "ogTitle": "54 Heartfelt Wedding Gifts for Parents to Cherish Forever",
+   "ogType": "article",
+   "ogImage": true,
+   "twitterCard": "summary",
+   "h1": "54 Heartfelt Wedding Gifts for Parents to Cherish Forever",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 6,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Article",
+    "Brand",
+    "BreadcrumbList",
+    "ContactPoint",
+    "ImageObject",
+    "ListItem",
+    "OnlineStore",
+    "Organization",
+    "Person",
+    "PostalAddress",
+    "WebPage"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 2
+    },
+    "WebPage": 2,
+    "Article": 2,
+    "OnlineStore": 2,
+    "Organization": {
+     "count": 4,
+     "sameAs": 4,
+     "name": "Groovy Groomsmen Gifts"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "\"(2026 Guide)\" year in title + count 54",
+    "6 JSON-LD blocks incl. duplicate Article/OnlineStore"
+   ]
+  },
+  {
+   "url": "http://myweb.sabanciuniv.edu/muhammadhassan/14-heartwarming-unique-gift-ideas-for-grandma-from-granddaughter/",
+   "query": "gift for grandma from grandkids",
+   "pos": 6,
+   "pageType": "editorial-listicle",
+   "ownerType": "other",
+   "statusCode": 200,
+   "finalUrl": "http://myweb.sabanciuniv.edu/muhammadhassan/14-heartwarming-unique-gift-ideas-for-grandma-from-granddaughter/",
+   "status": "ok",
+   "title": "14 Heartwarming Unique Gift Ideas for Grandma from Granddaughter \u2013 Muhammad Hassan Yaqoob's Blog",
+   "titleLen": 96,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": "14",
+    "separator": "\u2013",
+    "over60": true
+   },
+   "metaDescription": null,
+   "descLen": 0,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "http://myweb.sabanciuniv.edu/muhammadhassan/14-heartwarming-unique-gift-ideas-for-grandma-from-granddaughter/",
+   "canonicalType": "self",
+   "robots": "max-image-preview:large",
+   "googlebot": null,
+   "ogTitle": null,
+   "ogType": null,
+   "ogImage": false,
+   "twitterCard": null,
+   "h1": "Muhammad Hassan Yaqoob's Blog",
+   "h1Count": 3,
+   "h1All": [
+    "Muhammad Hassan Yaqoob's Blog",
+    "Muhammad Hassan Yaqoob's Blog",
+    "14 Heartwarming Unique Gift Ideas for Grandma from Granddaughter"
+   ],
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 0,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [],
+   "microdataTypes": [],
+   "structuredData": {},
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "no meta description",
+    "3 H1s",
+    "parasite page on a university subdomain; no description; 3 H1s (blog name first)"
+   ]
+  },
+  {
+   "url": "https://pictureperfectscrabble.ie/products/will-you-be-my-godmother-frame",
+   "query": "godmother proposal frame",
+   "pos": 6,
+   "pageType": "dtc-product",
+   "ownerType": "dtc-small",
+   "statusCode": 200,
+   "finalUrl": "https://pictureperfectscrabble.ie/products/will-you-be-my-godmother-frame",
+   "status": "ok",
+   "title": "Will You Be My Godmother/Godfather Frame | Proposal Gift | Irish Made \u2013 Picture Perfect Scrabble",
+   "titleLen": 96,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": true,
+    "brandPosition": "end",
+    "year": null,
+    "count": null,
+    "separator": "|",
+    "over60": true
+   },
+   "metaDescription": "Ask that special someone to be Godmother or Godfather with our personalised frame. Thoughtful proposal gift, handmade in Ireland.",
+   "descLen": 129,
+   "descFlags": {
+    "price": false,
+    "shipping": false,
+    "reviews": false,
+    "guarantee": false,
+    "cta": false
+   },
+   "canonical": "https://pictureperfectscrabble.ie/products/will-you-be-my-godmother-frame",
+   "canonicalType": "self",
+   "robots": null,
+   "googlebot": null,
+   "ogTitle": "Will You Be My Godmother/Godfather Frame | Proposal Gift | Irish Made",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": "summary_large_image",
+   "h1": "Will you be my Godmother/Godfather frame",
+   "h1Count": 3,
+   "h1All": [
+    "Will you be my Godmother/Godfather frame",
+    "WELCOME TO PICTURE PERFECT SCRABBLE!",
+    "\ud83d\udce6IMPORTANT ORDER UPDATE \ud83d\udce6"
+   ],
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "Offer",
+    "Organization",
+    "Product",
+    "Thing"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "Will you be my Godmother/Godfather frame",
+     "imageCount": 1,
+     "sku": "2980210893",
+     "brand": "Picture Perfect Scrabble",
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": 35.0,
+     "highPrice": null,
+     "currency": "EUR",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null
+    },
+    "Organization": {
+     "count": 1,
+     "sameAs": 9,
+     "name": "Picture Perfect Scrabble"
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "3 H1s",
+    "multiple H1s (product + \"WELCOME TO...\" + order-update banner)",
+    "\"Irish Made\" in title",
+    "no rating/shipping/return markup"
+   ]
+  },
+  {
+   "url": "https://www.thingsremembered.com/Personalized-Double-Photo-Godparents-Picture-Frame-p25465.prod",
+   "query": "godmother picture frame",
+   "pos": 6,
+   "pageType": "brand-product",
+   "ownerType": "national-brand",
+   "statusCode": 200,
+   "finalUrl": "https://www.thingsremembered.com/Personalized-Double-Photo-Godparents-Picture-Frame-p25465.prod",
+   "status": "ok",
+   "title": "Personalized Double Photo Godparents Picture Frame",
+   "titleLen": 50,
+   "titlePattern": {
+    "startsWithQuery": false,
+    "containsQueryPhrase": false,
+    "allQueryWords": false,
+    "brandPosition": "absent",
+    "year": null,
+    "count": null,
+    "separator": null,
+    "over60": false
+   },
+   "metaDescription": "Free personalization & fast shipping. Buy Personalized Double Photo Godparents Picture Frame you can customize with your own text. Double photo glass picture frame is custom engraved for the Godmother, Godfather or Godparents.",
+   "descLen": 226,
+   "descFlags": {
+    "price": false,
+    "shipping": true,
+    "reviews": false,
+    "guarantee": false,
+    "cta": true
+   },
+   "canonical": "https://www.thingsremembered.com/Personalized-Double-Photo-Godparents-Picture-Frame-p25465.prod",
+   "canonicalType": "self",
+   "robots": "NOINDEX, NOFOLLOW",
+   "googlebot": null,
+   "ogTitle": "My Godparents Personalized Double Photo Glass Frame",
+   "ogType": "product",
+   "ogImage": true,
+   "twitterCard": null,
+   "h1": "My Godparents Personalized Double Photo Glass Frame",
+   "h1Count": 1,
+   "hreflang": [],
+   "hreflangPresent": false,
+   "jsonldBlocks": 2,
+   "jsonldInvalid": 0,
+   "jsonldTypes": [
+    "AggregateRating",
+    "BreadcrumbList",
+    "ListItem",
+    "Offer",
+    "Product"
+   ],
+   "microdataTypes": [],
+   "structuredData": {
+    "Product": {
+     "count": 1,
+     "name": "My Godparents Personalized Double Photo Glass Frame",
+     "imageCount": 1,
+     "sku": null,
+     "brand": null,
+     "gtinOrMpn": false,
+     "reviewProp": false
+    },
+    "Offer": {
+     "count": 1,
+     "types": [
+      "Offer"
+     ],
+     "price": "23.99",
+     "highPrice": null,
+     "currency": "USD",
+     "availability": "InStock",
+     "shippingDetails": false,
+     "hasMerchantReturnPolicy": false,
+     "priceValidUntil": null
+    },
+    "AggregateRating": {
+     "ratingValue": "4.4",
+     "reviewCount": null,
+     "ratingCount": "7",
+     "count": 1
+    },
+    "BreadcrumbList": {
+     "count": 1,
+     "items": 4
+    }
+   },
+   "microdataProduct": false,
+   "microdataAggregateRating": false,
+   "notes": [
+    "robots noindex",
+    "served HTML has ROBOTS NOINDEX, NOFOLLOW yet ranks #6",
+    "no brand in title; AggregateRating uses ratingCount (7) not reviewCount",
+    "no sku/brand/shipping/return markup",
+    "description leads with \"Free personalization & fast shipping\""
+   ]
+  }
+ ]
+}

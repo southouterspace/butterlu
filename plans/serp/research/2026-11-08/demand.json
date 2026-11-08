@@ -1,0 +1,1129 @@
+{
+ "meta": {
+  "generated": "2026-11-08",
+  "source": "Firecrawl Alexandria: firecrawl-trends (Google Trends), adyntel google/keywords",
+  "note": "Google Trends values are RELATIVE (0-100 within each request), not absolute search volume. Index = term average / anchor average x 100 over full weeks, US, today 5-y, web. Low-volume terms have many zero (below-threshold) weeks, so their indices and peaks are noisy.",
+  "anchor": "grandma picture frame",
+  "alexandria_calls": 27,
+  "credits_reported": 239,
+  "issues": [
+   "Shopping property returned essentially no data (all terms ~0; one isolated 100 spike for father of the bride gift).",
+   "Provider averages are rounded integers; recomputed from weekly points.",
+   "Anchor is low-volume (about 205 of 261 weeks are zero), so batches containing large terms (engagement gift) resolve it poorly; extra anchor batches B5-B7 were run for precision and engagement gift was bridged.",
+   "Rising queries were empty for every seed except personalized picture frames and grandma gift.",
+   "butterlu.com already shows 58 organic keywords (~12 visits/mo) before the new store launches.",
+   "Several unrelated terms (engagement gift, personalized picture frame, miscarriage gift, godmother/godfather gift, pet memorial frame) all hit their 5-year highs in the same weeks of Apr-May 2026, which looks partly like a Trends sampling shift rather than real seasonality; peak_months_pre_2026_03 recomputes seasonality on weeks before March 2026 for robustness, and last52_vs_prior_avg growth figures should be treated with caution."
+  ]
+ },
+ "relative_demand_table": [
+  {
+   "term": "engagement gift",
+   "index": 4865,
+   "method": "bridged (godmother B1->B7, aunt B2->B7); direct B3 = 4696",
+   "batch": "B7",
+   "month_of_year_mean": {
+    "Jan": 10.18,
+    "Feb": 14.6,
+    "Mar": 13.22,
+    "Apr": 22.57,
+    "May": 20.82,
+    "Jun": 16.0,
+    "Jul": 13.68,
+    "Aug": 14.05,
+    "Sep": 13.71,
+    "Oct": 12.59,
+    "Nov": 12.91,
+    "Dec": 13.0
+   },
+   "peak_months": [
+    "Apr (1.5x)",
+    "May (1.4x)",
+    "Jun (1.1x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-04-05",
+     100
+    ],
+    [
+     "2026-04-12",
+     100
+    ],
+    [
+     "2026-05-10",
+     81
+    ],
+    [
+     "2026-05-17",
+     76
+    ],
+    [
+     "2026-04-19",
+     68
+    ]
+   ],
+   "last52_vs_prior_avg": 2.72,
+   "zero_weeks_of_261": 0,
+   "peak_months_pre_2026_03": [
+    "Feb (1.2x)",
+    "Aug (1.1x)",
+    "Dec (1.1x)"
+   ]
+  },
+  {
+   "term": "grandpa gift",
+   "index": 1174,
+   "method": "direct vs anchor",
+   "batch": "B2",
+   "month_of_year_mean": {
+    "Jan": 6.23,
+    "Feb": 17.8,
+    "Mar": 9.22,
+    "Apr": 11.52,
+    "May": 19.27,
+    "Jun": 32.14,
+    "Jul": 6.86,
+    "Aug": 7.73,
+    "Sep": 8.9,
+    "Oct": 8.59,
+    "Nov": 24.32,
+    "Dec": 45.36
+   },
+   "peak_months": [
+    "Dec (2.7x)",
+    "Jun (1.9x)",
+    "Nov (1.5x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-06-14",
+     100
+    ],
+    [
+     "2026-02-15",
+     95
+    ],
+    [
+     "2026-02-08",
+     89
+    ],
+    [
+     "2025-06-08",
+     84
+    ],
+    [
+     "2024-06-09",
+     79
+    ]
+   ],
+   "last52_vs_prior_avg": 1.91,
+   "zero_weeks_of_261": 4,
+   "peak_months_pre_2026_03": [
+    "Dec (3.0x)",
+    "Jun (1.9x)",
+    "Nov (1.6x)"
+   ]
+  },
+  {
+   "term": "aunt gift",
+   "index": 1171,
+   "method": "direct vs anchor",
+   "batch": "B2",
+   "month_of_year_mean": {
+    "Jan": 10.5,
+    "Feb": 14.9,
+    "Mar": 11.48,
+    "Apr": 17.29,
+    "May": 18.5,
+    "Jun": 11.77,
+    "Jul": 11.0,
+    "Aug": 11.41,
+    "Sep": 11.38,
+    "Oct": 13.14,
+    "Nov": 22.95,
+    "Dec": 43.14
+   },
+   "peak_months": [
+    "Dec (2.6x)",
+    "Nov (1.4x)",
+    "May (1.1x)"
+   ],
+   "top_weeks": [
+    [
+     "2025-12-14",
+     74
+    ],
+    [
+     "2025-12-21",
+     68
+    ],
+    [
+     "2025-12-07",
+     64
+    ],
+    [
+     "2024-12-15",
+     61
+    ],
+    [
+     "2022-12-11",
+     60
+    ]
+   ],
+   "last52_vs_prior_avg": 1.77,
+   "zero_weeks_of_261": 0,
+   "peak_months_pre_2026_03": [
+    "Dec (2.9x)",
+    "Nov (1.5x)",
+    "Feb (1.0x)"
+   ]
+  },
+  {
+   "term": "personalized picture frame",
+   "index": 548,
+   "method": "direct vs anchor",
+   "batch": "B6",
+   "month_of_year_mean": {
+    "Jan": 3.14,
+    "Feb": 3.15,
+    "Mar": 4.78,
+    "Apr": 18.43,
+    "May": 15.68,
+    "Jun": 7.32,
+    "Jul": 1.77,
+    "Aug": 2.18,
+    "Sep": 2.33,
+    "Oct": 3.64,
+    "Nov": 6.0,
+    "Dec": 7.23
+   },
+   "peak_months": [
+    "Apr (2.9x)",
+    "May (2.5x)",
+    "Jun (1.2x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-04-12",
+     100
+    ],
+    [
+     "2026-04-05",
+     90
+    ],
+    [
+     "2026-05-10",
+     85
+    ],
+    [
+     "2026-05-17",
+     84
+    ],
+    [
+     "2026-04-19",
+     76
+    ]
+   ],
+   "last52_vs_prior_avg": 5.5,
+   "zero_weeks_of_261": 69,
+   "peak_months_pre_2026_03": [
+    "Dec (2.1x)",
+    "Nov (1.8x)",
+    "May (1.2x)"
+   ]
+  },
+  {
+   "term": "first fathers day gift",
+   "index": 435,
+   "method": "direct vs anchor",
+   "batch": "B6",
+   "month_of_year_mean": {
+    "Jan": 0.0,
+    "Feb": 1.2,
+    "Mar": 1.04,
+    "Apr": 7.0,
+    "May": 27.36,
+    "Jun": 22.77,
+    "Jul": 0.18,
+    "Aug": 0.14,
+    "Sep": 0.0,
+    "Oct": 0.0,
+    "Nov": 0.0,
+    "Dec": 0.0
+   },
+   "peak_months": [
+    "May (5.5x)",
+    "Jun (4.6x)",
+    "Apr (1.4x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-06-14",
+     54
+    ],
+    [
+     "2024-06-09",
+     50
+    ],
+    [
+     "2022-06-12",
+     49
+    ],
+    [
+     "2025-06-08",
+     48
+    ],
+    [
+     "2023-06-11",
+     47
+    ]
+   ],
+   "last52_vs_prior_avg": 1.24,
+   "zero_weeks_of_261": 189,
+   "peak_months_pre_2026_03": [
+    "May (5.5x)",
+    "Jun (4.5x)",
+    "Apr (1.4x)"
+   ]
+  },
+  {
+   "term": "miscarriage gift",
+   "index": 346,
+   "method": "direct vs anchor",
+   "batch": "B5",
+   "month_of_year_mean": {
+    "Jan": 23.05,
+    "Feb": 19.95,
+    "Mar": 23.17,
+    "Apr": 32.1,
+    "May": 32.55,
+    "Jun": 18.77,
+    "Jul": 15.05,
+    "Aug": 14.59,
+    "Sep": 16.43,
+    "Oct": 13.77,
+    "Nov": 21.77,
+    "Dec": 24.0
+   },
+   "peak_months": [
+    "May (1.5x)",
+    "Apr (1.5x)",
+    "Dec (1.1x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-04-12",
+     100
+    ],
+    [
+     "2026-04-05",
+     90
+    ],
+    [
+     "2026-04-19",
+     86
+    ],
+    [
+     "2026-05-03",
+     75
+    ],
+    [
+     "2026-04-26",
+     73
+    ]
+   ],
+   "last52_vs_prior_avg": 1.98,
+   "zero_weeks_of_261": 50,
+   "peak_months_pre_2026_03": [
+    "May (1.4x)",
+    "Dec (1.3x)",
+    "Jan (1.2x)"
+   ]
+  },
+  {
+   "term": "godmother gift",
+   "index": 206,
+   "method": "direct vs anchor",
+   "batch": "B1",
+   "month_of_year_mean": {
+    "Jan": 12.14,
+    "Feb": 24.3,
+    "Mar": 23.13,
+    "Apr": 42.29,
+    "May": 32.05,
+    "Jun": 12.36,
+    "Jul": 7.27,
+    "Aug": 7.09,
+    "Sep": 9.24,
+    "Oct": 16.05,
+    "Nov": 26.73,
+    "Dec": 38.36
+   },
+   "peak_months": [
+    "Apr (2.0x)",
+    "Dec (1.8x)",
+    "May (1.5x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-04-12",
+     89
+    ],
+    [
+     "2026-05-03",
+     86
+    ],
+    [
+     "2026-04-19",
+     81
+    ],
+    [
+     "2026-04-05",
+     79
+    ],
+    [
+     "2022-05-01",
+     74
+    ]
+   ],
+   "last52_vs_prior_avg": 1.29,
+   "zero_weeks_of_261": 121,
+   "peak_months_pre_2026_03": [
+    "Dec (1.9x)",
+    "Apr (1.6x)",
+    "May (1.4x)"
+   ]
+  },
+  {
+   "term": "christmas gift for grandma",
+   "index": 194,
+   "method": "direct vs anchor",
+   "batch": "B6",
+   "month_of_year_mean": {
+    "Jan": 0.14,
+    "Feb": 0.85,
+    "Mar": 0.0,
+    "Apr": 0.19,
+    "May": 0.23,
+    "Jun": 0.0,
+    "Jul": 0.18,
+    "Aug": 0.0,
+    "Sep": 0.0,
+    "Oct": 0.36,
+    "Nov": 8.64,
+    "Dec": 15.95
+   },
+   "peak_months": [
+    "Dec (7.2x)",
+    "Nov (3.9x)",
+    "Feb (0.4x)"
+   ],
+   "top_weeks": [
+    [
+     "2024-12-15",
+     28
+    ],
+    [
+     "2023-12-17",
+     26
+    ],
+    [
+     "2025-12-14",
+     25
+    ],
+    [
+     "2022-12-11",
+     24
+    ],
+    [
+     "2022-12-18",
+     23
+    ]
+   ],
+   "last52_vs_prior_avg": 1.36,
+   "zero_weeks_of_261": 212,
+   "peak_months_pre_2026_03": [
+    "Dec (7.3x)",
+    "Nov (4.1x)",
+    "Feb (0.4x)"
+   ]
+  },
+  {
+   "term": "godfather gift",
+   "index": 136,
+   "method": "direct vs anchor",
+   "batch": "B1",
+   "month_of_year_mean": {
+    "Jan": 4.18,
+    "Feb": 14.65,
+    "Mar": 16.26,
+    "Apr": 17.14,
+    "May": 27.73,
+    "Jun": 19.55,
+    "Jul": 9.91,
+    "Aug": 7.59,
+    "Sep": 2.95,
+    "Oct": 3.09,
+    "Nov": 13.36,
+    "Dec": 28.91
+   },
+   "peak_months": [
+    "Dec (2.1x)",
+    "May (2.0x)",
+    "Jun (1.4x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-04-05",
+     78
+    ],
+    [
+     "2026-05-17",
+     72
+    ],
+    [
+     "2026-04-12",
+     69
+    ],
+    [
+     "2026-04-26",
+     67
+    ],
+    [
+     "2025-12-14",
+     59
+    ]
+   ],
+   "last52_vs_prior_avg": 2.77,
+   "zero_weeks_of_261": 164,
+   "peak_months_pre_2026_03": [
+    "Dec (2.5x)",
+    "May (1.7x)",
+    "Jun (1.4x)"
+   ]
+  },
+  {
+   "term": "grandma picture frame",
+   "index": 100,
+   "method": "anchor",
+   "batch": "all",
+   "month_of_year_mean": {
+    "Jan": 0.0,
+    "Feb": 0.0,
+    "Mar": 2.3,
+    "Apr": 23.67,
+    "May": 24.27,
+    "Jun": 1.41,
+    "Jul": 0.0,
+    "Aug": 0.0,
+    "Sep": 3.29,
+    "Oct": 3.18,
+    "Nov": 16.18,
+    "Dec": 47.14
+   },
+   "peak_months": [
+    "Dec (4.7x)",
+    "May (2.4x)",
+    "Apr (2.3x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-05-03",
+     100
+    ],
+    [
+     "2025-12-14",
+     94
+    ],
+    [
+     "2024-12-08",
+     85
+    ],
+    [
+     "2024-05-05",
+     83
+    ],
+    [
+     "2023-12-17",
+     82
+    ]
+   ],
+   "last52_vs_prior_avg": 1.34,
+   "zero_weeks_of_261": 206,
+   "peak_months_pre_2026_03": [
+    "Dec (5.1x)",
+    "May (2.5x)",
+    "Nov (1.8x)"
+   ]
+  },
+  {
+   "term": "pregnancy announcement grandparents",
+   "index": 84,
+   "method": "direct vs anchor",
+   "batch": "B1",
+   "month_of_year_mean": {
+    "Jan": 20.14,
+    "Feb": 8.9,
+    "Mar": 9.57,
+    "Apr": 7.86,
+    "May": 7.95,
+    "Jun": 5.82,
+    "Jul": 4.09,
+    "Aug": 4.0,
+    "Sep": 7.43,
+    "Oct": 2.86,
+    "Nov": 12.41,
+    "Dec": 11.09
+   },
+   "peak_months": [
+    "Jan (2.4x)",
+    "Nov (1.5x)",
+    "Dec (1.3x)"
+   ],
+   "top_weeks": [
+    [
+     "2023-01-29",
+     59
+    ],
+    [
+     "2022-01-09",
+     49
+    ],
+    [
+     "2022-01-23",
+     47
+    ],
+    [
+     "2022-12-04",
+     46
+    ],
+    [
+     "2021-11-28",
+     45
+    ]
+   ],
+   "last52_vs_prior_avg": 0.48,
+   "zero_weeks_of_261": 190,
+   "peak_months_pre_2026_03": [
+    "Jan (2.3x)",
+    "Nov (1.4x)",
+    "Dec (1.3x)"
+   ]
+  },
+  {
+   "term": "pet memorial frame",
+   "index": 48,
+   "method": "direct vs anchor",
+   "batch": "B5",
+   "month_of_year_mean": {
+    "Jan": 0.68,
+    "Feb": 0.0,
+    "Mar": 2.7,
+    "Apr": 12.43,
+    "May": 10.64,
+    "Jun": 4.36,
+    "Jul": 1.41,
+    "Aug": 0.0,
+    "Sep": 0.0,
+    "Oct": 1.14,
+    "Nov": 0.23,
+    "Dec": 1.59
+   },
+   "peak_months": [
+    "Apr (4.2x)",
+    "May (3.6x)",
+    "Jun (1.5x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-04-12",
+     80
+    ],
+    [
+     "2026-05-17",
+     75
+    ],
+    [
+     "2026-04-19",
+     74
+    ],
+    [
+     "2026-04-05",
+     71
+    ],
+    [
+     "2026-03-29",
+     62
+    ]
+   ],
+   "last52_vs_prior_avg": 20.16,
+   "zero_weeks_of_261": 240,
+   "peak_months_pre_2026_03": [
+    "Jul (3.1x)",
+    "Dec (2.9x)",
+    "May (2.8x)"
+   ]
+  },
+  {
+   "term": "father of the bride gift",
+   "index": 47,
+   "method": "direct vs anchor",
+   "batch": "B1",
+   "month_of_year_mean": {
+    "Jan": 0.0,
+    "Feb": 3.5,
+    "Mar": 5.96,
+    "Apr": 9.71,
+    "May": 5.45,
+    "Jun": 11.55,
+    "Jul": 5.27,
+    "Aug": 7.36,
+    "Sep": 1.38,
+    "Oct": 3.41,
+    "Nov": 3.05,
+    "Dec": 0.0
+   },
+   "peak_months": [
+    "Jun (2.4x)",
+    "Apr (2.1x)",
+    "Aug (1.6x)"
+   ],
+   "top_weeks": [
+    [
+     "2024-06-09",
+     45
+    ],
+    [
+     "2023-08-27",
+     41
+    ],
+    [
+     "2026-02-15",
+     40
+    ],
+    [
+     "2024-08-11",
+     38
+    ],
+    [
+     "2026-04-05",
+     37
+    ]
+   ],
+   "last52_vs_prior_avg": 1.57,
+   "zero_weeks_of_261": 219,
+   "peak_months_pre_2026_03": [
+    "Aug (2.1x)",
+    "Jun (2.0x)",
+    "Mar (1.7x)"
+   ]
+  },
+  {
+   "term": "great grandma gift",
+   "index": 42,
+   "method": "direct vs anchor",
+   "batch": "B5",
+   "month_of_year_mean": {
+    "Jan": 0.64,
+    "Feb": 1.05,
+    "Mar": 0.0,
+    "Apr": 1.48,
+    "May": 4.09,
+    "Jun": 0.0,
+    "Jul": 0.0,
+    "Aug": 0.0,
+    "Sep": 0.0,
+    "Oct": 0.95,
+    "Nov": 9.41,
+    "Dec": 13.5
+   },
+   "peak_months": [
+    "Dec (5.2x)",
+    "Nov (3.6x)",
+    "May (1.6x)"
+   ],
+   "top_weeks": [
+    [
+     "2025-12-14",
+     37
+    ],
+    [
+     "2023-12-10",
+     31
+    ],
+    [
+     "2025-05-04",
+     31
+    ],
+    [
+     "2022-12-18",
+     25
+    ],
+    [
+     "2023-12-17",
+     25
+    ]
+   ],
+   "last52_vs_prior_avg": 1.23,
+   "zero_weeks_of_261": 226,
+   "peak_months_pre_2026_03": [
+    "Dec (5.3x)",
+    "Nov (3.7x)",
+    "May (1.7x)"
+   ]
+  },
+  {
+   "term": "ultrasound picture frame",
+   "index": 26,
+   "method": "direct vs anchor",
+   "batch": "B5",
+   "month_of_year_mean": {
+    "Jan": 3.68,
+    "Feb": 0.0,
+    "Mar": 1.61,
+    "Apr": 3.33,
+    "May": 4.45,
+    "Jun": 1.68,
+    "Jul": 0.0,
+    "Aug": 0.0,
+    "Sep": 0.0,
+    "Oct": 0.23,
+    "Nov": 2.05,
+    "Dec": 2.0
+   },
+   "peak_months": [
+    "May (2.8x)",
+    "Jan (2.3x)",
+    "Apr (2.1x)"
+   ],
+   "top_weeks": [
+    [
+     "2026-05-03",
+     34
+    ],
+    [
+     "2024-01-28",
+     28
+    ],
+    [
+     "2026-04-12",
+     26
+    ],
+    [
+     "2023-11-26",
+     25
+    ],
+    [
+     "2026-04-19",
+     24
+    ]
+   ],
+   "last52_vs_prior_avg": 4.08,
+   "zero_weeks_of_261": 240,
+   "peak_months_pre_2026_03": [
+    "Jan (4.0x)",
+    "Dec (2.2x)",
+    "Nov (2.1x)"
+   ]
+  }
+ ],
+ "cross_checks": {
+  "miscarriage gift B3": 348,
+  "ultrasound picture frame B2": 28,
+  "great grandma gift B2": 45,
+  "godmother gift B6": 201,
+  "first fathers day gift B3": 438,
+  "pet memorial frame B3": 49,
+  "aunt gift via godmother bridge B7": 1140,
+  "grandpa gift via godmother bridge B7": 1141,
+  "engagement via godmother": 4800,
+  "engagement via aunt": 4931
+ },
+ "related_queries": {
+  "grandma picture frame | today 12-m": {
+   "top": [
+    [
+     "great grandma picture frame",
+     "100"
+    ]
+   ],
+   "rising": []
+  },
+  "pregnancy announcement grandparents | today 12-m": {
+   "top": [],
+   "rising": []
+  },
+  "godmother gift | today 12-m": {
+   "top": [
+    [
+     "gift for godmother",
+     "100"
+    ],
+    [
+     "godmother gifts",
+     "31"
+    ],
+    [
+     "godmother gift ideas",
+     "26"
+    ],
+    [
+     "baptism gift from godmother",
+     "18"
+    ],
+    [
+     "godmother christmas gift",
+     "12"
+    ]
+   ],
+   "rising": []
+  },
+  "father of the bride gift | today 12-m": {
+   "top": [
+    [
+     "father of the bride gifts",
+     "100"
+    ],
+    [
+     "father of the bride gift ideas",
+     "50"
+    ],
+    [
+     "father of the bride gifts from daughter",
+     "21"
+    ]
+   ],
+   "rising": []
+  },
+  "personalized picture frame | today 12-m": {
+   "top": [
+    [
+     "personalized picture frames",
+     "100"
+    ]
+   ],
+   "rising": []
+  },
+  "pet memorial frame | today 12-m": {
+   "top": [
+    [
+     "pet memorial gifts",
+     "100"
+    ]
+   ],
+   "rising": []
+  },
+  "grandma picture frame | today 5-y": {
+   "top": [
+    [
+     "great grandma picture frame",
+     "100"
+    ],
+    [
+     "grandma picture frames",
+     "91"
+    ],
+    [
+     "i love grandma picture frame",
+     "64"
+    ]
+   ],
+   "rising": []
+  },
+  "pregnancy announcement grandparents | today 5-y": {
+   "top": [],
+   "rising": []
+  },
+  "personalized picture frames | today 12-m": {
+   "top": [
+    [
+     "personalized picture frames for couples",
+     "100"
+    ]
+   ],
+   "rising": [
+    [
+     "personalized picture frames for couples",
+     "Breakout"
+    ]
+   ]
+  },
+  "grandma gift | today 12-m": {
+   "top": [
+    [
+     "gift ideas",
+     "100"
+    ],
+    [
+     "grandma gift ideas",
+     "100"
+    ],
+    [
+     "grandma gifts",
+     "89"
+    ],
+    [
+     "gift for a grandma",
+     "89"
+    ],
+    [
+     "gift ideas for grandma",
+     "82"
+    ],
+    [
+     "gifts for grandma",
+     "79"
+    ],
+    [
+     "grandma birthday gift",
+     "73"
+    ],
+    [
+     "gift for mom",
+     "64"
+    ],
+    [
+     "personalized gift for grandma",
+     "63"
+    ],
+    [
+     "grandma mothers day gift",
+     "62"
+    ],
+    [
+     "mothers day gift",
+     "61"
+    ],
+    [
+     "best gift for grandma",
+     "59"
+    ],
+    [
+     "new grandma gift",
+     "58"
+    ],
+    [
+     "grandma christmas gift",
+     "58"
+    ],
+    [
+     "mother's day gift",
+     "54"
+    ],
+    [
+     "mother's day gift grandma",
+     "53"
+    ],
+    [
+     "gift for new grandma",
+     "47"
+    ],
+    [
+     "mothers day gift for grandma",
+     "47"
+    ],
+    [
+     "grandma gift for mother's day",
+     "46"
+    ],
+    [
+     "good gift for grandma",
+     "25"
+    ],
+    [
+     "grandpa gift",
+     "24"
+    ],
+    [
+     "grandma necklace",
+     "22"
+    ],
+    [
+     "great grandma gift",
+     "21"
+    ],
+    [
+     "grandma sweatshirt",
+     "10"
+    ]
+   ],
+   "rising": [
+    [
+     "personalized gift for grandma",
+     "+160%"
+    ],
+    [
+     "grandma sweatshirt",
+     "+140%"
+    ]
+   ]
+  },
+  "picture frame gift | today 12-m": {
+   "top": [
+    [
+     "picture frame gift ideas",
+     "100"
+    ]
+   ],
+   "rising": []
+  }
+ },
+ "competitors": {
+  "personalizationmall.com": {
+   "organic_keywords": 70236,
+   "organic_traffic_est": 285555,
+   "top3": 2999,
+   "top10": 14165,
+   "paid_keywords": 1
+  },
+  "personalcreations.com": {
+   "organic_keywords": 66029,
+   "organic_traffic_est": 174896,
+   "top3": 5658,
+   "top10": 17147,
+   "paid_keywords": 0
+  },
+  "markandgraham.com": {
+   "organic_keywords": 39763,
+   "organic_traffic_est": 173301,
+   "top3": 4897,
+   "top10": 11903,
+   "paid_keywords": 1
+  },
+  "thingsremembered.com": {
+   "organic_keywords": 30496,
+   "organic_traffic_est": 85436,
+   "top3": 2397,
+   "top10": 8283,
+   "paid_keywords": 1
+  },
+  "preciousmoments.com": {
+   "organic_keywords": 7055,
+   "organic_traffic_est": 54780,
+   "top3": 1897,
+   "top10": 3096,
+   "paid_keywords": 0
+  },
+  "giftsforyounow.com": {
+   "organic_keywords": 17202,
+   "organic_traffic_est": 38434,
+   "top3": 1132,
+   "top10": 3555,
+   "paid_keywords": 0
+  },
+  "petmemoryshop.com": {
+   "organic_keywords": 2982,
+   "organic_traffic_est": 4469,
+   "top3": 271,
+   "top10": 738,
+   "paid_keywords": 0
+  },
+  "butterlu.com": {
+   "organic_keywords": 58,
+   "organic_traffic_est": 12,
+   "top3": 0,
+   "top10": 8,
+   "paid_keywords": 0
+  }
+ }
+}

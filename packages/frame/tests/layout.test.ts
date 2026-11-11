@@ -55,6 +55,29 @@ describe('safeZone', () => {
   }
 });
 
+describe('one safe zone for every shape', () => {
+  // The owner chose one text zone for both shapes (2026-11-11), so a design's text
+  // fits whichever shape is picked. Outlines differ by a few thousandths of an inch;
+  // a shape whose size differs by more than 0.01 in should fail here and be looked at.
+  test('the shared inset still clears the scalloped edge', () => {
+    for (const id of SHAPE_IDS) expect(SHAPES[id].outerInsetIn).toBeGreaterThanOrEqual(0.35);
+  });
+
+  test('every shape has the same outer inset and zones of the same size', () => {
+    const first = SHAPE_IDS[0]!;
+    for (const id of SHAPE_IDS.slice(1)) {
+      expect(SHAPES[id].outerInsetIn).toBe(SHAPES[first].outerInsetIn);
+      for (const side of SIDES) {
+        const a = safeZone(first, side);
+        const b = safeZone(id, side);
+        for (const k of ['x', 'y', 'w', 'h'] as const) {
+          expect(Math.abs(a[k] - b[k]), `${id} ${side} ${k}`).toBeLessThan(0.01);
+        }
+      }
+    }
+  });
+});
+
 describe('fitText', () => {
   const zone = safeZone('rounded-rectangle', 'bottom');
 

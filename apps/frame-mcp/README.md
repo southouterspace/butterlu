@@ -211,8 +211,9 @@ from the repo instead.
    `plans/product-options.json`, with its id, `widthIn` and `heightIn`.
 2. In `packages/frame/scripts/extract-geometry.mjs`, add one row to `SHAPES`.
    Set the index of the shape's outline path in the drawing's SVG (the opening
-   is the next path), the outline's top-left on the page in inches, and
-   `outerInsetIn`, the closest text may come to the cut edge.
+   is the next path) and the outline's top-left on the page in inches. Every
+   shape shares `OUTER_INSET_IN`, the closest text may come to the cut edge, so
+   one design's text fits any shape. Raise it if the new edge dips further in.
 3. Run `bun run extract-geometry` in `packages/frame`. It regenerates
    `src/shapes.generated.ts`.
 

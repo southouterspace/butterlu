@@ -15,11 +15,13 @@ const outFile = path.join(pkgDir, 'src/shapes.generated.ts');
 
 // pathIndex: the shape's outline and opening are paths N and N+1 in pdftocairo's SVG.
 // originIn: the outline's top-left on the drawing's page, in inches.
-// outerInsetIn: how far text must stay from the cut edge. The scalloped edge dips
-// up to 0.24 in inward, so it needs more room than the rounded rectangle.
+// OUTER_INSET_IN: how far text must stay from the cut edge. The scalloped edge dips
+// up to 0.24 in inward and sets it; the rounded rectangle uses the same value so every
+// design's text fits either shape and shape is a plain choice (owner, 2026-11-11).
+const OUTER_INSET_IN = 0.35;
 const SHAPES = [
-  { id: 'rounded-rectangle', pathIndex: 18, originIn: [18.732, 2.117], outerInsetIn: 0.15 },
-  { id: 'scalloped', pathIndex: 21, originIn: [18.662, 9.606], outerInsetIn: 0.35 },
+  { id: 'rounded-rectangle', pathIndex: 18, originIn: [18.732, 2.117] },
+  { id: 'scalloped', pathIndex: 21, originIn: [18.662, 9.606] },
 ];
 
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'frame-geom-'));
@@ -62,7 +64,7 @@ function toInches(index, [ox, oy]) {
 
 const round = (n, step = 1 / 64) => Math.round(n / step) * step;
 
-const rows = SHAPES.map(({ id, pathIndex, originIn, outerInsetIn }) => {
+const rows = SHAPES.map(({ id, pathIndex, originIn }) => {
   const known = options.shapes.find((s) => s.id === id);
   if (!known) throw new Error(`plans/product-options.json has no shape ${id}`);
   const outline = toInches(pathIndex, originIn);
@@ -77,7 +79,7 @@ const rows = SHAPES.map(({ id, pathIndex, originIn, outerInsetIn }) => {
     widthIn: known.widthIn,
     heightIn: known.heightIn,
     borderIn,
-    outerInsetIn,
+    outerInsetIn: OUTER_INSET_IN,
     outline: outline.pathData,
     opening: opening.pathData,
   };

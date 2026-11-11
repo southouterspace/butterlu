@@ -89,8 +89,9 @@ Owner (from Asli):
   background and which side holds which line. Becomes a per-listing preset.
 - [ ] **Text colour by chart number**: when a buyer writes "(color #2)", does it
   print in that colour or in black? `plan_order` uses the swatch colour today.
-- [ ] **Safe zones measured on a real blank.** Current insets (0.15 in rounded,
-  0.35 in scalloped, 0.125 in from the opening) come from the drawing.
+- [ ] **Safe zones measured on a real blank.** Current insets (0.35 in from the
+  cut edge on both shapes, set by the scalloped edge, and 0.125 in from the
+  opening) come from the drawing.
 
 Owner setup (details in `apps/frame-mcp/README.md`, Google Drive and Deploy):
 

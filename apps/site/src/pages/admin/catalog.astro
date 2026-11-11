@@ -27,11 +27,26 @@ import { PHOTO_FILES } from '../../catalog/media';
       body { margin: 0; background: var(--muted); color: var(--foreground); font: 15px/1.45 var(--font-sans); }
       #admin { max-width: 1200px; margin: 0 auto; padding: 0 16px 64px; }
       .loading { padding: 32px 0; }
-      .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
-      .nav a { color: var(--foreground); text-decoration: none; padding: 6px 10px; border-radius: 99px; }
-      .nav a[aria-current='page'] { background: var(--background); font-weight: 600; }
-      .nav .me { margin-left: auto; }
-      .nav form.me { display: flex; align-items: center; gap: 8px; margin-block: 0; }
+      .admin-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+      .admin-bar .brand { font-weight: 700; color: var(--foreground); text-decoration: none; white-space: nowrap; }
+      .tabs { display: flex; flex-wrap: wrap; gap: 4px; min-width: 0; }
+      .tabs a { color: var(--foreground); text-decoration: none; padding: 6px 10px; border-radius: 99px; white-space: nowrap; }
+      .tabs a[aria-current='page'] { background: var(--background); font-weight: 600; }
+      .admin-bar .actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+      .admin-bar .who { white-space: nowrap; }
+      .admin-bar .sign-out { margin: 0; }
+      .btn.small { padding: 5px 12px; font-size: 0.9rem; text-decoration: none; white-space: nowrap; display: inline-block; }
+      .btn.view-site { background: var(--primary); color: var(--primary-foreground); border-color: transparent; font-weight: 600; }
+      /* Phone: brand + View site + Sign out on top, then one row of tabs that scrolls sideways.
+         The bar sticks to the top so View site and the tabs are always a thumb away. */
+      @media (max-width: 800px) {
+        html { scroll-padding-top: 110px; }
+        .admin-bar { position: sticky; top: 0; z-index: 5; background: var(--muted); margin: 0 -16px 12px; padding: 8px 16px 0; }
+        .admin-bar .who { display: none; }
+        .tabs { order: 3; flex: 1 0 100%; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0 -16px; padding: 0 16px 8px; scroll-padding-inline: 16px; }
+        .tabs::-webkit-scrollbar { display: none; }
+        .tabs a { padding: 10px 14px; }
+      }
       h1 { font-size: 1.4rem; margin: 0; }
       .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0 12px; }
       .row { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
@@ -94,7 +109,7 @@ import { PHOTO_FILES } from '../../catalog/media';
       .order li { display: grid; grid-template-columns: 72px 1fr auto auto; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); }
       #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px)); background: var(--foreground); color: var(--background); padding: 10px 16px; border-radius: 12px; white-space: pre-line; z-index: 10; }
       #toast[data-tone='bad'] { background: var(--destructive); color: #fff; }
-      @media (max-width: 800px) { .two { grid-template-columns: 1fr; } .sticky { position: static; } .nav .me { margin-left: 0; width: 100%; } }
+      @media (max-width: 800px) { .two { grid-template-columns: 1fr; } .sticky { position: static; } }
     </style>
   </body>
 </html>

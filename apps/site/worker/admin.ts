@@ -10,6 +10,7 @@
 // with WorkOS half set up, or without the ORDERS database, /admin answers 404.
 import { adminGate, signInMode } from './admin-auth';
 import { handleCatalogAdmin } from './catalog-admin';
+import { ADMIN_SECTIONS, SITE_HOME } from '../src/admin/nav';
 import type { Env } from './env';
 import { listOrders, ORDER_STATUSES, parseOrderUpdate, updateOrder, type LineRow, type OrderRow } from './orders';
 
@@ -111,6 +112,15 @@ function orderHtml(o: OrderRow, lines: LineRow[]): string {
 </article>`;
 }
 
+// Same sections as the store editor's bar (src/admin/nav.ts), with View site always in reach.
+export function adminBar(email: string | null): string {
+  const tabs = ADMIN_SECTIONS.map(({ href, label }) => `<a href="${href}"${href === '/admin/orders' ? ' aria-current="page"' : ''}>${label}</a>`).join('');
+  const signOut = email
+    ? `<span class="who">Signed in as ${esc(email)}</span><form method="post" action="/admin/sign-out"><button type="submit" title="Signed in as ${esc(email)}">Sign out</button></form>`
+    : '';
+  return `<header class="bar"><a class="brand" href="/admin/catalog">Butterlu admin</a><nav class="tabs" aria-label="Admin">${tabs}</nav><div class="acts"><a href="${SITE_HOME}">View site</a>${signOut}</div></header>`;
+}
+
 function page(body: string, email: string | null): Response {
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Orders · Butterlu</title>
@@ -131,8 +141,19 @@ label{display:flex;flex-direction:column;font-size:.8rem;color:var(--muted);gap:
 input,select,textarea,button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
 button{background:var(--fg);color:var(--bg);border:0;padding:8px 16px;cursor:pointer}
 .ref{font-size:.75rem;color:var(--muted);margin:8px 0 0;word-break:break-all}
+.bar{max-width:860px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;font-size:15px}
+.bar a{color:var(--fg);text-decoration:none}.bar .brand{font-weight:700;white-space:nowrap}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;min-width:0}.tabs a{padding:6px 10px;border-radius:99px;white-space:nowrap}
+.tabs a[aria-current=page]{background:var(--card);font-weight:600}
+.acts{display:flex;align-items:center;gap:8px;margin-left:auto}.acts form{margin:0;padding:0;border:0;display:block}
+.acts .who{color:var(--muted);font-size:.85rem;white-space:nowrap}
+.acts a,.acts button{font:inherit;font-size:.9rem;border-radius:99px;padding:5px 12px;white-space:nowrap}
+.acts a{background:var(--fg);color:var(--bg);font-weight:600}.acts button{background:var(--card);color:var(--fg);border:1px solid var(--line)}
+@media (max-width:800px){.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding-bottom:0}.acts .who{display:none}
+.tabs{order:3;flex:1 0 100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px 8px}.tabs::-webkit-scrollbar{display:none}.tabs a{padding:10px 14px}}
 @media (max-width:560px){.cols{grid-template-columns:1fr}}
-</style></head><body><nav style="max-width:860px;margin:0 auto;padding:12px 16px 0;display:flex;gap:16px;font:14px system-ui,sans-serif"><a href="/admin/catalog">Templates and categories</a><a href="/admin/orders" aria-current="page">Orders</a>${email ? `<form method="post" action="/admin/sign-out" style="margin:0 0 0 auto;padding:0;border:0;display:block"><button type="submit" style="font:inherit;background:none;color:inherit;border:0;padding:0;text-decoration:underline;cursor:pointer">Sign out ${esc(email)}</button></form>` : ''}</nav><main>${body}</main></body></html>`;
+</style></head><body>${adminBar(email)}<main>${body}</main>
+<script>{const t=document.querySelector('.tabs'),c=t&&t.querySelector('[aria-current]');if(c)t.scrollLeft=Math.max(0,c.offsetLeft-t.offsetLeft-16)}</script></body></html>`;
   return new Response(html, {
     headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'x-frame-options': 'DENY' },
   });

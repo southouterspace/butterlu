@@ -4,10 +4,11 @@
 // categories, shop-by lists, SEO), a static page served only after sign-in, and
 // /api/admin/* is its JSON API (catalog-admin.ts).
 //
-// Sign-in: HTTP Basic with the ADMIN_PASSWORD secret (any user name). Fail closed:
-// without the secret, or without the ORDERS database, /admin answers 404.
-// docs/07 plans Cloudflare Access instead; that needs a domain on the account,
-// so it waits for butterlu.com.
+// Sign-in: Google, for the accounts in ADMIN_EMAILS only (admin-auth.ts), once
+// GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET and ADMIN_EMAILS are set. Until then the older
+// HTTP Basic sign-in with ADMIN_PASSWORD (any user name). Fail closed: with neither,
+// with Google half set up, or without the ORDERS database, /admin answers 404.
+import { googleGate, signInMode } from './admin-auth';
 import { handleCatalogAdmin } from './catalog-admin';
 import type { Env } from './env';
 import { listOrders, ORDER_STATUSES, parseOrderUpdate, updateOrder, type LineRow, type OrderRow } from './orders';
@@ -110,7 +111,7 @@ function orderHtml(o: OrderRow, lines: LineRow[]): string {
 </article>`;
 }
 
-function page(body: string): Response {
+function page(body: string, email: string | null): Response {
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Orders · Butterlu</title>
 <style>
@@ -131,7 +132,7 @@ input,select,textarea,button{font:inherit;color:var(--fg);background:var(--bg);b
 button{background:var(--fg);color:var(--bg);border:0;padding:8px 16px;cursor:pointer}
 .ref{font-size:.75rem;color:var(--muted);margin:8px 0 0;word-break:break-all}
 @media (max-width:560px){.cols{grid-template-columns:1fr}}
-</style></head><body><nav style="max-width:860px;margin:0 auto;padding:12px 16px 0;display:flex;gap:16px;font:14px system-ui,sans-serif"><a href="/admin/catalog">Templates and categories</a><a href="/admin/orders" aria-current="page">Orders</a></nav><main>${body}</main></body></html>`;
+</style></head><body><nav style="max-width:860px;margin:0 auto;padding:12px 16px 0;display:flex;gap:16px;font:14px system-ui,sans-serif"><a href="/admin/catalog">Templates and categories</a><a href="/admin/orders" aria-current="page">Orders</a>${email ? `<form method="post" action="/admin/sign-out" style="margin:0 0 0 auto;padding:0;border:0;display:block"><button type="submit" style="font:inherit;background:none;color:inherit;border:0;padding:0;text-decoration:underline;cursor:pointer">Sign out ${esc(email)}</button></form>` : ''}</nav><main>${body}</main></body></html>`;
   return new Response(html, {
     headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'x-frame-options': 'DENY' },
   });
@@ -143,17 +144,26 @@ const isAdminPath = (p: string) => p === '/admin' || p.startsWith('/admin/') || 
 export async function handleAdmin(request: Request, env: Env): Promise<Response | null> {
   const url = new URL(request.url);
   if (!isAdminPath(url.pathname)) return null;
-  const password = env.ADMIN_PASSWORD?.trim();
   const db = env.ORDERS;
-  if (!password || !db) return NOT_FOUND();
-  if (!(await authorized(request, password))) {
-    return new Response('Sign in to the Butterlu admin.', {
-      status: 401,
-      headers: { 'www-authenticate': 'Basic realm="Butterlu admin", charset="UTF-8"', 'cache-control': 'no-store' },
-    });
+  const auth = signInMode(env);
+  if (auth.mode === 'off' && auth.why) console.warn(`admin is off: ${auth.why}`);
+  if (auth.mode === 'off' || !db) return NOT_FOUND();
+  let who: string;
+  if (auth.mode === 'google') {
+    const gate = await googleGate(request, auth.config);
+    if (gate instanceof Response) return gate;
+    who = gate.email;
+  } else {
+    if (!(await authorized(request, env.ADMIN_PASSWORD!.trim()))) {
+      return new Response('Sign in to the Butterlu admin.', {
+        status: 401,
+        headers: { 'www-authenticate': 'Basic realm="Butterlu admin", charset="UTF-8"', 'cache-control': 'no-store' },
+      });
+    }
+    who = signedInName(request);
   }
 
-  if (url.pathname.startsWith('/api/admin/')) return handleCatalogAdmin(request, env, db, signedInName(request));
+  if (url.pathname.startsWith('/api/admin/')) return handleCatalogAdmin(request, env, db, who);
 
   if (url.pathname === '/admin' || url.pathname === '/admin/') return Response.redirect(new URL('/admin/catalog', url).toString(), 303);
 
@@ -171,12 +181,13 @@ export async function handleAdmin(request: Request, env: Env): Promise<Response 
     const orders = await listOrders(db);
     const saved = url.searchParams.get('saved') ? '<p role="status">Saved.</p>' : '';
     const list = orders.length ? orders.map(({ order, lines }) => orderHtml(order, lines)).join('') : '<p>No orders yet.</p>';
-    return page(`<h1>Orders</h1>${saved}${list}`);
+    return page(`<h1>Orders</h1>${saved}${list}`, auth.mode === 'google' ? who : null);
   }
 
   const m = /^\/admin\/orders\/(cs_[A-Za-z0-9_]{1,200})$/.exec(url.pathname);
   if (m && request.method === 'POST') {
     // Browsers resend Basic credentials to any site that posts here, so only accept our own pages.
+    // (The Google session cookie is SameSite=Lax, which blocks that too.)
     if (request.headers.get('origin') !== url.origin) return new Response('Forbidden', { status: 403 });
     const update = parseOrderUpdate(await request.formData());
     if (!update) return new Response('Bad request', { status: 400 });

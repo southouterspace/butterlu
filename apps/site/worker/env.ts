@@ -19,8 +19,15 @@ export interface Env {
   RECOVERY_EMAILS?: string;
   /** Orders database (migrations/0001_orders.sql). Stage only for now; without it orders are only logged. */
   ORDERS?: D1Database;
-  /** Password for the private order list at /admin/orders. Without it /admin is a 404. */
+  /** Older shared-password sign-in for /admin. Ignored once Google sign-in is set up. */
   ADMIN_PASSWORD?: string;
+  /** Google sign-in for /admin (admin-auth.ts): the OAuth web client's ID and secret. */
+  GOOGLE_CLIENT_ID?: string;
+  GOOGLE_CLIENT_SECRET?: string;
+  /** The Google accounts allowed into /admin, comma separated. Kept as a secret because the repo is public. */
+  ADMIN_EMAILS?: string;
+  /** Optional key for signing admin sessions; defaults to one made from GOOGLE_CLIENT_SECRET. Changing it signs everyone out. */
+  ADMIN_SESSION_SECRET?: string;
   /** Anthropic API key for Claude's SEO drafts in the store admin (docs/13). Without it the fields are hand-written only. */
   ANTHROPIC_API_KEY?: string;
   /** Model for SEO drafts. Default claude-opus-5-5. */

@@ -157,7 +157,7 @@ test('GET catalog returns the live catalog with no changes', async () => {
   expect(status).toBe(200);
   expect(body.doc.templates.length).toBe(liveCatalog().templates.length);
   expect(body.changes).toEqual([]);
-  expect(body.setup).toEqual({ claude: false, publish: false });
+  expect(body.setup).toEqual({ claude: false, publish: false, signIn: 'password' });
   expect(body.me).toBe('Asli');
 });
 

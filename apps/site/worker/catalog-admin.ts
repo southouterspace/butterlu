@@ -17,6 +17,7 @@ import {
   type TaxonomyDoc,
   type TemplateDoc,
 } from '../src/catalog/doc';
+import { signInMode } from './admin-auth';
 import type { Env } from './env';
 import { draftSeo, seoReady } from './seo-draft';
 
@@ -295,7 +296,7 @@ export async function handleCatalogAdmin(request: Request, env: Env, db: D1Datab
         liveHandles: { templates: live.templates.map((t) => t.handle), categories: live.categories.map((c) => c.handle) },
         changes,
         check: checkCatalog(doc),
-        setup: { claude: seoReady(env), publish: false },
+        setup: { claude: seoReady(env), publish: false, signIn: signInMode(env).mode },
         ...options(),
         me: by,
       });

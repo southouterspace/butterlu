@@ -103,9 +103,18 @@ export function mergeDrafts(live: CatalogDoc, rows: DraftRow[]): { doc: CatalogD
       for (const g of live.taxonomy.groups) {
         const dg = tax.groups.find((x) => x.key === g.key);
         if (!dg) tax.groups.push(structuredClone(g));
-        else for (const c of g.children) if (!dg.children.some((x) => x.key === c.key)) dg.children.push(structuredClone(c));
+        else {
+          for (const c of g.children) if (!dg.children.some((x) => x.key === c.key)) dg.children.push(structuredClone(c));
+          // A draft saved before drawings existed has no field at all: take the site's.
+          // "No drawing" saves as "", so her choice of none is kept.
+          if (dg.illustration === undefined && g.illustration) dg.illustration = g.illustration;
+        }
       }
-      for (const o of live.taxonomy.occasions) if (!tax.occasions.some((x) => x.key === o.key)) tax.occasions.push(structuredClone(o));
+      for (const o of live.taxonomy.occasions) {
+        const d = tax.occasions.find((x) => x.key === o.key);
+        if (!d) tax.occasions.push(structuredClone(o));
+        else if (d.illustration === undefined && o.illustration) d.illustration = o.illustration;
+      }
       doc.taxonomy = tax;
       changes.push({ kind: 'taxonomy', id: 'all', name: 'Shop-by lists', isNew: false, stale: stale(row, live.taxonomy), at, by });
     } else if (row.kind === 'page') {
@@ -242,6 +251,9 @@ export function categoryFrom(raw: unknown, before: CategoryDoc, by: string, now:
   };
 }
 
+/** A drawing the site has, or "" for one she cleared; anything else is left unset. */
+const illustrationFrom = (v: unknown): { illustration?: string } => (isIllustration(v) || v === '' ? { illustration: v } : {});
+
 export function taxonomyFrom(raw: unknown): TaxonomyDoc {
   const r = isRecord(raw) ? raw : {};
   const groups = Array.isArray(r.groups)
@@ -250,8 +262,7 @@ export function taxonomyFrom(raw: unknown): TaxonomyDoc {
         label: str(g.label, 60).trim(),
         collection: str(g.collection, 100),
         inMenus: g.inMenus !== false,
-        // Only a drawing the site has; anything else saves as no drawing.
-        ...(isIllustration(g.illustration) ? { illustration: g.illustration } : {}),
+        ...illustrationFrom(g.illustration),
         children: (Array.isArray(g.children) ? g.children.filter(isRecord) : []).slice(0, 20).map((c) => ({
           key: str(c.key, 60),
           label: str(c.label, 60).trim(),
@@ -264,7 +275,7 @@ export function taxonomyFrom(raw: unknown): TaxonomyDoc {
         key: str(o.key, 60),
         label: str(o.label, 60).trim(),
         ...(typeof o.collection === 'string' && o.collection ? { collection: o.collection.slice(0, 100) } : {}),
-        ...(isIllustration(o.illustration) ? { illustration: o.illustration } : {}),
+        ...illustrationFrom(o.illustration),
       }))
     : [];
   return { groups, occasions };

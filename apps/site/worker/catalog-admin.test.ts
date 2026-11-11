@@ -320,6 +320,27 @@ test('a draft is flagged when the site changes under it, and shop-by keeps what 
   expect(doc.taxonomy.occasions.some((o) => o.key === dropped.key)).toBe(true);
 });
 
+test('a shop-by draft from before card drawings takes the site\'s drawings, and "no drawing" stays chosen', async () => {
+  const live = liveCatalog();
+  const old = structuredClone(live.taxonomy);
+  for (const g of old.groups) delete g.illustration;
+  for (const o of old.occasions) delete o.illustration;
+  old.occasions[0]!.illustration = '';
+  const { doc } = mergeDrafts(live, [{ kind: 'taxonomy', id: 'all', data: JSON.stringify(old), base: null, updated_at: '2026-11-11T09:00:00Z', updated_by: 'Asli' }]);
+  expect(doc.taxonomy.groups.find((g) => g.key === 'grandparents')!.illustration).toBe('christmas');
+  expect(doc.taxonomy.occasions[0]!.illustration).toBe('');
+  expect(doc.taxonomy.occasions[1]!.illustration).toBe(live.taxonomy.occasions[1]!.illustration);
+  // A save keeps a known drawing or "", and drops a name the site has no file for.
+  const { call } = setup();
+  const tax = structuredClone(live.taxonomy);
+  tax.groups[0]!.illustration = 'not-a-drawing';
+  tax.occasions[0]!.illustration = '';
+  expect((await call('PUT', '/api/admin/taxonomy', tax)).status).toBe(200);
+  const saved = (await call('GET', '/api/admin/catalog')).body as { doc: typeof live };
+  expect(saved.doc.taxonomy.groups[0]!.illustration).toBe('christmas');
+  expect(saved.doc.taxonomy.occasions[0]!.illustration).toBe('');
+});
+
 test("a design's background size and position are kept", async () => {
   const { call } = setup();
   const t = newTemplate();

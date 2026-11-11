@@ -74,7 +74,7 @@ export interface GroupDoc {
   label: string;
   collection: string;
   inMenus: boolean;
-  /** A key from src/catalog/illustrations.ts: the drawing on its home card. */
+  /** A key from src/catalog/illustrations.ts: the drawing on its home card. "" is none, chosen. */
   illustration?: string;
   children: RecipientDoc[];
 }
@@ -83,7 +83,7 @@ export interface OccasionDoc {
   key: string;
   label: string;
   collection?: string;
-  /** A key from src/catalog/illustrations.ts: the drawing on its home card. */
+  /** A key from src/catalog/illustrations.ts: the drawing on its home card. "" is none, chosen. */
   illustration?: string;
 }
 

@@ -812,8 +812,8 @@ function drawingPicker(item: { illustration?: string }): HTMLElement {
   };
   const pick = select([{ value: '', label: 'No drawing' }, ...ILLUSTRATIONS.map((i) => ({ value: i.key, label: i.name }))], item.illustration ?? '', {
     onchange: () => {
-      if (pick.value) item.illustration = pick.value;
-      else delete item.illustration;
+      // "" keeps "no drawing" as her choice, so the site's default doesn't come back.
+      item.illustration = pick.value;
       show();
     },
   });

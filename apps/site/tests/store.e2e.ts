@@ -1,5 +1,7 @@
 import { test } from '@e2e-dev/web';
 import { expect } from 'e2e';
+import { designFromMetadata, designToMetadata } from '@butterlu/frame/design';
+import { checkCart } from '../worker/checkout';
 
 const PRODUCT = '/products/grandparent-pregnancy-announcement-frame';
 const EDITOR = `${PRODUCT}/personalize`;
@@ -229,4 +231,76 @@ test('the editor marks example names until they are swapped, and keeps a draft',
   await screen.getByRole('button', 'Start Over with Our Design').click();
   await app.open('/products/mimi-picture-frame/personalize');
   await expect(screen.getByRole('textbox', /^Bottom/)).toHaveValue('Ava, Noah and Mia');
+});
+
+// Order accuracy: on a phone, each choice in the editor reaches the cart summary and the
+// checkout request unchanged, and the server's checks and the order record keep it as is.
+test('on a phone, every choice in the editor is what the order prints', async ({ app, browser, screen }) => {
+  await browser.setViewport({ width: 390, height: 844 });
+  let posted: { items?: { handle: string; quantity: number; design: unknown }[] } | undefined;
+  await browser.route(/\/api\/checkout$/, async (route) => {
+    posted = JSON.parse(route.request.postData ?? '{}');
+    await route.fulfill({ status: 503, json: { error: 'Held by the test: nothing was charged.' } });
+  });
+  try {
+    await app.open(EDITOR);
+    await screen.getByRole('textbox', /^Top/).fill('Promoted to Nana & Pop');
+    await screen.getByRole('textbox', /^Right/).fill('Est. 2027');
+    await screen.getByRole('textbox', /^Bottom/).fill('See You in June');
+    await screen.getByRole('textbox', /^Left/).fill('Love You Already');
+    await expect(screen.getByText('See You in June')).toBeVisible();
+
+    // Shoppers tap the visible label; the radio itself is visually hidden.
+    await screen.getByText('Rounded', { exact: true }).click();
+    await expect(screen.getByRole('radio', 'Rounded')).toBeChecked();
+
+    // On a phone the backgrounds open in a sheet.
+    await screen.getByRole('button', /^Background/).click();
+    await expect(screen.getByRole('dialog', 'Background')).toBeVisible();
+    // The swatch's radio is visually hidden, so choose it the way a keyboard does.
+    await screen.getByRole('radio', 'Blue Toile').press('Space');
+    await expect(screen.getByRole('radio', 'Blue Toile')).toBeChecked();
+    await screen.getByRole('button', 'Done').click();
+    await expect(screen.getByRole('dialog', 'Background')).toBeHidden();
+
+    await screen.getByText('Background Size & Position').click();
+    await screen.getByRole('button', 'Make bigger').click();
+    await screen.getByRole('button', 'Make bigger').click();
+    await expect(screen.getByRole('slider', 'Size')).toHaveAttribute('aria-valuetext', '120 percent');
+
+    await screen.getByText('Fonts & Color').click();
+    await screen.getByRole('combobox', 'Right Font').selectOption('Montserrat');
+    await screen.getByRole('combobox', 'Text Color').selectOption('Navy');
+
+    await screen.getByRole('button', /^Add to Cart/).click();
+    await screen.getByRole('link', 'View Cart & Check Out').click();
+    await expect(screen.getByRole('heading', NAME)).toBeVisible();
+    await expect(
+      screen.getByText('Rounded frame · Blue Toile (zoomed to 120%) · Top: "Promoted to Nana & Pop" · Right: "Est. 2027" · Bottom: "See You in June" · Left: "Love You Already"'),
+    ).toBeVisible();
+
+    await screen.getByRole('button', 'Check Out').click();
+    await expect(screen.getByText('Held by the test: nothing was charged.')).toBeVisible();
+    const navy = '#1f2f4d';
+    const design = {
+      shape: 'rounded-rectangle',
+      backgroundId: 'blue-toile',
+      sides: {
+        top: { text: 'Promoted to Nana & Pop', fontId: 'great-vibes', color: navy },
+        right: { text: 'Est. 2027', fontId: 'montserrat-semibold', color: navy },
+        bottom: { text: 'See You in June', fontId: 'montserrat-semibold', color: navy },
+        left: { text: 'Love You Already', fontId: 'playfair-display-bold', color: navy },
+      },
+      backgroundFit: { scale: 1.2, x: 0, y: 0 },
+    };
+    expect(posted?.items).toEqual([{ handle: 'grandparent-pregnancy-announcement-frame', quantity: 1, design }]);
+    // The checkout Worker accepts it unchanged, and the paid order reads it back the same.
+    const checked = checkCart(posted);
+    expect(checked).toEqual({ ok: true, lines: [expect.objectContaining({ handle: 'grandparent-pregnancy-announcement-frame', quantity: 1, design })] });
+    if (!checked.ok) return;
+    expect(designFromMetadata(designToMetadata(checked.lines[0]!.design))).toEqual({ ok: true, spec: design });
+  } finally {
+    await browser.unroute(/\/api\/checkout$/);
+    await browser.setViewport({ width: 1280, height: 800 });
+  }
 });

@@ -27,6 +27,7 @@ import {
 } from '../catalog/pages';
 import { backgroundUrl, frameSvg } from '../lib/frame-svg';
 import { fontsReady, placementsInBrowser } from '../scripts/measure';
+import { ADMIN_SECTIONS, SITE_HOME } from './nav';
 
 interface CatalogResponse {
   doc: CatalogDoc;
@@ -1290,27 +1291,32 @@ function changes(): HTMLElement {
 // ---------- shell ----------
 
 function nav(route: string) {
-  const items: [string, string][] = [
-    ['#/designs', 'Designs'],
-    ['#/categories', 'Categories'],
-    ['#/shop-by', 'Shop by'],
-    ['#/pages', 'Pages'],
-    ['#/questions', 'Questions'],
-    ['#/changes', `Changes${data.changes.length ? ` (${data.changes.length})` : ''}`],
-  ];
-  return h(
-    'nav',
-    { class: 'nav', 'aria-label': 'Admin' },
-    ...items.map(([href, label]) => h('a', { href, 'aria-current': route.startsWith(href.slice(1)) ? 'page' : undefined }, label)),
-    h('a', { href: '/admin/orders' }, 'Orders'),
+  const signOut =
     data.setup.signIn === 'workos'
-      ? h(
-          'form',
-          { class: 'me', method: 'post', action: '/admin/sign-out' },
-          h('span', { class: 'hint' }, `Signed in as ${data.me} `),
-          h('button', { class: 'btn', type: 'submit' }, 'Sign out'),
-        )
-      : h('span', { class: 'hint me' }, `Signed in as ${data.me}`),
+      ? h('form', { class: 'sign-out', method: 'post', action: '/admin/sign-out' }, h('button', { class: 'btn small', type: 'submit', title: `Signed in as ${data.me}` }, 'Sign out'))
+      : null;
+  return h(
+    'header',
+    { class: 'admin-bar' },
+    h('a', { class: 'brand', href: '#/designs' }, 'Butterlu admin'),
+    h(
+      'nav',
+      { class: 'tabs', 'aria-label': 'Admin' },
+      ...ADMIN_SECTIONS.map(({ href, label }) => {
+        const hash = href.includes('#') ? href.slice(href.indexOf('#')) : null;
+        // Store-editor sections stay hash links so they switch views without a reload.
+        const current = hash !== null && route.startsWith(hash.slice(1));
+        const text = label === 'Changes' && data.changes.length ? `Changes (${data.changes.length})` : label;
+        return h('a', { href: hash ?? href, 'aria-current': current ? 'page' : undefined }, text);
+      }),
+    ),
+    h(
+      'div',
+      { class: 'actions' },
+      h('span', { class: 'hint who' }, `Signed in as ${data.me}`),
+      h('a', { class: 'btn small view-site', href: SITE_HOME }, 'View site'),
+      signOut,
+    ),
   );
 }
 
@@ -1328,6 +1334,11 @@ function render() {
   else if (route === '/changes') view = changes();
   else view = templateList();
   root.replaceChildren(nav(route), h('main', { id: 'main' }, view));
+  // On a phone the tabs scroll sideways; keep the current one in sight.
+  // Scroll only the tab row, never the page: render() also runs after a save, mid-page.
+  const tabs = root.querySelector<HTMLElement>('.tabs');
+  const current = tabs?.querySelector<HTMLElement>('[aria-current="page"]');
+  if (tabs && current) tabs.scrollLeft = Math.max(0, current.offsetLeft - tabs.offsetLeft - 16);
 }
 
 window.addEventListener('hashchange', () => {

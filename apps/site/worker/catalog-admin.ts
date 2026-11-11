@@ -1,4 +1,5 @@
-// Store admin API (docs/13): /api/admin/*. Asli's edits are saved as drafts in D1
+// Store admin API (docs/13): /api/admin/*. Asli's edits (designs, categories, shop-by
+// lists and page components) are saved as drafts in D1
 // over the live catalog (src/catalog/doc.ts); nothing here changes what the store
 // shows. Publishing writes the merged catalog to git and waits on the catalog
 // handover (docs/13 "Catalog handover").
@@ -17,6 +18,7 @@ import {
   type TaxonomyDoc,
   type TemplateDoc,
 } from '../src/catalog/doc';
+import { PAGE_KEYS, checkPage, pageFrom, type PageDoc } from '../src/catalog/pages';
 import { signInMode } from './admin-auth';
 import type { Env } from './env';
 import { draftSeo, seoReady } from './seo-draft';
@@ -43,7 +45,7 @@ export function ensureSchema(db: D1Database): Promise<unknown> {
   return p;
 }
 
-type Kind = 'template' | 'category' | 'taxonomy';
+type Kind = 'template' | 'category' | 'taxonomy' | 'page';
 interface DraftRow {
   kind: Kind;
   id: string;
@@ -105,6 +107,12 @@ export function mergeDrafts(live: CatalogDoc, rows: DraftRow[]): { doc: CatalogD
       for (const o of live.taxonomy.occasions) if (!tax.occasions.some((x) => x.key === o.key)) tax.occasions.push(structuredClone(o));
       doc.taxonomy = tax;
       changes.push({ kind: 'taxonomy', id: 'all', name: 'Shop-by lists', isNew: false, stale: stale(row, live.taxonomy), at, by });
+    } else if (row.kind === 'page') {
+      const i = doc.pages.findIndex((x) => x.key === row.id);
+      if (i < 0) continue;
+      const p = { ...(data as PageDoc), key: row.id, name: doc.pages[i]!.name };
+      doc.pages[i] = p;
+      changes.push({ kind: 'page', id: row.id, name: p.name, isNew: false, stale: stale(row, live.pages[i]), at, by });
     }
   }
   // A category lists every template filed under it: drop ones moved away, append new ones.
@@ -348,7 +356,20 @@ export async function handleCatalogAdmin(request: Request, env: Env, db: D1Datab
       return json({ ok: true, taxonomy, check: result });
     }
 
-    m = /^\/drafts\/(template|category|taxonomy)\/([a-z0-9-]{1,100})$/.exec(path);
+    m = /^\/pages\/([a-z0-9-]{1,40})$/.exec(path);
+    if (m && method === 'PUT') {
+      const { doc, live } = await loadDoc(db);
+      const before = (PAGE_KEYS as readonly string[]).includes(m[1]!) ? doc.pages.find((p) => p.key === m![1]) : undefined;
+      if (!before) return fail(404, 'no such page');
+      const page = pageFrom(await readJson(request), before);
+      // The Worker can't see which photo files exist; the build checks that, and refuses a missing one.
+      const blocking = checkPage(page);
+      if (blocking.length) return fail(422, 'Fix these first', blocking);
+      await save(db, 'page', page.key, page, live.pages.find((p) => p.key === page.key), by, now);
+      return json({ ok: true, page });
+    }
+
+    m = /^\/drafts\/(template|category|taxonomy|page)\/([a-z0-9-]{1,100})$/.exec(path);
     if (m && method === 'DELETE') {
       await ensureSchema(db);
       await db.batch([

@@ -1,0 +1,30 @@
+{
+  "$comment": "Page components (src/catalog/pages.ts, docs/13 'Pages'). Edited in the store admin; a publish rewrites this file.",
+  "pages": [
+    {
+      "key": "home",
+      "name": "Homepage",
+      "sections": [
+        {
+          "type": "hero-image",
+          "id": "hero-image-1",
+          "heading": "Butterlu Gifts",
+          "text": "Personalized picture frames for the people you love. Add their names and your words, and see it before you buy.",
+          "image": { "file": "", "alt": "" },
+          "button": { "label": "Shop All Frames", "href": "/collections/all" },
+          "secondary": { "label": "Personalize Our Best Seller", "href": "/products/grandparent-pregnancy-announcement-frame/personalize" }
+        },
+        {
+          "type": "value-props",
+          "id": "value-props-1",
+          "heading": "",
+          "items": [
+            { "icon": "heart", "title": "Made for Them", "text": "Grandma, a godmother, a new baby and more." },
+            { "icon": "pen-line", "title": "Your Design", "text": "Make every detail yours, start to finish." },
+            { "icon": "gift", "title": "Ready to Give", "text": "Add a 4x6 photo. Free shipping in the US." }
+          ]
+        }
+      ]
+    }
+  ]
+}

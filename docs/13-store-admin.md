@@ -29,6 +29,14 @@ approves. Each background's scale on a frame must be adjustable with proper cont
    template's preset through `parseDesign`, so the scale field is kept as soon as the frame
    code knows it, and the editor gets the control then.
 5. **Orders.** The existing order list stays, in the same admin.
+6. **Pages (page components).** Asked for by Justin (thread "Rebuild homepage hero as
+   admin components", 2026-11-11). The top of the homepage is a list of components she
+   adds, edits, reorders and removes under Pages in the admin. Two types so far: **Hero
+   Image** (a big photo with the page's heading, a line of text and up to two buttons) and
+   **Value Props** (short reasons to buy, three columns on a computer, stacked on a phone).
+   Until a photo is picked the hero shows the image placeholder on stage (Justin) and the
+   words alone in production. The rest of the homepage (who it's for, the two frames, most
+   loved designs) stays fixed under the components for now.
 
 ## How it works
 
@@ -57,6 +65,15 @@ approves. Each background's scale on a frame must be adjustable with proper cont
   live modules), `src/catalog/check.ts` (the rules), `worker/catalog-admin.ts` (the
   `/api/admin/*` API and the D1 drafts), `worker/seo-draft.ts` (Claude), and
   `src/pages/admin/catalog.astro` with `src/admin/app.ts` (the editor at `/admin/catalog`).
+- **Pages.** `src/catalog/pages.ts` holds the component types, the cleaning of a saved
+  body and the checks; `src/catalog/pages.json` is what the build draws, through
+  `src/components/sections/` (`PageSections`, `HeroImage`, `ValueProps`). The admin saves a
+  page as a draft of kind `page` (`PUT /api/admin/pages/home`), and the page is part of the
+  catalog document a publish writes. The build runs the same checks and also refuses a
+  photo file that isn't under `src/assets/media/`. Photos still go in by hand there (no
+  upload yet); the editor's photo picker lists what the build has. A new component type
+  needs its shape and checks in `pages.ts`, a component in `src/components/sections/`, and
+  an editor in `src/admin/app.ts`.
 - **Label rule (Justin, 2026-11-11).** Store labels are always Title Case and use "&" for
   "and", as in "Baptisms & Christenings". `toLabel` in `check.ts` applies it; the editor
   fixes design names, category names and shop-by labels as she leaves a field, and the

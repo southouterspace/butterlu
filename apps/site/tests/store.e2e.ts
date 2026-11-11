@@ -15,18 +15,31 @@ test('the home page lists frames that link to their pages', async ({ app, screen
   await expect(screen.getByRole('link', new RegExp(NAME)).first()).toBeVisible();
 });
 
-test('the home page leads with the best seller, ready to personalize or add as shown', async ({ app, browser, screen }) => {
+test('the home page opens with a hero image, its buttons, and three value props', async ({ app, browser, screen }) => {
   await browser.setViewport({ width: 390, height: 844 });
   await app.open('/');
-  await expect(screen.getByText('Best Seller', { exact: true })).toBeVisible();
-  await expect(screen.getByRole('link', `Personalize: ${NAME}`).first()).toHaveAttribute('href', `${EDITOR}`);
+  await expect(screen.getByRole('heading', 'Butterlu Gifts')).toBeVisible();
+  await expect(screen.getByRole('link', 'Shop All Frames').first()).toHaveAttribute('href', '/collections/all');
+  await expect(screen.getByRole('link', 'Personalize Our Best Seller')).toHaveAttribute('href', EDITOR);
+  // Value props stack on a phone and sit side by side from md up.
+  const tops = () =>
+    browser.evaluate(() => [...document.querySelectorAll('[data-section="value-props"] li')].map((el) => Math.round(el.getBoundingClientRect().top)));
+  const phone = await tops();
+  expect(phone).toHaveLength(3);
+  expect(new Set(phone).size).toBe(3);
+  await browser.setViewport({ width: 1280, height: 900 });
+  expect(new Set(await tops()).size).toBe(1);
+  await browser.setViewport({ width: 390, height: 844 });
+  // Every card still adds as shown.
   await screen.getByRole('button', `Add to Cart: ${NAME}, as shown`).first().click();
   await expect(screen.getByText('Added to your cart', { exact: true })).toBeVisible();
-  // Empty photo slots: placeholders on stage and previews only, never in production,
-  // where an empty slot (and a photo row with no photos) isn't shown at all.
+  // Empty photo slots, the hero's included: placeholders on stage and previews only,
+  // never in production, where an empty slot (and a photo row with no photos) isn't shown at all.
   const placeholders = () => browser.evaluate(() => [...document.querySelectorAll('[data-placeholder]')].map((el) => el.getAttribute('aria-hidden')));
+  const heroPlaceholder = () => browser.evaluate(() => !!document.querySelector('[data-section="hero-image"] [data-placeholder]'));
   if (process.env.BUTTERLU_PLACEHOLDERS === '1') {
     await expect(screen.getByRole('heading', 'In their home')).toBeVisible();
+    expect(await heroPlaceholder()).toBe(true);
     expect((await placeholders()).every((a) => a === 'true')).toBe(true);
   } else {
     expect(await placeholders()).toEqual([]);

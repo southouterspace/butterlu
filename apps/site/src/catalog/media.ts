@@ -69,3 +69,14 @@ export function productMedia(handle: string): ProductMedia[] {
 export function homeMedia(): Extract<ProductMedia, { kind: 'photo' }>[] {
   return HOME_MEDIA.slice(0, HOME_PHOTO_SLOTS).map((e) => ({ kind: 'photo', image: image(e.file), alt: e.alt }));
 }
+
+/** Every photo under src/assets/media/, as the path a page component names it by (e.g. "home/01-mantel.jpg"). */
+export const PHOTO_FILES: readonly string[] = Object.keys(files)
+  .map((k) => k.replace('../assets/media/', ''))
+  .filter((f) => !/-poster\.[a-z]+$/i.test(f))
+  .sort();
+
+/** One photo by its path under src/assets/media/; a missing file fails the build. */
+export function photo(file: string): ImageMetadata {
+  return image(file);
+}

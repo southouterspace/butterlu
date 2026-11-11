@@ -1,5 +1,5 @@
 // Store admin (docs/13): Asli's editor for ready-made designs ("templates"), category
-// pages and the shop-by lists, with Claude-drafted SEO she approves. Talks to
+// pages, the shop-by lists and page components (the homepage's Hero Image, Value Props), with Claude-drafted SEO she approves. Talks to
 // /api/admin/* (worker/catalog-admin.ts). Every edit saves as a draft over the live
 // catalog; nothing here changes the store until a publish.
 //
@@ -8,6 +8,20 @@
 import { BACKGROUND_SCALE, SHAPE_IDS, SIDES, type FrameSpec, type Side } from '@butterlu/frame';
 import { SEO_LABELS, SEO_LIMITS, TITLE_SUFFIX, checkTemplate, slugify, toLabel, type SeoKey } from '../catalog/check';
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from '../catalog/doc';
+import {
+  LIMITS,
+  MAX_SECTIONS,
+  MAX_VALUE_PROPS,
+  SECTION_TYPES,
+  VALUE_PROP_ICONS,
+  newSection,
+  type HeroImageSection,
+  type PageDoc,
+  type SectionDoc,
+  type SectionType,
+  type ValuePropIcon,
+  type ValuePropsSection,
+} from '../catalog/pages';
 import { backgroundUrl, frameSvg } from '../lib/frame-svg';
 import { fontsReady, placementsInBrowser } from '../scripts/measure';
 
@@ -928,11 +942,242 @@ function shopBy(): HTMLElement {
   );
 }
 
+// ---------- pages (page components) ----------
+
+const ICON_LABEL: Record<ValuePropIcon, string> = {
+  heart: 'Heart', 'pen-line': 'Pen', gift: 'Gift', truck: 'Truck', clock: 'Clock', check: 'Check mark', frame: 'Frame', image: 'Picture', 'shopping-bag': 'Shopping bag',
+};
+
+/** The photos the build has (src/assets/media/), listed into the page at build time. */
+function photoFiles(): string[] {
+  try {
+    return JSON.parse(document.getElementById('photo-files')?.textContent ?? '[]') as string[];
+  } catch {
+    return [];
+  }
+}
+
+function pageList(): HTMLElement {
+  const changed = new Set(data.changes.filter((c) => c.kind === 'page').map((c) => c.id));
+  return h(
+    'section',
+    {},
+    h('div', { class: 'toolbar' }, h('h1', {}, 'Pages')),
+    h('p', { class: 'hint' }, 'Pages built from components you add, edit and put in order.'),
+    h(
+      'ul',
+      { class: 'list' },
+      ...data.doc.pages.map((p) =>
+        h('li', {}, h('a', { href: `#/pages/${p.key}` }, p.name), h('span', { class: 'hint' }, ` ${p.sections.length} components`), changed.has(p.key) ? h('span', { class: 'badge warn' }, 'Edited') : null),
+      ),
+    ),
+  );
+}
+
+function pageEditor(key: string): HTMLElement {
+  const existing = data.doc.pages.find((p) => p.key === key);
+  if (!existing) return h('p', {}, 'That page was not found. ', h('a', { href: '#/pages' }, 'Back'));
+  const page: PageDoc = structuredClone(existing);
+  const photos = photoFiles();
+  const box = h('div', {});
+
+  const text = (value: string, max: number, set: (v: string) => void, attrs: Attrs = {}) => {
+    const el = input(value, { maxlength: max, ...attrs });
+    el.addEventListener('input', () => set(el.value));
+    return el;
+  };
+  const area = (value: string, max: number, set: (v: string) => void) => {
+    const el = textarea(value, { maxlength: max, rows: 2 });
+    el.addEventListener('input', () => set(el.value));
+    return el;
+  };
+  const move = <T>(arr: T[], i: number, d: number) => {
+    const j = i + d;
+    if (j < 0 || j >= arr.length) return;
+    [arr[i], arr[j]] = [arr[j]!, arr[i]!];
+    paint();
+  };
+  const label = (s: SectionDoc) => SECTION_TYPES.find((t) => t.type === s.type)?.label ?? s.type;
+
+  function heroFields(s: HeroImageSection): HTMLElement[] {
+    const pick = select([{ value: '', label: 'No photo yet (shows the image placeholder)' }, ...photos.map((f) => ({ value: f, label: f }))], s.image.file, {
+      onchange: () => {
+        s.image.file = pick.value;
+        paint();
+      },
+    });
+    return [
+      field('Heading', text(s.heading, LIMITS.heading, (v) => (s.heading = v)), 'The first Hero Image heading is the page’s main heading.'),
+      field('Text', area(s.text, LIMITS.text, (v) => (s.text = v))),
+      field('Photo', pick, photos.length ? undefined : 'No photos are on the site yet. Until one is, the store shows an image placeholder here.'),
+      s.image.file ? field('Describe the photo', text(s.image.alt, LIMITS.alt, (v) => (s.image.alt = v)), 'For people who can’t see it, for example "Grandma frame on a mantel".') : null,
+      h(
+        'div',
+        { class: 'row' },
+        field('Button', text(s.button.label, LIMITS.buttonLabel, (v) => (s.button.label = v))),
+        field('Button opens', text(s.button.href, LIMITS.href, (v) => (s.button.href = v), { placeholder: '/collections/all' })),
+      ),
+      h(
+        'div',
+        { class: 'row' },
+        field('Second button (optional)', text(s.secondary.label, LIMITS.buttonLabel, (v) => (s.secondary.label = v))),
+        field('Second button opens', text(s.secondary.href, LIMITS.href, (v) => (s.secondary.href = v), { placeholder: '/products/…' })),
+      ),
+    ].filter((x): x is HTMLElement => !!x);
+  }
+
+  function propsFields(s: ValuePropsSection): HTMLElement[] {
+    return [
+      field('Heading (optional)', text(s.heading, LIMITS.heading, (v) => (s.heading = v))),
+      h(
+        'ul',
+        { class: 'list' },
+        ...s.items.map((it, i) => {
+          const icon = select(VALUE_PROP_ICONS.map((v) => ({ value: v, label: ICON_LABEL[v] })), it.icon, { onchange: () => (it.icon = icon.value as ValuePropIcon) });
+          return h(
+            'li',
+            { class: 'row' },
+            field('Icon', icon),
+            field(`Title ${i + 1}`, text(it.title, LIMITS.propTitle, (v) => (it.title = v))),
+            field('Text', text(it.text, LIMITS.propText, (v) => (it.text = v))),
+            h(
+              'span',
+              { class: 'row' },
+              h('button', { type: 'button', class: 'btn', 'aria-label': `Move ${it.title || `value prop ${i + 1}`} left`, disabled: i === 0, onclick: () => move(s.items, i, -1) }, '←'),
+              h('button', { type: 'button', class: 'btn', 'aria-label': `Move ${it.title || `value prop ${i + 1}`} right`, disabled: i === s.items.length - 1, onclick: () => move(s.items, i, 1) }, '→'),
+              h('button', { type: 'button', class: 'btn', onclick: () => (s.items.splice(i, 1), paint()) }, 'Remove'),
+            ),
+          );
+        }),
+      ),
+      s.items.length < MAX_VALUE_PROPS
+        ? h('button', { type: 'button', class: 'btn', onclick: () => (s.items.push({ icon: 'check', title: '', text: '' }), paint()) }, 'Add a value prop')
+        : h('p', { class: 'hint' }, `${MAX_VALUE_PROPS} at most.`),
+      h('p', { class: 'hint' }, 'Three show side by side on a computer and stack on a phone.'),
+    ];
+  }
+
+  const addType = select(SECTION_TYPES.map((t) => ({ value: t.type, label: t.label })), SECTION_TYPES[0]!.type);
+  const addHint = h('p', { class: 'hint' }, SECTION_TYPES[0]!.hint);
+  addType.addEventListener('change', () => (addHint.textContent = SECTION_TYPES.find((t) => t.type === addType.value)?.hint ?? ''));
+
+  function paint() {
+    box.replaceChildren(
+      ...page.sections.map((s, i) =>
+        h(
+          'fieldset',
+          { class: 'card-box', 'data-section': s.type },
+          h('legend', {}, `${i + 1}. ${label(s)}`),
+          h(
+            'div',
+            { class: 'row', style: 'justify-content:flex-end;margin-bottom:8px' },
+            h('button', { type: 'button', class: 'btn', 'aria-label': `Move ${label(s)} ${i + 1} up`, disabled: i === 0, onclick: () => move(page.sections, i, -1) }, '↑'),
+            h('button', { type: 'button', class: 'btn', 'aria-label': `Move ${label(s)} ${i + 1} down`, disabled: i === page.sections.length - 1, onclick: () => move(page.sections, i, 1) }, '↓'),
+            h(
+              'button',
+              {
+                type: 'button',
+                class: 'btn',
+                onclick: () => {
+                  if (!confirm(`Remove this ${label(s)}?`)) return;
+                  page.sections.splice(i, 1);
+                  paint();
+                },
+              },
+              'Remove',
+            ),
+          ),
+          ...(s.type === 'hero-image' ? heroFields(s) : propsFields(s)),
+        ),
+      ),
+      page.sections.length < MAX_SECTIONS
+        ? h(
+            'fieldset',
+            { class: 'card-box' },
+            h('legend', {}, 'Add a component'),
+            h(
+              'div',
+              { class: 'row' },
+              field('Component', addType),
+              h(
+                'button',
+                {
+                  type: 'button',
+                  class: 'btn',
+                  onclick: () => {
+                    page.sections.push(newSection(addType.value as SectionType, page.sections.map((x) => x.id)));
+                    paint();
+                    box.lastElementChild?.previousElementSibling?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                  },
+                },
+                'Add',
+              ),
+            ),
+            addHint,
+          )
+        : h('p', { class: 'hint' }, `${MAX_SECTIONS} components at most.`),
+    );
+  }
+  paint();
+
+  const saveBtn = h('button', { type: 'button', class: 'btn primary' }, 'Save changes');
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true;
+    try {
+      await api(`/pages/${page.key}`, { method: 'PUT', body: JSON.stringify(page) });
+      await reload();
+      toast('Saved. It goes on the site with the next publish.');
+      render();
+    } catch (e) {
+      toast((e as Error).message, 'bad');
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+  const changed = data.changes.some((x) => x.kind === 'page' && x.id === page.key);
+  const staleNote = data.changes.some((x) => x.kind === 'page' && x.id === page.key && x.stale) ? h('p', { class: 'error' }, STALE) : null;
+  return h(
+    'section',
+    { class: 'editor' },
+    h('p', {}, h('a', { href: '#/pages' }, '← All pages')),
+    staleNote,
+    h(
+      'div',
+      { class: 'toolbar' },
+      h('h1', {}, page.name),
+      h(
+        'div',
+        { class: 'row' },
+        changed
+          ? h(
+              'button',
+              {
+                type: 'button',
+                class: 'btn',
+                onclick: async () => {
+                  if (!confirm('Throw away your edits and go back to what the site shows?')) return;
+                  await api(`/drafts/page/${page.key}`, { method: 'DELETE' });
+                  await reload();
+                  render();
+                },
+              },
+              'Undo my edits',
+            )
+          : null,
+        saveBtn,
+      ),
+    ),
+    h('p', { class: 'hint' }, key === 'home' ? 'These show at the top of the homepage, in this order. The rest of the homepage (who it’s for, the two frames, most loved designs) follows them.' : 'Shown top to bottom, in this order.'),
+    box,
+  );
+}
+
 // ---------- changes ----------
 
 function changes(): HTMLElement {
   const when = (iso: string) => new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso));
-  const link = (c: CatalogResponse['changes'][number]) => (c.kind === 'template' ? `#/designs/${c.id}` : c.kind === 'category' ? `#/categories/${c.id}` : '#/shop-by');
+  const link = (c: CatalogResponse['changes'][number]) =>
+    c.kind === 'template' ? `#/designs/${c.id}` : c.kind === 'category' ? `#/categories/${c.id}` : c.kind === 'page' ? `#/pages/${c.id}` : '#/shop-by';
   return h(
     'section',
     {},
@@ -963,6 +1208,7 @@ function nav(route: string) {
     ['#/designs', 'Designs'],
     ['#/categories', 'Categories'],
     ['#/shop-by', 'Shop by'],
+    ['#/pages', 'Pages'],
     ['#/changes', `Changes${data.changes.length ? ` (${data.changes.length})` : ''}`],
   ];
   return h(
@@ -989,6 +1235,8 @@ function render() {
   else if ((m = /^\/categories\/([a-z0-9-]+)$/.exec(route))) view = categoryEditor(m[1]!);
   else if (route === '/categories') view = categoryList();
   else if (route === '/shop-by') view = shopBy();
+  else if ((m = /^\/pages\/([a-z0-9-]+)$/.exec(route))) view = pageEditor(m[1]!);
+  else if (route === '/pages') view = pageList();
   else if (route === '/changes') view = changes();
   else view = templateList();
   root.replaceChildren(nav(route), h('main', { id: 'main' }, view));

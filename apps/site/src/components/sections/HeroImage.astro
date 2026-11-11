@@ -1,0 +1,49 @@
+---
+// Page component: a big picture with the page's heading over it (src/catalog/pages.ts).
+// Phones stack the picture over the words; from md up the words sit on a card over the
+// picture's lower left, in the same grid cell, so long words grow the hero rather than spill. Until a photo is picked, stage shows the image placeholder
+// (Justin, 2026-11-11) and production shows the words alone.
+import { Picture } from 'astro:assets';
+import ImagePlaceholder from '../media/ImagePlaceholder.astro';
+import { photo } from '../../catalog/media';
+import type { HeroImageSection } from '../../catalog/pages';
+import { SHOW_PLACEHOLDERS } from '../../lib/placeholders';
+import { buttonVariants, cn } from '../ui/variants';
+
+interface Props {
+  section: HeroImageSection;
+  /** The first hero on a page carries its h1 and loads its photo first. */
+  first: boolean;
+}
+const { section: s, first } = Astro.props;
+const img = s.image.file ? photo(s.image.file) : null;
+const hasPicture = !!img || SHOW_PLACEHOLDERS;
+const Heading = first ? 'h1' : 'h2';
+---
+<section class="relative md:grid" data-section="hero-image" aria-labelledby={`${s.id}-heading`}>
+  {img ? (
+    <Picture
+      src={img}
+      alt={s.image.alt}
+      formats={['avif', 'webp']}
+      widths={[...[480, 768, 1152, 1536, 2048].filter((w) => w < img.width), Math.min(img.width, 2560)]}
+      sizes="(min-width: 72rem) 72rem, 100vw"
+      loading={first ? 'eager' : 'lazy'}
+      fetchpriority={first ? 'high' : 'auto'}
+      decoding="async"
+      class="aspect-[4/3] w-full rounded-4xl object-cover md:[grid-area:1/1] md:aspect-[21/9] md:h-full"
+    />
+  ) : SHOW_PLACEHOLDERS ? (
+    <ImagePlaceholder ratio="21 / 9" class="rounded-4xl md:[grid-area:1/1]" iconClass="size-10" />
+  ) : null}
+  <div class={cn('relative', hasPicture ? 'mt-5 md:[grid-area:1/1] md:m-6 md:mt-6 md:max-w-md md:self-end md:justify-self-start md:rounded-3xl md:bg-background/95 md:p-6 md:shadow-sm' : 'max-w-2xl py-6 md:py-12')}>
+    <Heading id={`${s.id}-heading`} class="text-3xl md:text-5xl">{s.heading}</Heading>
+    {s.text && <p class="mt-2 text-lg text-muted-foreground">{s.text}</p>}
+    <div class="mt-5 flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      <a class={cn(buttonVariants({ size: 'lg' }), 'w-full sm:w-auto')} href={s.button.href}>{s.button.label}</a>
+      {s.secondary.label && s.secondary.href && (
+        <a class={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'w-full sm:w-auto')} href={s.secondary.href}>{s.secondary.label}</a>
+      )}
+    </div>
+  </div>
+</section>

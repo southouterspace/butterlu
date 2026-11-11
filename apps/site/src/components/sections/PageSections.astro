@@ -1,0 +1,21 @@
+---
+// Draws a page's components top to bottom (src/catalog/pages.ts). The build refuses a
+// page that fails the admin's own checks, so a bad publish can't ship.
+import { PHOTO_FILES } from '../../catalog/media';
+import { checkPage, type PageDoc } from '../../catalog/pages';
+import HeroImage from './HeroImage.astro';
+import ValueProps from './ValueProps.astro';
+
+interface Props {
+  page: PageDoc;
+}
+const { page } = Astro.props;
+const errors = checkPage(page, new Set(PHOTO_FILES));
+if (errors.length) throw new Error(`pages.json: ${errors.join('; ')}`);
+const firstHero = page.sections.find((s) => s.type === 'hero-image')?.id;
+---
+<div class="flex flex-col gap-8 md:gap-10">
+  {page.sections.map((s) =>
+    s.type === 'hero-image' ? <HeroImage section={s} first={s.id === firstHero} /> : <ValueProps section={s} />,
+  )}
+</div>

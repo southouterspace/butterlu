@@ -3,6 +3,7 @@
 // lint-dist applies to the rendered pages, so a publish that passes here builds.
 import { parseDesign } from '@butterlu/frame/design';
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from './doc';
+import { checkPage } from './pages';
 
 /** " | Butterlu" is added to every page title; lint-dist allows 60 characters in all. */
 export const TITLE_SUFFIX = ' | Butterlu';
@@ -188,6 +189,7 @@ export function checkCatalog(doc: CatalogDoc): CheckResult {
     if (o.collection && !categoryHandles.has(o.collection)) errors.push(`${o.label}: opens unknown category "${o.collection}"`);
   }
   errors.push(...checkTaxonomyLabels(doc.taxonomy));
+  for (const p of doc.pages ?? []) errors.push(...checkPage(p));
   // Titles that compete with each other in search.
   const titles = new Map<string, string>();
   for (const [name, f] of [...doc.templates.filter((t) => t.status === 'live').map((t) => [t.name, t.seo.seoTitle] as const), ...doc.categories.map((c) => [c.name, c.seo.seoTitle] as const)]) {

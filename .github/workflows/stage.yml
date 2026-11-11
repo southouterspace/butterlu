@@ -62,7 +62,6 @@ jobs:
       # mirrors are down, apt fails the whole step, so fall back to the browser alone.
       - run: bunx e2e-web install chromium --with-deps || bunx e2e-web install chromium
         working-directory: apps/site
-        timeout-minutes: 12
       - id: deploy
         name: Validate, deploy, e2e-test stage
         working-directory: apps/site

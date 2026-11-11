@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { PDFDocument } from 'pdf-lib';
-import { type FrameSpec, SHAPES, type ShapeId, type Side, type SideText, safeZone } from '../src/index';
+import { type FrameSpec, SHAPES, type ShapeId, type Side, type SideText, backgroundRect, safeZone } from '../src/index';
 import { inkMeasure, renderPdf, textOutline } from '../src/pdf';
 
 const here = path.dirname(new URL(import.meta.url).pathname);
@@ -95,6 +95,39 @@ describe('renderPdf', () => {
         expect(page.width / 72).toBeCloseTo(SHAPES[shape].widthIn + 2 * bleedIn, 6);
         expect(page.height / 72).toBeCloseTo(SHAPES[shape].heightIn + 2 * bleedIn, 6);
       }
+    }
+  });
+
+  test('the background prints where backgroundRect puts it, zoomed and moved as chosen', async () => {
+    // A 170 × 220 px sheet with a black square at px 60–110 across, 80–140 down.
+    const marked = new Uint8Array(fs.readFileSync(path.join(here, 'fixtures/marked-sheet.jpg')));
+    for (const [shape, fit] of [
+      ['rounded-rectangle', undefined],
+      ['scalloped', { scale: 1.6, x: 0.5, y: 0.1 }],
+      ['scalloped', { scale: 1.3, x: 0.6, y: -0.05 }],
+    ] as const) {
+      const spec: FrameSpec = { shape, backgroundId: 'white-linen', sides: {}, ...(fit ? { backgroundFit: fit } : {}) };
+      const ink = inkBounds((await renderPdf(spec, { background: marked, fonts }, { variant: 'print', bleedIn: BLEED })).bytes);
+      const r = backgroundRect(shape, fit, { w: 170, h: 220 });
+      const tolerance = 3 / DPI;
+      // Mirrored print: flip x back into frame coordinates.
+      expect(Math.abs(ink.pageW - ink.maxX - BLEED - (r.x + (60 / 170) * r.w))).toBeLessThan(tolerance);
+      expect(Math.abs(ink.pageW - ink.minX - BLEED - (r.x + (110 / 170) * r.w))).toBeLessThan(tolerance);
+      expect(Math.abs(ink.minY - BLEED - (r.y + (80 / 220) * r.h))).toBeLessThan(tolerance);
+      expect(Math.abs(ink.maxY - BLEED - (r.y + (140 / 220) * r.h))).toBeLessThan(tolerance);
+    }
+  });
+
+  test('a bleed wider than the default is still covered by the background', async () => {
+    const black = new Uint8Array(fs.readFileSync(path.join(here, 'fixtures/black.jpg')));
+    for (const backgroundFit of [undefined, { scale: 1.5, x: -1, y: 1 }]) {
+      const spec: FrameSpec = { shape: 'scalloped', backgroundId: 'white-linen', sides: {}, ...(backgroundFit ? { backgroundFit } : {}) };
+      const ink = inkBounds((await renderPdf(spec, { background: black, fonts }, { variant: 'print', bleedIn: 0.3 })).bytes);
+      // Black to every edge of the page.
+      expect(ink.minX).toBeLessThan(1 / DPI);
+      expect(ink.minY).toBeLessThan(1 / DPI);
+      expect(ink.pageW - ink.maxX).toBeLessThan(1 / DPI);
+      expect(ink.maxY).toBeGreaterThan(SHAPES.scalloped.heightIn + 0.6 - 1 / DPI);
     }
   });
 

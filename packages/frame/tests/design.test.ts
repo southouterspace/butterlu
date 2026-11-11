@@ -45,6 +45,47 @@ describe('parseDesign', () => {
   });
 });
 
+describe('background fit', () => {
+  test('is optional, and the default is left off', () => {
+    const r = parseDesign({ ...good, backgroundFit: { scale: 1, x: 0, y: 0 } });
+    expect(r.ok && r.spec.backgroundFit).toBe(undefined);
+  });
+
+  test('is rounded to hundredths, and an axis with no room to move is centred', () => {
+    const r = parseDesign({ ...good, backgroundFit: { scale: 1.2345, x: 0.4567, y: -0.333333 } });
+    expect(r.ok && r.spec.backgroundFit).toEqual({ scale: 1.23, x: 0.46, y: -0.33 });
+    // At scale 1 the sheet exactly fills the frame's width, so x can't change the print.
+    const flat = parseDesign({ ...good, backgroundFit: { scale: 1, x: 0.8, y: 0.5 } });
+    expect(flat.ok && flat.spec.backgroundFit).toEqual({ scale: 1, x: 0, y: 0.5 });
+  });
+
+  test('refuses values out of range or not numbers', () => {
+    for (const backgroundFit of [{ scale: 0.5 }, { scale: 2.5 }, { scale: 1.5, x: 1.2 }, { scale: '2' }, { scale: 1.5, y: Number.NaN }, 'big']) {
+      expect(parseDesign({ ...good, backgroundFit }).ok).toBe(false);
+    }
+  });
+
+  test('rides through Stripe metadata and changes the cart key', () => {
+    const r = parseDesign({ ...good, backgroundFit: { scale: 1.5, x: -0.25, y: 0.75 } });
+    if (!r.ok) throw new Error(r.errors.join(', '));
+    const meta = designToMetadata(r.spec);
+    expect(meta.frame_fit).toBe('{"scale":1.5,"x":-0.25,"y":0.75}');
+    expect(designFromMetadata(meta)).toEqual({ ok: true, spec: r.spec });
+    const plain = parseDesign(good);
+    if (!plain.ok) throw new Error();
+    expect(designKey(plain.spec)).not.toBe(designKey(r.spec));
+    expect(designFromMetadata({ ...meta, frame_fit: '{"scale":' }).ok).toBe(false);
+  });
+
+  test('describeDesign says how the background was zoomed and moved', () => {
+    const r = parseDesign({ ...good, backgroundFit: { scale: 1.5, x: -0.25, y: -0.5 } });
+    if (!r.ok) throw new Error();
+    expect(describeDesign(r.spec)).toBe(
+      'Scalloped frame · Blue Toile (zoomed to 150%, toward the top left) · Top: "Promoted to Grandparents" · Bottom: "Est. 2027"',
+    );
+  });
+});
+
 describe('Stripe metadata round trip', () => {
   test('a design survives encode and decode, and fits Stripe limits', () => {
     const r = parseDesign({

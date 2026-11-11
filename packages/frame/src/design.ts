@@ -3,6 +3,8 @@
 // No photo travels with it: the frame ships empty and the buyer adds their own.
 import {
   BACKGROUNDS,
+  BACKGROUND_SCALE,
+  type BackgroundFit,
   FONT_IDS,
   type FrameSpec,
   type HexColor,
@@ -15,6 +17,7 @@ import {
   type Side,
   type SideText,
   backgroundById,
+  backgroundSlack,
 } from './index';
 
 /** Longest line the customizer accepts. Fitting shrinks long lines; this stops absurd ones. */
@@ -60,6 +63,39 @@ function parseSide(side: Side, raw: unknown, errors: string[]): SideText | undef
   return out;
 }
 
+const round2 = (v: number) => Math.round(v * 100) / 100;
+
+/**
+ * A background fit, rounded to hundredths so identical choices merge in the cart.
+ * Returns undefined for the default (scale 1, centred), which a spec leaves off.
+ * An axis the zoom leaves no room on is centred, since it can't change the print.
+ */
+export function parseFit(raw: unknown, shape: ShapeId | undefined, errors: string[] = []): BackgroundFit | undefined {
+  if (raw === undefined || raw === null) return undefined;
+  if (!isRecord(raw)) {
+    errors.push('backgroundFit: expected an object with scale, x and y');
+    return undefined;
+  }
+  const num = (k: 'scale' | 'x' | 'y', lo: number, hi: number, fallback: number) => {
+    const v = raw[k] ?? fallback;
+    if (typeof v !== 'number' || !Number.isFinite(v) || v < lo - 1e-9 || v > hi + 1e-9) {
+      errors.push(`backgroundFit: ${k} must be a number from ${lo} to ${hi}`);
+      return fallback;
+    }
+    return round2(v);
+  };
+  const scale = num('scale', BACKGROUND_SCALE.min, BACKGROUND_SCALE.max, 1);
+  let x = num('x', -1, 1, 0);
+  let y = num('y', -1, 1, 0);
+  if (shape) {
+    const slack = backgroundSlack(shape, scale);
+    if (slack.x < 1e-6) x = 0;
+    if (slack.y < 1e-6) y = 0;
+  }
+  if (scale === 1 && x === 0 && y === 0) return undefined;
+  return { scale, x: x || 0, y: y || 0 };
+}
+
 /**
  * Checks a design from an untrusted source and returns it normalised: whitespace
  * collapsed, empty sides dropped, colours lower-cased. At least one side must
@@ -69,7 +105,9 @@ export function parseDesign(input: unknown): DesignResult {
   const errors: string[] = [];
   if (!isRecord(input)) return { ok: false, errors: ['design must be an object'] };
   const { shape, backgroundId, sides } = input;
-  if (typeof shape !== 'string' || !SHAPE_IDS.includes(shape as ShapeId)) errors.push(`unknown shape ${JSON.stringify(shape)}`);
+  const shapeOk = typeof shape === 'string' && SHAPE_IDS.includes(shape as ShapeId);
+  if (!shapeOk) errors.push(`unknown shape ${JSON.stringify(shape)}`);
+  const fit = parseFit(input.backgroundFit, shapeOk ? (shape as ShapeId) : undefined, errors);
   if (typeof backgroundId !== 'string' || !backgroundById(backgroundId)) errors.push(`unknown background ${JSON.stringify(backgroundId)}`);
   const clean: FrameSpec['sides'] = {};
   if (!isRecord(sides)) {
@@ -83,16 +121,19 @@ export function parseDesign(input: unknown): DesignResult {
     if (errors.length === 0 && Object.keys(clean).length === 0) errors.push('give text for at least one side');
   }
   if (errors.length > 0) return { ok: false, errors };
-  return { ok: true, spec: { shape: shape as ShapeId, backgroundId: backgroundId as FrameSpec['backgroundId'], sides: clean } };
+  const spec: FrameSpec = { shape: shape as ShapeId, backgroundId: backgroundId as FrameSpec['backgroundId'], sides: clean };
+  if (fit) spec.backgroundFit = fit;
+  return { ok: true, spec };
 }
 
 /** One stable string per design, so the cart can merge identical lines. */
 export function designKey(spec: FrameSpec): string {
-  return JSON.stringify([spec.shape, spec.backgroundId, ...SIDES.map((s) => spec.sides[s] ?? null)]);
+  const f = spec.backgroundFit;
+  return JSON.stringify([spec.shape, spec.backgroundId, ...SIDES.map((s) => spec.sides[s] ?? null), f ? [f.scale, f.x, f.y] : null]);
 }
 
 // Stripe metadata holds at most 50 keys of 500 characters. A design is at most
-// six keys of well under 500, so it rides on the line item's product with no
+// seven keys of well under 500, so it rides on the line item's product with no
 // database row in between.
 const META_PREFIX = 'frame_';
 
@@ -102,6 +143,7 @@ export function designToMetadata(spec: FrameSpec): Record<string, string> {
     const st = spec.sides[side];
     if (st) meta[`${META_PREFIX}${side}`] = JSON.stringify(st);
   }
+  if (spec.backgroundFit) meta[`${META_PREFIX}fit`] = JSON.stringify(spec.backgroundFit);
   return meta;
 }
 
@@ -116,7 +158,16 @@ export function designFromMetadata(meta: Record<string, string | undefined>): De
       return { ok: false, errors: [`${side}: metadata is not JSON`] };
     }
   }
-  return parseDesign({ shape: meta[`${META_PREFIX}shape`], backgroundId: meta[`${META_PREFIX}background`], sides });
+  let backgroundFit: unknown;
+  const fitRaw = meta[`${META_PREFIX}fit`];
+  if (fitRaw !== undefined) {
+    try {
+      backgroundFit = JSON.parse(fitRaw);
+    } catch {
+      return { ok: false, errors: ['fit: metadata is not JSON'] };
+    }
+  }
+  return parseDesign({ shape: meta[`${META_PREFIX}shape`], backgroundId: meta[`${META_PREFIX}background`], sides, backgroundFit });
 }
 
 const SIDE_LABEL: Record<Side, string> = { top: 'Top', right: 'Right', bottom: 'Bottom', left: 'Left' };
@@ -126,7 +177,16 @@ export function describeDesign(spec: FrameSpec): string {
   const shape = spec.shape === 'scalloped' ? 'Scalloped' : 'Rounded';
   const background = backgroundById(spec.backgroundId)?.name ?? spec.backgroundId;
   const words = SIDES.flatMap((s) => (spec.sides[s] ? [`${SIDE_LABEL[s]}: "${spec.sides[s]!.text}"`] : []));
-  return [`${shape} frame`, background, ...words].join(' · ');
+  const fit = spec.backgroundFit ? describeFit(spec.backgroundFit) : null;
+  return [`${shape} frame`, fit ? `${background} (${fit})` : background, ...words].join(' · ');
+}
+
+/** "zoomed to 150%, toward the top left", or "centered" for the default. */
+export function describeFit(fit: BackgroundFit): string {
+  const toward = (v: number, lo: string, hi: string) => (Math.abs(v) < 0.005 ? '' : v < 0 ? lo : hi);
+  const where = [toward(fit.y, 'top', 'bottom'), toward(fit.x, 'left', 'right')].filter(Boolean).join(' ');
+  const parts = [fit.scale !== 1 ? `zoomed to ${Math.round(fit.scale * 100)}%` : '', where ? `toward the ${where}` : ''].filter(Boolean);
+  return parts.length ? parts.join(', ') : 'centered';
 }
 
 export { BACKGROUNDS, SHAPES, SIDES, SIDE_LABEL };

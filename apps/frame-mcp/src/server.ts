@@ -1,5 +1,7 @@
 import {
   BACKGROUNDS,
+  BACKGROUND_SCALE,
+  BACKGROUND_SHEET_IN,
   DEFAULT_MAX_PT,
   DEFAULT_MIN_PT,
   type FrameSpec,
@@ -40,9 +42,19 @@ const sideText = z.object({
   maxPt: z.number().min(6).max(144).optional().describe(`Largest size to use, in points. Default ${DEFAULT_MAX_PT}.`),
 });
 
+const backgroundFit = z
+  .object({
+    scale: z.number().min(BACKGROUND_SCALE.min).max(BACKGROUND_SCALE.max).describe(`Zoom, ${BACKGROUND_SCALE.min} (the sheet just covers the frame) to ${BACKGROUND_SCALE.max}.`),
+    x: z.number().min(-1).max(1).default(0).describe('Which part of the sheet shows across: -1 its left edge, 0 the middle, 1 its right edge.'),
+    y: z.number().min(-1).max(1).default(0).describe('Which part of the sheet shows down: -1 its top edge, 0 the middle, 1 its bottom edge.'),
+  })
+  .optional()
+  .describe("How the customer zoomed and moved the background. Pass plan_site_order's spec.backgroundFit unchanged; leave it off for the default (scale 1, centred).");
+
 const renderInput = {
   shape: oneOf(SHAPE_IDS, 'shape'),
   backgroundId: oneOf(BACKGROUND_IDS, 'background'),
+  backgroundFit,
   sides: z
     .object({ top: sideText.optional(), right: sideText.optional(), bottom: sideText.optional(), left: sideText.optional() })
     .refine((s) => Object.values(s).some(Boolean), 'Give text for at least one side.'),
@@ -63,7 +75,7 @@ export function createServer(env: Env) {
     'list_options',
     {
       description:
-        'Everything render_frame accepts: frame shapes with their text safe zones (inches, from the top-left), backgrounds with their default text colour, fonts, sides and rotations.',
+        'Everything render_frame accepts: frame shapes with their text safe zones (inches, from the top-left), backgrounds with their default text colour, the background zoom and position range, fonts, sides and rotations.',
     },
     async () =>
       json({
@@ -74,6 +86,7 @@ export function createServer(env: Env) {
           safeZones: Object.fromEntries(SIDES.map((side) => [side, { ...safeZone(id, side), defaultRotation: defaultRotation(side) }])),
         })),
         backgrounds: BACKGROUNDS,
+        backgroundFit: { scale: BACKGROUND_SCALE, x: { min: -1, max: 1 }, y: { min: -1, max: 1 }, sheetIn: BACKGROUND_SHEET_IN },
         fonts: FONTS.map(({ id, name, style, weight, placeholder }) => ({ id, name, style, weight, placeholder })),
         sides: SIDES,
         rotations: ROTATIONS,
@@ -160,7 +173,7 @@ export function createServer(env: Env) {
     'plan_site_order',
     {
       description:
-        "Turn one butterlu.com order line into render_frame input. Pass the metadata of the line item's Stripe product exactly as Stripe returns it (keys frame_shape, frame_background, frame_top, frame_right, frame_bottom, frame_left). The customer built this design in the site's customizer with the same shapes, backgrounds, fonts and safe zones, so unlike an Etsy order it needs no guessing. Returns the spec to pass to render_frame, a one-line summary for the order, and anything a person should check before printing.",
+        "Turn one butterlu.com order line into render_frame input. Pass the metadata of the line item's Stripe product exactly as Stripe returns it (keys frame_shape, frame_background, frame_top, frame_right, frame_bottom, frame_left, and frame_fit when the customer zoomed or moved the background). The customer built this design in the site's customizer with the same shapes, backgrounds, fonts and safe zones, so unlike an Etsy order it needs no guessing. Returns the spec to pass to render_frame unchanged (backgroundFit included), a one-line summary for the order, and anything a person should check before printing.",
       inputSchema: {
         metadata: z.record(z.string(), z.string()).describe("The Stripe product's metadata for this line item."),
       },

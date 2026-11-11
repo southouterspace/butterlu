@@ -167,6 +167,25 @@ try {
   assert.equal(JSON.parse(site.text).spec.sides.top.text, 'Promoted to Grandparents');
   console.log('ok plan_site_order turns Stripe metadata into a render_frame spec');
 
+  // A site customer's zoom rides from Stripe metadata through plan_site_order into render_frame.
+  const zoomed = await callTool('plan_site_order', {
+    metadata: {
+      frame_shape: 'scalloped',
+      frame_background: 'blue-toile',
+      frame_top: JSON.stringify({ text: 'Promoted to Grandparents', fontId: 'great-vibes' }),
+      frame_fit: JSON.stringify({ scale: 1.5, x: -0.25, y: 0.5 }),
+    },
+  });
+  assert.ok(!zoomed.isError, zoomed.text);
+  const zoomedPlan = JSON.parse(zoomed.text);
+  assert.deepEqual(zoomedPlan.spec.backgroundFit, { scale: 1.5, x: -0.25, y: 0.5 });
+  assert.match(zoomedPlan.summary, /zoomed to 150%/);
+  const zoomedRender = await callTool('render_frame', { ...zoomedPlan.spec, label: 'Site zoom check' });
+  assert.ok(!zoomedRender.isError, zoomedRender.text);
+  const tooBig = await callTool('render_frame', { ...zoomedPlan.spec, backgroundFit: { scale: 3, x: 0, y: 0 } });
+  assert.ok(tooBig.isError, 'a zoom past the maximum must be refused');
+  console.log('ok a background zoom from the site renders, and one past the maximum is refused');
+
   execFileSync('pdftoppm', ['-png', '-r', '100', '-singlefile', files.proof, path.join(args.out, 'proof')]);
   console.log(`proof PNG for inspection: ${path.join(args.out, 'proof.png')}`);
 } finally {

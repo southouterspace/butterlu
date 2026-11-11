@@ -35,10 +35,24 @@ export interface SideText {
   maxPt?: number;
 }
 
+/**
+ * How the background sits on the frame. Leave it off for the default: the sheet
+ * at its smallest (just covering the frame and its bleed), centred.
+ */
+export interface BackgroundFit {
+  /** 1 is the smallest the sheet can be and still cover the frame; 2 is twice that. */
+  scale: number;
+  /** Which part of the sheet shows, -1 to 1: -1 its left edge, 0 the middle, 1 its right edge. */
+  x: number;
+  /** Which part of the sheet shows, -1 to 1: -1 its top edge, 0 the middle, 1 its bottom edge. */
+  y: number;
+}
+
 export interface FrameSpec {
   shape: ShapeId;
   backgroundId: BackgroundId;
   sides: Partial<Record<Side, SideText>>;
+  backgroundFit?: BackgroundFit;
 }
 
 /** Frame-local inches, origin at the frame's top-left, y down. */
@@ -77,6 +91,18 @@ export const CORNER_INSET_IN = 0.25;
 export const DEFAULT_MAX_PT = 48;
 export const DEFAULT_MIN_PT = 14;
 export const PT_PER_IN = 72;
+/** Background printed past the cut edge on every side. */
+export const DEFAULT_BLEED_IN = 0.125;
+
+/** Every background is an 8.5 × 11 in sheet (2550 × 3300 px at 300 dpi). */
+export const BACKGROUND_SHEET_IN = { w: 8.5, h: 11 } as const;
+/**
+ * Zoom range for a background. It can't go below 1, because the sheet would no
+ * longer cover the frame. At 2 a 300 dpi sheet prints at 150 dpi, about as soft
+ * as a sublimation print should get.
+ */
+export const BACKGROUND_SCALE = { min: 1, max: 2, step: 0.05 } as const;
+export const DEFAULT_BACKGROUND_FIT: BackgroundFit = { scale: 1, x: 0, y: 0 };
 
 interface SideRule {
   defaultRotation: Rotation;
@@ -107,6 +133,39 @@ export function safeZone(shape: ShapeId, side: Side): Zone {
 
 export function defaultRotation(side: Side): Rotation {
   return SIDE_RULES[side].defaultRotation;
+}
+
+const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
+
+/**
+ * Where the background image goes, in frame-local inches. The print file, the
+ * site's preview and the product images all draw it here, so what the shopper
+ * sees is what prints. At scale 1 the image just covers the frame plus
+ * DEFAULT_BLEED_IN; zooming in grows it about the point x, y picks.
+ * `image` is the image's size in any unit (only its aspect counts).
+ */
+export function backgroundRect(shape: ShapeId, fit: BackgroundFit = DEFAULT_BACKGROUND_FIT, image: { w: number; h: number } = BACKGROUND_SHEET_IN): Zone {
+  const s = SHAPES[shape];
+  const b = DEFAULT_BLEED_IN;
+  const boxW = s.widthIn + 2 * b;
+  const boxH = s.heightIn + 2 * b;
+  const scale = clamp(fit.scale, BACKGROUND_SCALE.min, BACKGROUND_SCALE.max);
+  const k = Math.max(boxW / image.w, boxH / image.h) * scale;
+  const w = image.w * k;
+  const h = image.h * k;
+  return {
+    x: -b - ((w - boxW) * (1 + clamp(fit.x, -1, 1))) / 2,
+    y: -b - ((h - boxH) * (1 + clamp(fit.y, -1, 1))) / 2,
+    w,
+    h,
+  };
+}
+
+/** How far the background can move each way at this scale, in inches. 0 means that axis has nothing to show beyond the frame. */
+export function backgroundSlack(shape: ShapeId, scale: number, image: { w: number; h: number } = BACKGROUND_SHEET_IN): { x: number; y: number } {
+  const r = backgroundRect(shape, { scale, x: 0, y: 0 }, image);
+  const s = SHAPES[shape];
+  return { x: r.w - (s.widthIn + 2 * DEFAULT_BLEED_IN), y: r.h - (s.heightIn + 2 * DEFAULT_BLEED_IN) };
 }
 
 export function backgroundById(id: string) {

@@ -9,14 +9,17 @@ import {
   rgb,
 } from 'pdf-lib';
 import {
+  DEFAULT_BLEED_IN,
   type FrameSpec,
   type HexColor,
   type InkBox,
   type MeasureInk,
   type Placement,
+  type Zone,
   PT_PER_IN,
   SHAPES,
   SIDES,
+  backgroundRect,
   layoutFrame,
   safeZone,
 } from './index';
@@ -41,7 +44,7 @@ export interface Rendered {
   pageSizeIn: { w: number; h: number };
 }
 
-export const DEFAULT_BLEED_IN = 0.125;
+export { DEFAULT_BLEED_IN };
 
 /**
  * Ink measure from a font file, using the same fontkit build pdf-lib embeds with.
@@ -106,6 +109,25 @@ const toRgb = (hex: HexColor) => {
 };
 
 /**
+ * backgroundRect covers DEFAULT_BLEED_IN. A render asked for a wider bleed grows
+ * the image about the frame's centre just enough to cover it, so no edge prints
+ * blank. At the default bleed this returns the rectangle unchanged.
+ */
+function coverBleed(r: Zone, shape: { widthIn: number; heightIn: number }, bleedIn: number): Zone {
+  const cx = shape.widthIn / 2;
+  const cy = shape.heightIn / 2;
+  const f = Math.max(
+    1,
+    (cx + bleedIn) / (cx - r.x),
+    (cx + bleedIn) / (r.x + r.w - cx),
+    (cy + bleedIn) / (cy - r.y),
+    (cy + bleedIn) / (r.y + r.h - cy),
+  );
+  if (f === 1) return r;
+  return { x: cx - (cx - r.x) * f, y: cy - (cy - r.y) * f, w: r.w * f, h: r.h * f };
+}
+
+/**
  * The print variant is mirrored for sublimation transfer and carries no guides.
  * The proof is unmirrored, with the cut line, a masked opening and the safe zones.
  */
@@ -134,14 +156,11 @@ export async function renderPdf(spec: FrameSpec, assets: RenderAssets, { variant
 
   if (variant === 'print') page.pushOperators(pushGraphicsState(), concatTransformationMatrix(-1, 0, 0, 1, pw, 0));
 
+  // The same rectangle the site's preview draws, so the customer's zoom and
+  // position print as they saw them. It covers the frame plus DEFAULT_BLEED_IN.
   const img = await doc.embedJpg(assets.background);
-  const cover = Math.max(pw / img.width, ph / img.height);
-  page.drawImage(img, {
-    x: (pw - img.width * cover) / 2,
-    y: (ph - img.height * cover) / 2,
-    width: img.width * cover,
-    height: img.height * cover,
-  });
+  const bg = coverBleed(backgroundRect(spec.shape, spec.backgroundFit, { w: img.width, h: img.height }), shape, bleedIn);
+  page.drawImage(img, { ...toPage(bg.x, bg.y + bg.h), width: bg.w * PT_PER_IN, height: bg.h * PT_PER_IN });
 
   if (variant === 'proof') {
     const o = toPage(0, 0);

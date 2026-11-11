@@ -3,7 +3,7 @@ import Layout from '../Layout.astro';
 import FrameChoice from '../components/FrameChoice.astro';
 import ProductCard from '../components/ProductCard.astro';
 import { FEATURED, SHOP, productByHandle } from '../catalog/products';
-import { OCCASIONS, RECIPIENT_GROUPS, groupCount, groupHref, occasionHref, recipientHref } from '../catalog/taxonomy';
+import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from '../catalog/taxonomy';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
 import { buttonVariants, cn } from '../components/ui/variants';
@@ -39,10 +39,9 @@ const jsonLd = [
   <section aria-labelledby="for-who" class="mt-14">
     <h2 id="for-who" class="mb-4 text-xl md:text-2xl">Who is it for?</h2>
     <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
-      {RECIPIENT_GROUPS.map((g) => (
+      {MENU_GROUPS.map((g) => (
         <li class="rounded-4xl bg-muted/60 p-4 sm:p-5">
           <a class="text-base font-medium text-foreground no-underline hover:underline" href={groupHref(g)}>{g.label}</a>
-          <p class="mt-0.5 text-sm text-muted-foreground">{groupCount(g)} {groupCount(g) === 1 ? 'design' : 'designs'}</p>
           {g.children.length > 1 && (
             <ul class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm">{g.children.map((r) => <li><a class="text-muted-foreground underline-offset-4 hover:text-foreground" href={recipientHref(r)}>{r.label}</a></li>)}</ul>
           )}

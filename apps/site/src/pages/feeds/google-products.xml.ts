@@ -28,7 +28,7 @@ export const GET: APIRoute = ({ site }) => {
       tag('identifier_exists', 'no'),
       tag('google_product_category', 'Home & Garden > Decor > Picture Frames'),
       // The shop's own tree, frame first, then who it's for (docs/12 §4c).
-      tag('product_type', ['Picture Frames', frameFor(p).name, tagsFor(p)?.group.label, tagsFor(p)?.for.label].filter(Boolean).join(' > ')),
+      tag('product_type', [...new Set(['Picture Frames', frameFor(p).name, tagsFor(p)?.group.label, tagsFor(p)?.for.label].filter(Boolean))].join(' > ')),
       tag('material', 'Wood and glass'),
       tag('is_bundle', 'no'),
       // Made to order: the handling time matches SHOP.dispatch. Transit time is set in

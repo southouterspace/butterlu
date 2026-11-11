@@ -139,9 +139,12 @@ Shoppers browse an organized tree instead of one long list of designs. The sourc
 contradicts its category.
 
 - **Who it's for** (first menu): Grandparents (Grandma, Grandpa, Both grandparents,
-  Great-grandparents), Godparents (Godmother, Godfather, Both godparents), Weddings
-  (Parents of the couple, The couple), Aunts and uncles, New baby, Pets. Each group opens
-  its existing category page; a person opens it filtered (`?for=grandma`).
+  Great-grandparents), Godparents (Godmother, Godfather, Both godparents), Parents of
+  the bride or groom, Aunts and uncles, New baby, Pet memorial gifts (Asli's labels,
+  2026-11-11). Each group opens its existing category page; a person opens it filtered
+  (`?for=grandma`). Parents of the bride or groom share the wedding page with couple
+  frames, so that link opens it filtered. Couple frames sit under the Wedding and
+  Engagement occasions only, in a group kept out of the menus.
 - **Occasion** (second menu): only occasions with a design. Pregnancy announcements,
   Baptisms, Weddings and Pet memorials open the category page that holds those designs (the
   build checks each tagged design is on it); the rest open Shop all filtered (`?occasion=christmas`). Pet memorials becomes
@@ -202,3 +205,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | 2026-11-08 (stage only) | Two products, many designs (§4b): frame pages, designs as variants with wording ideas, category hubs, one price, feed grouped by frame. | all products and collections |
 | 2026-11-08 (stage only) | Price set by the owner: $39 with free US shipping for both frames and every design (was $35.95 proposed). Product pages, checkout and the Shopping feed read the one constant. | all products, feed |
 | 2026-11-08 (stage only) | Shop-by taxonomy (§4c): who-it's-for and occasion menus, filter chips on categories, home page block, design-page links, feed product_type. No new indexed URLs. | all pages, feed |
+| 2026-11-11 (stage only) | Asli's menu labels (§4c): Pets renamed Pet memorial gifts; Weddings leaves Who it's for and stays an occasion; Parents of the bride or groom becomes its own group. Feed product_type follows; home tiles drop their design counts (owner). No new indexed URLs. | menus, home, feed |

@@ -50,6 +50,8 @@ export interface RecipientGroup {
   /** The category page this group opens. Its designs must all be in it. */
   collection: string;
   children: Recipient[];
+  /** False keeps the group out of the Who it's for menus, home tiles and Shop all chips. */
+  inMenus?: boolean;
 }
 
 export interface Occasion {
@@ -82,19 +84,31 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
       { key: 'both-godparents', label: 'Both godparents' },
     ],
   },
+  // Asli's taxonomy (2026-11-11): weddings are an occasion, and the parents of the couple
+  // are who the gift is for. The two share the wedding page, so these links open it
+  // filtered to the group.
   {
-    key: 'weddings',
-    label: 'Weddings',
+    key: 'wedding-parents',
+    label: 'Parents of the bride or groom',
     collection: 'wedding-thank-you-frames',
-    children: [
-      { key: 'parents-of-the-couple', label: 'Parents of the couple' },
-      { key: 'couple', label: 'The couple' },
-    ],
+    children: [{ key: 'parents-of-the-couple', label: 'Parents of the bride or groom' }],
   },
   { key: 'aunts-and-uncles', label: 'Aunts and uncles', collection: 'aunt-uncle-frames', children: [{ key: 'aunt-uncle', label: 'Aunt and uncle' }] },
   { key: 'new-baby', label: 'New baby', collection: 'baby-frames', children: [{ key: 'baby', label: 'Babies and parents-to-be' }] },
-  { key: 'pets', label: 'Pets', collection: 'pet-loss-memorial', children: [{ key: 'pet', label: 'Dogs and cats' }] },
+  { key: 'pets', label: 'Pet memorial gifts', collection: 'pet-loss-memorial', children: [{ key: 'pet', label: 'Dogs and cats' }] },
+  // Couple frames are found under the Wedding and Engagement occasions, not in Who it's
+  // for. The group stays so the wedding page can still split parents from couples.
+  {
+    key: 'couples',
+    label: 'Couples',
+    collection: 'wedding-thank-you-frames',
+    children: [{ key: 'couple', label: 'The couple' }],
+    inMenus: false,
+  },
 ];
+
+/** The groups shoppers see under Who it's for. */
+export const MENU_GROUPS = RECIPIENT_GROUPS.filter((g) => g.inMenus !== false);
 
 /** Menu order. Only occasions with at least one design are shown anywhere. */
 const ALL_OCCASIONS: Occasion[] = [
@@ -181,6 +195,13 @@ export function tagsFor(p: Product): Tags | undefined {
       keys.add(k);
     }
   }
+  // A group that shares its page opens it filtered to its one person, so it needs
+  // exactly one person, with designs, on a page that also holds another group's.
+  for (const g of RECIPIENT_GROUPS) {
+    if (!RECIPIENT_GROUPS.some((o) => o !== g && o.collection === g.collection)) continue;
+    if (g.children.length !== 1) throw new Error(`taxonomy: ${g.key} shares ${g.collection}, so it must have exactly one person`);
+    if (!Object.values(TAGS).some((t) => t.for === g.children[0]!.key)) throw new Error(`taxonomy: ${g.key} shares ${g.collection} but has no designs`);
+  }
   for (const o of ALL_OCCASIONS) if (o.collection && !collectionHandles.has(o.collection)) throw new Error(`taxonomy: ${o.key} opens unknown collection ${o.collection}`);
   const designHandles = new Set(DESIGNS.map((p) => p.handle));
   for (const h of Object.keys(TAGS)) if (!designHandles.has(h)) throw new Error(`taxonomy: tags for unknown design "${h}"`);
@@ -199,24 +220,26 @@ export function tagsFor(p: Product): Tags | undefined {
 /** Occasions with at least one design, in menu order. */
 export const OCCASIONS: Occasion[] = ALL_OCCASIONS.filter((o) => DESIGNS.some((p) => TAGS[p.handle]!.occasions.includes(o.key)));
 
-export const groupHref = (g: RecipientGroup) => `/collections/${g.collection}`;
-/** A person in a group of one opens the group's page; it has nothing to filter. */
+/** A group that shares its page with another opens it filtered to its one person. */
+const sharesPage = (g: RecipientGroup) => RECIPIENT_GROUPS.some((o) => o !== g && o.collection === g.collection);
+export const groupHref = (g: RecipientGroup) =>
+  sharesPage(g) ? `/collections/${g.collection}?for=${g.children[0]!.key}` : `/collections/${g.collection}`;
+/** A person in a group of one opens the group's link: its page, filtered only when shared. */
 export const recipientHref = (r: Recipient) => {
   const g = groupOf.get(r.key)!;
-  return g.children.length > 1 ? `${groupHref(g)}?for=${r.key}` : groupHref(g);
+  return g.children.length > 1 ? `/collections/${g.collection}?for=${r.key}` : groupHref(g);
 };
 export const occasionHref = (o: Occasion) => (o.collection ? `/collections/${o.collection}` : `/collections/all?occasion=${o.key}`);
 
 /** Designs a link opens, so a design page doesn't link to a view of only itself. */
 export const recipientCount = (r: Recipient) => {
   const g = groupOf.get(r.key)!;
-  return g.children.length > 1 ? DESIGNS.filter((p) => TAGS[p.handle]!.for === r.key).length : collectionProducts(g.collection).length;
+  return g.children.length > 1 || sharesPage(g)
+    ? DESIGNS.filter((p) => TAGS[p.handle]!.for === r.key).length
+    : collectionProducts(g.collection).length;
 };
 export const occasionCount = (o: Occasion) =>
   o.collection ? collectionProducts(o.collection).length : DESIGNS.filter((p) => TAGS[p.handle]!.occasions.includes(o.key)).length;
-
-/** Designs on the page a group opens, for the home page tiles. */
-export const groupCount = (g: RecipientGroup) => collectionProducts(g.collection).length;
 
 export interface Facet {
   /** URL parameter. */
@@ -237,7 +260,7 @@ export function facetsFor(products: Product[], level: 'group' | 'recipient'): Fa
       .filter((o) => o.count > 0);
   const forOptions =
     level === 'group'
-      ? count(RECIPIENT_GROUPS, (t) => [t.group], (g) => g.key, (g) => g.label)
+      ? count(MENU_GROUPS, (t) => [t.group], (g) => g.key, (g) => g.label)
       : count(RECIPIENT_GROUPS.flatMap((g) => g.children), (t) => [t.for], (r) => r.key, (r) => r.label);
   const facets: Facet[] = [
     { param: 'for', label: 'Who it’s for', options: forOptions },

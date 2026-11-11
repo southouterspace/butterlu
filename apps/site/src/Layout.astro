@@ -1,6 +1,6 @@
 ---
 import { COLLECTIONS, FRAMES } from './catalog/products';
-import { OCCASIONS, RECIPIENT_GROUPS, groupHref, occasionHref, recipientHref } from './catalog/taxonomy';
+import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from './catalog/taxonomy';
 import Icon from './components/ui/Icon.astro';
 import { badgeVariants, buttonVariants, cn } from './components/ui/variants';
 import './styles/global.css';
@@ -100,7 +100,7 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
     <nav id="menu-for" popover class="shop-panel" aria-labelledby="menu-for-title">
       <p id="menu-for-title" class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Who it’s for</p>
       <ul class="grid gap-x-6 gap-y-5 sm:grid-cols-3">
-        {RECIPIENT_GROUPS.map((g) => (
+        {MENU_GROUPS.map((g) => (
           <li>
             <a class={cn(menuLink, 'font-medium')} href={groupHref(g)} aria-current={current(groupHref(g))}>{g.label}</a>
             {g.children.length > 1 && (
@@ -136,7 +136,7 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
         <details open class="menu-section">
           <summary>Who it’s for <Icon name="chevron-down" class="size-4" /></summary>
           <ul class="grid gap-0.5 pb-2">
-            {RECIPIENT_GROUPS.map((g) => (
+            {MENU_GROUPS.map((g) => (
               <li>
                 <a class="flex h-10 items-center rounded-2xl px-3 text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted" href={groupHref(g)} aria-current={current(groupHref(g))}>{g.label}</a>
                 {g.children.length > 1 && (

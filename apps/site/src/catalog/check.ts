@@ -3,6 +3,7 @@
 // lint-dist applies to the rendered pages, so a publish that passes here builds.
 import { parseDesign } from '@butterlu/frame/design';
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from './doc';
+import { checkPage, checkQuestions } from './pages';
 
 /** " | Butterlu" is added to every page title; lint-dist allows 60 characters in all. */
 export const TITLE_SUFFIX = ' | Butterlu';
@@ -148,7 +149,6 @@ export function checkCategory(c: CategoryDoc, templates: TemplateDoc[]): CheckRe
   checkLabel(where, 'the name', c.name, errors);
   if (c.intro.length > 400) errors.push(`${where}: the intro is 400 characters at most`);
   else if (c.intro.length > 200) warnings.push(`${where}: the intro is long; keep it to a sentence or two`);
-  for (const [q, a] of c.faq) if (!q?.trim() || !a?.trim()) errors.push(`${where}: every FAQ needs a question and an answer`);
   const handles = new Set(templates.map((t) => t.handle));
   for (const h of c.order) if (!handles.has(h)) errors.push(`${where}: lists unknown template "${h}"`);
   checkSeo(where, 'seoTitle', c.seo.seoTitle, errors, warnings, true);
@@ -188,6 +188,8 @@ export function checkCatalog(doc: CatalogDoc): CheckResult {
     if (o.collection && !categoryHandles.has(o.collection)) errors.push(`${o.label}: opens unknown category "${o.collection}"`);
   }
   errors.push(...checkTaxonomyLabels(doc.taxonomy));
+  for (const p of doc.pages ?? []) errors.push(...checkPage(p));
+  if (doc.questions) errors.push(...checkQuestions(doc.questions));
   // Titles that compete with each other in search.
   const titles = new Map<string, string>();
   for (const [name, f] of [...doc.templates.filter((t) => t.status === 'live').map((t) => [t.name, t.seo.seoTitle] as const), ...doc.categories.map((c) => [c.name, c.seo.seoTitle] as const)]) {

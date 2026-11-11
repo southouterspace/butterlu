@@ -1,0 +1,27 @@
+---
+// Page component: short reasons to buy (src/catalog/pages.ts), three columns from md
+// up and stacked on phones, each a shadcn Item with a lucide icon.
+import type { ValuePropsSection } from '../../catalog/pages';
+import Icon from '../ui/Icon.astro';
+import { cn, itemClass, itemContentClass, itemDescriptionClass, itemMediaIconClass, itemTitleClass } from '../ui/variants';
+
+interface Props {
+  section: ValuePropsSection;
+}
+const { section: s } = Astro.props;
+const headingId = `${s.id}-heading`;
+---
+<section data-section="value-props" aria-labelledby={s.heading ? headingId : undefined} aria-label={s.heading ? undefined : 'Why Butterlu'}>
+  {s.heading && <h2 id={headingId} class="mb-4 text-xl md:text-2xl">{s.heading}</h2>}
+  <ul class={cn('grid gap-3 md:gap-4', s.items.length >= 3 ? 'md:grid-cols-3' : s.items.length === 2 ? 'md:grid-cols-2' : '')}>
+    {s.items.map((p) => (
+      <li class={cn(itemClass, 'bg-muted/60 p-4 md:flex-col md:items-start')}>
+        <span class={itemMediaIconClass}><Icon name={p.icon} /></span>
+        <span class={itemContentClass}>
+          <span class={itemTitleClass}>{p.title}</span>
+          {p.text && <span class={itemDescriptionClass}>{p.text}</span>}
+        </span>
+      </li>
+    ))}
+  </ul>
+</section>

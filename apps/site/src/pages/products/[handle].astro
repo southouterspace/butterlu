@@ -1,8 +1,8 @@
 ---
 import Layout from '../../Layout.astro';
 import ProductCard from '../../components/ProductCard.astro';
+import Questions from '../../components/sections/Questions.astro';
 import { getImage } from 'astro:assets';
-import { productFaq } from '../../catalog/copy';
 import { productMedia } from '../../catalog/media';
 import { asShownNote } from '../../catalog/example-names';
 import FrameChoice from '../../components/FrameChoice.astro';
@@ -39,7 +39,6 @@ const photos = await Promise.all(
 );
 const rendered = { src: `/products/${product.handle}.jpg`, width: 1200, height: 1200 };
 const images = [...photos.map((p) => ({ src: p.src, width: Number(p.attributes.width), height: Number(p.attributes.height) })), rendered];
-const faq = productFaq(product.handle);
 // The page sells the design as shown and hands changes to its own editor screen
 // (/products/<handle>/personalize), so photos, questions and, later, reviews have room
 // here. Both buttons sit side by side, Personalize first on every design: "anything can
@@ -129,15 +128,6 @@ const jsonLd = [
         : [{ '@type': 'ListItem', position: 2, name: product.name, item: url }]),
     ],
   },
-  ...(faq.length
-    ? [
-        {
-          '@context': 'https://schema.org',
-          '@type': 'FAQPage',
-          mainEntity: faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
-        },
-      ]
-    : []),
 ];
 ---
 <Layout title={`${product.seoTitle} | Butterlu`} description={product.seoDescription} jsonLd={jsonLd} ogType="product" image={{ ...images[0]!, alt: product.name }}>
@@ -214,12 +204,7 @@ const jsonLd = [
     <ul class="grid list-disc gap-1.5 pl-5 text-muted-foreground">{product.goodFor.map((g) => <li>{g}</li>)}</ul>
   </section>
 
-  {faq.length > 0 && (
-    <section aria-labelledby="faq" class="prose mt-12 border-t pt-8">
-      <h2 id="faq">Questions</h2>
-      {faq.map(([q, a]) => (<><h3>{q}</h3><p>{a}</p></>))}
-    </section>
-  )}
+  <Questions heading="Questions" class="mt-12 border-t pt-8" />
 
   {related.length > 0 && (
     <section aria-labelledby="related" class="mt-12">

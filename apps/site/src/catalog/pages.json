@@ -1,0 +1,43 @@
+{
+  "$comment": "Page components and the shared questions (src/catalog/pages.ts, docs/13 'Pages'). Edited in the store admin; a publish rewrites this file.",
+  "pages": [
+    {
+      "key": "home",
+      "name": "Homepage",
+      "sections": [
+        {
+          "type": "hero-image",
+          "id": "hero-image-1",
+          "heading": "Butterlu Gifts",
+          "text": "Personalized picture frames for the people you love. Add their names and your words, and see it before you buy.",
+          "image": { "file": "", "alt": "" },
+          "button": { "label": "Shop All Frames", "href": "/collections/all" },
+          "secondary": { "label": "Personalize Our Best Seller", "href": "/products/grandparent-pregnancy-announcement-frame/personalize" }
+        },
+        {
+          "type": "value-props",
+          "id": "value-props-1",
+          "heading": "",
+          "items": [
+            { "icon": "heart", "title": "Made for Them", "text": "Grandma, a godmother, a new baby and more." },
+            { "icon": "pen-line", "title": "Your Design", "text": "Make every detail yours, start to finish." },
+            { "icon": "gift", "title": "Ready to Give", "text": "Add a 4x6 photo. Free shipping in the US." }
+          ]
+        }
+      ]
+    }
+  ],
+  "questions": [
+    ["Will I see a proof before you make it?", "The preview on each design is your proof. It’s drawn from the same layout and fonts we print from, so the words, colors and spacing you see are what arrives. Check names, spelling and dates there before you add it to your cart, because we print exactly what it shows."],
+    ["I spotted a mistake after ordering. Can I fix it?", "Yes, if you’re quick. Reply to your order receipt with the change, and we can update the wording until your frame goes to print."],
+    ["When will it arrive?", "Made to order and shipped within 3 to 5 business days, then it travels to you by mail. Free shipping in the US, and you’ll get tracking by email when it ships."],
+    ["Can I ship it straight to the person it’s for?", "Yes. Enter their address as the shipping address at checkout. The frame ships without a photo, so let them know to add their favorite 4x6, or ship it to yourself first if you want the photo inside when you hand it over."],
+    ["Do you print my photo?", "No. The frame arrives empty, ready for a 4x6 photo. Any drugstore photo counter or online print service can print one."],
+    ["My photo isn’t 4x6. Will it work?", "Have it printed at 4x6. A phone photo is a little narrower than 4x6, so the print crops a sliver off the edges; keep faces away from the borders. An ultrasound scan works too once it’s printed at 4x6."],
+    ["How big is the frame?", "About 8.4 by 6.4 inches, with glass over the photo and an easel back so it stands on a shelf, desk or nightstand."],
+    ["Can I order several with different names?", "Yes. Personalize each one and add it to your cart, so every grandparent, godparent or sibling gets their own. Each frame is the same price."],
+    ["What if it arrives damaged or doesn’t match my preview?", "Reply to your receipt with a photo and we’ll make it right. Because every frame is printed with your words, we can’t take returns or exchanges for a change of mind."],
+    ["Is this the same Butterlu as on Etsy?", "Yes. Thousands of shoppers found us on Etsy first. This shop is our own home for the same frames."],
+    ["Do you ship outside the US?", "Not yet. We ship to US addresses only for now."]
+  ]
+}

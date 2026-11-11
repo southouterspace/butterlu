@@ -68,7 +68,7 @@ Worker itself (`worker/events.ts`).
 | Abandoned | `checkout_expired` | Stripe webhook | recovery decision (section 3) |
 
 The product page and the editor are two screens (owner, 2026-11-11). The product page
-sells the design as shown, with Add to Cart and Personalize side by side, and keeps room
+sells the design as shown, with Personalize and Add to Cart side by side, Personalize first on every design ("anything can be personalized", owner), and keeps room
 below for photos and, later, reviews. Personalize opens `/products/<handle>/personalize`,
 whose canonical is the product page. The editor ends in its own Add to Cart and then
 offers View Cart & Check Out in place, never a trip back. Its changes are kept on the

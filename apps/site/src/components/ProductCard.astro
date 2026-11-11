@@ -1,8 +1,8 @@
 ---
 // A frame or design tile in the shadcn Card shape, rendered as static HTML.
-// A design card offers the ways in that every category has (owner, 2026-11-11): add it
-// to the cart exactly as shown in one tap when its wording needs no names or dates, or
-// open the editor to personalize. The card itself opens the product page. Making a
+// A design card offers the ways in that every category has (owner, 2026-11-11):
+// Personalize first, since anything can be personalized, and for designs whose wording
+// needs no names or dates, Add to Cart as shown in one tap. The card itself opens the product page. Making a
 // frame from scratch is the FrameChoice block. src/scripts/shop-actions.ts wires both.
 import { type Product, formatPrice, isFrame, readyAsShown } from '../catalog/products';
 import { tagsFor } from '../catalog/taxonomy';
@@ -44,10 +44,19 @@ const titleId = `card-title-${product.handle}`;
   </a>
   {!frame && (
     <div class="flex flex-wrap gap-2 px-3 pb-3 sm:px-4 sm:pb-4" data-shop-actions>
+      <a
+        href={personalizeHref}
+        data-personalize="card"
+        data-handle={product.handle}
+        class={cn(buttonVariants({ size: 'sm' }), 'h-auto min-h-8 flex-1 py-1 text-center whitespace-normal')}
+        aria-label={`Personalize: ${product.name}`}
+      >
+        Personalize
+      </a>
       {quick && (
         <button
           type="button"
-          class={cn(buttonVariants({ size: 'sm' }), 'flex-1')}
+          class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'flex-1')}
           data-add-as-shown={product.handle}
           data-spec={JSON.stringify(product.preset)}
           aria-label={`Add to Cart: ${product.name}, as shown`}
@@ -55,15 +64,6 @@ const titleId = `card-title-${product.handle}`;
           Add to Cart
         </button>
       )}
-      <a
-        href={personalizeHref}
-        data-personalize="card"
-        data-handle={product.handle}
-        class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-8 flex-1 py-1 text-center whitespace-normal')}
-        aria-label={`Personalize: ${product.name}`}
-      >
-        Personalize
-      </a>
       {/* Rendered from the start, so screen readers announce the update. */}
       {quick && <p class="w-full text-xs text-muted-foreground" role="status" data-added-status></p>}
     </div>

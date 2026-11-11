@@ -40,9 +40,8 @@ const images = [...photos.map((p) => ({ src: p.src, width: Number(p.attributes.w
 const faq = productFaq(product.handle);
 // The page sells the design as shown and hands changes to its own editor screen
 // (/products/<handle>/personalize), so photos, questions and, later, reviews have room
-// here. Both buttons sit side by side (owner, 2026-11-11). The one that leads: Add to
-// Cart for designs that need no names or dates (the cards' one-tap list), Personalize
-// for designs that carry example names. The blank frame only opens the editor.
+// here. Both buttons sit side by side, Personalize first on every design: "anything can
+// be personalized" (owner, 2026-11-11). The blank frame only opens the editor.
 const media = productMedia(product.handle);
 const preview = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: 'pdp', label: `${product.name}, as shown` });
 const frameOnly = isFrame(product);
@@ -159,7 +158,7 @@ const jsonLd = [
           </a>
         ) : (
           <div class="grid grid-cols-2 gap-2">
-            {(quick ? (['add', 'edit'] as const) : (['edit', 'add'] as const)).map((k, i) =>
+            {(['edit', 'add'] as const).map((k, i) =>
               k === 'add' ? (
                 <button
                   type="button"

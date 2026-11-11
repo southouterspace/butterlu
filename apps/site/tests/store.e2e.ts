@@ -202,7 +202,7 @@ test('the product page sells the design as shown or opens the editor', async ({ 
   await screen.getByRole('button', /^Add to Cart · /).click();
   await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
 
-  // A design with example names leads with Personalize and says what "as shown" prints.
+  // A design with example names says what "as shown" prints.
   await app.open('/products/mimi-picture-frame');
   await expect(screen.getByRole('button', 'Add to Cart as Shown')).toBeVisible();
   await expect(screen.getByText('As shown, it prints the example names.')).toBeVisible();

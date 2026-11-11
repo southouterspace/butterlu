@@ -203,6 +203,13 @@ from the Shopify waves above and changes nothing on the live store.
   `CLOUDFLARE_STAGE_API_TOKEN`), so any session can deploy stage by pushing. Stage is where
   the owner clicks through. After a push, check the run (`gh run list --workflow stage.yml`)
   and report its stage URL and e2e result.
+- **Cloud sessions deploy stage themselves too** (owner, 2026-11-11, after a GitHub Actions
+  outage left a merge undeployed). The environment gives sessions a `CLOUDFLARE_API_TOKEN`
+  that reaches `butterlu-site-stage` and is refused on `butterlu-site` (checked 2026-11-11).
+  After a push or merge to `main` that changes the site, check out `main` at `origin/main`
+  and run `bun run deploy:stage` in `apps/site/` without waiting for Actions; report its
+  `deploy-summary` line. The Actions run still deploys the same commit, which is harmless.
+  Never use this token, or any other, on production.
 - **Production is the owner's call alone.** It ships only when a human publishes a GitHub
   Release (`.github/workflows/release.yml`, the only place the production token exists).
   Agents never cut a Release, deploy production, change DNS or switch Stripe to live mode.

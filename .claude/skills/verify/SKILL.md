@@ -94,6 +94,12 @@ e2e traces are the run's `e2e-stage` artifact. Follow it with
 (A push of any other branch runs `deploy:preview` from the session hook, only
 where the session has `CLOUDFLARE_API_TOKEN`.)
 
+- Do not wait on Actions when the session has `CLOUDFLARE_API_TOKEN` (cloud
+  sessions do; it is stage-only). Right after the push or merge, run
+  `git checkout -B main origin/main` and then `bun run deploy:stage` in
+  `apps/site/`. It runs the same validate, deploy, health and e2e steps and
+  prints the same `deploy-summary` line. Actions has stalled for 20+ minutes
+  in an outage before (2026-11-11).
 - Report the URL and the e2e result to the owner. The owner reviews UX on stage.
 - A red run with `e2e: failed` means the change is not done. Read the traces
   in the run's artifact, fix, push again.

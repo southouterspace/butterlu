@@ -115,22 +115,25 @@ February; godparent spring season by January; first Father's Day by early March;
 Christmas 2027 by September; pregnancy announcement pages for the January peak by
 October 2027.
 
-## 4b. Two products, many designs (Justin, 2026-11-08)
+## 4b. One product, many designs (Justin, 2026-11-08; one frame since 2026-11-11)
 
-Butterlu sells two products: the scalloped frame and the rounded frame, each with any
-words and any of 44 backgrounds. The store is shaped around that:
+Butterlu sells one product: a personalized picture frame. Shape, background and the
+words are choices on it, not things the store sells (owner, 2026-11-11). The store is
+shaped around that:
 
-- **Two frame pages** (`/products/scalloped-picture-frame`, `/products/rounded-picture-frame`):
-  the customizer from blank-ish wording, one price, and the designs drawn on that frame.
-  Marked up as a `ProductGroup` (`variesBy` pattern) whose variants are its designs.
+- **One frame page** (`/products/personalized-picture-frame`, shown as "Create your own
+  frame"): the customizer from plain wording, one price, and every design below it.
+  Marked up as a `ProductGroup` (`variesBy` pattern) whose variants are the designs. The
+  old `/products/scalloped-picture-frame` and `/products/rounded-picture-frame` 301 here
+  (`src/catalog/retired.ts`), and a cart saved under either still checks out.
 - **Design pages** keep one page per exact search (godmother, Mimi, ultrasound), because
-  those are what rank. Each opens its frame with the design loaded, offers 8 wording
-  ideas to tap, says which frame it is, and shows the two frames below. Marked up as a
-  `Product` with `isVariantOf` its frame's group and `pattern` set to the design.
-- **Categories are hubs**: the two frames first, then "Designs to start from" (cards show
-  the frame, not a price), then the copy and questions.
-- **One price** for both frames and every design (`FRAME_PRICE_CENTS`, $39 with free US shipping, set by the owner 2026-11-08).
-- **Shopping feed**: one item per page, `item_group_id` = its frame, `pattern` = the design.
+  those are what rank. Each opens the frame with the design loaded and offers 8 wording
+  ideas to tap. Marked up as a `Product` with `isVariantOf` the frame's group and
+  `pattern` set to the design.
+- **Categories are hubs**: "Ready-made designs" first, then "Create your own frame",
+  then the copy and questions.
+- **One price** for the frame and every design (`FRAME_PRICE_CENTS`, $39 with free US shipping, set by the owner 2026-11-08).
+- **Shopping feed**: one item per page, `item_group_id` = the frame, `pattern` = the design.
 
 ## 4c. Shop-by taxonomy (owner said build it, 2026-11-08)
 
@@ -149,7 +152,7 @@ contradicts its category.
   Baptisms, Weddings and Pet memorials open the category page that holds those designs (the
   build checks each tagged design is on it); the rest open Shop all filtered (`?occasion=christmas`). Pet memorials becomes
   "In memory" once other memorial designs exist.
-- **Frame** is the third filter (`?frame=scalloped`), from each design's preset shape.
+- **Shape is not a filter** (owner, 2026-11-11): every design can switch shape in the editor.
 - Each design is tagged once with a person and with the occasions in its "good for" list.
 - **No new indexed pages.** A filtered view keeps its category's canonical URL and is
   built from the same HTML, so filters never split ranking. A new indexable category is
@@ -207,3 +210,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | 2026-11-08 (stage only) | Shop-by taxonomy (§4c): who-it's-for and occasion menus, filter chips on categories, home page block, design-page links, feed product_type. No new indexed URLs. | all pages, feed |
 | 2026-11-11 (stage only) | Asli's menu labels (§4c): Pets renamed Pet memorial gifts; Weddings leaves Who it's for and stays an occasion; Parents of the bride or groom becomes its own group. Feed product_type follows; home tiles drop their design counts (owner). No new indexed URLs. | menus, home, feed |
 | 2026-11-11 (stage only) | Category pages lead with "Ready-made designs"; each card adds the design as shown in one tap (designs with no names or dates, PROPOSED list in products.ts) or opens it to personalize; the blank frames follow as "Create your own frame". Cards show the $39 price. | all collections, home, design pages |
+| 2026-11-11 (stage only) | The scalloped and rounded frames merge into one Personalized picture frame (owner); the old pages 301 to it. Shape is no longer a filter chip on Shop all. | frame page, Shop all, feed |

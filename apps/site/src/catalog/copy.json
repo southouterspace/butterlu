@@ -278,6 +278,49 @@
   }
  },
  "products": {
+  "personalized-picture-frame": {
+   "ideas": [
+    {
+     "top": "Home Sweet Home",
+     "bottom": "The Carters, Est. 2019"
+    },
+    {
+     "top": "The Carter Family",
+     "bottom": "Est. 2018"
+    },
+    {
+     "top": "Best Friends Forever",
+     "bottom": "Ava and Mia"
+    },
+    {
+     "top": "Life Is Better with Friends",
+     "bottom": "Ava, Mia and Zoe"
+    },
+    {
+     "top": "Thank You for Helping Me Grow",
+     "bottom": "Love, Noah, 2026"
+    },
+    {
+     "top": "Best Teacher Ever",
+     "bottom": "Love, Noah, 2026"
+    },
+    {
+     "top": "Happy Anniversary",
+     "bottom": "10 Years and Counting"
+    },
+    {
+     "top": "Together Is My Favorite Place to Be",
+     "bottom": "Happy Anniversary"
+    },
+    {
+     "top": "Our Little Family",
+     "bottom": "Est. 2020"
+    },
+    {
+     "top": "Home Is Wherever We’re Together"
+    }
+   ]
+  },
   "mimi-picture-frame": {
    "faq": [
     [
@@ -1214,76 +1257,6 @@
     {
      "top": "Loved Every Day",
      "bottom": "Cooper, 2009 to 2024"
-    }
-   ]
-  },
-  "scalloped-picture-frame": {
-   "ideas": [
-    {
-     "top": "Home Sweet Home",
-     "bottom": "The Carters, Est. 2019"
-    },
-    {
-     "top": "Best Friends Forever",
-     "bottom": "Ava and Mia"
-    },
-    {
-     "top": "Thank You for Helping Me Grow",
-     "bottom": "Love, Noah, 2026"
-    },
-    {
-     "top": "Happy Anniversary",
-     "bottom": "10 Years and Counting"
-    },
-    {
-     "top": "Our Little Family",
-     "bottom": "Est. 2020"
-    },
-    {
-     "top": "Friends Who Became Family",
-     "bottom": "Since 2015"
-    },
-    {
-     "top": "Making Memories Together",
-     "bottom": "Summer 2026"
-    },
-    {
-     "top": "You Are So Loved"
-    }
-   ]
-  },
-  "rounded-picture-frame": {
-   "ideas": [
-    {
-     "top": "The Carter Family",
-     "bottom": "Est. 2018"
-    },
-    {
-     "top": "Life Is Better with Friends",
-     "bottom": "Ava, Mia and Zoe"
-    },
-    {
-     "top": "Best Teacher Ever",
-     "bottom": "Love, Noah, 2026"
-    },
-    {
-     "top": "Together Is My Favorite Place to Be",
-     "bottom": "Happy Anniversary"
-    },
-    {
-     "top": "Home Is Wherever We’re Together"
-    },
-    {
-     "top": "Besties Since 2012",
-     "bottom": "Ava and Mia"
-    },
-    {
-     "top": "Love You More",
-     "bottom": "Always and Forever"
-    },
-    {
-     "top": "Our Happy Place",
-     "bottom": "Lake House, Summer 2026"
     }
    ]
   }

@@ -1,5 +1,5 @@
-// The store's catalog: one configurable frame (two shapes, 44 backgrounds, text on
-// any side), sold through search-intent pages that each preset it. Every pageKey here
+// The store's catalog: one configurable frame (shape, background and the words on each
+// side are choices), sold through search-intent pages that each preset it. Every pageKey here
 // is a row with build: true in plans/decisions.json (PROPOSED, gate G2). The first page
 // listed for a pageKey is its main page and takes the cluster's old Shopify URLs; later
 // pages on the same pageKey are extra exact-search pages (docs/12 §4). Every page
@@ -13,7 +13,7 @@ export interface Product {
   /** URL slug: /products/<handle>. Old Shopify handles 301 here (public/_redirects). */
   handle: string;
   /**
-   * 'frame' for the two real products (scalloped and rounded). Everything else is a
+   * 'frame' for the one real product, the plain frame. Everything else is a
    * design: one frame preset for one search (godmother, Mimi, ultrasound), sold as that
    * frame and marked up as its variant (docs/12 §4b).
    */
@@ -21,7 +21,7 @@ export interface Product {
   /** plans/clusters.json pageKey and clusterId this page builds. */
   pageKey: string;
   clusterId: string;
-  /** Etsy listing whose wording and look seeded the preset. None on the two frames. */
+  /** Etsy listing whose wording and look seeded the preset. None on the frame. */
   etsyListingId?: number;
   name: string;
   /** Without the " | Butterlu" suffix; lint-dist checks the rendered title fits 60 chars. */
@@ -48,7 +48,7 @@ export interface Collection {
 
 export const CURRENCY = 'usd';
 /**
- * One price for both frames and every design on them. The owner set $39 with free
+ * One price for the frame and every design on it. The owner set $39 with free
  * US shipping (2026-11-08).
  */
 export const FRAME_PRICE_CENTS = 3900;
@@ -116,41 +116,23 @@ export const COLLECTIONS: Collection[] = [
   },
 ];
 
-/** The two products Butterlu sells. Every design page is one of these with a preset. */
+/** The one product Butterlu sells. Every design page is this frame with a preset; shape is a choice on it. */
 const FRAME_PAGES: Product[] = [
   {
-    handle: 'scalloped-picture-frame',
+    handle: 'personalized-picture-frame',
     kind: 'frame',
-    pageKey: 'frame/any/scalloped',
+    pageKey: 'frame/any',
     clusterId: 'F01',
-    name: 'Scalloped picture frame',
-    seoTitle: 'Personalized Scalloped Picture Frame',
-    seoDescription: 'A personalized scalloped picture frame for a 4x6 photo, for any person or occasion. Add names, a date or your own words. Free US shipping.',
-    intro: 'Start from a blank frame for any person or occasion. Add their names, a date or your own words, or pick one of the designs below.',
-    goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a blank frame'],
+    name: 'Personalized picture frame',
+    seoTitle: 'Personalized Picture Frame in Your Own Words',
+    seoDescription: 'A personalized 4x6 picture frame for any person or occasion. Add their names, a date or your own words and see it before you buy. Free US shipping.',
+    intro: 'Start from a plain frame and write it all: their names, a date, a line only your family would get. Or start from one of the designs below.',
+    goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a plain frame'],
     priceCents: FRAME_PRICE_CENTS,
     preset: {
       shape: 'scalloped',
       backgroundId: 'blush-checkers',
       sides: { top: { text: 'Our Happy Place', fontId: script }, bottom: { text: 'Est. 2026', fontId: sans } },
-    },
-    collections: [],
-  },
-  {
-    handle: 'rounded-picture-frame',
-    kind: 'frame',
-    pageKey: 'frame/any/rounded-rectangle',
-    clusterId: 'F02',
-    name: 'Rounded picture frame',
-    seoTitle: 'Personalized Rounded Picture Frame',
-    seoDescription: 'A personalized rounded picture frame for a 4x6 photo, for any person or occasion. Add names, a date or your own words. Free US shipping.',
-    intro: 'Start from a blank frame for any person or occasion. Add their names, a date or your own words, or pick one of the designs below.',
-    goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a blank frame'],
-    priceCents: FRAME_PRICE_CENTS,
-    preset: {
-      shape: 'rounded-rectangle',
-      backgroundId: 'navy-stripes',
-      sides: { top: { text: 'Home Sweet Home', fontId: script }, bottom: { text: 'The Garcia Family', fontId: serif } },
     },
     collections: [],
   },
@@ -597,14 +579,14 @@ const DESIGN_PAGES: Product[] = [
   },
 ];
 
-/** Every page at /products/<handle>: the two frames, then the designs. Checkout prices by handle. */
+/** Every page at /products/<handle>: the frame, then the designs. Checkout prices by handle. */
 export const PRODUCTS: Product[] = [...FRAME_PAGES, ...DESIGN_PAGES];
 export const FRAMES = FRAME_PAGES;
 export const DESIGNS = DESIGN_PAGES;
 
-/** The frame a design is drawn on: the one matching its preset's shape. */
-export function frameFor(p: Product): Product {
-  return FRAME_PAGES.find((f) => f.preset.shape === p.preset.shape)!;
+/** The frame every design is sold as. */
+export function frameFor(_p: Product): Product {
+  return FRAME_PAGES[0]!;
 }
 export const isFrame = (p: Product) => p.kind === 'frame';
 

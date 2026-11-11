@@ -5,6 +5,7 @@
 import { describeDesign, designToMetadata, parseDesign } from '@butterlu/frame/design';
 import type { FrameSpec } from '@butterlu/frame';
 import { CURRENCY, PRODUCTS } from '../src/catalog/products';
+import { currentHandle } from '../src/catalog/retired';
 import type { Env } from './env';
 import { track, validFid } from './events';
 
@@ -31,7 +32,7 @@ export function checkCart(body: unknown): CartResult {
   const lines: CheckedLine[] = [];
   items.forEach((raw, i) => {
     const item = (raw ?? {}) as { handle?: unknown; quantity?: unknown; design?: unknown };
-    const product = typeof item.handle === 'string' ? byHandle.get(item.handle) : undefined;
+    const product = typeof item.handle === 'string' ? byHandle.get(currentHandle(item.handle)) : undefined;
     if (!product) return void errors.push(`line ${i + 1}: unknown product`);
     const quantity = item.quantity;
     if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 1 || quantity > MAX_QUANTITY) {

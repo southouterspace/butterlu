@@ -3,6 +3,7 @@
 // is trusted for price or content.
 import type { FrameSpec } from '@butterlu/frame';
 import { designKey } from '@butterlu/frame/design';
+import { currentHandle } from '../catalog/retired';
 
 export interface CartLine {
   handle: string;
@@ -18,7 +19,19 @@ export const MAX_QUANTITY = 10;
 function read(): CartLine[] {
   try {
     const raw = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
-    return Array.isArray(raw) ? raw.filter((l) => l && typeof l.handle === 'string' && l.design) : [];
+    if (!Array.isArray(raw)) return [];
+    // A line saved under a merged-away product carries on as the product that replaced it.
+    // Two old lines can become the same line; they merge, as adding it twice would.
+    const lines: CartLine[] = [];
+    for (const l of raw as CartLine[]) {
+      if (!l || typeof l.handle !== 'string' || !l.design) continue;
+      const handle = currentHandle(l.handle);
+      const line = handle === l.handle ? l : { ...l, handle, key: `${handle}|${designKey(l.design)}` };
+      const same = lines.find((x) => x.key === line.key);
+      if (same) same.quantity = Math.min(MAX_QUANTITY, same.quantity + line.quantity);
+      else lines.push({ ...line });
+    }
+    return lines;
   } catch {
     return [];
   }

@@ -23,7 +23,7 @@ interface Props {
   collection: Collection;
 }
 const { collection } = Astro.props;
-// Designs only: the two blank frames follow the grid as "Create your own frame".
+// Designs only: the plain frame follows the grid as "Create your own frame".
 const products = collection.handle === 'all' ? DESIGNS : collectionProducts(collection.handle);
 // Shop all filters by who-it's-for group; a category by the people on it (docs/12 §4c).
 const facets = facetsFor(products, collection.handle === 'all' ? 'group' : 'recipient');
@@ -66,7 +66,7 @@ if (copy?.faq.length) {
       (() => {
         const q = new URLSearchParams(location.search);
         const s = {};
-        for (const p of ['for', 'occasion', 'frame']) {
+        for (const p of ['for', 'occasion']) {
           const v = q.get(p);
           if (v && document.querySelector(`[data-filter="${p}"][data-value="${CSS.escape(v)}"]`)) s[p] = v;
         }

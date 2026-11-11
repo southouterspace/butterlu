@@ -23,7 +23,7 @@ test('a category offers its designs, then a blank frame to create your own, and 
   await expect(screen.getByRole('status').getByText('Your words are back.')).toBeVisible();
 });
 
-test('shoppers can filter designs by who it is for, occasion and frame', async ({ app, screen }) => {
+test('shoppers can filter designs by who it is for and occasion', async ({ app, screen }) => {
   // A menu link opens a category already filtered to one person.
   await app.open('/collections/grandparent-frames?for=grandpa');
   await expect(screen.getByRole('button', /^Grandpa/)).toHaveAttribute('aria-pressed', 'true');
@@ -33,12 +33,13 @@ test('shoppers can filter designs by who it is for, occasion and frame', async (
   await screen.getByRole('button', 'Clear filters').click();
   await expect(screen.getByRole('link', /^Mimi picture frame/)).toBeVisible();
 
-  // Shop all combines an occasion with a frame shape.
-  await app.open('/collections/all?occasion=christmas');
-  await expect(screen.getByRole('link', /^Gigi Christmas frame/)).toBeVisible();
-  await screen.getByRole('button', /^Rounded/).click();
-  await expect(screen.getByRole('link', /^Gigi Christmas frame/)).toBeHidden();
-  await expect(screen.getByRole('link', /^Grandpa Christmas frame/)).toBeVisible();
+  // Shop all combines an occasion with who it's for. Shape is not a filter.
+  await app.open('/collections/all?occasion=birthday');
+  await expect(screen.getByRole('link', /^Godmother baptism frame/)).toBeVisible();
+  await screen.getByRole('button', /^Aunts and uncles/).click();
+  await expect(screen.getByRole('link', /^Godmother baptism frame/)).toBeHidden();
+  await expect(screen.getByRole('link', /^Aunt and uncle picture frame/)).toBeVisible();
+  await expect(screen.getByRole('button', /^Rounded/)).toHaveCount(0);
 });
 
 test('the customizer previews new words and refuses a frame with none', async ({ app, screen }) => {

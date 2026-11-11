@@ -1,7 +1,8 @@
 // How shoppers browse the designs (docs/12 §4c). Each design is tagged once with who
-// it's for and with the occasions it suits; its frame shape comes from its preset.
+// it's for and with the occasions it suits. Shape is a choice on the frame, not a
+// way to browse (owner, 2026-11-11).
 // The header menu, the filter chips on category pages, the home page and the feed
-// all read these lists. A filtered view (?for=, ?occasion=, ?frame=) keeps its
+// all read these lists. A filtered view (?for=, ?occasion=) keeps its
 // category's canonical URL, so filtering adds no pages to the index.
 //
 // Plain TypeScript with no Astro imports, like products.ts.
@@ -33,8 +34,6 @@ export type OccasionKey =
   | 'baby-shower'
   | 'memorial'
   | 'everyday';
-
-export type FrameKey = 'scalloped' | 'rounded';
 
 export interface Recipient {
   key: RecipientKey;
@@ -126,10 +125,6 @@ const ALL_OCCASIONS: Occasion[] = [
   { key: 'everyday', label: 'Just because' },
 ];
 
-export const FRAME_SHAPES: { key: FrameKey; label: string; shape: Product['preset']['shape'] }[] = [
-  { key: 'scalloped', label: 'Scalloped', shape: 'scalloped' },
-  { key: 'rounded', label: 'Rounded', shape: 'rounded-rectangle' },
-];
 
 /** Every design, tagged from its own "good for" list. The build fails on a gap. */
 const TAGS: Record<string, { for: RecipientKey; occasions: OccasionKey[] }> = {
@@ -163,7 +158,6 @@ export interface Tags {
   for: Recipient;
   group: RecipientGroup;
   occasions: Occasion[];
-  frame: (typeof FRAME_SHAPES)[number];
 }
 
 const groupOf = new Map<RecipientKey, RecipientGroup>();
@@ -171,7 +165,7 @@ for (const g of RECIPIENT_GROUPS) for (const r of g.children) groupOf.set(r.key,
 const occasionByKey = new Map(ALL_OCCASIONS.map((o) => [o.key, o]));
 const collectionHandles = new Set(COLLECTIONS.map((c) => c.handle));
 
-/** Who it's for, occasions and frame for a design; undefined for the two frames. */
+/** Who it's for and occasions for a design; undefined for the frame. */
 export function tagsFor(p: Product): Tags | undefined {
   if (isFrame(p)) return undefined;
   const t = TAGS[p.handle];
@@ -181,7 +175,6 @@ export function tagsFor(p: Product): Tags | undefined {
     for: r.children.find((c) => c.key === t.for)!,
     group: r,
     occasions: t.occasions.map((k) => occasionByKey.get(k)!),
-    frame: FRAME_SHAPES.find((f) => f.shape === p.preset.shape)!,
   };
 }
 
@@ -246,7 +239,7 @@ export const occasionCount = (o: Occasion) =>
 
 export interface Facet {
   /** URL parameter. */
-  param: 'for' | 'occasion' | 'frame';
+  param: 'for' | 'occasion';
   label: string;
   options: { key: string; label: string; count: number }[];
 }
@@ -268,7 +261,6 @@ export function facetsFor(products: Product[], level: 'group' | 'recipient'): Fa
   const facets: Facet[] = [
     { param: 'for', label: 'Who it’s for', options: forOptions },
     { param: 'occasion', label: 'Occasion', options: count(OCCASIONS, (t) => t.occasions, (o) => o.key, (o) => o.label) },
-    { param: 'frame', label: 'Frame', options: count(FRAME_SHAPES, (t) => [t.frame], (f) => f.key, (f) => f.label) },
   ];
   return facets.filter((f) => f.options.length > 1 && f.options.some((o) => o.count < tags.length));
 }

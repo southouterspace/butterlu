@@ -3,9 +3,9 @@
 // with replaceState, so a menu link like ?for=grandma opens filtered and a reload or
 // shared link keeps it. Cards carry their tags as data attributes (ProductCard).
 
-type Param = 'for' | 'occasion' | 'frame';
-const PARAMS: Param[] = ['for', 'occasion', 'frame'];
-const ATTR: Record<Param, string> = { for: 'data-for', occasion: 'data-occasion', frame: 'data-frame' };
+type Param = 'for' | 'occasion';
+const PARAMS: Param[] = ['for', 'occasion'];
+const ATTR: Record<Param, string> = { for: 'data-for', occasion: 'data-occasion' };
 
 export function mountFilters(root: Document = document) {
   const bar = root.querySelector<HTMLElement>('[data-filters]');

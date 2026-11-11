@@ -19,7 +19,7 @@ interface Props {
 }
 const { product } = Astro.props;
 const url = new URL(`/products/${product.handle}`, Astro.site).href;
-// The two frames belong to no collection; a design's first collection is its breadcrumb.
+// The frame belongs to no collection; a design's first collection is its breadcrumb.
 const primary = COLLECTIONS.find((c) => c.handle === product.collections[0]);
 const frame = frameFor(product);
 const frameUrl = new URL(`/products/${frame.handle}`, Astro.site).href;
@@ -67,10 +67,10 @@ const offer = {
     returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted',
   },
 };
-// Butterlu sells two products. Every product page carries its frame's full ProductGroup
+// Butterlu sells one product. Every product page carries the frame's full ProductGroup
 // (Google's multi-page variant markup repeats the group on each variant page): it varies
 // by pattern (the design), and hasVariant holds this page's Product in full plus links to
-// the frame's other pages. Google then sees two products, not 26 (docs/12 §4b).
+// the frame's other pages. Google then sees one product, not 26 (docs/12 §4b).
 const own = {
   '@type': 'Product',
   name: isFrame(product) ? `${product.name}, your own words` : product.name,
@@ -84,7 +84,7 @@ const own = {
   inProductGroupWithID: frame.handle,
   offers: offer,
 };
-const siblings = [frame, ...DESIGNS.filter((d) => d.preset.shape === frame.preset.shape)].filter((p) => p.handle !== product.handle);
+const siblings = [frame, ...DESIGNS].filter((p) => p.handle !== product.handle);
 const productLd = {
   '@context': 'https://schema.org',
   '@type': 'ProductGroup',

@@ -17,7 +17,7 @@ interface Props {
 }
 const { product, headingLevel = 'h3', eager = false } = Astro.props;
 const Heading = headingLevel;
-// Category filters read these (src/scripts/filters.ts); the two frames carry none.
+// Category filters read these (src/scripts/filters.ts); the frame carries none.
 const tags = tagsFor(product);
 const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: `card-${product.handle}`, photoHint: false, size: 'card', lazy: !eager });
 const frame = isFrame(product);
@@ -30,7 +30,6 @@ const titleId = `card-title-${product.handle}`;
   data-card={tags ? '' : undefined}
   data-for={tags ? `${tags.group.key} ${tags.for.key}` : undefined}
   data-occasion={tags?.occasions.map((o) => o.key).join(' ')}
-  data-frame={tags?.frame.key}
 >
   <a href={href} class="group flex flex-1 flex-col text-foreground no-underline">
     <div class="bg-muted p-3 sm:p-5" set:html={svg} />

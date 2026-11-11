@@ -158,6 +158,7 @@ contradicts its category.
   Product and category names (so their h1s) follow it too (owner, 2026-11-11), matching the admin's check; descriptive headings like "Ready-made designs" stay
   in sentence case. One `toLabel` in `src/catalog/check.ts` defines it for the store and the admin, and
   `scripts/lint-dist.mjs` fails the build on a label that breaks it.
+- **Personalize is the only way into the editor** (owner, 2026-11-11): every design card, product page and create-your-own block says Personalize, never "Add Your Words". `scripts/lint-dist.mjs` fails the build on that phrase in any case. Headings and helper text frame it as the whole design, not just the words ("Your design, start to finish").
 - Each design is tagged once with a person and with the occasions in its "good for" list.
 - **No new indexed pages.** A filtered view keeps its category's canonical URL and is
   built from the same HTML, so filters never split ranking. A new indexable category is
@@ -217,3 +218,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | 2026-11-11 (stage only) | Category pages lead with "Ready-made designs"; each card adds the design as shown in one tap (designs with no names or dates, PROPOSED list in products.ts) or opens it to personalize; the blank frames follow as "Create your own frame". Cards show the $39 price. | all collections, home, design pages |
 | 2026-11-11 (stage only) | The scalloped and rounded frames merge into one Personalized picture frame (owner); the old pages 301 to it. Shape is no longer a filter chip on Shop all. | frame page, Shop all, feed |
 | 2026-11-11 (stage only) | Labels go Title Case with "&" (owner), checked at build. Product and category names follow it too (owner), so product h1s, Product markup `name`, cart and Stripe line items, and the feed's `product_type` change case (e.g. "Aunts & Uncles"). Collection and design intros cut to one line; the home hero becomes three short items. No URL or page title changes. | menus, chips, buttons, home, all collections and designs |
+| 2026-11-11 (stage only) | The editor moves to its own screen, `/products/<handle>/personalize`, canonical to the product page and left out of the sitemap. Product pages lose the editor and "How it works", and gain a preview with Add to Cart and Personalize side by side, plus room for photos and reviews. No URL, title or markup change on product pages. | all design and frame pages |

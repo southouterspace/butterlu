@@ -2,6 +2,7 @@ import { test } from '@e2e-dev/web';
 import { expect } from 'e2e';
 
 const PRODUCT = '/products/grandparent-pregnancy-announcement-frame';
+const EDITOR = `${PRODUCT}/personalize`;
 const NAME = 'Grandparent Pregnancy Announcement Frame';
 
 test('the home page lists frames that link to their pages', async ({ app, screen }) => {
@@ -16,7 +17,7 @@ test('a category offers its designs, then a blank frame to create your own, and 
   await expect(screen.getByRole('heading', 'Create your own frame')).toBeVisible();
   await expect(screen.getByRole('link', 'Start Your Own Frame')).toBeVisible();
 
-  await app.open(PRODUCT);
+  await app.open(EDITOR);
   await screen.getByRole('button', /Grandparents/).first().click();
   await expect(screen.getByRole('status').getByText('Wording idea added. Edit any line to make it yours.')).toBeVisible();
   await screen.getByRole('button', 'Undo, Bring My Words Back').click();
@@ -71,7 +72,7 @@ test('on a phone, filters open in a sheet and the designs come first', async ({ 
 });
 
 test('the customizer previews new words and refuses a frame with none', async ({ app, screen }) => {
-  await app.open(PRODUCT);
+  await app.open(EDITOR);
   const top = screen.getByRole('textbox', /^Top/);
   await top.fill('Best Nana Ever');
   await expect(screen.getByText('Best Nana Ever')).toBeVisible();
@@ -88,10 +89,13 @@ test('the customizer previews new words and refuses a frame with none', async ({
 const checkoutOn = async (baseUrl: string | URL | undefined) => (await (await fetch(new URL('/api/checkout/status', baseUrl))).json()) as { enabled: boolean; mode?: string };
 
 test('a designed frame goes in the cart, and checkout says when it is off', async ({ app, screen }) => {
-  await app.open(PRODUCT);
+  await app.open(EDITOR);
   await screen.getByRole('textbox', /^Top/).fill('Promoted to Nana');
   await screen.getByRole('button', /^Add to Cart/).click();
   await expect(screen.getByText('Added to your cart.', { exact: false })).toBeVisible();
+  // The shopper stays in the editor, one tap from checkout.
+  await expect(screen.getByRole('link', 'View Cart & Check Out')).toBeVisible();
+  await expect(screen.getByRole('button', /^Add to Cart/)).toBeHidden();
 
   await app.open('/cart');
   await expect(screen.getByRole('heading', NAME)).toBeVisible();
@@ -167,7 +171,7 @@ test('a ready-made design goes into the cart as shown in one tap', async ({ app,
 });
 
 test('the background can be made bigger and moved, from the keyboard, and the cart keeps it', async ({ app, screen }) => {
-  await app.open(PRODUCT);
+  await app.open(EDITOR);
   await screen.getByText('Background Size & Position').click();
   const size = screen.getByRole('slider', 'Size');
   const across = screen.getByRole('slider', 'Side to Side');
@@ -191,4 +195,38 @@ test('the background can be made bigger and moved, from the keyboard, and the ca
 
   await app.open('/cart');
   await expect(screen.getByText('(zoomed to 200%, toward the left)', { exact: false })).toBeVisible();
+});
+
+test('the product page sells the design as shown or opens the editor', async ({ app, screen }) => {
+  await app.open('/products/nana-picture-frame');
+  await screen.getByRole('button', /^Add to Cart · /).click();
+  await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+
+  // A design with example names leads with Personalize and says what "as shown" prints.
+  await app.open('/products/mimi-picture-frame');
+  await expect(screen.getByRole('button', 'Add to Cart as Shown')).toBeVisible();
+  await expect(screen.getByText('As shown, it prints the example names.')).toBeVisible();
+  await screen.getByRole('link', 'Personalize').click();
+  await expect(screen.getByRole('heading', 'Mimi Picture Frame')).toBeVisible();
+  await expect(screen.getByText('Example names: swap in yours.')).toBeVisible();
+  await expect(screen.getByRole('textbox', /^Bottom/)).toBeVisible();
+});
+
+test('the editor marks example names until they are swapped, and keeps a draft', async ({ app, screen }) => {
+  await app.open('/products/mimi-picture-frame/personalize');
+  await expect(screen.getByText('Example names: swap in yours.')).toBeVisible();
+  await screen.getByRole('textbox', /^Bottom/).fill('Jo and Lee');
+  await expect(screen.getByText('Example names: swap in yours.')).toBeHidden();
+  // Typing an example name back in is the shopper's own choice: no note.
+  await screen.getByRole('textbox', /^Top/).fill('Love, Ava');
+  await expect(screen.getByText(/swap in yours/)).toBeHidden();
+  await screen.getByRole('textbox', /^Top/).fill('Mimi’s Little Loves');
+
+  // Leaving and coming back finds the words where they were.
+  await app.open('/products/mimi-picture-frame/personalize');
+  await expect(screen.getByRole('status').getByText('Your changes from last time are back.')).toBeVisible();
+  await expect(screen.getByRole('textbox', /^Bottom/)).toHaveValue('Jo and Lee');
+  await screen.getByRole('button', 'Start Over with Our Design').click();
+  await app.open('/products/mimi-picture-frame/personalize');
+  await expect(screen.getByRole('textbox', /^Bottom/)).toHaveValue('Ava, Noah and Mia');
 });

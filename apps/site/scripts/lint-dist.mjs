@@ -60,8 +60,16 @@ const rules = [
   ['canonical and og:url have no .html', (html) => !/<link rel="canonical" href="[^"]*\.html"/.test(html) && !/<meta property="og:url" content="[^"]*\.html"/.test(html)],
   ['meta description at most 160 chars', (html) => (html.match(/<meta name="description" content="([^"]*)"/i)?.[1] ?? '').length <= 160],
   // Merchant listings need a product image; link previews need og:image.
-  ['product page: og:image and Product markup image', (html, file) => !file.startsWith('products/') || (/<meta property="og:image" content="https:/.test(html) && /"@type":"Product"[^<]*"image":\["https:/.test(html))],
+  ['product page: og:image and Product markup image', (html, file) => !/^products\/[^/]+\.html$/.test(file) || (/<meta property="og:image" content="https:/.test(html) && /"@type":"Product"[^<]*"image":\["https:/.test(html))],
   ['product page: one h1', (html, file) => !file.startsWith('products/') || count(html, /<h1[\s>]/gi) === 1],
+  // The editor screen points search at its product page and carries no Product markup of its own.
+  ['personalize page: canonical is its product page, with og:image', (html, file) => {
+    const handle = file.match(/^products\/([^/]+)\/personalize\.html$/)?.[1];
+    if (!handle) return true;
+    return html.includes(`<link rel="canonical" href="https://www.butterlu.com/products/${handle}">`) && /<meta property="og:image" content="https:/.test(html) && !html.includes('"@type":"Product"');
+  }],
+  // Personalize is the one way into the editor (owner, 2026-11-11): never "Add Your Words".
+  ['no "Add Your Words" (it is Personalize)', (html) => !/add\s+your\s+words/i.test(html)],
   ['labels are Title Case with &', (html, file) => {
     const bad = labels(html).map(labelProblem).find(Boolean);
     if (bad) labelFailures.add(`${file}: ${bad}`);

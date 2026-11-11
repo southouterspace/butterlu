@@ -1,14 +1,18 @@
 ---
 import Layout from '../../Layout.astro';
-import Customizer from '../../components/Customizer.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { getImage } from 'astro:assets';
 import { productFaq } from '../../catalog/copy';
 import { productMedia } from '../../catalog/media';
+import { asShownNote } from '../../catalog/example-names';
 import FrameChoice from '../../components/FrameChoice.astro';
-import { buttonVariants } from '../../components/ui/variants';
+import ProductGallery from '../../components/media/ProductGallery.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { buttonVariants, cn } from '../../components/ui/variants';
+import { frameSvg } from '../../lib/frame-svg';
+import { placementsAtBuild } from '../../lib/layout-build';
 import { occasionCount, occasionHref, recipientCount, recipientHref, tagsFor } from '../../catalog/taxonomy';
-import { COLLECTIONS, CURRENCY, DESIGNS, PRODUCTS, type Product, SHOP, collectionProducts, frameFor, isFrame } from '../../catalog/products';
+import { COLLECTIONS, CURRENCY, DESIGNS, PRODUCTS, type Product, SHOP, collectionProducts, formatPrice, frameFor, isFrame, readyAsShown } from '../../catalog/products';
 
 export function getStaticPaths() {
   return PRODUCTS.map((product) => ({ params: { handle: product.handle }, props: { product } }));
@@ -34,6 +38,18 @@ const photos = await Promise.all(
 const rendered = { src: `/products/${product.handle}.jpg`, width: 1200, height: 1200 };
 const images = [...photos.map((p) => ({ src: p.src, width: Number(p.attributes.width), height: Number(p.attributes.height) })), rendered];
 const faq = productFaq(product.handle);
+// The page sells the design as shown and hands changes to its own editor screen
+// (/products/<handle>/personalize), so photos, questions and, later, reviews have room
+// here. Both buttons sit side by side (owner, 2026-11-11). The one that leads: Add to
+// Cart for designs that need no names or dates (the cards' one-tap list), Personalize
+// for designs that carry example names. The blank frame only opens the editor.
+const media = productMedia(product.handle);
+const preview = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: 'pdp', label: `${product.name}, as shown` });
+const frameOnly = isFrame(product);
+const quick = !frameOnly && readyAsShown(product);
+const asShown = asShownNote(Object.values(product.preset.sides).flatMap((s) => (s ? [s.text] : [])));
+const price = formatPrice(product.priceCents);
+const personalizeHref = `/products/${product.handle}/personalize`;
 // Who it's for and occasions, for the "Shop more designs" links (docs/12 §4c).
 const tags = tagsFor(product);
 const shopMore = tags
@@ -128,21 +144,72 @@ const jsonLd = [
     <a class="no-underline hover:text-foreground hover:underline" href="/collections/all">Shop</a>
     {primary && (<><span aria-hidden="true">/</span> <a class="no-underline hover:text-foreground hover:underline" href={`/collections/${primary.handle}`}>{primary.name}</a></>)}
   </nav>
-  <Customizer product={product} />
+  <div class="grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-10">
+    <div class="pdp-preview rounded-4xl bg-muted p-3 md:sticky md:top-6 md:p-8" set:html={preview} />
+    <div class="flex min-w-0 flex-col gap-5" data-shop-actions>
+      <div>
+        <h1 class="text-2xl md:text-3xl">{product.name}</h1>
+        <p class="mt-1 text-lg font-semibold">{price}</p>
+        <p class="mt-2 text-muted-foreground">{product.intro}</p>
+      </div>
+      <div class="grid gap-2">
+        {frameOnly ? (
+          <a class={cn(buttonVariants({ size: 'xl' }), 'w-full')} href={personalizeHref} data-personalize="product" data-handle={product.handle}>
+            <Icon name="pen-line" />Personalize
+          </a>
+        ) : (
+          <div class="grid grid-cols-2 gap-2">
+            {(quick ? (['add', 'edit'] as const) : (['edit', 'add'] as const)).map((k, i) =>
+              k === 'add' ? (
+                <button
+                  type="button"
+                  class={cn(buttonVariants({ size: 'xl', variant: i === 0 ? 'default' : 'outline' }), 'h-auto min-h-12 py-2 whitespace-normal')}
+                  data-add-as-shown={product.handle}
+                  data-from="product"
+                  data-spec={JSON.stringify(product.preset)}
+                  aria-describedby={asShown ? 'as-shown-note' : undefined}
+                >
+                  {quick ? `Add to Cart · ${price}` : 'Add to Cart as Shown'}
+                </button>
+              ) : (
+                <a
+                  class={cn(buttonVariants({ size: 'xl', variant: i === 0 ? 'default' : 'outline' }), 'h-auto min-h-12 py-2 whitespace-normal')}
+                  href={personalizeHref}
+                  data-personalize="product"
+                  data-handle={product.handle}
+                >
+                  <Icon name="pen-line" />Personalize
+                </a>
+              ),
+            )}
+          </div>
+        )}
+        {!frameOnly && asShown && <p id="as-shown-note" class="text-sm text-muted-foreground">{asShown}</p>}
+        {/* Rendered from the start, so screen readers announce the update. */}
+        {!frameOnly && <p class="text-sm font-medium empty:hidden" role="status" data-added-status></p>}
+      </div>
+      <ul class="grid gap-2 text-sm text-muted-foreground [&_svg]:shrink-0">
+        <li class="flex items-center gap-2"><Icon name="clock" />{SHOP.dispatch}</li>
+        <li class="flex items-center gap-2"><Icon name="truck" />{SHOP.shipping}</li>
+        <li class="flex items-center gap-2"><Icon name="frame" />8.4 × 6.4 inch wood frame with glass and an easel back</li>
+        <li class="flex items-center gap-2"><Icon name="heart" />{SHOP.photoNote}</li>
+      </ul>
+    </div>
+  </div>
 
-  <section class="mt-12 grid gap-8 border-t pt-8 md:grid-cols-2 md:gap-10">
-    <div>
-      <h2 class="mb-3 text-lg">A good fit for</h2>
-      <ul class="grid list-disc gap-1.5 pl-5 text-muted-foreground">{product.goodFor.map((g) => <li>{g}</li>)}</ul>
-    </div>
-    <div>
-      <h2 class="mb-3 text-lg">How it works</h2>
-      <ol class="grid list-decimal gap-1.5 pl-5 text-muted-foreground">
-        <li>Keep our words or make them yours: their names, a date, a line only your family would get.</li>
-        <li>See exactly how it prints before you buy.</li>
-        <li>We print it, build it and ship it. You add your 4x6 photo.</li>
-      </ol>
-    </div>
+  {/* Lifestyle photos and video, once Asli's arrive (src/catalog/media.ts). */}
+  {media.length > 0 && (
+    <section aria-label="Photos" class="mt-10">
+      <ProductGallery media={media} name={product.name} />
+    </section>
+  )}
+
+  {/* Reviews go here once there is a source for them (Etsy's or the site's own,
+      docs/04). Nothing renders until then, and no review markup goes in the JSON-LD. */}
+
+  <section class="mt-12 border-t pt-8">
+    <h2 class="mb-3 text-lg">A good fit for</h2>
+    <ul class="grid list-disc gap-1.5 pl-5 text-muted-foreground">{product.goodFor.map((g) => <li>{g}</li>)}</ul>
   </section>
 
   {faq.length > 0 && (
@@ -171,3 +238,18 @@ const jsonLd = [
   )}
 </Layout>
 
+<script>
+  import '../../scripts/shop-actions';
+</script>
+
+<style>
+  .pdp-preview :global(svg) {
+    height: min(42svh, 76vw);
+    width: 100%;
+  }
+  @media (min-width: 48rem) {
+    .pdp-preview :global(svg) {
+      height: auto;
+    }
+  }
+</style>

@@ -1,6 +1,8 @@
-// Live customizer on the product page. Reads the form into a FrameSpec, checks it
+// Live editor on the Personalize screen. Reads the form into a FrameSpec, checks it
 // with the shared design rules, fits the text with the shared layout rules, and
 // redraws the preview. The spec it adds to the cart is what the frame MCP prints.
+// Changes are kept on this device as a draft, so a shopper who leaves and comes back
+// finds their words where they left them.
 import {
   BACKGROUND_SCALE,
   type BackgroundFit,
@@ -18,6 +20,7 @@ import { SIDE_LABEL, TEXT_COLORS, describeFit, parseDesign, parseFit } from '@bu
 import { backgroundAttrs, backgroundUrl, frameSvg } from '../lib/frame-svg';
 import { loadNow, whenIdle } from './idle';
 import { addToCart } from './cart';
+import { standInNote } from '../catalog/example-names';
 import { track } from './track';
 import { fontsReady, placementsInBrowser } from './measure';
 
@@ -37,6 +40,7 @@ export function mountCustomizer(root: HTMLElement) {
   const picker = root.querySelector<HTMLDialogElement>('[data-bg-picker]');
   const moreSummary = root.querySelector<HTMLElement>('[data-more-summary]');
   const resetButton = root.querySelector<HTMLButtonElement>('[data-reset]');
+  const addedLink = root.querySelector<HTMLAnchorElement>('[data-added]');
   const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLSelectElement | RadioNodeList | null;
   const value = (name: string) => {
     const f = field(name);
@@ -63,6 +67,8 @@ export function mountCustomizer(root: HTMLElement) {
   }
 
   let current: FrameSpec | null = config.preset;
+  // The words we last filled each side with: the design's, then an idea's.
+  const ours: Partial<Record<Side, string>> = Object.fromEntries(SIDES.map((side) => [side, config.preset.sides[side]?.text ?? '']));
 
   const fontName = (id: string) => FONTS.find((f) => f.id === id)?.name.replace(/ (Bold|SemiBold)$/, '') ?? id;
   // What the form holds, and what it holds for the preset. The baseline comes from the
@@ -107,9 +113,93 @@ export function mountCustomizer(root: HTMLElement) {
     }
     // Only sides with words get a font choice; an empty side has nothing to style.
     for (const row of root.querySelectorAll<HTMLElement>('[data-font-row]')) row.hidden = !value(`text-${row.dataset.fontRow}`).trim();
+    // A side that still holds the words we put there (the design's or an idea's) says
+    // which stand-ins to swap. The shopper's own words never get the note.
+    for (const note of root.querySelectorAll<HTMLElement>('[data-example]')) {
+      const side = note.dataset.example as Side;
+      const text = value(`text-${side}`);
+      note.textContent = text === ours[side] ? standInNote(text) : '';
+    }
     const fit = currentFit();
     syncFit(fit);
-    if (resetButton) resetButton.hidden = asDesigned(fit);
+    const designed = asDesigned(fit);
+    if (resetButton) resetButton.hidden = designed;
+    saveDraft(designed);
+  }
+
+  // The draft: every field, kept on this device for 30 days, and dropped once the
+  // form is back to our design or the frame goes in the cart.
+  const DRAFT = `butterlu.draft.v1:${config.handle}`;
+  const DRAFT_MS = 30 * 24 * 60 * 60 * 1000;
+  let restoring = true;
+  let saved = '';
+  let saveTimer = 0;
+  let pendingSave: (() => void) | null = null;
+  // Written a moment after the last change (a slider drag is many changes), only when
+  // the fields differ, so a visit with no edit doesn't extend the 30 days. Nothing is
+  // kept once the frame is in the cart, until the next edit.
+  function saveDraft(designed: boolean) {
+    if (restoring || status.dataset.kind === 'added') return;
+    clearTimeout(saveTimer);
+    pendingSave = () => {
+      pendingSave = null;
+      const fields = JSON.stringify([...new FormData(form).entries()].map(([k, v]) => [k, String(v)]));
+      if (!designed && fields === saved) return;
+      saved = designed ? '' : fields;
+      try {
+        if (designed) localStorage.removeItem(DRAFT);
+        else localStorage.setItem(DRAFT, JSON.stringify({ at: Date.now(), fields: JSON.parse(fields) }));
+      } catch {
+        // Storage is off or full: the editor works the same, it just won't remember.
+      }
+    };
+    saveTimer = window.setTimeout(pendingSave, 400);
+  }
+  // Leaving within that moment still keeps the last change.
+  addEventListener('pagehide', () => pendingSave?.());
+  function dropDraft() {
+    clearTimeout(saveTimer);
+    pendingSave = null;
+    saved = '';
+    try {
+      localStorage.removeItem(DRAFT);
+    } catch {
+      // Nothing was kept.
+    }
+  }
+  function readDraft(): { at?: unknown; fields?: unknown } | null {
+    try {
+      return JSON.parse(localStorage.getItem(DRAFT) ?? 'null') as { at?: unknown; fields?: unknown } | null;
+    } catch {
+      return null;
+    }
+  }
+  function restoreDraft(): boolean {
+    const draft = readDraft();
+    if (!draft) return false;
+    if (typeof draft.at !== 'number' || !Array.isArray(draft.fields) || Date.now() - draft.at > DRAFT_MS) {
+      dropDraft();
+      return false;
+    }
+    // Only values the form offers today: a background or font may have been retired.
+    for (const pair of draft.fields as unknown[]) {
+      if (!Array.isArray(pair) || typeof pair[0] !== 'string' || typeof pair[1] !== 'string') continue;
+      const [name, v] = pair as [string, string];
+      const f = field(name);
+      if (!f) continue;
+      if (f instanceof RadioNodeList) {
+        if ([...f].some((r) => (r as HTMLInputElement).value === v)) f.value = v;
+      } else if (f instanceof HTMLSelectElement) {
+        if ([...f.options].some((o) => o.value === v)) f.value = v;
+      } else if (f.type === 'text') {
+        f.value = v.slice(0, f.maxLength > 0 ? f.maxLength : undefined);
+      } else {
+        f.value = v;
+      }
+    }
+    // As restored, so the redraws that follow don't count as a new edit.
+    saved = JSON.stringify([...new FormData(form).entries()].map(([k, v]) => [k, String(v)]));
+    return true;
   }
 
   // Background size and position: the value each slider speaks, the filled part of
@@ -224,7 +314,8 @@ export function mountCustomizer(root: HTMLElement) {
     }
     current = spec;
     addButton.disabled = false;
-    if (status.dataset.kind !== 'added') status.textContent = '';
+    // A message that outlives redraws (added, draft restored) waits for the next edit.
+    if (!status.dataset.kind) status.textContent = '';
     const placements = placementsInBrowser(spec);
     wantedBackground = spec.backgroundId;
     if (ready.has(spec.backgroundId)) shownBackground = spec.backgroundId;
@@ -242,6 +333,7 @@ export function mountCustomizer(root: HTMLElement) {
   function reset() {
     const p = config.preset;
     clearIdeaUndo();
+    for (const side of SIDES) ours[side] = p.sides[side]?.text ?? '';
     (field('shape') as RadioNodeList).value = p.shape;
     (field('background') as RadioNodeList).value = p.backgroundId;
     for (const side of SIDES) {
@@ -250,7 +342,7 @@ export function mountCustomizer(root: HTMLElement) {
     }
     (field('color') as HTMLSelectElement).value = Object.values(p.sides).find((s) => s?.color)?.color ?? 'auto';
     if (fitInput('bg-scale')) setFit(presetFit);
-    status.dataset.kind = '';
+    edited();
     render();
     // The button hides itself now, so put focus somewhere useful and say what happened.
     (field('text-top') as HTMLInputElement).focus();
@@ -266,12 +358,21 @@ export function mountCustomizer(root: HTMLElement) {
     }
   });
 
+  // Any change after an add brings the Add to Cart button back for the new version.
+  function edited() {
+    if (!status.dataset.kind) return;
+    status.dataset.kind = '';
+    status.textContent = '';
+    addButton.hidden = false;
+    if (addedLink) addedLink.hidden = true;
+  }
+
   let customized = false;
   let clearIdeaUndo = () => {};
   form.addEventListener('input', (e) => {
     if (!customized) track('customize');
     customized = true;
-    status.dataset.kind = '';
+    edited();
     if ((e.target as HTMLInputElement | null)?.name?.startsWith('bg-')) {
       fitFrame ||= requestAnimationFrame(moveBackground);
       return;
@@ -297,7 +398,7 @@ export function mountCustomizer(root: HTMLElement) {
   );
   fitReset?.addEventListener('click', () => {
     setFit(presetFit);
-    status.dataset.kind = '';
+    edited();
     render();
     // The button hides itself, so hand focus to the size slider and say what happened.
     fitInput('bg-scale')?.focus();
@@ -309,6 +410,7 @@ export function mountCustomizer(root: HTMLElement) {
   const ideasBox = root.querySelector<HTMLElement>('[data-ideas]');
   const undoIdea = root.querySelector<HTMLButtonElement>('[data-idea-undo]');
   let beforeIdea: Partial<Record<Side, string>> | null = null;
+  let oursBeforeIdea: Partial<Record<Side, string>> = {};
   const setTexts = (texts: Partial<Record<Side, string>>) => {
     for (const side of SIDES) (field(`text-${side}`) as HTMLInputElement).value = texts[side] ?? '';
   };
@@ -320,20 +422,28 @@ export function mountCustomizer(root: HTMLElement) {
   ideasBox?.addEventListener('click', (e) => {
     const button = (e.target as Element | null)?.closest<HTMLButtonElement>('[data-idea]');
     if (!button) return;
-    beforeIdea ??= Object.fromEntries(SIDES.map((side) => [side, value(`text-${side}`)]));
-    setTexts(JSON.parse(button.dataset.idea ?? '{}') as Partial<Record<Side, string>>);
+    if (!beforeIdea) {
+      beforeIdea = Object.fromEntries(SIDES.map((side) => [side, value(`text-${side}`)]));
+      oursBeforeIdea = { ...ours };
+    }
+    const idea = JSON.parse(button.dataset.idea ?? '{}') as Partial<Record<Side, string>>;
+    setTexts(idea);
+    for (const side of SIDES) ours[side] = idea[side] ?? '';
     if (!customized) track('customize');
     customized = true;
-    status.dataset.kind = '';
+    edited();
     render();
     if (undoIdea) undoIdea.hidden = false;
     status.textContent = 'Wording idea added. Edit any line to make it yours.';
   });
   undoIdea?.addEventListener('click', () => {
-    if (beforeIdea) setTexts(beforeIdea);
+    if (beforeIdea) {
+      setTexts(beforeIdea);
+      Object.assign(ours, oursBeforeIdea);
+    }
     beforeIdea = null;
     undoIdea.hidden = true;
-    status.dataset.kind = '';
+    edited();
     render();
     status.textContent = 'Your words are back.';
     (field('text-top') as HTMLInputElement).focus();
@@ -391,10 +501,25 @@ export function mountCustomizer(root: HTMLElement) {
     // Quantity is set in the cart; adding here is one tap.
     addToCart(config.handle, current, 1);
     track('add_to_cart', { d: asDesigned() ? 'as_designed' : 'customized' });
+    dropDraft();
     status.dataset.kind = 'added';
-    status.innerHTML = `Added to your cart. <a href="/cart">View cart and check out</a>`;
+    status.textContent = 'Added to your cart.';
+    // The shopper stays on this screen; the next step is the cart and checkout.
+    if (addedLink) {
+      addedLink.hidden = false;
+      addButton.hidden = true;
+      addedLink.focus();
+    }
   });
 
+  // Words left here earlier come back. The preview redraws from them at once.
+  const restored = restoreDraft();
+  restoring = false;
+  if (restored) {
+    render();
+    status.dataset.kind = 'restored';
+    status.textContent = 'Your changes from last time are back.';
+  }
   // The server drew the preset with the print renderer's metrics; redraw once the
   // fonts are in so later edits and the first frame agree.
   void fontsReady().then(render);

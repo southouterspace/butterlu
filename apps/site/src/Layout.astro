@@ -16,13 +16,15 @@ interface Props {
   /** Link-preview image (og:image), an absolute or root-relative URL to a raster. */
   image?: { src: string; width: number; height: number; alt: string };
   ogType?: 'website' | 'product';
+  /** Root-relative canonical when it isn't this page (the editor points at its product). */
+  canonicalPath?: string;
 }
-const { title, description, jsonLd = [], noindex = false, image, ogType = 'website' } = Astro.props;
+const { title, description, jsonLd = [], noindex = false, image, ogType = 'website', canonicalPath } = Astro.props;
 // With build.format 'file', Astro.url.pathname is the output file at build time
 // ("/index.html", "/products/x.html"). Pages are served without the extension, so
 // strip it for the canonical, og:url and the nav's current-page match.
 const path = Astro.url.pathname.replace(/(?:\/index)?\.html$/, '') || '/';
-const canonical = new URL(path, Astro.site);
+const canonical = new URL(canonicalPath ?? path, Astro.site);
 // Shop menus (docs/12 §4c): who it's for, then occasion. Groups open their category;
 // a person or occasion without its own category opens the page filtered.
 const current = (href: string) => (path === href ? 'page' : undefined);
@@ -31,9 +33,10 @@ const triggerClass = cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'text-
 // Funnel step for the page-view beacon (docs/11). `path` above already has the
 // build file name (/index.html, /cart.html) stripped.
 const page = path;
-const [, section = '', slug] = page.split('/');
+const [, section = '', slug, sub] = page.split('/');
 const pageType =
   page === '/' ? 'home'
+  : section === 'products' && sub === 'personalize' ? 'personalize'
   : section === 'products' ? 'product'
   : section === 'collections' ? 'collection'
   : page === '/cart' ? 'cart'
@@ -41,7 +44,7 @@ const pageType =
   : section === 'pages' ? 'content'
   : page === '/404' ? 'not_found'
   : 'other';
-const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : undefined;
+const pageHandle = pageType === 'product' || pageType === 'personalize' || pageType === 'collection' ? slug : undefined;
 ---
 <!doctype html>
 <html lang="en">

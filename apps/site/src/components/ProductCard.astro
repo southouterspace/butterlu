@@ -2,7 +2,8 @@
 // A frame or design tile in the shadcn Card shape, rendered as static HTML.
 // A design card offers the ways in that every category has (owner, 2026-11-11): add it
 // to the cart exactly as shown in one tap when its wording needs no names or dates, or
-// open it to personalize. Making a frame from scratch is the FrameChoice block.
+// open the editor to personalize. The card itself opens the product page. Making a
+// frame from scratch is the FrameChoice block. src/scripts/shop-actions.ts wires both.
 import { type Product, formatPrice, isFrame, readyAsShown } from '../catalog/products';
 import { tagsFor } from '../catalog/taxonomy';
 import { frameSvg } from '../lib/frame-svg';
@@ -23,6 +24,7 @@ const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPref
 const frame = isFrame(product);
 const quick = !frame && readyAsShown(product);
 const href = `/products/${product.handle}`;
+const personalizeHref = `${href}/personalize`;
 const titleId = `card-title-${product.handle}`;
 ---
 <li
@@ -41,7 +43,7 @@ const titleId = `card-title-${product.handle}`;
     </div>
   </a>
   {!frame && (
-    <div class="flex flex-wrap gap-2 px-3 pb-3 sm:px-4 sm:pb-4">
+    <div class="flex flex-wrap gap-2 px-3 pb-3 sm:px-4 sm:pb-4" data-shop-actions>
       {quick && (
         <button
           type="button"
@@ -54,11 +56,13 @@ const titleId = `card-title-${product.handle}`;
         </button>
       )}
       <a
-        href={href}
+        href={personalizeHref}
+        data-personalize="card"
+        data-handle={product.handle}
         class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-8 flex-1 py-1 text-center whitespace-normal')}
-        aria-label={`${quick ? 'Personalize' : 'Add Your Words'}: ${product.name}`}
+        aria-label={`Personalize: ${product.name}`}
       >
-        {quick ? 'Personalize' : 'Add Your Words'}
+        Personalize
       </a>
       {/* Rendered from the start, so screen readers announce the update. */}
       {quick && <p class="w-full text-xs text-muted-foreground" role="status" data-added-status></p>}
@@ -66,21 +70,5 @@ const titleId = `card-title-${product.handle}`;
   )}
 </li>
 <script>
-  import type { FrameSpec } from '@butterlu/frame';
-  import { addToCart, cartLines } from '../scripts/cart';
-  import { track } from '../scripts/track';
-
-  // One listener for every card on the page. The checkout Worker re-checks each line.
-  document.addEventListener('click', (e) => {
-    const button = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-add-as-shown]');
-    if (!button) return;
-    const spec = JSON.parse(button.dataset.spec ?? 'null') as FrameSpec | null;
-    if (!spec) return;
-    const handle = button.dataset.addAsShown!;
-    addToCart(handle, spec, 1);
-    track('add_to_cart', { d: 'as_shown_card', h: handle });
-    const status = button.parentElement?.querySelector<HTMLElement>('[data-added-status]');
-    const n = cartLines().filter((l) => l.handle === handle).reduce((sum, l) => sum + l.quantity, 0);
-    if (status) status.innerHTML = `Added to your cart${n > 1 ? ` (${n} of these)` : ''}. <a href="/cart" class="underline underline-offset-4">View cart</a>`;
-  });
+  import '../scripts/shop-actions';
 </script>

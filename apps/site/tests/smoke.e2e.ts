@@ -106,3 +106,14 @@ test('Shop All lists designs best selling first', async ({ app }) => {
   expect(order.every((i) => i > 0)).toBe(true);
   expect([...order].sort((a, b) => a - b)).toEqual(order);
 });
+
+test('the editor screen points search at its product page and stays out of the sitemap', async ({ app }) => {
+  const html = await (await fetch(new URL('/products/nana-picture-frame/personalize', app.baseUrl))).text();
+  expect(html.includes('<link rel="canonical" href="https://www.butterlu.com/products/nana-picture-frame">')).toBe(true);
+  expect(html.includes('data-page-type="personalize"')).toBe(true);
+  const sitemap = await (await fetch(new URL('/sitemap.xml', app.baseUrl))).text();
+  expect(sitemap.includes('/personalize<')).toBe(false);
+  // Cards and the product page open the editor directly.
+  const pdp = await (await fetch(new URL('/products/nana-picture-frame', app.baseUrl))).text();
+  expect(pdp.includes('href="/products/nana-picture-frame/personalize"')).toBe(true);
+});

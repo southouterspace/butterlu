@@ -126,7 +126,7 @@ const FRAME_PAGES: Product[] = [
     name: 'Personalized Picture Frame',
     seoTitle: 'Personalized Picture Frame in Your Own Words',
     seoDescription: 'A personalized 4x6 picture frame for any person or occasion. Add their names, a date or your own words and see it before you buy. Free US shipping.',
-    intro: 'Your words, start to finish.',
+    intro: 'Your design, start to finish.',
     goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a plain frame'],
     priceCents: FRAME_PRICE_CENTS,
     preset: {

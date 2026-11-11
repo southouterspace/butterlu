@@ -20,6 +20,10 @@ describe('parseClientEvent', () => {
       detail: 'customized',
     });
   });
+  test('keeps a Personalize tap from the product page and a view of the editor', () => {
+    expect(parseClientEvent({ n: 'personalize_click', p: 'product', h: 'nana-picture-frame', d: 'product' })).toEqual({ name: 'personalize_click', page: 'product', handle: 'nana-picture-frame', detail: 'product' });
+    expect(parseClientEvent({ n: 'view', p: 'personalize', h: 'nana-picture-frame' })).toEqual({ name: 'view', page: 'personalize', handle: 'nana-picture-frame' });
+  });
   test('refuses unknown and server-only events', () => {
     expect(parseClientEvent({ n: 'order_paid' })).toBeNull();
     expect(parseClientEvent({ n: 'anything' })).toBeNull();

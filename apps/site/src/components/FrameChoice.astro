@@ -2,7 +2,8 @@
 // The "create your own" path: a plain frame for a shopper who already knows what they
 // want to say. On category pages it follows the designs, which come first (Asli's
 // feedback, owner 2026-11-11). It sells the personalization, not the frame's shape or
-// options (owner, 2026-11-11); shape is a plain choice inside the editor.
+// options (owner, 2026-11-11); shape is a plain choice inside the editor, which the
+// button opens straight away.
 import { CREATE_HREF } from '../catalog/taxonomy';
 import { buttonVariants } from './ui/variants';
 
@@ -15,7 +16,7 @@ const { id = 'frames' } = Astro.props;
 <section id="create" aria-labelledby={id} class="scroll-mt-24 rounded-4xl bg-muted/60 p-4 sm:p-6">
   <h2 id={id} class="text-lg md:text-xl">Create your own frame</h2>
   <p class="mt-1 mb-4 max-w-[60ch] text-sm text-muted-foreground">
-    Your words, start to finish.
+    Your design, start to finish.
   </p>
-  <a class={buttonVariants({ size: 'lg' })} href={CREATE_HREF}>Start Your Own Frame</a>
+  <a class={buttonVariants({ size: 'lg' })} href={`${CREATE_HREF}/personalize`} data-personalize="create" data-handle={CREATE_HREF.split('/').pop()}>Start Your Own Frame</a>
 </section>

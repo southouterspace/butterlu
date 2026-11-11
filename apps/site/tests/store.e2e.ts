@@ -50,7 +50,9 @@ test('the home page opens with a hero image, its buttons, and three value props'
 
 test('a category offers its designs, then a blank frame to create your own, and a wording idea fills the frame', async ({ app, screen }) => {
   await app.open('/collections/baby-frames');
-  await expect(screen.getByRole('heading', 'Ready-made designs')).toBeVisible();
+  // Title, intro, filter row, then the grid: no heading between the filters and the designs.
+  await expect(screen.getByRole('heading', 'Ready-made designs')).toHaveCount(0);
+  await expect(screen.getByRole('button', 'Filter')).toBeVisible();
   await expect(screen.getByRole('heading', 'Create your own frame')).toBeVisible();
   await expect(screen.getByRole('link', 'Start Your Own Frame')).toBeVisible();
 
@@ -64,20 +66,58 @@ test('a category offers its designs, then a blank frame to create your own, and 
 test('shoppers can filter designs by who it is for and occasion', async ({ app, screen }) => {
   // A menu link opens a category already filtered to one person.
   await app.open('/collections/grandparent-frames?for=grandpa');
-  await expect(screen.getByRole('button', /^Grandpa/)).toHaveAttribute('aria-pressed', 'true');
+  await expect(screen.getByRole('button', 'Filter, 1 selected')).toBeVisible();
   await expect(screen.getByRole('status').getByText(/^Showing \d+ of \d+ designs$/)).toBeVisible();
   await expect(screen.getByRole('link', /^Grandpa Christmas Frame/)).toBeVisible();
   await expect(screen.getByRole('link', /^Mimi Picture Frame/)).toBeHidden();
+  await screen.getByRole('button', 'Filter, 1 selected').click();
+  await expect(screen.getByRole('button', /^Grandpa/)).toHaveAttribute('aria-pressed', 'true');
+  await screen.getByRole('button', 'Close').click();
   await screen.getByRole('button', 'Clear Filters').click();
   await expect(screen.getByRole('link', /^Mimi Picture Frame/)).toBeVisible();
 
   // Shop all combines an occasion with who it's for. Shape is not a filter.
   await app.open('/collections/all?occasion=birthday');
   await expect(screen.getByRole('link', /^Godmother Baptism Frame/)).toBeVisible();
+  await screen.getByRole('button', 'Filter, 1 selected').click();
   await screen.getByRole('button', /^Aunts & Uncles/).click();
+  await expect(screen.getByRole('button', /^Rounded/)).toHaveCount(0);
+  await screen.getByRole('button', /^Show \d+ Designs?$/).click();
   await expect(screen.getByRole('link', /^Godmother Baptism Frame/)).toBeHidden();
   await expect(screen.getByRole('link', /^Aunt & Uncle Picture Frame/)).toBeVisible();
-  await expect(screen.getByRole('button', /^Rounded/)).toHaveCount(0);
+});
+
+test('on desktop, filters open in a drawer from the left and the designs come first', async ({ app, browser, screen }) => {
+  await app.open('/collections/all');
+  // No rows of chips over the grid; one Filter button opens the drawer.
+  await expect(screen.getByRole('button', /^Godparents/)).toBeHidden();
+  await screen.getByRole('button', 'Filter').click();
+  await expect(screen.getByRole('dialog', 'Filter Designs')).toBeVisible();
+  // It hugs the left edge and runs the full height, narrower than the page.
+  const box = await browser.evaluate(async () => {
+    const el = document.querySelector('[data-filter-sheet]')!;
+    await Promise.all(el.getAnimations().map((a) => a.finished));
+    const r = el.getBoundingClientRect();
+    return { left: Math.round(r.left), top: Math.round(r.top), width: r.width, height: Math.round(r.height), vw: innerWidth, vh: innerHeight };
+  });
+  expect(box.left).toBe(0);
+  expect(box.top).toBe(0);
+  expect(box.height).toBe(box.vh);
+  expect(box.width).toBeLessThan(box.vw / 2);
+  // Filtering is live behind the drawer.
+  await screen.getByRole('button', /^Godparents/).click();
+  await screen.getByRole('button', /^Show \d+ Designs?$/).click();
+  await expect(screen.getByRole('dialog', 'Filter Designs')).toBeHidden();
+  await expect(screen.getByRole('button', 'Filter, 1 selected')).toBeVisible();
+  await expect(screen.getByRole('link', /^Godmother Baptism Frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Mimi Picture Frame/)).toBeHidden();
+  // Close and Escape both shut it.
+  await screen.getByRole('button', 'Filter, 1 selected').click();
+  await screen.getByRole('button', 'Close').click();
+  await expect(screen.getByRole('dialog', 'Filter Designs')).toBeHidden();
+  await screen.getByRole('button', 'Filter, 1 selected').click();
+  await browser.keyboard.press('Escape');
+  await expect(screen.getByRole('dialog', 'Filter Designs')).toBeHidden();
 });
 
 test('on a phone, filters open in a sheet and the designs come first', async ({ app, browser, screen }) => {

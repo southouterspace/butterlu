@@ -217,7 +217,8 @@
 }
 
 /* Background picker and list filters: a bottom sheet (shadcn Drawer shape) on phones,
-   opened as a modal <dialog>; inline from md up, where the same element is always shown.
+   opened as a modal <dialog>. From md up the picker is inline (the same element, always
+   shown) and the filters become a drawer from the left edge (below).
    Native dialog gives focus trapping, Escape and the top layer with no library. */
 :is(.bg-picker, .filter-sheet) {
   margin: auto 0 0;
@@ -260,7 +261,7 @@ html:has(:is(.bg-picker, .filter-sheet):modal) {
   }
 }
 @media (min-width: 48rem) {
-  :is(.bg-picker, .filter-sheet):not(:modal) {
+  .bg-picker:not(:modal) {
     display: block;
     position: static;
     margin: 0;
@@ -367,6 +368,27 @@ html:has(:is(.bg-picker, .filter-sheet):modal) {
 /* The filter sheet holds a few rows of chips, so it may stand taller than the picker. */
 .filter-sheet {
   max-height: 80svh;
+}
+/* From md up the filters slide in from the left as a full-height drawer (shadcn Sheet,
+   side="left"), so the grid keeps the page instead of rows of chips above it. */
+@media (min-width: 48rem) {
+  .filter-sheet {
+    margin: 0 auto 0 0;
+    width: min(26rem, calc(100vw - 4rem));
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0 var(--radius-4xl) var(--radius-4xl) 0;
+    box-shadow: 12px 0 40px oklch(0 0 0 / 0.14);
+    translate: -100% 0;
+  }
+  .filter-sheet[open] {
+    translate: 0 0;
+  }
+  @starting-style {
+    .filter-sheet[open] {
+      translate: -100% 0;
+    }
+  }
 }
 
 /* Toasts (src/scripts/toast.ts): the shadcn Sonner look, bottom center on phones,

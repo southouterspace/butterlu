@@ -82,19 +82,17 @@ export function mountFilters(root: Document = document) {
     if (clearing) (sheet?.open ? done : status)?.focus();
   });
 
-  // Phones: the chips open in a bottom sheet. Filtering is live; Show N Designs closes it.
+  // The chips open in a bottom sheet on phones and a left drawer from md up.
+  // Filtering is live; Show N Designs (or Close, Escape, the scrim) closes it.
   if (sheet && opener) {
-    const wide = matchMedia('(min-width: 48rem)');
     opener.addEventListener('click', () => sheet.showModal());
     done?.addEventListener('click', () => sheet.close());
+    bar.querySelector('[data-filter-close]')?.addEventListener('click', () => sheet.close());
     // A tap on the scrim, outside the sheet's box, closes it.
     sheet.addEventListener('click', (e) => {
       if (e.target !== sheet) return;
       const r = sheet.getBoundingClientRect();
       if (e.clientY < r.top || e.clientY > r.bottom || e.clientX < r.left || e.clientX > r.right) sheet.close();
-    });
-    wide.addEventListener('change', (e) => {
-      if (e.matches && sheet.open) sheet.close();
     });
   }
 

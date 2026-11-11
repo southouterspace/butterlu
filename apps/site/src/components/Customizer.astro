@@ -5,8 +5,8 @@
 // two-way toggle; backgrounds open in a bottom sheet on phones (inline from md up);
 // fonts and text color wait behind one disclosure. Server-rendered with the preset
 // selected, so the page reads and works before the script runs.
-import { BACKGROUNDS, FONTS, SHAPES, SIDES } from '@butterlu/frame';
-import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS } from '@butterlu/frame/design';
+import { BACKGROUNDS, BACKGROUND_SCALE, DEFAULT_BACKGROUND_FIT, FONTS, SHAPES, SIDES, backgroundSlack } from '@butterlu/frame';
+import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS, describeFit, parseFit } from '@butterlu/frame/design';
 import { type Product, SHOP, formatPrice, isFrame } from '../catalog/products';
 import { type Idea, productIdeas } from '../catalog/copy';
 import { productMedia } from '../catalog/media';
@@ -44,6 +44,15 @@ const ideas: Idea[] = productIdeas(product.handle);
 const ideaLabel = (i: Idea) => SIDES.flatMap((s) => (i[s] ? [i[s]] : [])).join(' · ');
 const media = productMedia(product.handle);
 const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
+// Background size and position: sliders in whole percents, read into a BackgroundFit.
+const fit = parseFit(preset.backgroundFit, preset.shape) ?? DEFAULT_BACKGROUND_FIT;
+const presetSlack = backgroundSlack(preset.shape, fit.scale);
+const fitSummary = (f: typeof fit) => {
+  const d = describeFit(f);
+  return d.charAt(0).toUpperCase() + d.slice(1);
+};
+const pct = (v: number) => Math.round(v * 100);
+const rangeClass = 'range w-full';
 ---
 <div class="customizer grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-10" data-customizer={JSON.stringify(config)}>
   <!-- Sticky on phones too, so every change shows while the shopper is choosing. -->
@@ -144,6 +153,45 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
         </div>
       </dialog>
     </fieldset>
+
+    <details class="group rounded-3xl bg-muted/60" data-fit-box>
+      <summary class="flex cursor-pointer list-none items-center gap-3 rounded-3xl px-4 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
+        <span class="min-w-0 flex-1">
+          <span class="block text-sm font-medium">Background size and position</span>
+          <span class="block truncate text-xs text-muted-foreground" data-fit-summary>{fitSummary(fit)}</span>
+        </span>
+        <Icon name="chevron-down" class="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
+      </summary>
+      <div class="grid gap-4 px-4 pt-1 pb-4">
+        <p class="text-sm text-muted-foreground">Make the background bigger, then slide it to show the part you like. It prints exactly as the preview shows.</p>
+        <div class="grid gap-1.5">
+          <div class="flex items-baseline justify-between gap-3">
+            <label for="bg-scale" class="text-sm font-medium">Size</label>
+            <output for="bg-scale" aria-live="off" class="text-sm text-muted-foreground tabular-nums" data-fit-out="scale">{pct(fit.scale)}%</output>
+          </div>
+          <div class="flex items-center gap-2">
+            <button type="button" class={buttonVariants({ variant: 'outline', size: 'icon-lg' })} aria-label="Make smaller" aria-controls="bg-scale" data-fit-step="-10"><Icon name="minus" /></button>
+            <input id="bg-scale" name="bg-scale" type="range" min={pct(BACKGROUND_SCALE.min)} max={pct(BACKGROUND_SCALE.max)} step={pct(BACKGROUND_SCALE.step)} value={pct(fit.scale)} aria-valuetext={`${pct(fit.scale)} percent`} aria-describedby={[presetSlack.x < 1e-6 ? 'bg-x-hint' : '', presetSlack.y < 1e-6 ? 'bg-y-hint' : ''].filter(Boolean).join(' ') || undefined} class={rangeClass} style={`--fill:${((fit.scale - BACKGROUND_SCALE.min) / (BACKGROUND_SCALE.max - BACKGROUND_SCALE.min)) * 100}%`} />
+            <button type="button" class={buttonVariants({ variant: 'outline', size: 'icon-lg' })} aria-label="Make bigger" aria-controls="bg-scale" data-fit-step="10"><Icon name="plus" /></button>
+          </div>
+        </div>
+        <div class="grid gap-1.5">
+          <label for="bg-x" class="text-sm font-medium">Side to side</label>
+          <input id="bg-x" name="bg-x" type="range" min="-100" max="100" step="5" value={pct(fit.x)} disabled={presetSlack.x < 1e-6} aria-describedby="bg-x-hint" class={rangeClass} style={`--fill:${(fit.x + 1) * 50}%`} />
+          <div class="flex justify-between text-xs text-muted-foreground" aria-hidden="true"><span>Show the left</span><span>Show the right</span></div>
+          <p id="bg-x-hint" class="text-xs text-muted-foreground" data-fit-hint="x" hidden={presetSlack.x >= 1e-6}>Make it bigger first to move it side to side.</p>
+        </div>
+        <div class="grid gap-1.5">
+          <label for="bg-y" class="text-sm font-medium">Up and down</label>
+          <input id="bg-y" name="bg-y" type="range" min="-100" max="100" step="5" value={pct(fit.y)} disabled={presetSlack.y < 1e-6} aria-describedby="bg-y-hint" class={rangeClass} style={`--fill:${(fit.y + 1) * 50}%`} />
+          <div class="flex justify-between text-xs text-muted-foreground" aria-hidden="true"><span>Show the top</span><span>Show the bottom</span></div>
+          <p id="bg-y-hint" class="text-xs text-muted-foreground" data-fit-hint="y" hidden={presetSlack.y >= 1e-6}>Make it bigger first to move it up and down.</p>
+        </div>
+        <button type="button" class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'justify-self-start')} data-fit-reset hidden>
+          <Icon name="rotate-ccw" class="size-3.5" />Reset size and position
+        </button>
+      </div>
+    </details>
 
     <details class="group rounded-3xl bg-muted/60" data-more>
       <summary class="flex cursor-pointer list-none items-center gap-3 rounded-3xl px-4 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">

@@ -1,9 +1,21 @@
 // Live customizer on the product page. Reads the form into a FrameSpec, checks it
 // with the shared design rules, fits the text with the shared layout rules, and
 // redraws the preview. The spec it adds to the cart is what the frame MCP prints.
-import { FONTS, type FrameSpec, type HexColor, SIDES, type Side, backgroundById } from '@butterlu/frame';
-import { SIDE_LABEL, TEXT_COLORS, parseDesign } from '@butterlu/frame/design';
-import { backgroundUrl, frameSvg } from '../lib/frame-svg';
+import {
+  BACKGROUND_SCALE,
+  type BackgroundFit,
+  DEFAULT_BACKGROUND_FIT,
+  FONTS,
+  type FrameSpec,
+  type HexColor,
+  SIDES,
+  type Side,
+  backgroundById,
+  backgroundRect,
+  backgroundSlack,
+} from '@butterlu/frame';
+import { SIDE_LABEL, TEXT_COLORS, describeFit, parseDesign, parseFit } from '@butterlu/frame/design';
+import { backgroundAttrs, backgroundUrl, frameSvg } from '../lib/frame-svg';
 import { loadNow, whenIdle } from './idle';
 import { addToCart } from './cart';
 import { track } from './track';
@@ -45,7 +57,8 @@ export function mountCustomizer(root: HTMLElement) {
         ...(color !== 'auto' ? { color: color as HexColor } : {}),
       };
     }
-    const r = parseDesign({ shape: value('shape'), backgroundId: value('background'), sides });
+    const backgroundFit = { scale: Number(value('bg-scale')) / 100, x: Number(value('bg-x')) / 100, y: Number(value('bg-y')) / 100 };
+    const r = parseDesign({ shape: value('shape'), backgroundId: value('background'), sides, backgroundFit });
     return r.ok ? r.spec : { errors: r.errors };
   }
 
@@ -54,8 +67,18 @@ export function mountCustomizer(root: HTMLElement) {
   const fontName = (id: string) => FONTS.find((f) => f.id === id)?.name.replace(/ (Bold|SemiBold)$/, '') ?? id;
   // What the form holds, and what it holds for the preset. The baseline comes from the
   // preset, not the page's first state, because a browser can restore edits on reload.
-  const snapshot = () => JSON.stringify(Object.fromEntries([...new FormData(form).entries()].map(([k, v]) => [k, String(v)]).sort()));
+  // Background size and position are compared as the fit they print, not as raw
+  // slider values: a sideways nudge at 100% changes nothing.
+  const snapshot = () =>
+    JSON.stringify(Object.fromEntries([...new FormData(form).entries()].filter(([k]) => !k.startsWith('bg-')).map(([k, v]) => [k, String(v)]).sort()));
   const p0 = config.preset;
+  // The fit is read on its own, so the sliders keep working while the words are
+  // invalid (every side empty), and both sides of a comparison go through one parser.
+  const fitOf = (raw: unknown, shape: string) => parseFit(raw, shape as FrameSpec['shape']) ?? DEFAULT_BACKGROUND_FIT;
+  const sameFit = (a: BackgroundFit, b: BackgroundFit) => a.scale === b.scale && a.x === b.x && a.y === b.y;
+  const presetFit = fitOf(p0.backgroundFit, p0.shape);
+  const currentFit = () => fitOf({ scale: Number(value('bg-scale')) / 100, x: Number(value('bg-x')) / 100, y: Number(value('bg-y')) / 100 }, value('shape'));
+  const asDesigned = (fit = currentFit()) => snapshot() === original && sameFit(fit, presetFit);
   const original = JSON.stringify(
     Object.fromEntries(
       [
@@ -84,7 +107,77 @@ export function mountCustomizer(root: HTMLElement) {
     }
     // Only sides with words get a font choice; an empty side has nothing to style.
     for (const row of root.querySelectorAll<HTMLElement>('[data-font-row]')) row.hidden = !value(`text-${row.dataset.fontRow}`).trim();
-    if (resetButton) resetButton.hidden = snapshot() === original;
+    const fit = currentFit();
+    syncFit(fit);
+    if (resetButton) resetButton.hidden = asDesigned(fit);
+  }
+
+  // Background size and position: the value each slider speaks, the filled part of
+  // its track, the collapsed summary line, and whether an axis has room to move.
+  const fitSummary = root.querySelector<HTMLElement>('[data-fit-summary]');
+  const fitReset = root.querySelector<HTMLButtonElement>('[data-fit-reset]');
+  const scaleOut = root.querySelector<HTMLOutputElement>('[data-fit-out="scale"]');
+  const fitInput = (name: 'bg-scale' | 'bg-x' | 'bg-y') => field(name) as HTMLInputElement | null;
+  const toward = (v: number, lo: string, hi: string) => (v === 0 ? 'Centered' : `${Math.abs(v)} percent toward the ${v < 0 ? lo : hi}`);
+  function syncFit(fit: BackgroundFit) {
+    const scale = fitInput('bg-scale');
+    if (!scale) return;
+    const hints: string[] = [];
+    const shape = value('shape') as FrameSpec['shape'];
+    const slack = backgroundSlack(shape, Number(scale.value) / 100);
+    for (const [name, axis, lo, hi] of [
+      ['bg-x', 'x', 'left', 'right'],
+      ['bg-y', 'y', 'top', 'bottom'],
+    ] as const) {
+      const input = fitInput(name);
+      if (!input) continue;
+      const stuck = slack[axis] < 1e-6;
+      // Focus stays put if the slider in hand is the one turning off. A slider with
+      // no room goes back to the middle, which is where the print has it.
+      if (input.disabled !== stuck) input.disabled = stuck;
+      if (stuck) input.value = '0';
+      const hint = root.querySelector<HTMLElement>(`[data-fit-hint="${axis}"]`);
+      if (hint) {
+        hint.hidden = !stuck;
+        // A disabled slider can't take focus, so the size slider carries its hint.
+        if (stuck) hints.push(hint.id);
+      }
+      const v = Number(input.value);
+      input.setAttribute('aria-valuetext', stuck ? 'Centered' : toward(v, lo, hi));
+      input.style.setProperty('--fill', `${(v + 100) / 2}%`);
+    }
+    const pct = Number(scale.value);
+    scale.setAttribute('aria-valuetext', `${pct} percent`);
+    const span = (BACKGROUND_SCALE.max - BACKGROUND_SCALE.min) * 100;
+    scale.style.setProperty('--fill', `${((pct - BACKGROUND_SCALE.min * 100) / span) * 100}%`);
+    if (hints.length) scale.setAttribute('aria-describedby', hints.join(' '));
+    else scale.removeAttribute('aria-describedby');
+    if (scaleOut) scaleOut.textContent = `${pct}%`;
+    if (fitSummary) {
+      const d = describeFit(fit);
+      fitSummary.textContent = d.charAt(0).toUpperCase() + d.slice(1);
+    }
+    if (fitReset) fitReset.hidden = sameFit(fit, presetFit);
+  }
+  const setFit = (f: BackgroundFit) => {
+    fitInput('bg-scale')!.value = String(Math.round(f.scale * 100));
+    fitInput('bg-x')!.value = String(Math.round(f.x * 100));
+    fitInput('bg-y')!.value = String(Math.round(f.y * 100));
+  };
+
+  // Dragging a slider fires many input events. Only the background moves, so move
+  // the preview's image in place, once per frame, instead of redrawing the frame.
+  let fitFrame = 0;
+  function moveBackground() {
+    fitFrame = 0;
+    const image = preview.querySelector<SVGImageElement>('[data-bg-image]');
+    if (!image) return render();
+    const spec = readSpec();
+    // With invalid words the cart stays off (render said why), but the background still moves.
+    if (!('errors' in spec)) current = spec;
+    const rect = backgroundRect(value('shape') as FrameSpec['shape'], currentFit());
+    for (const [k, v] of Object.entries(backgroundAttrs(rect))) image.setAttribute(k, v);
+    syncChrome();
   }
 
   // Backgrounds: the preview keeps showing the last decoded background until the
@@ -156,6 +249,7 @@ export function mountCustomizer(root: HTMLElement) {
       (field(`font-${side}`) as HTMLSelectElement).value = p.sides[side]?.fontId ?? 'playfair-display-bold';
     }
     (field('color') as HTMLSelectElement).value = Object.values(p.sides).find((s) => s?.color)?.color ?? 'auto';
+    if (fitInput('bg-scale')) setFit(presetFit);
     status.dataset.kind = '';
     render();
     // The button hides itself now, so put focus somewhere useful and say what happened.
@@ -174,13 +268,41 @@ export function mountCustomizer(root: HTMLElement) {
 
   let customized = false;
   let clearIdeaUndo = () => {};
-  form.addEventListener('input', () => {
+  form.addEventListener('input', (e) => {
     if (!customized) track('customize');
     customized = true;
     status.dataset.kind = '';
+    if ((e.target as HTMLInputElement | null)?.name?.startsWith('bg-')) {
+      fitFrame ||= requestAnimationFrame(moveBackground);
+      return;
+    }
     render();
   });
   resetButton?.addEventListener('click', reset);
+  // Smaller and Bigger step the size slider for anyone who'd rather not drag it.
+  root.querySelectorAll<HTMLButtonElement>('[data-fit-step]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const scale = fitInput('bg-scale');
+      if (!scale) return;
+      const next = Math.min(Number(scale.max), Math.max(Number(scale.min), Number(scale.value) + Number(b.dataset.fitStep)));
+      if (String(next) === scale.value) {
+        status.textContent = `The background is already at its ${next >= Number(scale.max) ? 'biggest' : 'smallest'}.`;
+        return;
+      }
+      scale.value = String(next);
+      scale.dispatchEvent(new Event('input', { bubbles: true }));
+      // A slider speaks its own value; a button press needs saying.
+      status.textContent = `Background size ${next}%.`;
+    }),
+  );
+  fitReset?.addEventListener('click', () => {
+    setFit(presetFit);
+    status.dataset.kind = '';
+    render();
+    // The button hides itself, so hand focus to the size slider and say what happened.
+    fitInput('bg-scale')?.focus();
+    status.textContent = 'Background size and position reset.';
+  });
 
   // A wording idea fills every side it names and clears the rest; fonts stay as chosen.
   // The words it replaced come back with Undo until the shopper types again.
@@ -268,7 +390,7 @@ export function mountCustomizer(root: HTMLElement) {
     if (!current) return;
     // Quantity is set in the cart; adding here is one tap.
     addToCart(config.handle, current, 1);
-    track('add_to_cart', { d: snapshot() === original ? 'as_designed' : 'customized' });
+    track('add_to_cart', { d: asDesigned() ? 'as_designed' : 'customized' });
     status.dataset.kind = 'added';
     status.innerHTML = `Added to your cart. <a href="/cart">View cart and check out</a>`;
   });

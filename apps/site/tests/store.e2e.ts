@@ -125,3 +125,30 @@ test('a ready-made design goes into the cart as shown in one tap', async ({ app,
   await expect(screen.getByRole('heading', 'Nana picture frame')).toBeVisible();
   await expect(screen.getByText('Top: "I Love My Nana"', { exact: false })).toBeVisible();
 });
+
+test('the background can be made bigger and moved, from the keyboard, and the cart keeps it', async ({ app, screen }) => {
+  await app.open(PRODUCT);
+  await screen.getByText('Background size and position').click();
+  const size = screen.getByRole('slider', 'Size');
+  const across = screen.getByRole('slider', 'Side to side');
+  // At its smallest the sheet just fills the frame's width, so it can't move sideways yet.
+  await expect(across).toBeDisabled();
+  await expect(screen.getByText('Make it bigger first to move it side to side.')).toBeVisible();
+
+  await size.press('End');
+  await expect(size).toHaveAttribute('aria-valuetext', '200 percent');
+  await expect(across).toBeEnabled();
+  await across.press('Home');
+  await expect(across).toHaveAttribute('aria-valuetext', '100 percent toward the left');
+  await expect(screen.getByText('Zoomed to 200%, toward the left')).toBeVisible();
+
+  await screen.getByRole('button', /^Add to cart/).click();
+  await expect(screen.getByText('Added to your cart.', { exact: false })).toBeVisible();
+  await screen.getByRole('button', 'Reset size and position').click();
+  await expect(screen.getByRole('status').getByText('Background size and position reset.')).toBeVisible();
+  await expect(size).toHaveAttribute('aria-valuetext', '100 percent');
+  await expect(screen.getByRole('button', 'Reset size and position')).toBeHidden();
+
+  await app.open('/cart');
+  await expect(screen.getByText('(zoomed to 200%, toward the left)', { exact: false })).toBeVisible();
+});

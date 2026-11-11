@@ -3,7 +3,7 @@
 // file) and in the browser (the live customizer, fitted with canvas ink metrics).
 // Placements come from @butterlu/frame's layoutFrame, so text sits in the same
 // safe zones, at the same size, as on the printed frame.
-import { type FrameSpec, type Placement, SHAPES, backgroundById } from '@butterlu/frame';
+import { type FrameSpec, type Placement, SHAPES, type Zone, backgroundById, backgroundRect } from '@butterlu/frame';
 
 /** CSS face for each font id. public/fonts/<id>.woff2 is the woff2 twin of the file the print renderer embeds. */
 export const FONT_FACES: Record<string, { family: string; weight: number }> = {
@@ -36,6 +36,10 @@ export interface FrameSvgOptions {
   lazy?: boolean;
 }
 
+const f4 = (v: number) => v.toFixed(4);
+/** The background image's x, y, width and height, where the print file puts it. */
+export const backgroundAttrs = (r: Zone) => ({ x: f4(r.x), y: f4(r.y), width: f4(r.w), height: f4(r.h) });
+
 export function frameSvg(spec: FrameSpec, placements: Placement[], { idPrefix, label, photoHint = true, size = 'full', lazy = false }: FrameSvgOptions): string {
   const shape = SHAPES[spec.shape];
   const pad = 0.06;
@@ -51,13 +55,15 @@ export function frameSvg(spec: FrameSpec, placements: Placement[], { idPrefix, l
       return `<text x="${x}" y="${y}" font-family="${esc(family)}" font-weight="${weight}" font-size="${(p.sizePt / 72).toFixed(4)}" fill="${p.color}"${rotate}>${esc(p.text)}</text>`;
     })
     .join('');
+  const bg = backgroundAttrs(backgroundRect(spec.shape, spec.backgroundFit));
   const cx = shape.widthIn / 2;
   const cy = shape.heightIn / 2;
   return [
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${-pad} ${-pad} ${shape.widthIn + 2 * pad} ${shape.heightIn + 2 * pad}" ${a11y} class="frame-svg"${lazy ? ' data-lazy' : ''}>`,
     `<defs><clipPath id="${clip}"><path d="${shape.outline}"/></clipPath><filter id="${idPrefix}-shadow" x="-5%" y="-5%" width="110%" height="115%"><feDropShadow dx="0" dy="0.04" stdDeviation="0.04" flood-opacity="0.25"/></filter></defs>`,
     `<g filter="url(#${idPrefix}-shadow)"><path d="${shape.outline}" fill="#ffffff"/></g>`,
-    `<g clip-path="url(#${clip})"><image ${lazy ? 'data-href' : 'href'}="${backgroundUrl(spec.backgroundId, size)}" x="0" y="0" width="${shape.widthIn}" height="${shape.heightIn}" preserveAspectRatio="xMidYMid slice" /></g>`,
+    // Drawn where the print file draws it (backgroundRect), so zoom and position match the print.
+    `<g clip-path="url(#${clip})"><image data-bg-image ${lazy ? 'data-href' : 'href'}="${backgroundUrl(spec.backgroundId, size)}" x="${bg.x}" y="${bg.y}" width="${bg.width}" height="${bg.height}" preserveAspectRatio="none" /></g>`,
     `<path d="${shape.opening}" fill="#f3efe8" stroke="#d9d2c6" stroke-width="0.02"/>`,
     photoHint
       ? `<text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" font-family="system-ui, sans-serif" font-size="0.24" fill="#857d71">Your 4×6 photo</text>`

@@ -282,6 +282,48 @@ html:has(.bg-picker:modal) {
   background-position: right 0.75rem center;
 }
 
+/* Range sliders (background size and position): shadcn's Slider look on a native
+   input, so keys, screen readers and the phone's own gestures all work. The thumb
+   and filled track use the ink colour; the rest of the track uses muted-foreground,
+   so both keep 3:1 against the panel. A 44 px tall hit area around a thin track.
+   --fill is set by the customizer script. */
+.range {
+  --fill: 0%;
+  appearance: none;
+  height: 2.75rem;
+  background: transparent;
+  cursor: pointer;
+  touch-action: pan-y;
+}
+.range:disabled { cursor: not-allowed; opacity: 0.5; }
+.range:focus-visible { outline: none; }
+.range::-webkit-slider-runnable-track {
+  height: 0.375rem;
+  border-radius: 9999px;
+  background: linear-gradient(to right, var(--foreground) var(--fill), var(--muted-foreground) var(--fill));
+}
+.range::-moz-range-track { height: 0.375rem; border-radius: 9999px; background: var(--muted-foreground); }
+.range::-moz-range-progress { height: 0.375rem; border-radius: 9999px; background: var(--foreground); }
+.range::-webkit-slider-thumb {
+  appearance: none;
+  margin-top: -0.5625rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background: var(--background);
+  border: 2px solid var(--foreground);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.15);
+}
+.range::-moz-range-thumb {
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 9999px;
+  background: var(--background);
+  border: 2px solid var(--foreground);
+}
+.range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--ring); }
+.range:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px var(--ring); }
+
 /* While a newly chosen background downloads, the preview shows the old one dimmed. */
 .preview[aria-busy='true'] svg {
   opacity: 0.7;

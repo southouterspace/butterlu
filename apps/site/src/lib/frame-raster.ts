@@ -6,7 +6,7 @@
 import { readFileSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { join } from 'node:path';
-import { FONTS, type FrameSpec, SHAPES } from '@butterlu/frame';
+import { FONTS, type FrameSpec, SHAPES, backgroundRect } from '@butterlu/frame';
 import { textOutline } from '@butterlu/frame/pdf';
 import sharp from 'sharp';
 import { placementsAtBuild } from './layout-build';
@@ -37,12 +37,13 @@ export async function frameJpeg(spec: FrameSpec, size = 1200): Promise<Buffer> {
   const side = Math.max(shape.widthIn, shape.heightIn) * 1.18;
   const ox = (side - shape.widthIn) / 2;
   const oy = (side - shape.heightIn) / 2;
+  const r = backgroundRect(spec.shape, spec.backgroundFit);
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${side} ${side}">
 <rect width="${side}" height="${side}" fill="#eef1f2"/>
 <defs><clipPath id="c"><path d="${shape.outline}"/></clipPath><filter id="s" x="-5%" y="-5%" width="110%" height="115%"><feDropShadow dx="0" dy="0.05" stdDeviation="0.06" flood-opacity="0.22"/></filter></defs>
 <g transform="translate(${ox} ${oy})">
 <g filter="url(#s)"><path d="${shape.outline}" fill="#ffffff"/></g>
-<g clip-path="url(#c)"><image href="data:image/jpeg;base64,${bg.toString('base64')}" x="0" y="0" width="${shape.widthIn}" height="${shape.heightIn}" preserveAspectRatio="xMidYMid slice"/></g>
+<g clip-path="url(#c)"><image href="data:image/jpeg;base64,${bg.toString('base64')}" x="${r.x}" y="${r.y}" width="${r.w}" height="${r.h}" preserveAspectRatio="none"/></g>
 <path d="${shape.opening}" fill="#f3efe8" stroke="#d9d2c6" stroke-width="0.02"/>
 ${texts}
 </g></svg>`;

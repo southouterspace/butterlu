@@ -60,7 +60,7 @@ Worker itself (`worker/events.ts`).
 | Landing and browsing | `view` | browser, every page | page type (`home`, `collection`, `product`, `personalize`, `cart`, `success`, `content`, `not_found`), handle, referrer host on landing |
 | Open the editor | `personalize_click` | browser, a Personalize tap | `product` (product page), `card` (a design card), `create` (Start Your Own Frame); h is the design. Followed by a `view` of page type `personalize` |
 | Customize | `customize` | browser, first edit in the editor | handle |
-| Add to cart | `add_to_cart` | browser | `customized` or `as_designed` from the editor, `as_shown` from the product page's Add to Cart, `as_shown_card` from a card's one-tap add (h is the design added) (the Etsy lesson: most buy as designed) |
+| Add to cart | `add_to_cart` | browser | `customized` or `as_designed` from the editor, `as_shown` from the product page's Add to Cart, `as_shown_card` from a card's one-tap add, `as_shown_home` from the homepage hero's Add to Cart (h is the design added) (the Etsy lesson: most buy as designed) |
 | Start checkout | `checkout_click` | browser | cart subtotal in cents |
 | Checkout failed to open | `checkout_error`, `checkout_refused` | browser and Worker | `http_503`, `checkout_off`, `cart_invalid`, `stripe_error` |
 | Checkout opened | `checkout_created` | Worker | order amount, Stripe mode |

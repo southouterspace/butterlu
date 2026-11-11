@@ -2,12 +2,17 @@
 import Layout from '../Layout.astro';
 import FrameChoice from '../components/FrameChoice.astro';
 import ProductCard from '../components/ProductCard.astro';
-import { FEATURED, SHOP, productByHandle } from '../catalog/products';
+import ImagePlaceholder from '../components/media/ImagePlaceholder.astro';
+import { Picture } from 'astro:assets';
+import { HOME_PHOTO_SLOTS, homeMedia } from '../catalog/media';
+import { BEST_SELLING } from '../catalog/best-selling';
+import { FEATURED, SHOP, formatPrice, productByHandle } from '../catalog/products';
+import { SHOW_PLACEHOLDERS } from '../lib/placeholders';
 import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from '../catalog/taxonomy';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
 import Icon from '../components/ui/Icon.astro';
-import { buttonVariants, cn, itemClass, itemContentClass, itemDescriptionClass, itemMediaIconClass, itemTitleClass } from '../components/ui/variants';
+import { badgeVariants, buttonVariants, cn, itemClass, itemContentClass, itemDescriptionClass, itemMediaIconClass, itemTitleClass } from '../components/ui/variants';
 
 // The hero's value props, as shadcn Items.
 const props = [
@@ -16,8 +21,15 @@ const props = [
   { icon: 'gift', title: 'Ready to Give', text: `Add a 4x6 photo. ${SHOP.shipping}.` },
 ] as const;
 const featured = FEATURED.map((h) => productByHandle(h)!);
-const hero = featured[0]!;
+// The hero is the top of the hand-kept best selling list (src/catalog/best-selling.ts).
+const hero = productByHandle(BEST_SELLING[0]!)!;
 const heroSvg = frameSvg(hero.preset, placementsAtBuild(hero.preset), { idPrefix: 'hero', label: `${hero.name}, as designed` });
+const heroHref = `/products/${hero.handle}`;
+// The finished gift in a home: Asli's photos once they're in (HOME_MEDIA in
+// src/catalog/media.ts). Stage holds the empty slots with placeholders; production
+// shows only real photos, and no section at all until there is one.
+const homePhotos = homeMedia();
+const homeSlots = SHOW_PLACEHOLDERS ? HOME_PHOTO_SLOTS : homePhotos.length;
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -33,10 +45,37 @@ const jsonLd = [
 ];
 ---
 <Layout title="Personalized Picture Frames and Keepsake Gifts | Butterlu" description="Personalized picture frames for grandparents, godparents, weddings, new babies and pet memorials. Add their names and your words, and see it first." jsonLd={jsonLd} image={{ src: `/products/${hero.handle}.jpg`, width: 1200, height: 1200, alt: hero.name }}>
+  {/* The homepage leads with a finished gift: the best seller as it ships, with both ways
+      in beside it (Personalize first, then Add to Cart as shown). */}
   <section class="grid items-center gap-6 md:grid-cols-[1fr_1.1fr] md:gap-10">
     <div class="order-2 md:order-1">
       <h1 class="text-3xl md:text-5xl">Butterlu Gifts</h1>
       <p class="mt-2 text-lg text-muted-foreground">Personalized picture frames.</p>
+      <div class="mt-5 rounded-3xl border p-4 sm:p-5">
+        <span class={badgeVariants({ variant: 'secondary' })}>Best Seller</span>
+        <p class="mt-2 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+          <a id="hero-gift" class="text-base font-medium text-foreground no-underline hover:underline sm:text-lg" href={heroHref}>{hero.name}</a>
+          <span class="text-sm text-muted-foreground">{formatPrice(hero.priceCents)}</span>
+        </p>
+        <div class="mt-3 flex gap-2" data-shop-actions>
+          <a
+            href={`${heroHref}/personalize`}
+            data-personalize="home"
+            data-handle={hero.handle}
+            class={cn(buttonVariants({ size: 'lg' }), 'flex-1')}
+            aria-label={`Personalize: ${hero.name}`}
+          >Personalize</a>
+          <button
+            type="button"
+            class={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'flex-1')}
+            data-add-as-shown={hero.handle}
+            data-spec={JSON.stringify(hero.preset)}
+            data-name={hero.name}
+            data-from="home"
+            aria-label={`Add to Cart: ${hero.name}, as shown`}
+          >Add to Cart</button>
+        </div>
+      </div>
       <ul class="mt-5 grid gap-3" aria-label="Why Butterlu">
         {props.map((p) => (
           <li class={itemClass}>
@@ -48,10 +87,27 @@ const jsonLd = [
           </li>
         ))}
       </ul>
-      <p class="mt-6"><a class={cn(buttonVariants({ size: 'xl' }), 'w-full sm:w-auto')} href="/collections/all">Shop All Frames</a></p>
+      <p class="mt-6"><a class={cn(buttonVariants({ variant: 'outline', size: 'lg' }), 'w-full sm:w-auto')} href="/collections/all">Shop All Frames</a></p>
     </div>
-    <a class="order-1 block rounded-4xl bg-muted p-4 md:order-2 md:p-9" href={`/products/${hero.handle}`} set:html={heroSvg} />
+    <a class="order-1 block rounded-4xl bg-muted p-4 md:order-2 md:p-9" href={heroHref} set:html={heroSvg} />
   </section>
+
+  {homeSlots > 0 && (
+    <section aria-labelledby="in-home" class="mt-14" data-home-photos>
+      <h2 id="in-home" class="mb-4 text-xl md:text-2xl">In their home</h2>
+      <ul class="grid grid-cols-3 gap-2 sm:gap-4">
+        {Array.from({ length: homeSlots }, (_, i) => homePhotos[i]).map((photo) => (
+          <li>
+            {photo ? (
+              <Picture src={photo.image} alt={photo.alt} formats={['avif', 'webp']} widths={[240, 480, 720, 960].filter((w) => w <= photo.image.width)} sizes="(min-width: 80rem) 24rem, 33vw" loading="lazy" decoding="async" class="aspect-[4/5] w-full rounded-2xl object-cover" />
+            ) : (
+              <ImagePlaceholder ratio="4 / 5" />
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <section aria-labelledby="for-who" class="mt-14">
     <h2 id="for-who" class="mb-4 text-xl md:text-2xl">Who is it for?</h2>
@@ -78,4 +134,6 @@ const jsonLd = [
     <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{featured.map((p, i) => <ProductCard product={p} eager={i < 4} />)}</ul>
   </section>
 </Layout>
-
+<script>
+  import '../scripts/shop-actions';
+</script>

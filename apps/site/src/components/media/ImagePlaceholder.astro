@@ -1,0 +1,24 @@
+---
+// Holds a photo's space until the photo exists: a muted box at the slot's aspect ratio
+// with the lucide image icon in the middle. Decorative, so screen readers skip it.
+// Render it only when SHOW_PLACEHOLDERS (src/lib/placeholders.ts) is on.
+import Icon from '../ui/Icon.astro';
+import { cn } from '../ui/variants';
+
+interface Props {
+  /** CSS aspect-ratio of the photo it stands in for, e.g. "4 / 5". */
+  ratio?: string;
+  class?: string;
+  /** Icon size classes; small slots want a smaller icon. */
+  iconClass?: string;
+}
+const { ratio = '1 / 1', class: className, iconClass = 'size-8' } = Astro.props;
+---
+<div
+  aria-hidden="true"
+  data-placeholder
+  class={cn('grid w-full place-items-center rounded-2xl border border-dashed bg-muted text-muted-foreground', className)}
+  style={`aspect-ratio: ${ratio}`}
+>
+  <Icon name="image" class={iconClass} />
+</div>

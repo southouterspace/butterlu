@@ -17,7 +17,7 @@ document.addEventListener('click', (e) => {
     const before = count();
     // The checkout Worker re-checks every line.
     addToCart(handle, spec, 1);
-    track('add_to_cart', { d: add.dataset.from === 'product' ? 'as_shown' : 'as_shown_card', h: handle });
+    track('add_to_cart', { d: add.dataset.from === 'product' ? 'as_shown' : add.dataset.from === 'home' ? 'as_shown_home' : 'as_shown_card', h: handle });
     const n = count();
     toast(n === before ? `Your cart already has the most we make at once (${n})` : `Added to your cart${n > 1 ? ` (${n} of these)` : ''}`, {
       description: add.dataset.name,

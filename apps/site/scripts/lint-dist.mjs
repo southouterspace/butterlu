@@ -70,6 +70,10 @@ const rules = [
   }],
   // Personalize is the one way into the editor (owner, 2026-11-11): never "Add Your Words".
   ['no "Add Your Words" (it is Personalize)', (html) => !/add\s+your\s+words/i.test(html)],
+  // Image placeholders hold empty photo slots on stage and previews only; production never
+  // shows a blank box (owner, 2026-11-11). They are decorative, so screen readers skip them.
+  ['image placeholders only where BUTTERLU_PLACEHOLDERS=1', (html) => process.env.BUTTERLU_PLACEHOLDERS === '1' || !html.includes('data-placeholder')],
+  ['image placeholders are aria-hidden', (html) => (html.match(/<div\b[^>]*\bdata-placeholder\b[^>]*>/g) ?? []).every((tag) => tag.includes('aria-hidden="true"'))],
   ['labels are Title Case with &', (html, file) => {
     const bad = labels(html).map(labelProblem).find(Boolean);
     if (bad) labelFailures.add(`${file}: ${bad}`);

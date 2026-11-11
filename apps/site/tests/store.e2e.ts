@@ -15,6 +15,26 @@ test('the home page lists frames that link to their pages', async ({ app, screen
   await expect(screen.getByRole('link', new RegExp(NAME)).first()).toBeVisible();
 });
 
+test('the home page leads with the best seller, ready to personalize or add as shown', async ({ app, browser, screen }) => {
+  await browser.setViewport({ width: 390, height: 844 });
+  await app.open('/');
+  await expect(screen.getByText('Best Seller', { exact: true })).toBeVisible();
+  await expect(screen.getByRole('link', `Personalize: ${NAME}`).first()).toHaveAttribute('href', `${EDITOR}`);
+  await screen.getByRole('button', `Add to Cart: ${NAME}, as shown`).first().click();
+  await expect(screen.getByText('Added to your cart', { exact: true })).toBeVisible();
+  // Empty photo slots: placeholders on stage and previews only, never in production,
+  // where an empty slot (and a photo row with no photos) isn't shown at all.
+  const placeholders = () => browser.evaluate(() => [...document.querySelectorAll('[data-placeholder]')].map((el) => el.getAttribute('aria-hidden')));
+  if (process.env.BUTTERLU_PLACEHOLDERS === '1') {
+    await expect(screen.getByRole('heading', 'In their home')).toBeVisible();
+    expect((await placeholders()).every((a) => a === 'true')).toBe(true);
+  } else {
+    expect(await placeholders()).toEqual([]);
+    await app.open('/products/mimi-picture-frame');
+    expect(await placeholders()).toEqual([]);
+  }
+});
+
 test('a category offers its designs, then a blank frame to create your own, and a wording idea fills the frame', async ({ app, screen }) => {
   await app.open('/collections/baby-frames');
   await expect(screen.getByRole('heading', 'Ready-made designs')).toBeVisible();

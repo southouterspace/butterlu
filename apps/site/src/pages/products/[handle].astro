@@ -7,6 +7,8 @@ import { productMedia } from '../../catalog/media';
 import { asShownNote } from '../../catalog/example-names';
 import FrameChoice from '../../components/FrameChoice.astro';
 import ProductGallery from '../../components/media/ProductGallery.astro';
+import ImagePlaceholder from '../../components/media/ImagePlaceholder.astro';
+import { SHOW_PLACEHOLDERS } from '../../lib/placeholders';
 import Icon from '../../components/ui/Icon.astro';
 import { buttonVariants, cn } from '../../components/ui/variants';
 import { frameSvg } from '../../lib/frame-svg';
@@ -189,11 +191,19 @@ const jsonLd = [
     </div>
   </div>
 
-  {/* Lifestyle photos and video, once Asli's arrive (src/catalog/media.ts). */}
-  {media.length > 0 && (
+  {/* Lifestyle photos and video, once Asli's arrive (src/catalog/media.ts). Until then
+      stage holds their place with placeholders; production shows nothing. */}
+  {media.length > 0 ? (
     <section aria-label="Photos" class="mt-10">
       <ProductGallery media={media} name={product.name} />
     </section>
+  ) : SHOW_PLACEHOLDERS && (
+    <div class="mt-10" aria-hidden="true">
+      <p class="mb-2 text-sm font-medium">Photos</p>
+      <ul class="flex gap-2">
+        {[0, 1, 2].map(() => <li class="size-16 shrink-0"><ImagePlaceholder class="rounded-xl" iconClass="size-5" /></li>)}
+      </ul>
+    </div>
   )}
 
   {/* Reviews go here once there is a source for them (Etsy's or the site's own,

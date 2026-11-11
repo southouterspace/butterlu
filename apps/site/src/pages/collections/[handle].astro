@@ -84,11 +84,13 @@ const jsonLd: object[] = [
     </script>
   </section>
   <div class="mt-10"><FrameChoice /></div>
-  {copy && (
+  {copy ? (
     <div class="mt-12 grid gap-10 border-t pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14">
       <section class="prose" aria-label={`About ${collection.name.toLowerCase()}`}>{copy.body.map((para) => <p>{para}</p>)}</section>
       <Questions heading="Questions" />
     </div>
+  ) : (
+    <Questions heading="Questions" class="mt-12 border-t pt-8" />
   )}
   {related.length > 0 && (
     <nav aria-labelledby="more" class="mt-10 border-t pt-6">

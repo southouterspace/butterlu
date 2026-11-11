@@ -21,12 +21,12 @@ export interface Env {
   ORDERS?: D1Database;
   /** Older shared-password sign-in for /admin. Ignored once Google sign-in is set up. */
   ADMIN_PASSWORD?: string;
-  /** Google sign-in for /admin (admin-auth.ts): the OAuth web client's ID and secret. */
-  GOOGLE_CLIENT_ID?: string;
-  GOOGLE_CLIENT_SECRET?: string;
+  /** WorkOS AuthKit sign-in for /admin (admin-auth.ts): the environment's client ID and API key. */
+  WORKOS_CLIENT_ID?: string;
+  WORKOS_API_KEY?: string;
   /** The Google accounts allowed into /admin, comma separated. Kept as a secret because the repo is public. */
   ADMIN_EMAILS?: string;
-  /** Optional key for signing admin sessions; defaults to one made from GOOGLE_CLIENT_SECRET. Changing it signs everyone out. */
+  /** Optional key for signing admin sessions; defaults to one made from WORKOS_API_KEY. Changing it signs everyone out. */
   ADMIN_SESSION_SECRET?: string;
   /** Anthropic API key for Claude's SEO drafts in the store admin (docs/13). Without it the fields are hand-written only. */
   ANTHROPIC_API_KEY?: string;

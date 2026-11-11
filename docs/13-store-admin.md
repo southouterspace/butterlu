@@ -68,34 +68,31 @@ approves. Each background's scale on a frame must be adjustable with proper cont
 
 ## Sign-in
 
-Google sign-in, for the Google accounts in the `ADMIN_EMAILS` Worker secret only
-(`worker/admin-auth.ts`). It covers everything under `/admin` and `/api/admin`, the order
-list included. The signed-in email is recorded on each edit and approval. Sessions last a
-week in a signed, HttpOnly cookie; the list is checked on every request, so removing an
-address signs that person out. Gmail addresses match whatever dots or capitals are typed.
+WorkOS AuthKit with Google as the only way in, for the accounts in the `ADMIN_EMAILS`
+Worker secret only (`worker/admin-auth.ts`). It covers everything under `/admin` and
+`/api/admin`, the order list included. The signed-in email is recorded on each edit and
+approval. The Worker trades the sign-in code with WorkOS (PKCE plus the API key), then
+keeps its own signed, HttpOnly session cookie for a week; the list is checked on every
+request, so removing an address signs that person out. Gmail addresses match whatever dots
+or capitals are typed.
 
-The repo is public, so the addresses and the OAuth client secret are Worker secrets, never
-in code. Until all three Google secrets are set, the older `ADMIN_PASSWORD` Basic sign-in
-stays in place; once they are, the password is ignored. With Google half set up, `/admin`
-is a 404 rather than falling back to the password.
+WorkOS: project "Butterlu", Staging environment, with the stage callback
+`https://butterlu-site-stage.butterlu.workers.dev/admin/auth/callback` as its redirect URI,
+Google turned on and password, magic link and passkey sign-in turned off. Staging uses
+WorkOS's own Google credentials, so Google's screen shows WorkOS's name; production needs
+a Butterlu Google client entered in WorkOS and a Production environment.
 
-Cloudflare Access was the other route; Google sign-in in the Worker needs no domain or
-Zero Trust setup and works the same on `workers.dev` and `butterlu.com`.
+The repo is public, so the client ID, API key and addresses are Worker secrets, never in
+code. Until all three are set, the older `ADMIN_PASSWORD` Basic sign-in stays in place;
+once they are, the password is ignored. With sign-in half set up, `/admin` is a 404 rather
+than falling back to the password.
 
 ## Owner steps (Justin)
 
-1. Google sign-in:
-   - In Google Cloud console, create a project (for example "Butterlu admin").
-   - Google Auth Platform: Branding (app name Butterlu admin, his email as support
-     contact), Audience External, left in Testing, with his and Asli's Gmail addresses
-     added as test users. The only scopes are `openid` and `email`, so no Google review.
-   - Clients, Create client, Web application, with the authorized redirect URI
-     `https://butterlu-site-stage.butterlu.workers.dev/admin/auth/callback` (add
-     `https://www.butterlu.com/admin/auth/callback` when production gets the admin).
-   - On the `butterlu-site-stage` Worker, add three secrets: `GOOGLE_CLIENT_ID`,
-     `GOOGLE_CLIENT_SECRET`, and `ADMIN_EMAILS` (both Gmail addresses, comma separated).
-     Optional fourth: `ADMIN_SESSION_SECRET` (any long random string).
-   - Then `ADMIN_PASSWORD` can be deleted.
+1. Sign-in: on the `butterlu-site-stage` Worker, add three secrets: `WORKOS_CLIENT_ID`
+   (the Butterlu Staging client ID), `WORKOS_API_KEY` (from WorkOS, Butterlu project,
+   Staging, API Keys), and `ADMIN_EMAILS` (both Gmail addresses, comma separated). Optional
+   fourth: `ADMIN_SESSION_SECRET`. Then `ADMIN_PASSWORD` can be deleted.
 2. For Publish: a fine-grained GitHub token limited to `southouterspace/butterlu`,
    Contents read and write only, stored as the Worker secret `GITHUB_CATALOG_TOKEN`.
 3. For Claude drafts: an Anthropic API key stored as the Worker secret `ANTHROPIC_API_KEY`.
@@ -113,7 +110,7 @@ the SEO fields are hand-written only.
 5. Waiting: catalog handover into `store.json` (storefront session), with the Best
    selling rank.
 6. Waiting on 5: Publish to git, with a diff of what will change.
-7. Done: Google sign-in for Justin and Asli only.
+7. Done: WorkOS sign-in with Google, for Justin and Asli only.
 8. Done: background size and position on each design (reads the scale task's `backgroundFit`).
 
 ## Open questions

@@ -16,7 +16,7 @@ interface CatalogResponse {
   liveHandles: { templates: string[]; categories: string[] };
   changes: { kind: string; id: string; name: string; isNew: boolean; stale: boolean; at: string; by: string | null }[];
   check: { errors: string[]; warnings: string[] };
-  setup: { claude: boolean; publish: boolean; signIn?: 'google' | 'password' | 'off' };
+  setup: { claude: boolean; publish: boolean; signIn?: 'workos' | 'password' | 'off' };
   backgrounds: { id: string; name: string; defaultTextColor: string }[];
   fonts: { id: string; name: string }[];
   textColors: { name: string; hex: string }[];
@@ -104,9 +104,9 @@ async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
     credentials: 'same-origin',
   });
   const body = (await res.json().catch(() => ({}))) as { error?: string; details?: string[] };
-  // A Google session that ended: reload, which shows the sign-in page. Unsaved edits on the
+  // A session that ended: reload, which shows the sign-in page. Unsaved edits on the
   // form are lost, which is why the session lasts a week.
-  if (res.status === 401 && data?.setup.signIn === 'google') location.reload();
+  if (res.status === 401 && data?.setup.signIn === 'workos') location.reload();
   if (!res.ok) throw new Error([body.error ?? `Error ${res.status}`, ...(body.details ?? [])].join('\n'));
   return body as T;
 }
@@ -970,7 +970,7 @@ function nav(route: string) {
     { class: 'nav', 'aria-label': 'Admin' },
     ...items.map(([href, label]) => h('a', { href, 'aria-current': route.startsWith(href.slice(1)) ? 'page' : undefined }, label)),
     h('a', { href: '/admin/orders' }, 'Orders'),
-    data.setup.signIn === 'google'
+    data.setup.signIn === 'workos'
       ? h(
           'form',
           { class: 'me', method: 'post', action: '/admin/sign-out' },

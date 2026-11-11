@@ -1,29 +1,28 @@
-// Google sign-in for the admin (docs/13 "Sign-in"). Only the Google accounts listed in
-// the ADMIN_EMAILS secret get in. The repo is public, so the addresses and the OAuth
-// client secret live only in Worker secrets.
+// Admin sign-in through WorkOS AuthKit, with Google as the only way in (docs/13
+// "Sign-in"). Only the accounts listed in the ADMIN_EMAILS secret get in. The repo is
+// public, so the addresses, the WorkOS client ID and the API key live only in Worker secrets.
 //
 // Flow: an admin page without a session shows a "Sign in with Google" page (401).
-// /admin/auth/google sends the browser to Google with state, nonce and PKCE held in a
-// short signed cookie. /admin/auth/callback trades the code for an ID token directly
-// with Google over HTTPS (so its claims can be trusted without checking the JWT
-// signature, as Google's docs allow), checks issuer, audience, expiry, nonce and a
-// verified email on the list, then sets a signed session cookie. The list is checked
-// again on every request, so taking an address off it signs that person out.
+// /admin/auth/google sends the browser to WorkOS (provider GoogleOAuth, so it goes
+// straight on to Google) with state and PKCE held in a short signed cookie.
+// /admin/auth/callback trades the code for the user directly with WorkOS over HTTPS,
+// checks that the email is verified, came from Google and is on the list, then sets a
+// signed session cookie. The list is checked again on every request, so taking an
+// address off it signs that person out.
 import type { Env } from './env';
 
 const SESSION_COOKIE = '__Host-butterlu_admin';
 const FLOW_COOKIE = '__Host-butterlu_signin';
 const SESSION_SECONDS = 7 * 24 * 3600;
 const FLOW_SECONDS = 600;
-const GOOGLE_AUTH = 'https://accounts.google.com/o/oauth2/v2/auth';
-const GOOGLE_TOKEN = 'https://oauth2.googleapis.com/token';
-const ISSUERS = new Set(['accounts.google.com', 'https://accounts.google.com']);
+const WORKOS_AUTHORIZE = 'https://api.workos.com/user_management/authorize';
+const WORKOS_AUTHENTICATE = 'https://api.workos.com/user_management/authenticate';
 
 export const CALLBACK_PATH = '/admin/auth/callback';
 
-export interface GoogleConfig {
+export interface AuthConfig {
   clientId: string;
-  clientSecret: string;
+  apiKey: string;
   emails: Set<string>;
   key: string;
 }
@@ -39,21 +38,21 @@ export function canonicalEmail(email: string): string {
 }
 
 /**
- * "google" when every Google secret is set, "password" when none is and ADMIN_PASSWORD is,
- * "off" otherwise. A half-set Google sign-in is "off", so the shared password never keeps
+ * "workos" when every sign-in secret is set, "password" when none is and ADMIN_PASSWORD
+ * is, "off" otherwise. A half-set sign-in is "off", so the shared password never keeps
  * working by mistake after Justin starts switching.
  */
-export function signInMode(env: Env): { mode: 'google'; config: GoogleConfig } | { mode: 'password' } | { mode: 'off'; why?: string } {
-  const clientId = env.GOOGLE_CLIENT_ID?.trim();
-  const clientSecret = env.GOOGLE_CLIENT_SECRET?.trim();
+export function signInMode(env: Env): { mode: 'workos'; config: AuthConfig } | { mode: 'password' } | { mode: 'off'; why?: string } {
+  const clientId = env.WORKOS_CLIENT_ID?.trim();
+  const apiKey = env.WORKOS_API_KEY?.trim();
   const list = env.ADMIN_EMAILS?.trim();
-  const any = clientId || clientSecret || list;
+  const any = clientId || apiKey || list;
   if (!any) return env.ADMIN_PASSWORD?.trim() ? { mode: 'password' } : { mode: 'off' };
   const emails = new Set((list ?? '').split(/[\s,;]+/).filter((e) => e.includes('@')).map(canonicalEmail));
-  if (!clientId || !clientSecret || !emails.size) return { mode: 'off', why: 'Google sign-in needs GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET and ADMIN_EMAILS' };
-  // ADMIN_SESSION_SECRET is optional; without it the session key comes from the client secret.
-  const key = env.ADMIN_SESSION_SECRET?.trim() || `session:${clientSecret}`;
-  return { mode: 'google', config: { clientId, clientSecret, emails, key } };
+  if (!clientId || !apiKey || !emails.size) return { mode: 'off', why: 'sign-in needs WORKOS_CLIENT_ID, WORKOS_API_KEY and ADMIN_EMAILS' };
+  // ADMIN_SESSION_SECRET is optional; without it the session key comes from the API key.
+  const key = env.ADMIN_SESSION_SECRET?.trim() || `session:${apiKey}`;
+  return { mode: 'workos', config: { clientId, apiKey, emails, key } };
 }
 
 // ---------- signed cookies ----------
@@ -132,7 +131,7 @@ async function sha256b64url(s: string) {
 }
 
 /** The signed-in email for this request, or null. Re-checks the list every time. */
-export async function sessionEmail(request: Request, config: GoogleConfig): Promise<string | null> {
+export async function sessionEmail(request: Request, config: AuthConfig): Promise<string | null> {
   const s = await unseal<{ email: string }>(config.key, readCookie(request, SESSION_COOKIE), 'session');
   return s && config.emails.has(canonicalEmail(s.email)) ? s.email : null;
 }
@@ -141,70 +140,60 @@ export async function sessionEmail(request: Request, config: GoogleConfig): Prom
  * Handles /admin/auth/* and sign-out, and answers for anyone not signed in.
  * Returns { email } when the request may go on to the admin, or a Response to send.
  */
-export async function googleGate(request: Request, config: GoogleConfig, fetcher: typeof fetch = fetch): Promise<{ email: string } | Response> {
+export async function adminGate(request: Request, config: AuthConfig, fetcher: typeof fetch = fetch): Promise<{ email: string } | Response> {
   const url = new URL(request.url);
   const path = url.pathname;
   const redirectUri = `${url.origin}${CALLBACK_PATH}`;
 
   if (path === '/admin/auth/google' && request.method === 'GET') {
     const state = random();
-    const nonce = random();
     const verifier = random(48);
-    const flow = await seal(config.key, { typ: 'flow', state, nonce, verifier, next: safeNext(url.searchParams.get('next')), exp: Math.floor(Date.now() / 1000) + FLOW_SECONDS });
-    const to = new URL(GOOGLE_AUTH);
+    const flow = await seal(config.key, { typ: 'flow', state, verifier, next: safeNext(url.searchParams.get('next')), exp: Math.floor(Date.now() / 1000) + FLOW_SECONDS });
+    const to = new URL(WORKOS_AUTHORIZE);
     to.search = new URLSearchParams({
       client_id: config.clientId,
       redirect_uri: redirectUri,
       response_type: 'code',
-      scope: 'openid email',
+      provider: 'GoogleOAuth',
       state,
-      nonce,
       code_challenge: await sha256b64url(verifier),
       code_challenge_method: 'S256',
-      prompt: 'select_account',
     }).toString();
     return new Response(null, { status: 302, headers: { location: to.toString(), 'set-cookie': cookie(FLOW_COOKIE, flow, FLOW_SECONDS), 'cache-control': 'no-store' } });
   }
 
   if (path === CALLBACK_PATH && request.method === 'GET') {
     const clear = { 'set-cookie': cookie(FLOW_COOKIE, '', 0) };
-    const flow = await unseal<{ state: string; nonce: string; verifier: string; next: string }>(config.key, readCookie(request, FLOW_COOKIE), 'flow');
+    const flow = await unseal<{ state: string; verifier: string; next: string }>(config.key, readCookie(request, FLOW_COOKIE), 'flow');
     if (!flow || url.searchParams.get('state') !== flow.state) return signInPage(400, 'That sign-in timed out. Try again.', '/admin/catalog', clear);
     if (url.searchParams.get('error')) return signInPage(401, 'Sign-in was cancelled.', flow.next, clear);
     const code = url.searchParams.get('code');
-    if (!code) return signInPage(400, 'Google didn’t finish the sign-in. Try again.', flow.next, clear);
+    if (!code) return signInPage(400, 'The sign-in didn’t finish. Try again.', flow.next, clear);
 
-    let claims: Record<string, unknown>;
+    let result: { user?: { email?: unknown; email_verified?: unknown }; authentication_method?: unknown };
     try {
-      const res = await fetcher(GOOGLE_TOKEN, {
+      const res = await fetcher(WORKOS_AUTHENTICATE, {
         method: 'POST',
-        headers: { 'content-type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ code, client_id: config.clientId, client_secret: config.clientSecret, redirect_uri: redirectUri, grant_type: 'authorization_code', code_verifier: flow.verifier }),
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ client_id: config.clientId, client_secret: config.apiKey, grant_type: 'authorization_code', code, code_verifier: flow.verifier }),
       });
-      const token = (await res.json()) as { id_token?: string; error?: string };
-      if (!res.ok || !token.id_token) throw new Error(token.error ?? `token ${res.status}`);
-      claims = JSON.parse(new TextDecoder().decode(fromB64url(token.id_token.split('.')[1] ?? ''))) as Record<string, unknown>;
+      result = (await res.json()) as typeof result & { code?: string };
+      if (!res.ok || !result.user) throw new Error(String((result as { code?: string }).code ?? `authenticate ${res.status}`));
     } catch (e) {
       console.error('admin sign-in', e instanceof Error ? e.message : e);
-      return signInPage(502, 'Google couldn’t be reached. Try again.', flow.next, clear);
+      return signInPage(502, 'The sign-in service couldn’t be reached. Try again.', flow.next, clear);
     }
 
-    const now = Date.now() / 1000;
-    const email = typeof claims.email === 'string' ? claims.email : '';
-    const valid =
-      ISSUERS.has(String(claims.iss)) &&
-      claims.aud === config.clientId &&
-      typeof claims.exp === 'number' &&
-      claims.exp > now &&
-      claims.nonce === flow.nonce &&
-      claims.email_verified === true &&
-      !!email;
-    if (!valid) return signInPage(401, 'Google’s answer didn’t check out. Try again.', flow.next, clear);
+    const email = typeof result.user?.email === 'string' ? result.user.email : '';
+    // Google vouches for the address on a Google sign-in; still refuse one WorkOS marks unverified.
+    const valid = !!email && result.user?.email_verified !== false && result.authentication_method === 'GoogleOAuth';
+    if (!valid) return signInPage(401, 'Sign in with Google to get in.', flow.next, clear);
     if (!config.emails.has(canonicalEmail(email))) {
       console.warn('admin sign-in refused for an account not on ADMIN_EMAILS');
       return signInPage(403, 'That Google account isn’t on the list for this admin. Sign in with another one.', flow.next, clear);
     }
-    const session = await seal(config.key, { typ: 'session', email, exp: Math.floor(now) + SESSION_SECONDS });
+    const now = Math.floor(Date.now() / 1000);
+    const session = await seal(config.key, { typ: 'session', email, exp: now + SESSION_SECONDS });
     const headers = new Headers({ location: flow.next, 'cache-control': 'no-store' });
     headers.append('set-cookie', cookie(FLOW_COOKIE, '', 0));
     headers.append('set-cookie', cookie(SESSION_COOKIE, session, SESSION_SECONDS));

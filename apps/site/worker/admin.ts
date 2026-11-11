@@ -4,11 +4,11 @@
 // categories, shop-by lists, SEO), a static page served only after sign-in, and
 // /api/admin/* is its JSON API (catalog-admin.ts).
 //
-// Sign-in: Google, for the accounts in ADMIN_EMAILS only (admin-auth.ts), once
-// GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET and ADMIN_EMAILS are set. Until then the older
+// Sign-in: WorkOS AuthKit with Google, for the accounts in ADMIN_EMAILS only
+// (admin-auth.ts), once WORKOS_CLIENT_ID, WORKOS_API_KEY and ADMIN_EMAILS are set. Until then the older
 // HTTP Basic sign-in with ADMIN_PASSWORD (any user name). Fail closed: with neither,
-// with Google half set up, or without the ORDERS database, /admin answers 404.
-import { googleGate, signInMode } from './admin-auth';
+// with WorkOS half set up, or without the ORDERS database, /admin answers 404.
+import { adminGate, signInMode } from './admin-auth';
 import { handleCatalogAdmin } from './catalog-admin';
 import type { Env } from './env';
 import { listOrders, ORDER_STATUSES, parseOrderUpdate, updateOrder, type LineRow, type OrderRow } from './orders';
@@ -149,8 +149,8 @@ export async function handleAdmin(request: Request, env: Env): Promise<Response 
   if (auth.mode === 'off' && auth.why) console.warn(`admin is off: ${auth.why}`);
   if (auth.mode === 'off' || !db) return NOT_FOUND();
   let who: string;
-  if (auth.mode === 'google') {
-    const gate = await googleGate(request, auth.config);
+  if (auth.mode === 'workos') {
+    const gate = await adminGate(request, auth.config);
     if (gate instanceof Response) return gate;
     who = gate.email;
   } else {
@@ -181,7 +181,7 @@ export async function handleAdmin(request: Request, env: Env): Promise<Response 
     const orders = await listOrders(db);
     const saved = url.searchParams.get('saved') ? '<p role="status">Saved.</p>' : '';
     const list = orders.length ? orders.map(({ order, lines }) => orderHtml(order, lines)).join('') : '<p>No orders yet.</p>';
-    return page(`<h1>Orders</h1>${saved}${list}`, auth.mode === 'google' ? who : null);
+    return page(`<h1>Orders</h1>${saved}${list}`, auth.mode === 'workos' ? who : null);
   }
 
   const m = /^\/admin\/orders\/(cs_[A-Za-z0-9_]{1,200})$/.exec(url.pathname);

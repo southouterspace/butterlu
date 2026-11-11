@@ -1,0 +1,33 @@
+---
+// One card in the home page's Who it's for and occasion grids: a small line drawing
+// over the title, the whole card one link. The drawing is decorative (the title says
+// it all), black lines that invert in dark mode. A card without a drawing holds a
+// placeholder on stage and shows the title alone in production.
+import { Picture } from 'astro:assets';
+import ImagePlaceholder from './media/ImagePlaceholder.astro';
+import { illustrationImage } from '../catalog/illustration-images';
+import type { IllustrationKey } from '../catalog/illustrations';
+import { SHOW_PLACEHOLDERS } from '../lib/placeholders';
+
+interface Props {
+  href: string;
+  label: string;
+  illustration?: IllustrationKey;
+}
+const { href, label, illustration } = Astro.props;
+const image = illustration ? illustrationImage(illustration) : undefined;
+---
+<li>
+  <a
+    href={href}
+    data-shop-by-card
+    class="group flex h-full flex-col items-center gap-2 rounded-4xl bg-muted/60 p-3 text-center text-sm font-medium text-foreground no-underline transition-colors hover:bg-muted sm:gap-3 sm:p-4 sm:text-base"
+  >
+    {image ? (
+      <Picture src={image} alt="" formats={['avif', 'webp']} widths={[96, 192, 288]} sizes="6rem" loading="lazy" decoding="async" class="size-20 object-contain transition-transform group-hover:scale-105 sm:size-24 dark:invert" />
+    ) : SHOW_PLACEHOLDERS ? (
+      <ImagePlaceholder class="size-20 sm:size-24" iconClass="size-6" />
+    ) : null}
+    <span class="group-hover:underline underline-offset-4">{label}</span>
+  </a>
+</li>

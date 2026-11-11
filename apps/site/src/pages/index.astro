@@ -10,8 +10,8 @@ import { FEATURED, productByHandle } from '../catalog/products';
 import { livePage } from '../catalog/pages';
 import PageSections from '../components/sections/PageSections.astro';
 import { SHOW_PLACEHOLDERS } from '../lib/placeholders';
-import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from '../catalog/taxonomy';
-import { buttonVariants } from '../components/ui/variants';
+import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref } from '../catalog/taxonomy';
+import ShopByCard from '../components/ShopByCard.astro';
 
 const homePage = livePage('home');
 const featured = FEATURED.map((h) => productByHandle(h)!);
@@ -60,19 +60,12 @@ const jsonLd = [
 
   <section aria-labelledby="for-who" class="mt-14">
     <h2 id="for-who" class="mb-4 text-xl md:text-2xl">Who is it for?</h2>
-    <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
-      {MENU_GROUPS.map((g) => (
-        <li class="rounded-4xl bg-muted/60 p-4 sm:p-5">
-          <a class="text-base font-medium text-foreground no-underline hover:underline" href={groupHref(g)}>{g.label}</a>
-          {g.children.length > 1 && (
-            <ul class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-sm">{g.children.map((r) => <li><a class="text-muted-foreground underline-offset-4 hover:text-foreground" href={recipientHref(r)}>{r.label}</a></li>)}</ul>
-          )}
-        </li>
-      ))}
+    <ul class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-6">
+      {MENU_GROUPS.map((g) => <ShopByCard href={groupHref(g)} label={g.label} illustration={g.illustration} />)}
     </ul>
-    <h3 class="mt-6 mb-3 text-base font-medium">Or by occasion</h3>
-    <ul class="flex flex-wrap gap-2">
-      {OCCASIONS.map((o) => <li><a class={buttonVariants({ variant: 'outline' })} href={occasionHref(o)}>{o.label}</a></li>)}
+    <h3 class="mt-8 mb-3 text-base font-medium">Or by occasion</h3>
+    <ul class="grid grid-cols-3 gap-2 sm:grid-cols-4 sm:gap-4 lg:grid-cols-6">
+      {OCCASIONS.map((o) => <ShopByCard href={occasionHref(o)} label={o.label} illustration={o.illustration} />)}
     </ul>
   </section>
 

@@ -25,6 +25,7 @@ import {
   type ValuePropIcon,
   type ValuePropsSection,
 } from '../catalog/pages';
+import { ILLUSTRATIONS } from '../catalog/illustrations';
 import { backgroundUrl, frameSvg } from '../lib/frame-svg';
 import { fontsReady, placementsInBrowser } from '../scripts/measure';
 
@@ -799,6 +800,27 @@ function categoryEditor(handle: string): HTMLElement {
 
 // ---------- shop-by lists ----------
 
+let drawingUrls: Record<string, string> | undefined;
+/** The card drawing for a group or occasion: a picker from src/catalog/illustrations.ts and a preview. */
+function drawingPicker(item: { illustration?: string }): HTMLElement {
+  drawingUrls ??= JSON.parse(document.getElementById('illustration-urls')?.textContent ?? '{}') as Record<string, string>;
+  const preview = h('img', { class: 'drawing', alt: '', width: 48, height: 48 }) as HTMLImageElement;
+  const show = () => {
+    const url = item.illustration ? drawingUrls![item.illustration] : undefined;
+    preview.hidden = !url;
+    if (url) preview.src = url;
+  };
+  const pick = select([{ value: '', label: 'No drawing' }, ...ILLUSTRATIONS.map((i) => ({ value: i.key, label: i.name }))], item.illustration ?? '', {
+    onchange: () => {
+      if (pick.value) item.illustration = pick.value;
+      else delete item.illustration;
+      show();
+    },
+  });
+  show();
+  return h('span', { class: 'row' }, field('Drawing on its card', pick), preview);
+}
+
 function shopBy(): HTMLElement {
   const tax = structuredClone(data.doc.taxonomy);
   // Every label follows the rule, including ones she doesn't touch, so a save goes through.
@@ -839,7 +861,7 @@ function shopBy(): HTMLElement {
             'fieldset',
             { class: 'idea' },
             h('legend', {}, g.label),
-            h('div', { class: 'row' }, field('Group name', label), field('Opens the page', page), ups(tax.groups, gi, g.label)),
+            h('div', { class: 'row' }, field('Group name', label), field('Opens the page', page), drawingPicker(g), ups(tax.groups, gi, g.label)),
             h('label', { class: 'inline' }, menus, ' Show in the menus'),
             h(
               'ul',
@@ -879,7 +901,7 @@ function shopBy(): HTMLElement {
           ...tax.occasions.map((o, oi) => {
             const ol = labelInput(o.label, { maxlength: 60 }, (v) => (o.label = v));
             const page = select(catOptions(true), o.collection ?? '', { onchange: () => (page.value ? (o.collection = page.value) : delete o.collection) });
-            return h('li', { class: 'row' }, field('Name', ol), field('Opens', page), ups(tax.occasions, oi, o.label));
+            return h('li', { class: 'row' }, field('Name', ol), field('Opens', page), drawingPicker(o), ups(tax.occasions, oi, o.label));
           }),
         ),
         h(
@@ -925,7 +947,7 @@ function shopBy(): HTMLElement {
     'section',
     { class: 'editor' },
     h('div', { class: 'toolbar' }, h('h1', {}, 'Shop by'), save),
-    h('p', { class: 'hint' }, 'The two lists in the store menus and filters. Designs are tagged from each design. Names are Title Case with "&" for "and"; that is applied when you leave a field.'),
+    h('p', { class: 'hint' }, 'The two lists in the store menus and filters, and the cards on the homepage. Designs are tagged from each design. Names are Title Case with "&" for "and"; that is applied when you leave a field.'),
     box,
   );
 }

@@ -19,6 +19,7 @@ import {
   type TemplateDoc,
 } from '../src/catalog/doc';
 import { PAGE_KEYS, checkPage, checkQuestions, pageFrom, questionsFrom, type PageDoc, type QuestionDoc } from '../src/catalog/pages';
+import { isIllustration } from '../src/catalog/illustrations';
 import { signInMode } from './admin-auth';
 import type { Env } from './env';
 import { draftSeo, seoReady } from './seo-draft';
@@ -249,6 +250,8 @@ export function taxonomyFrom(raw: unknown): TaxonomyDoc {
         label: str(g.label, 60).trim(),
         collection: str(g.collection, 100),
         inMenus: g.inMenus !== false,
+        // Only a drawing the site has; anything else saves as no drawing.
+        ...(isIllustration(g.illustration) ? { illustration: g.illustration } : {}),
         children: (Array.isArray(g.children) ? g.children.filter(isRecord) : []).slice(0, 20).map((c) => ({
           key: str(c.key, 60),
           label: str(c.label, 60).trim(),
@@ -261,6 +264,7 @@ export function taxonomyFrom(raw: unknown): TaxonomyDoc {
         key: str(o.key, 60),
         label: str(o.label, 60).trim(),
         ...(typeof o.collection === 'string' && o.collection ? { collection: o.collection.slice(0, 100) } : {}),
+        ...(isIllustration(o.illustration) ? { illustration: o.illustration } : {}),
       }))
     : [];
   return { groups, occasions };

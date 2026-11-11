@@ -2,6 +2,8 @@ import { test } from '@e2e-dev/web';
 import { expect } from 'e2e';
 import { designFromMetadata, designToMetadata } from '@butterlu/frame/design';
 import { checkCart } from '../worker/checkout';
+import { placementsAtBuild } from '../src/lib/layout-build';
+import { DEFAULT_MAX_PT } from '@butterlu/frame';
 
 const PRODUCT = '/products/grandparent-pregnancy-announcement-frame';
 const EDITOR = `${PRODUCT}/personalize`;
@@ -320,6 +322,70 @@ test('on a phone, every choice in the editor is what the order prints', async ({
     expect(checked).toEqual({ ok: true, lines: [expect.objectContaining({ handle: 'grandparent-pregnancy-announcement-frame', quantity: 1, design })] });
     if (!checked.ok) return;
     expect(designFromMetadata(designToMetadata(checked.lines[0]!.design))).toEqual({ ok: true, spec: design });
+  } finally {
+    await browser.unroute(/\/api\/checkout$/);
+    await browser.setViewport({ width: 1280, height: 800 });
+  }
+});
+
+// Asli's order-accuracy cases: the same design twice, one changed; a long line; both
+// apostrophes. The cart keeps the two apart, the words reach checkout exactly, and the
+// preview fits each line at the size the print file uses.
+test('two of one design, long lines and apostrophes print as previewed', async ({ app, browser, screen }) => {
+  await browser.setViewport({ width: 390, height: 844 });
+  const handle = 'mimi-picture-frame';
+  let posted: unknown;
+  await browser.route(/\/api\/checkout$/, async (route) => {
+    posted = JSON.parse(route.request.postData ?? '{}');
+    await route.fulfill({ status: 503, json: { error: 'Held by the test: nothing was charged.' } });
+  });
+  try {
+    await app.open(`/products/${handle}`);
+    await screen.getByRole('button', 'Add to Cart as Shown').click();
+    await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+
+    await app.open(`/products/${handle}/personalize`);
+    // Load the frame fonts before typing, so the browser measures with the real faces.
+    await browser.evaluate(() =>
+      Promise.all(['400 32px "Great Vibes"', '700 32px "Playfair Display"', '600 32px "Montserrat"'].map((f) => document.fonts.load(f))).then(() => true),
+    );
+    const long = "The O'Sullivan-Fitzgerald Grandkids Love You to the Moon!";
+    // Both lines are long enough to be fitted by width, not capped at the largest size.
+    const curly = 'Grandma Mimi’s Littlest Loves, Forever and Always';
+    await screen.getByRole('textbox', /^Top/).fill(curly);
+    await screen.getByRole('textbox', /^Bottom/).fill(long);
+    await expect(screen.getByText(long)).toBeVisible();
+    const preview = await browser.evaluate(() =>
+      [...document.querySelectorAll('[data-preview] text')].map((t) => ({ text: t.textContent ?? '', size: Number(t.getAttribute('font-size')) })),
+    );
+    await screen.getByRole('button', /^Add to Cart/).click();
+    await screen.getByRole('link', 'View Cart & Check Out').click();
+
+    // Two lines of the same design, kept apart; removing the as-shown one leaves ours.
+    await expect(screen.getByRole('heading', 'Mimi Picture Frame')).toHaveCount(2);
+    await screen.getByRole('button', 'Remove').first().click();
+    await expect(screen.getByRole('heading', 'Mimi Picture Frame')).toHaveCount(1);
+    await expect(screen.getByText(`Bottom: "${long}"`, { exact: false })).toBeVisible();
+    await expect(screen.getByText('As shown, it prints the example names.')).toBeHidden();
+
+    await screen.getByRole('button', 'Check Out').click();
+    await expect(screen.getByText('Held by the test: nothing was charged.')).toBeVisible();
+    const checked = checkCart(posted);
+    expect(checked.ok).toBe(true);
+    if (!checked.ok) return;
+    expect(checked.lines).toHaveLength(1);
+    const spec = checked.lines[0]!.design;
+    expect(spec.sides.top?.text).toBe(curly);
+    expect(spec.sides.bottom?.text).toBe(long);
+
+    // The print file fits with fontkit, the preview with the browser: same words, sizes within 4%.
+    for (const p of placementsAtBuild(spec)) {
+      const shown = preview.find((t) => t.text === p.text);
+      expect(shown, `preview shows "${p.text}"`).toBeDefined();
+      expect(p.sizePt).toBeLessThan(DEFAULT_MAX_PT);
+      const printed = p.sizePt / 72;
+      expect(Math.abs(shown!.size - printed) / printed).toBeLessThan(0.04);
+    }
   } finally {
     await browser.unroute(/\/api\/checkout$/);
     await browser.setViewport({ width: 1280, height: 800 });

@@ -74,6 +74,8 @@ export interface GroupDoc {
   label: string;
   collection: string;
   inMenus: boolean;
+  /** A key from src/catalog/illustrations.ts: the drawing on its home card. "" is none, chosen. */
+  illustration?: string;
   children: RecipientDoc[];
 }
 
@@ -81,6 +83,8 @@ export interface OccasionDoc {
   key: string;
   label: string;
   collection?: string;
+  /** A key from src/catalog/illustrations.ts: the drawing on its home card. "" is none, chosen. */
+  illustration?: string;
 }
 
 export interface TaxonomyDoc {
@@ -145,9 +149,15 @@ export function liveCatalog(): CatalogDoc {
       label: g.label,
       collection: g.collection,
       inMenus: g.inMenus !== false,
+      ...(g.illustration ? { illustration: g.illustration } : {}),
       children: g.children.map((r) => ({ key: r.key, label: r.label, ...(r.hint ? { hint: r.hint } : {}) })),
     })),
-    occasions: OCCASIONS.map((o) => ({ key: o.key, label: o.label, ...(o.collection ? { collection: o.collection } : {}) })),
+    occasions: OCCASIONS.map((o) => ({
+      key: o.key,
+      label: o.label,
+      ...(o.collection ? { collection: o.collection } : {}),
+      ...(o.illustration ? { illustration: o.illustration } : {}),
+    })),
   };
   return { templates, categories, taxonomy, pages: livePages(), questions: liveQuestions() };
 }

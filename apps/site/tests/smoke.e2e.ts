@@ -106,6 +106,24 @@ test("Who It’s For uses Asli's labels and keeps weddings under Occasion", asyn
   expect(/<link rel="canonical" href="https:\/\/www\.butterlu\.com\/collections\/wedding-thank-you-frames">/.test(page)).toBe(true);
 });
 
+test('Home shop-by cards are a drawing and a title, one link each', async ({ app }) => {
+  const html = await (await fetch(new URL('/', app.baseUrl))).text();
+  const section = html.slice(html.indexOf('id="for-who"'), html.indexOf('</section>', html.indexOf('id="for-who"')));
+  const who = section.slice(0, section.indexOf('Or by occasion'));
+  const occasions = section.slice(section.indexOf('Or by occasion'));
+  const cards = (s: string) => s.match(/<a [^>]*data-shop-by-card[\s\S]*?<\/a>/g) ?? [];
+  // Six groups, no sub-links: Grandma and friends live in the header menu now.
+  expect(cards(who).length).toBe(6);
+  expect(who.includes('>Grandma<')).toBe(false);
+  expect(who.includes('>Parents<')).toBe(true);
+  expect(who.includes('Parents of the Bride or Groom')).toBe(false);
+  expect(who.includes('href="/collections/wedding-thank-you-frames?for=parents-of-the-couple"')).toBe(true);
+  expect(cards(occasions).length).toBe(11);
+  expect(occasions.includes('href="/collections/all?occasion=christmas"')).toBe(true);
+  // Every card carries its drawing, decorative so the title is the link's name.
+  for (const card of [...cards(who), ...cards(occasions)]) expect(/<img [^>]*\balt(="")?[\s>]/.test(card)).toBe(true);
+});
+
 test('Shop All lists designs best selling first', async ({ app }) => {
   const html = await (await fetch(new URL('/collections/all', app.baseUrl))).text();
   const at = (h: string) => html.indexOf(`href="/products/${h}"`);

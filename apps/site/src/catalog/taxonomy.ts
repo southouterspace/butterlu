@@ -7,6 +7,7 @@
 //
 // Plain TypeScript with no Astro imports, like products.ts.
 import { COLLECTIONS, DESIGNS, FRAMES, type Product, collectionProducts, isFrame } from './products';
+import { type IllustrationKey, isIllustration } from './illustrations';
 
 export type RecipientKey =
   | 'grandma'
@@ -51,6 +52,8 @@ export interface RecipientGroup {
   children: Recipient[];
   /** False keeps the group out of the Who it's for menus, home tiles and Shop all chips. */
   inMenus?: boolean;
+  /** The drawing on its home card (src/catalog/illustrations.ts). Without one the card shows a blank tile. */
+  illustration?: IllustrationKey;
 }
 
 export interface Occasion {
@@ -58,6 +61,8 @@ export interface Occasion {
   label: string;
   /** A category page made for this occasion. Without one it opens a filtered Shop all. */
   collection?: string;
+  /** The drawing on its home card (src/catalog/illustrations.ts). */
+  illustration?: IllustrationKey;
 }
 
 /** Menu order. Group keys and recipient keys share one namespace in ?for=. */
@@ -66,6 +71,7 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
     key: 'grandparents',
     label: 'Grandparents',
     collection: 'grandparent-frames',
+    illustration: 'christmas',
     children: [
       { key: 'grandma', label: 'Grandma', hint: 'Mimi, Nana, Gigi, Abuela' },
       { key: 'grandpa', label: 'Grandpa', hint: 'Papa, Pop, Grandad' },
@@ -77,6 +83,7 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
     key: 'godparents',
     label: 'Godparents',
     collection: 'godparent-frames',
+    illustration: 'baptism',
     children: [
       { key: 'godmother', label: 'Godmother' },
       { key: 'godfather', label: 'Godfather' },
@@ -88,19 +95,21 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
   // filtered to the group.
   {
     key: 'wedding-parents',
-    label: 'Parents of the Bride or Groom',
+    label: 'Parents',
     collection: 'wedding-thank-you-frames',
-    children: [{ key: 'parents-of-the-couple', label: 'Parents of the Bride or Groom' }],
+    illustration: 'wedding',
+    children: [{ key: 'parents-of-the-couple', label: 'Parents' }],
   },
-  { key: 'aunts-and-uncles', label: 'Aunts & Uncles', collection: 'aunt-uncle-frames', children: [{ key: 'aunt-uncle', label: 'Aunt & Uncle' }] },
-  { key: 'new-baby', label: 'New Baby', collection: 'baby-frames', children: [{ key: 'baby', label: 'Babies & Parents-to-Be' }] },
-  { key: 'pets', label: 'Pet Memorial Gifts', collection: 'pet-loss-memorial', children: [{ key: 'pet', label: 'Dogs & Cats' }] },
+  { key: 'aunts-and-uncles', label: 'Aunts & Uncles', collection: 'aunt-uncle-frames', illustration: 'fathers-day', children: [{ key: 'aunt-uncle', label: 'Aunt & Uncle' }] },
+  { key: 'new-baby', label: 'New Baby', collection: 'baby-frames', illustration: 'baby-shower', children: [{ key: 'baby', label: 'Babies & Parents-to-Be' }] },
+  { key: 'pets', label: 'Pet Memorial Gifts', collection: 'pet-loss-memorial', illustration: 'pet-memorial', children: [{ key: 'pet', label: 'Dogs & Cats' }] },
   // Couple frames are found under the Wedding and Engagement occasions, not in Who it's
   // for. The group stays so the wedding page can still split parents from couples.
   {
     key: 'couples',
     label: 'Couples',
     collection: 'wedding-thank-you-frames',
+    illustration: 'engagement',
     children: [{ key: 'couple', label: 'The Couple' }],
     inMenus: false,
   },
@@ -111,18 +120,18 @@ export const MENU_GROUPS = RECIPIENT_GROUPS.filter((g) => g.inMenus !== false);
 
 /** Menu order. Only occasions with at least one design are shown anywhere. */
 const ALL_OCCASIONS: Occasion[] = [
-  { key: 'pregnancy-announcement', label: 'Pregnancy Announcements', collection: 'new-grandparent-to-be' },
-  { key: 'baptism', label: 'Baptisms & Christenings', collection: 'godparent-frames' },
-  { key: 'wedding', label: 'Weddings', collection: 'wedding-thank-you-frames' },
-  { key: 'engagement', label: 'Engagements' },
-  { key: 'christmas', label: 'Christmas' },
-  { key: 'birthday', label: 'Birthdays' },
-  { key: 'mothers-day', label: 'Mother’s Day' },
-  { key: 'fathers-day', label: 'Father’s Day' },
-  { key: 'baby-shower', label: 'Baby Showers' },
+  { key: 'pregnancy-announcement', label: 'Pregnancy Announcements', collection: 'new-grandparent-to-be', illustration: 'pregnancy-announcement' },
+  { key: 'baptism', label: 'Baptisms & Christenings', collection: 'godparent-frames', illustration: 'baptism' },
+  { key: 'wedding', label: 'Weddings', collection: 'wedding-thank-you-frames', illustration: 'wedding' },
+  { key: 'engagement', label: 'Engagements', illustration: 'engagement' },
+  { key: 'christmas', label: 'Christmas', illustration: 'christmas' },
+  { key: 'birthday', label: 'Birthdays', illustration: 'birthday' },
+  { key: 'mothers-day', label: 'Mother’s Day', illustration: 'mothers-day' },
+  { key: 'fathers-day', label: 'Father’s Day', illustration: 'fathers-day' },
+  { key: 'baby-shower', label: 'Baby Showers', illustration: 'baby-shower' },
   // Only a pet design so far; rename to "In memory" when other memorial designs exist.
-  { key: 'memorial', label: 'Pet Memorials', collection: 'pet-loss-memorial' },
-  { key: 'everyday', label: 'Just Because' },
+  { key: 'memorial', label: 'Pet Memorials', collection: 'pet-loss-memorial', illustration: 'pet-memorial' },
+  { key: 'everyday', label: 'Just Because', illustration: 'just-because' },
 ];
 
 
@@ -195,6 +204,7 @@ export function tagsFor(p: Product): Tags | undefined {
     if (g.children.length !== 1) throw new Error(`taxonomy: ${g.key} shares ${g.collection}, so it must have exactly one person`);
     if (!Object.values(TAGS).some((t) => t.for === g.children[0]!.key)) throw new Error(`taxonomy: ${g.key} shares ${g.collection} but has no designs`);
   }
+  for (const x of [...RECIPIENT_GROUPS, ...ALL_OCCASIONS]) if (x.illustration && !isIllustration(x.illustration)) throw new Error(`taxonomy: ${x.key} names unknown illustration "${x.illustration}"`);
   for (const o of ALL_OCCASIONS) if (o.collection && !collectionHandles.has(o.collection)) throw new Error(`taxonomy: ${o.key} opens unknown collection ${o.collection}`);
   const designHandles = new Set(DESIGNS.map((p) => p.handle));
   for (const h of Object.keys(TAGS)) if (!designHandles.has(h)) throw new Error(`taxonomy: tags for unknown design "${h}"`);

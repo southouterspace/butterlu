@@ -4,6 +4,10 @@
 // loads from /api/admin/catalog after sign-in, so the built file holds no catalog data.
 import '../../styles/global.css';
 import { PHOTO_FILES } from '../../catalog/media';
+import { ILLUSTRATIONS } from '../../catalog/illustrations';
+import { illustrationImage } from '../../catalog/illustration-images';
+// The card drawings' URLs, for the Shop by picker's preview.
+const illustrationUrls = Object.fromEntries(ILLUSTRATIONS.map((i) => [i.key, illustrationImage(i.key).src]));
 // The photo files the build has, for the page components' photo picker. File names only.
 ---
 <!doctype html>
@@ -20,6 +24,7 @@ import { PHOTO_FILES } from '../../catalog/media';
     <div id="admin"><p class="loading">Loading the store…</p></div>
     <p id="toast" role="status" hidden></p>
     <script id="photo-files" type="application/json" set:html={JSON.stringify(PHOTO_FILES).replace(/</g, "\\u003c")} />
+    <script id="illustration-urls" type="application/json" set:html={JSON.stringify(illustrationUrls).replace(/</g, "\\u003c")} />
     <script>
       import '../../admin/app';
     </script>
@@ -63,6 +68,8 @@ import { PHOTO_FILES } from '../../catalog/media';
       .sticky { position: sticky; top: 12px; }
       .card-box { background: var(--background); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin: 0 0 12px; }
       .card-box > legend { font-weight: 700; padding: 0 4px; }
+      .drawing { width: 48px; height: 48px; object-fit: contain; border-radius: 8px; background: var(--background); }
+      .dark .drawing { filter: invert(1); }
       .idea, .side { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; margin: 0 0 8px; }
       .checks { border: 0; padding: 0; margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
       .checks legend { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; }

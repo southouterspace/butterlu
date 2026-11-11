@@ -1,5 +1,6 @@
 // Store admin (docs/13): Asli's editor for ready-made designs ("templates"), category
-// pages, the shop-by lists and page components (the homepage's Hero Image, Value Props), with Claude-drafted SEO she approves. Talks to
+// pages, the shop-by lists, page components (the homepage's Hero Image, Value Props) and the
+// shared questions, with Claude-drafted SEO she approves. Talks to
 // /api/admin/* (worker/catalog-admin.ts). Every edit saves as a draft over the live
 // catalog; nothing here changes the store until a publish.
 //
@@ -10,6 +11,7 @@ import { SEO_LABELS, SEO_LIMITS, TITLE_SUFFIX, checkTemplate, slugify, toLabel, 
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from '../catalog/doc';
 import {
   LIMITS,
+  MAX_QUESTIONS,
   MAX_SECTIONS,
   MAX_VALUE_PROPS,
   SECTION_TYPES,
@@ -17,6 +19,7 @@ import {
   newSection,
   type HeroImageSection,
   type PageDoc,
+  type QuestionDoc,
   type SectionDoc,
   type SectionType,
   type ValuePropIcon,
@@ -692,21 +695,6 @@ function categoryEditor(handle: string): HTMLElement {
   body.addEventListener('input', countWords);
   countWords();
 
-  const faqBox = h('div', {});
-  const paintFaq = () =>
-    faqBox.replaceChildren(
-      ...c.faq.map((f, i) => {
-        const q = input(f[0], { maxlength: 200 });
-        const a = textarea(f[1], { rows: 3 });
-        const set = () => (c.faq[i] = [q.value, a.value] as const);
-        q.addEventListener('input', set);
-        a.addEventListener('input', set);
-        return h('fieldset', { class: 'idea' }, h('legend', {}, `Question ${i + 1}`), field('Question', q), field('Answer', a), h('button', { type: 'button', class: 'btn', onclick: () => (c.faq.splice(i, 1), paintFaq()) }, 'Remove'));
-      }),
-      h('button', { type: 'button', class: 'btn', onclick: () => (c.faq.push(['', '']), paintFaq()) }, 'Add a question'),
-    );
-  paintFaq();
-
   const orderBox = h('ol', { class: 'order' });
   const paintOrder = () =>
     orderBox.replaceChildren(
@@ -803,7 +791,7 @@ function categoryEditor(handle: string): HTMLElement {
     ),
     h('fieldset', { class: 'card-box' }, h('legend', {}, 'Page'), field('Name', name), field('Intro', intro, 'A sentence or two above the designs. Short, and no need to restate the obvious.'), field('Words below the designs', body), words),
     h('fieldset', { class: 'card-box' }, h('legend', {}, 'Order of designs'), h('p', { class: 'hint' }, 'To add or remove a design here, open the design and change its category pages.'), orderBox),
-    h('fieldset', { class: 'card-box' }, h('legend', {}, 'Questions and answers'), faqBox),
+    h('p', { class: 'hint' }, 'The questions under the words are the store’s shared ones. ', h('a', { href: '#/questions' }, 'Edit them under Questions'), '.'),
     h('fieldset', { class: 'card-box' }, related),
     h('fieldset', { class: 'card-box' }, h('legend', {}, 'Search'), serp, ...seoFields.map(([, f]) => f.el)),
   );
@@ -1087,7 +1075,14 @@ function pageEditor(key: string): HTMLElement {
               'Remove',
             ),
           ),
-          ...(s.type === 'hero-image' ? heroFields(s) : propsFields(s)),
+          ...(s.type === 'hero-image'
+            ? heroFields(s)
+            : s.type === 'questions'
+              ? [
+                  field('Heading (optional)', text(s.heading, LIMITS.heading, (v) => (s.heading = v))),
+                  h('p', { class: 'hint' }, `Shows the store’s ${data.doc.questions.length} shared questions. `, h('a', { href: '#/questions' }, 'Edit them under Questions'), '.'),
+                ]
+              : propsFields(s)),
         ),
       ),
       page.sections.length < MAX_SECTIONS
@@ -1172,12 +1167,103 @@ function pageEditor(key: string): HTMLElement {
   );
 }
 
+// ---------- questions (one list, shared by every page) ----------
+
+function questionsEditor(): HTMLElement {
+  const qs: [string, string][] = data.doc.questions.map(([q, a]) => [q, a]);
+  const box = h('div', {});
+  const move = (i: number, d: number) => {
+    const j = i + d;
+    if (j < 0 || j >= qs.length) return;
+    [qs[i], qs[j]] = [qs[j]!, qs[i]!];
+    paint();
+  };
+  function paint() {
+    box.replaceChildren(
+      ...qs.map((pair, i) => {
+        const q = input(pair[0], { maxlength: LIMITS.question });
+        const a = textarea(pair[1], { maxlength: LIMITS.answer, rows: 3 });
+        q.addEventListener('input', () => (pair[0] = q.value));
+        a.addEventListener('input', () => (pair[1] = a.value));
+        return h(
+          'fieldset',
+          { class: 'card-box', 'data-question': String(i + 1) },
+          h('legend', {}, `Question ${i + 1}`),
+          field('Question', q),
+          field('Answer', a),
+          h(
+            'div',
+            { class: 'row' },
+            h('button', { type: 'button', class: 'btn', 'aria-label': `Move question ${i + 1} up`, disabled: i === 0, onclick: () => move(i, -1) }, '↑'),
+            h('button', { type: 'button', class: 'btn', 'aria-label': `Move question ${i + 1} down`, disabled: i === qs.length - 1, onclick: () => move(i, 1) }, '↓'),
+            h('button', { type: 'button', class: 'btn', onclick: () => (qs.splice(i, 1), paint()) }, 'Remove'),
+          ),
+        );
+      }),
+      qs.length < MAX_QUESTIONS
+        ? h('button', { type: 'button', class: 'btn', onclick: () => (qs.push(['', '']), paint(), box.lastElementChild?.previousElementSibling?.scrollIntoView({ behavior: 'smooth', block: 'start' })) }, 'Add a question')
+        : h('p', { class: 'hint' }, `${MAX_QUESTIONS} questions at most.`),
+    );
+  }
+  paint();
+
+  const saveBtn = h('button', { type: 'button', class: 'btn primary' }, 'Save changes');
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true;
+    try {
+      await api('/questions', { method: 'PUT', body: JSON.stringify(qs satisfies QuestionDoc[]) });
+      await reload();
+      toast('Saved. It goes on the site with the next publish.');
+      render();
+    } catch (e) {
+      toast((e as Error).message, 'bad');
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+  const changed = data.changes.some((x) => x.kind === 'questions');
+  const staleNote = data.changes.some((x) => x.kind === 'questions' && x.stale) ? h('p', { class: 'error' }, STALE) : null;
+  return h(
+    'section',
+    { class: 'editor' },
+    staleNote,
+    h(
+      'div',
+      { class: 'toolbar' },
+      h('h1', {}, 'Questions'),
+      h(
+        'div',
+        { class: 'row' },
+        changed
+          ? h(
+              'button',
+              {
+                type: 'button',
+                class: 'btn',
+                onclick: async () => {
+                  if (!confirm('Throw away your edits and go back to what the site shows?')) return;
+                  await api('/drafts/questions/all', { method: 'DELETE' });
+                  await reload();
+                  render();
+                },
+              },
+              'Undo my edits',
+            )
+          : null,
+        saveBtn,
+      ),
+    ),
+    h('p', { class: 'hint' }, 'One list for the whole store. It shows on the Questions page, under every category and design, and anywhere you add a Questions component. Answer what shoppers really ask, in the order they ask it.'),
+    box,
+  );
+}
+
 // ---------- changes ----------
 
 function changes(): HTMLElement {
   const when = (iso: string) => new Intl.DateTimeFormat(undefined, { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(iso));
   const link = (c: CatalogResponse['changes'][number]) =>
-    c.kind === 'template' ? `#/designs/${c.id}` : c.kind === 'category' ? `#/categories/${c.id}` : c.kind === 'page' ? `#/pages/${c.id}` : '#/shop-by';
+    c.kind === 'template' ? `#/designs/${c.id}` : c.kind === 'category' ? `#/categories/${c.id}` : c.kind === 'page' ? `#/pages/${c.id}` : c.kind === 'questions' ? '#/questions' : '#/shop-by';
   return h(
     'section',
     {},
@@ -1209,6 +1295,7 @@ function nav(route: string) {
     ['#/categories', 'Categories'],
     ['#/shop-by', 'Shop by'],
     ['#/pages', 'Pages'],
+    ['#/questions', 'Questions'],
     ['#/changes', `Changes${data.changes.length ? ` (${data.changes.length})` : ''}`],
   ];
   return h(
@@ -1237,6 +1324,7 @@ function render() {
   else if (route === '/shop-by') view = shopBy();
   else if ((m = /^\/pages\/([a-z0-9-]+)$/.exec(route))) view = pageEditor(m[1]!);
   else if (route === '/pages') view = pageList();
+  else if (route === '/questions') view = questionsEditor();
   else if (route === '/changes') view = changes();
   else view = templateList();
   root.replaceChildren(nav(route), h('main', { id: 'main' }, view));

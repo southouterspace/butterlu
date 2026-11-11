@@ -56,7 +56,21 @@ export interface ValuePropsSection {
   items: ValuePropDoc[];
 }
 
-export type SectionDoc = HeroImageSection | ValuePropsSection;
+/**
+ * The shared questions and answers. There is one list for the whole store (edited under
+ * Questions in the admin); this section only places it on a page, under its heading.
+ */
+export interface QuestionsSection {
+  type: 'questions';
+  id: string;
+  /** Heading over the list; empty shows none (the list is still labelled). */
+  heading: string;
+}
+
+/** One shared question and its answer. */
+export type QuestionDoc = readonly [question: string, answer: string];
+
+export type SectionDoc = HeroImageSection | ValuePropsSection | QuestionsSection;
 export type SectionType = SectionDoc['type'];
 
 export interface PageDoc {
@@ -70,12 +84,14 @@ export interface PageDoc {
 export const SECTION_TYPES: readonly { type: SectionType; label: string; hint: string }[] = [
   { type: 'hero-image', label: 'Hero Image', hint: 'A big picture with a heading, a line of text and up to two buttons.' },
   { type: 'value-props', label: 'Value Props', hint: 'Short reasons to buy, as three columns on a computer and a stack on a phone.' },
+  { type: 'questions', label: 'Questions', hint: 'The store’s questions and answers. Edit the questions themselves under Questions; every page shows the same list.' },
 ];
 
 export const PAGE_KEYS = ['home'] as const;
 export const MAX_SECTIONS = 12;
 export const MAX_VALUE_PROPS = 6;
-export const LIMITS = { heading: 80, text: 240, buttonLabel: 40, href: 300, alt: 125, propTitle: 40, propText: 140 } as const;
+export const MAX_QUESTIONS = 20;
+export const LIMITS = { heading: 80, text: 240, buttonLabel: 40, href: 300, alt: 125, propTitle: 40, propText: 140, question: 120, answer: 600 } as const;
 
 const PHOTO_FILE = /^[\w][\w ./()-]*\.(?:jpe?g|png|webp|avif)$/i;
 const SECTION_ID = /^[a-z0-9-]{1,40}$/;
@@ -118,6 +134,7 @@ export function newSection(type: SectionType, taken: Iterable<string>): SectionD
       secondary: { label: '', href: '' },
     };
   }
+  if (type === 'questions') return { type, id, heading: 'Questions' };
   return {
     type,
     id,
@@ -155,6 +172,7 @@ export function sectionFrom(raw: unknown): SectionDoc | null {
     }));
     return { type: 'value-props', id, heading: str(raw.heading, LIMITS.heading + 50), items };
   }
+  if (raw.type === 'questions') return { type: 'questions', id, heading: str(raw.heading, LIMITS.heading + 50) };
   return null;
 }
 
@@ -201,6 +219,8 @@ export function checkSection(s: SectionDoc, n: number, photos?: ReadonlySet<stri
     len(where, 'photo description', s.image.alt, LIMITS.alt, errors);
     checkButton(where, s.button, true, errors);
     checkButton(`${where}, second button`, s.secondary, false, errors);
+  } else if (s.type === 'questions') {
+    len(where, 'heading', s.heading, LIMITS.heading, errors);
   } else {
     if (!s.items.length) errors.push(`${where}: add at least one value prop`);
     if (s.items.length > MAX_VALUE_PROPS) errors.push(`${where}: ${MAX_VALUE_PROPS} value props at most`);
@@ -227,6 +247,37 @@ export function checkPage(p: PageDoc, photos?: ReadonlySet<string>): string[] {
   // The homepage's one h1 comes from its first hero.
   if (p.key === 'home' && !p.sections.some((s) => s.type === 'hero-image')) errors.push(`${p.name}: keep a Hero Image; its heading is the page's main heading`);
   return errors;
+}
+
+/** A clean questions list from a request body. Rows that aren't a pair are dropped. */
+export function questionsFrom(raw: unknown): QuestionDoc[] {
+  return (Array.isArray(raw) ? raw : [])
+    .filter((q): q is unknown[] => Array.isArray(q))
+    .slice(0, MAX_QUESTIONS + 4)
+    .map((q) => [str(q[0], LIMITS.question + 50), str(q[1], LIMITS.answer + 100)] as const);
+}
+
+/** Problems with the shared questions, worded for Asli. */
+export function checkQuestions(qs: readonly QuestionDoc[]): string[] {
+  const errors: string[] = [];
+  if (!qs.length) errors.push('Questions: keep at least one question');
+  if (qs.length > MAX_QUESTIONS) errors.push(`Questions: ${MAX_QUESTIONS} at most`);
+  const seen = new Set<string>();
+  qs.forEach(([q, a], i) => {
+    const where = `Question ${i + 1}`;
+    if (!q) errors.push(`${where}: write the question`);
+    if (!a) errors.push(`${where}: write the answer`);
+    len(where, 'question', q, LIMITS.question, errors);
+    len(where, 'answer', a, LIMITS.answer, errors);
+    if (q && seen.has(q.toLowerCase())) errors.push(`${where}: the same question is in the list twice`);
+    seen.add(q.toLowerCase());
+  });
+  return errors;
+}
+
+/** The shared questions the site is built from right now (pages.json). */
+export function liveQuestions(): QuestionDoc[] {
+  return structuredClone(pagesJson.questions as unknown as QuestionDoc[]);
 }
 
 /** The pages the site is built from right now (pages.json). */

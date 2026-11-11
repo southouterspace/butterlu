@@ -4,6 +4,7 @@
 import { PHOTO_FILES } from '../../catalog/media';
 import { checkPage, type PageDoc } from '../../catalog/pages';
 import HeroImage from './HeroImage.astro';
+import Questions from './Questions.astro';
 import ValueProps from './ValueProps.astro';
 
 interface Props {
@@ -16,6 +17,12 @@ const firstHero = page.sections.find((s) => s.type === 'hero-image')?.id;
 ---
 <div class="flex flex-col gap-8 md:gap-10">
   {page.sections.map((s) =>
-    s.type === 'hero-image' ? <HeroImage section={s} first={s.id === firstHero} /> : <ValueProps section={s} />,
+    s.type === 'hero-image' ? (
+      <HeroImage section={s} first={s.id === firstHero} />
+    ) : s.type === 'questions' ? (
+      <Questions heading={s.heading} id={`${s.id}-heading`} />
+    ) : (
+      <ValueProps section={s} />
+    ),
   )}
 </div>

@@ -37,6 +37,12 @@ approves. Each background's scale on a frame must be adjustable with proper cont
    Until a photo is picked the hero shows the image placeholder on stage (Justin) and the
    words alone in production. The rest of the homepage (who it's for, the two frames, most
    loved designs) stays fixed under the components for now.
+7. **Questions (one shared list).** Asked for by Justin (thread "Rewrite the questions
+   section", 2026-11-11): questions are a reusable content section, not different on each
+   page. She edits one list under Questions in the admin. It shows on the Questions page
+   (`/pages/faq`, the only page with FAQPage markup), under every category and design,
+   and anywhere she adds a **Questions** component. Categories and designs no longer
+   carry questions of their own.
 
 ## How it works
 
@@ -74,6 +80,10 @@ approves. Each background's scale on a frame must be adjustable with proper cont
   upload yet); the editor's photo picker lists what the build has. A new component type
   needs its shape and checks in `pages.ts`, a component in `src/components/sections/`, and
   an editor in `src/admin/app.ts`.
+- **Questions.** The list is `questions` in `src/catalog/pages.json` (checks in
+  `pages.ts`, drawn by `src/components/sections/Questions.astro`). The admin saves it as a
+  draft of kind `questions`, id `all` (`PUT /api/admin/questions`). A Questions component
+  holds only its heading.
 - **Label rule (Justin, 2026-11-11).** Store labels are always Title Case and use "&" for
   "and", as in "Baptisms & Christenings". `toLabel` in `check.ts` applies it; the editor
   fixes design names, category names and shop-by labels as she leaves a field, and the

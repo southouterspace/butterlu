@@ -1,0 +1,21 @@
+---
+// The store's shared questions and answers (src/catalog/pages.ts). One list, edited
+// under Questions in the admin, drawn wherever a page shows questions: the Questions
+// page, every collection and product page, and any page Asli adds the section to.
+import { liveQuestions } from '../../catalog/pages';
+import { cn } from '../ui/variants';
+
+interface Props {
+  /** Shown as an h2 over the list; with none, each question is an h2 itself. */
+  heading?: string;
+  id?: string;
+  class?: string;
+}
+const { heading = '', id = 'faq', class: className } = Astro.props;
+const questions = liveQuestions();
+const Q = heading ? 'h3' : 'h2';
+---
+<section data-section="questions" class={cn('prose', className)} aria-labelledby={heading ? id : undefined} aria-label={heading ? undefined : 'Questions'}>
+  {heading && <h2 id={id}>{heading}</h2>}
+  {questions.map(([q, a]) => (<><Q>{q}</Q><p>{a}</p></>))}
+</section>

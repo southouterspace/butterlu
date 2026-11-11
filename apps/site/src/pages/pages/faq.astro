@@ -1,59 +1,22 @@
 ---
+// The Questions page: the store's shared questions (src/catalog/pages.json), the same
+// list collection and product pages show, edited under Questions in the admin.
 import Layout from '../../Layout.astro';
-import { SHOP } from '../../catalog/products';
+import Questions from '../../components/sections/Questions.astro';
+import { liveQuestions } from '../../catalog/pages';
 
-// What buyers of a personalized frame actually ask before and after they order. Every
-// answer restates something the site already promises (SHOP, the shipping and returns
-// page, the about page, checkout). Don't add an answer that sets new policy: rush orders,
-// transit times, gift notes, wall hanging and bulk pricing wait on the owner.
-const faqs = [
-  [
-    'Will I see a proof before you make it?',
-    'The preview on each design is your proof. It’s drawn from the same layout and fonts we print from, so the words, colors and spacing you see are what arrives. Check names, spelling and dates there before you add it to your cart, because we print exactly what it shows.',
-  ],
-  [
-    'I spotted a mistake after ordering. Can I fix it?',
-    'Yes, if you’re quick. Reply to your order receipt with the change, and we can update the wording until your frame goes to print.',
-  ],
-  ['When will it arrive?', `${SHOP.dispatch}, then it travels to you by mail. ${SHOP.shipping}, and you’ll get tracking by email when it ships.`],
-  [
-    'Can I ship it straight to the person it’s for?',
-    'Yes. Enter their address as the shipping address at checkout. The frame ships without a photo, so let them know to add their favorite 4x6, or ship it to yourself first if you want the photo inside when you hand it over.',
-  ],
-  [
-    'Do you print my photo?',
-    'No. The frame arrives empty, ready for a 4x6 photo. Any drugstore photo counter or online print service can print one.',
-  ],
-  [
-    'My photo isn’t 4x6. Will it work?',
-    'Have it printed at 4x6. A phone photo is a little narrower than 4x6, so the print crops a sliver off the edges; keep faces away from the borders. An ultrasound scan works too once it’s printed at 4x6.',
-  ],
-  ['How big is the frame?', 'About 8.4 by 6.4 inches, with glass over the photo and an easel back so it stands on a shelf, desk or nightstand.'],
-  [
-    'Can I order several with different names?',
-    'Yes. Personalize each one and add it to your cart, so every grandparent, godparent or sibling gets their own. Each frame is the same price.',
-  ],
-  [
-    'What if it arrives damaged or doesn’t match my preview?',
-    'Reply to your receipt with a photo and we’ll make it right. Because every frame is printed with your words, we can’t take returns or exchanges for a change of mind.',
-  ],
-  [
-    'Is this the same Butterlu as on Etsy?',
-    'Yes. Thousands of shoppers found us on Etsy first. This shop is our own home for the same frames.',
-  ],
-  ['Do you ship outside the US?', 'Not yet. We ship to US addresses only for now.'],
-] as const;
+// FAQPage markup goes on this page only: the list is the same everywhere else.
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+    mainEntity: liveQuestions().map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
   },
 ];
 ---
 <Layout title="Questions | Butterlu" description="Proofs, changes after you order, delivery, photos, gifting and returns: what to know before you order a Butterlu frame." jsonLd={jsonLd}>
   <div class="prose">
     <h1>Questions</h1>
-    {faqs.map(([q, a]) => (<><h2>{q}</h2><p>{a}</p></>))}
+    <Questions />
   </div>
 </Layout>

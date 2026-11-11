@@ -161,9 +161,10 @@ const jsonLd = [
                 data-add-as-shown={product.handle}
                 data-from="product"
                 data-spec={JSON.stringify(product.preset)}
+                data-name={product.name}
                 aria-describedby={asShown ? 'as-shown-note' : undefined}
               >
-                {asShown ? 'Add to Cart as Shown' : `Add to Cart · ${price}`}
+                Add to Cart
               </button>
             ) : (
               <a
@@ -178,8 +179,6 @@ const jsonLd = [
           )}
         </div>
         {asShown && <p id="as-shown-note" class="text-sm text-muted-foreground">{asShown}</p>}
-        {/* Rendered from the start, so screen readers announce the update. */}
-        <p class="text-sm font-medium empty:hidden" role="status" data-added-status></p>
       </div>
       <ul class="grid gap-2 text-sm text-muted-foreground [&_svg]:shrink-0">
         <li class="flex items-center gap-2"><Icon name="clock" />{SHOP.dispatch}</li>

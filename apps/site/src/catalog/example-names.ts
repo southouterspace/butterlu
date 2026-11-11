@@ -2,7 +2,7 @@
 // years ("Coming 2027"). The editor marks a side that still holds the words we put
 // there, so shoppers see what to swap for their own; the mark goes at their first
 // change to that side, so a shopper whose child really is Ava isn't nagged. The product
-// page says so beside Add to Cart as Shown. Add a name here when a new design or idea
+// page says so beside Add to Cart. Add a name here when a new design or idea
 // uses one. Plain TypeScript: the editor script bundles it.
 export const EXAMPLE_NAMES = [
   'Alex', 'Ava', 'Bear', 'Bella', 'Buddy', 'Carter', 'Carters', 'Charlie', 'Cooper', 'Daisy', 'Emma', 'Jake', 'James',
@@ -28,7 +28,7 @@ export function standInNote(text: string): string {
   return '';
 }
 
-/** What the product page says beside Add to Cart as Shown, or '' for a design with no stand-ins. */
+/** What the product page says beside Add to Cart, or '' for a design with no stand-ins. */
 export function asShownNote(texts: string[]): string {
   const name = texts.some(hasExampleName);
   const year = texts.some((t) => YEAR.test(t));

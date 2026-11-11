@@ -187,6 +187,9 @@ const pageHandle = pageType === 'product' || pageType === 'personalize' || pageT
         </nav>
       </div>
     </footer>
+    <!-- Toasts show in the region; the status line beside it is what screen readers hear. -->
+    <div class="toaster" data-toaster></div>
+    <p class="sr-only" role="status" data-toast-status></p>
     <script>
       import { cartCount, onCartChange } from './scripts/cart';
       import { referrerHost, track } from './scripts/track';

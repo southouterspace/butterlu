@@ -180,10 +180,15 @@ test('a ready-made design goes into the cart as shown in one tap', async ({ app,
   await expect(screen.getByRole('button', 'Add to Cart: Mimi Picture Frame, as shown')).toBeVisible();
   await expect(screen.getByRole('link', 'Personalize: Mimi Picture Frame')).toBeVisible();
   await screen.getByRole('button', 'Add to Cart: Nana Picture Frame, as shown').click();
-  await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+  // A toast confirms it, with the way to the cart.
+  await expect(screen.getByText('Added to your cart', { exact: true })).toBeVisible();
+  await expect(screen.getByRole('link', 'View Cart')).toHaveAttribute('href', '/cart');
+  // Screen readers hear the message, not the toast's buttons.
+  await expect(screen.getByRole('status').getByText('Added to your cart. Nana Picture Frame')).toBeAttached();
   await app.open('/cart');
   await expect(screen.getByRole('heading', 'Nana Picture Frame')).toBeVisible();
-  await expect(screen.getByText('Top: "I Love My Nana"', { exact: false })).toBeVisible();
+  // A line left as designed keeps the cart simple: no shape, background or words list.
+  await expect(screen.getByText('Top: "I Love My Nana"', { exact: false })).toBeHidden();
 });
 
 test('the background can be made bigger and moved, from the keyboard, and the cart keeps it', async ({ app, screen }) => {
@@ -215,19 +220,19 @@ test('the background can be made bigger and moved, from the keyboard, and the ca
 
 test('the product page sells the design as shown or opens the editor', async ({ app, screen }) => {
   await app.open('/products/nana-picture-frame');
-  await screen.getByRole('button', /^Add to Cart · /).click();
-  await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+  await screen.getByRole('button', 'Add to Cart').click();
+  await expect(screen.getByText('Added to your cart', { exact: true })).toBeVisible();
 
   // A design with example names says what "as shown" prints.
   await app.open('/products/mimi-picture-frame');
-  await expect(screen.getByRole('button', 'Add to Cart as Shown')).toBeVisible();
+  await expect(screen.getByRole('button', 'Add to Cart')).toBeVisible();
   await expect(screen.getByText('As shown, it prints the example names.')).toBeVisible();
   // Added as shown, the cart line spells out the words and says they are examples.
-  await screen.getByRole('button', 'Add to Cart as Shown').click();
-  await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+  await screen.getByRole('button', 'Add to Cart').click();
+  await expect(screen.getByText('Added to your cart', { exact: true })).toBeVisible();
   await app.open('/cart');
-  await expect(screen.getByText('Bottom: "Ava, Noah and Mia"', { exact: false })).toBeVisible();
   await expect(screen.getByText('As shown, it prints the example names.')).toBeVisible();
+  await expect(screen.getByRole('link', 'Personalize')).toHaveAttribute('href', '/products/mimi-picture-frame/personalize');
   await app.open('/products/mimi-picture-frame');
   await screen.getByRole('link', 'Personalize').click();
   await expect(screen.getByRole('heading', 'Mimi Picture Frame')).toBeVisible();
@@ -341,8 +346,8 @@ test('two of one design, long lines and apostrophes print as previewed', async (
   });
   try {
     await app.open(`/products/${handle}`);
-    await screen.getByRole('button', 'Add to Cart as Shown').click();
-    await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+    await screen.getByRole('button', 'Add to Cart').click();
+    await expect(screen.getByText('Added to your cart', { exact: true })).toBeVisible();
 
     await app.open(`/products/${handle}/personalize`);
     // Load the frame fonts before typing, so the browser measures with the real faces.

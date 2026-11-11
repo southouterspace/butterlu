@@ -368,3 +368,36 @@ html:has(:is(.bg-picker, .filter-sheet):modal) {
 .filter-sheet {
   max-height: 80svh;
 }
+
+/* Toasts (src/scripts/toast.ts): the shadcn Sonner look, bottom center on phones,
+   bottom right from md up. The region is always in the page so it is announced. */
+@layer components {
+  .toaster {
+    @apply pointer-events-none fixed inset-x-0 bottom-0 z-50 m-0 grid list-none justify-items-center gap-2 p-4 pb-[max(1rem,env(safe-area-inset-bottom))] md:inset-x-auto md:right-0 md:justify-items-end md:p-6;
+  }
+  .toast {
+    @apply pointer-events-auto flex w-full max-w-[356px] items-center gap-3 rounded-2xl border bg-popover p-4 text-sm text-popover-foreground shadow-lg;
+    opacity: 0;
+    transform: translateY(0.5rem);
+  }
+  .toast[data-open] {
+    opacity: 1;
+    transform: none;
+  }
+  .toast-action {
+    @apply inline-flex h-8 shrink-0 items-center rounded-full bg-primary px-3 text-xs font-medium text-primary-foreground no-underline outline-none focus-visible:ring-3 focus-visible:ring-ring;
+  }
+  .toast-close {
+    @apply inline-flex size-7 shrink-0 items-center justify-center rounded-full text-muted-foreground outline-none hover:bg-muted hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring;
+  }
+  .toast-close svg {
+    @apply size-4 fill-none stroke-current;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .toast {
+    transition: opacity 200ms, transform 200ms;
+  }
+}

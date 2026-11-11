@@ -3,6 +3,7 @@
 // page; an ES module runs once, however many components import it.
 import type { FrameSpec } from '@butterlu/frame';
 import { addToCart, cartLines } from './cart';
+import { toast } from './toast';
 import { track } from './track';
 
 document.addEventListener('click', (e) => {
@@ -12,12 +13,17 @@ document.addEventListener('click', (e) => {
     const spec = JSON.parse(add.dataset.spec ?? 'null') as FrameSpec | null;
     if (!spec) return;
     const handle = add.dataset.addAsShown!;
+    const count = () => cartLines().filter((l) => l.handle === handle).reduce((sum, l) => sum + l.quantity, 0);
+    const before = count();
     // The checkout Worker re-checks every line.
     addToCart(handle, spec, 1);
     track('add_to_cart', { d: add.dataset.from === 'product' ? 'as_shown' : 'as_shown_card', h: handle });
-    const status = add.closest('[data-shop-actions]')?.querySelector<HTMLElement>('[data-added-status]');
-    const n = cartLines().filter((l) => l.handle === handle).reduce((sum, l) => sum + l.quantity, 0);
-    if (status) status.innerHTML = `Added to your cart${n > 1 ? ` (${n} of these)` : ''}. <a href="/cart" class="underline underline-offset-4">View Cart</a>`;
+    const n = count();
+    toast(n === before ? `Your cart already has the most we make at once (${n})` : `Added to your cart${n > 1 ? ` (${n} of these)` : ''}`, {
+      description: add.dataset.name,
+      action: { label: 'View Cart', href: '/cart' },
+      returnFocus: add,
+    });
     return;
   }
   // A beacon survives the page change, so the link needs no delay.

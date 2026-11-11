@@ -55,12 +55,11 @@ const titleId = `card-title-${product.handle}`;
       class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'flex-1')}
       data-add-as-shown={product.handle}
       data-spec={JSON.stringify(product.preset)}
+      data-name={product.name}
       aria-label={`Add to Cart: ${product.name}, as shown`}
     >
       Add to Cart
     </button>
-    {/* Rendered from the start, so screen readers announce the update. */}
-    <p class="w-full text-xs text-muted-foreground" role="status" data-added-status></p>
   </div>
 </li>
 <script>

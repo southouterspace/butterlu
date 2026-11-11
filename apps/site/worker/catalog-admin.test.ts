@@ -319,3 +319,12 @@ test('a draft is flagged when the site changes under it, and shop-by keeps what 
   expect(changes.find((c) => c.kind === 'taxonomy')!.stale).toBe(false);
   expect(doc.taxonomy.occasions.some((o) => o.key === dropped.key)).toBe(true);
 });
+
+test("a design's background size and position are kept", async () => {
+  const { call } = setup();
+  const t = newTemplate();
+  t.preset = { ...t.preset, backgroundFit: { scale: 1.5, x: -0.5, y: 0.25 } };
+  const r = await call('PUT', `/api/admin/templates/${t.handle}`, t);
+  expect(r.status).toBe(200);
+  expect(r.body.template.preset.backgroundFit).toEqual({ scale: 1.5, x: -0.5, y: 0.25 });
+});

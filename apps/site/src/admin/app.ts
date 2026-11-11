@@ -5,7 +5,7 @@
 //
 // Plain DOM, no framework: every value from the server goes in with textContent or
 // an attribute, never as HTML.
-import { SHAPE_IDS, SIDES, type FrameSpec, type Side } from '@butterlu/frame';
+import { BACKGROUND_SCALE, SHAPE_IDS, SIDES, type FrameSpec, type Side } from '@butterlu/frame';
 import { SEO_LABELS, SEO_LIMITS, TITLE_SUFFIX, checkTemplate, slugify, toLabel, type SeoKey } from '../catalog/check';
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from '../catalog/doc';
 import { backgroundUrl, frameSvg } from '../lib/frame-svg';
@@ -406,6 +406,40 @@ function templateEditor(handle: string | null): HTMLElement {
       return h('label', { class: 'swatch', title: b.name }, r, h('img', { src: backgroundUrl(b.id, 'card'), alt: '', loading: 'lazy', width: 64, height: 48 }), h('span', {}, b.name));
     }),
   );
+  // Background size and position (packages/frame backgroundFit): 100% fills the frame;
+  // larger zooms in, and the position sliders pick which part of the pattern shows.
+  const fit = () => t.preset.backgroundFit ?? { scale: 1, x: 0, y: 0 };
+  const range = (min: number, max: number, step: number, value: number, label: string, text: (v: number) => string) => {
+    const r = h('input', { type: 'range', min, max, step, 'aria-label': label });
+    r.value = String(value);
+    r.setAttribute('aria-valuetext', text(value));
+    return r;
+  };
+  const pct = (v: number) => `${Math.round(v * 100)}%`;
+  const side = (v: number, lo: string, hi: string) => (Math.abs(v) < 0.01 ? 'centred' : `${Math.round(Math.abs(v) * 100)}% toward the ${v < 0 ? lo : hi}`);
+  const scaleIn = range(BACKGROUND_SCALE.min, BACKGROUND_SCALE.max, BACKGROUND_SCALE.step, fit().scale, 'Background size', pct);
+  const xIn = range(-1, 1, 0.05, fit().x, 'Background position, left to right', (v) => side(v, 'left', 'right'));
+  const yIn = range(-1, 1, 0.05, fit().y, 'Background position, top to bottom', (v) => side(v, 'top', 'bottom'));
+  const scaleOut = h('output', {});
+  const posBox = h('div', { class: 'row' }, field('Left and right', xIn), field('Up and down', yIn));
+  const syncFit = () => {
+    const f = { scale: Number(scaleIn.value), x: Number(xIn.value), y: Number(yIn.value) };
+    if (f.scale <= 1.001) f.x = f.y = 0;
+    if (f.scale <= 1.001 && !f.x && !f.y) delete t.preset.backgroundFit;
+    else t.preset.backgroundFit = f;
+    scaleOut.textContent = pct(f.scale);
+    scaleIn.setAttribute('aria-valuetext', pct(f.scale));
+    xIn.setAttribute('aria-valuetext', side(f.x, 'left', 'right'));
+    yIn.setAttribute('aria-valuetext', side(f.y, 'top', 'bottom'));
+    posBox.hidden = f.scale <= 1.001;
+    repaint();
+  };
+  for (const r of [scaleIn, xIn, yIn]) r.addEventListener('input', syncFit);
+  const resetFit = h('button', { type: 'button', class: 'btn', onclick: () => ((scaleIn.value = '1'), (xIn.value = '0'), (yIn.value = '0'), syncFit()) }, 'Reset');
+  scaleOut.textContent = pct(fit().scale);
+  posBox.hidden = fit().scale <= 1.001;
+  const fitBox = h('fieldset', { class: 'side' }, h('legend', {}, 'Background size and position'), h('div', { class: 'row' }, field('Size', scaleIn), scaleOut, resetFit), posBox);
+
   const sides = h(
     'div',
     { class: 'sides' },
@@ -577,7 +611,7 @@ function templateEditor(handle: string | null): HTMLElement {
           h('div', { class: 'row' }, field('Status', status, 'Live designs show in the store after a publish.')),
           h('label', { class: 'inline' }, ready, ' Can be bought as shown in one tap'),
         ),
-        h('fieldset', { class: 'card-box' }, h('legend', {}, 'Design'), field('Frame shape', shape), h('p', { class: 'label' }, 'Background'), bgGrid, sides),
+        h('fieldset', { class: 'card-box' }, h('legend', {}, 'Design'), field('Frame shape', shape), h('p', { class: 'label' }, 'Background'), bgGrid, fitBox, sides),
         h('fieldset', { class: 'card-box' }, h('legend', {}, 'Where it goes'), field("Who it's for", forSel), occBox, catBox),
         h(
           'fieldset',

@@ -94,7 +94,7 @@ the SEO fields are hand-written only.
 5. Waiting: catalog handover into `store.json` (storefront session), with the Best
    selling rank.
 6. Waiting on 5: Publish to git, with a diff of what will change.
-7. Background scale control in the editor, once the scale task lands.
+7. Done: background size and position on each design (reads the scale task's `backgroundFit`).
 
 ## Open questions
 

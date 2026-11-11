@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Writes src/etsy-color-chart.json: for each number on the Etsy colour chart
+// Writes assets/etsy-color-chart/chart-to-background.json: for each number on the Etsy colour chart
 // (assets/etsy-color-chart/), the background file it matches, if any, and the
 // swatch's average colour for when a buyer names a chart number as a text
 // colour. Needs ImageMagick. Rerun after changing MATCHES or the chart images.
@@ -7,15 +7,15 @@
 // MATCHES was set by eye from a side-by-side sheet and checked by colour
 // distance. The matched backgrounds (files 23 to 43) follow the chart in exact
 // reverse order, which is how they were exported. "likely" means the texture
-// matches but the edit differs (rotated grain, lighter tone); plan_order sends
-// those to review until someone confirms them.
+// matches but the edit differs (rotated grain, lighter tone); treat those as
+// unconfirmed until someone checks them.
 import { execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const appDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const chartDir = path.resolve(appDir, '../../assets/etsy-color-chart');
+const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const chartDir = path.join(rootDir, 'assets/etsy-color-chart');
 
 const MATCHES = {
   1: ['red', 'strong'],
@@ -68,7 +68,7 @@ const chart = SHEETS.flatMap(({ file, first, cols, count }) =>
   }),
 );
 
-const out = path.join(appDir, 'src/etsy-color-chart.json');
+const out = path.join(chartDir, 'chart-to-background.json');
 fs.writeFileSync(out, `${JSON.stringify(chart, null, 2)}\n`);
 const matched = chart.filter((c) => c.backgroundId);
 console.log(`${chart.length} chart colours, ${matched.length} matched to a background (${matched.filter((c) => c.match === 'likely').length} likely); wrote ${path.relative(process.cwd(), out)}`);

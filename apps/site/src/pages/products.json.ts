@@ -1,5 +1,5 @@
 // A machine-readable catalog for agents and feeds: every page, its price and its
-// preset FrameSpec, in the shape the frame MCP's render_frame takes.
+// preset FrameSpec, in the shape the print renderer (@butterlu/frame/pdf) takes.
 import type { APIRoute } from 'astro';
 import { COLLECTIONS, CURRENCY, PRODUCTS, SHOP } from '../catalog/products';
 

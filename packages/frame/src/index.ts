@@ -16,7 +16,7 @@ export interface Font {
   placeholder: boolean;
 }
 
-/** The fonts a frame can print in. The site's customizer and the frame MCP both read this list. */
+/** The fonts a frame can print in. The site's customizer and the print renderer both read this list. */
 export const FONTS: readonly Font[] = fonts;
 export const FONT_IDS: readonly string[] = FONTS.map((f) => f.id);
 

@@ -3,6 +3,8 @@
 // the admin sign-in (worker/admin.ts) and it is never in the sitemap. All content
 // loads from /api/admin/catalog after sign-in, so the built file holds no catalog data.
 import '../../styles/global.css';
+import { PHOTO_FILES } from '../../catalog/media';
+// The photo files the build has, for the page components' photo picker. File names only.
 ---
 <!doctype html>
 <html lang="en">
@@ -17,6 +19,7 @@ import '../../styles/global.css';
   <body>
     <div id="admin"><p class="loading">Loading the store…</p></div>
     <p id="toast" role="status" hidden></p>
+    <script id="photo-files" type="application/json" set:html={JSON.stringify(PHOTO_FILES).replace(/</g, "\\u003c")} />
     <script>
       import '../../admin/app';
     </script>

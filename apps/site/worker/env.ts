@@ -21,4 +21,10 @@ export interface Env {
   ORDERS?: D1Database;
   /** Password for the private order list at /admin/orders. Without it /admin is a 404. */
   ADMIN_PASSWORD?: string;
+  /** Anthropic API key for Claude's SEO drafts in the store admin (docs/13). Without it the fields are hand-written only. */
+  ANTHROPIC_API_KEY?: string;
+  /** Model for SEO drafts. Default claude-opus-5-5. */
+  SEO_MODEL?: string;
+  /** Fine-grained GitHub token (Contents read and write on this repo) for Publish. Not used until the catalog handover. */
+  GITHUB_CATALOG_TOKEN?: string;
 }

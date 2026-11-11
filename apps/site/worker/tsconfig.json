@@ -7,7 +7,10 @@
     "resolveJsonModule": true,
     "strict": true,
     "noEmit": true,
-    "types": ["@cloudflare/workers-types"]
+    "types": ["@cloudflare/workers-types"],
+    // @anthropic-ai/sdk ships Node typings next to its fetch ones; their globals clash
+    // with workers-types. Our own code is still fully checked.
+    "skipLibCheck": true
   },
   "include": ["*.ts"],
   // Unit tests run under bun (bun test worker) with bun's own types.

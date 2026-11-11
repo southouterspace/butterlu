@@ -1,11 +1,14 @@
-// Private order list for Asli (docs/07 "Admin", docs/10). GET /admin/orders lists
+// Asli's back office (docs/07 "Admin", docs/10, docs/13). GET /admin/orders lists
 // recent orders with each frame's design; POST /admin/orders/<session> updates
-// status, tracking and a note.
+// status, tracking and a note. /admin/catalog is the store editor (templates,
+// categories, shop-by lists, SEO), a static page served only after sign-in, and
+// /api/admin/* is its JSON API (catalog-admin.ts).
 //
 // Sign-in: HTTP Basic with the ADMIN_PASSWORD secret (any user name). Fail closed:
 // without the secret, or without the ORDERS database, /admin answers 404.
 // docs/07 plans Cloudflare Access instead; that needs a domain on the account,
 // so it waits for butterlu.com.
+import { handleCatalogAdmin } from './catalog-admin';
 import type { Env } from './env';
 import { listOrders, ORDER_STATUSES, parseOrderUpdate, updateOrder, type LineRow, type OrderRow } from './orders';
 
@@ -22,6 +25,19 @@ function safeEqual(a: string, b: string): boolean {
 async function digest(s: string): Promise<string> {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(s));
   return [...new Uint8Array(buf)].map((b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+/** The user name typed at sign-in, for the edit log. Only meaningful after `authorized`. */
+export function signedInName(request: Request): string {
+  const m = /^Basic\s+([A-Za-z0-9+/=]+)$/i.exec(request.headers.get('authorization') ?? '');
+  if (!m) return 'admin';
+  try {
+    const decoded = new TextDecoder().decode(Uint8Array.from(atob(m[1]!), (c) => c.charCodeAt(0)));
+    const name = decoded.slice(0, Math.max(0, decoded.indexOf(':'))).trim().replace(/[^\p{L}\p{N} ._@-]/gu, '').slice(0, 40);
+    return name || 'admin';
+  } catch {
+    return 'admin';
+  }
 }
 
 /** True when the request carries Basic credentials whose password is ADMIN_PASSWORD. */
@@ -115,27 +131,41 @@ input,select,textarea,button{font:inherit;color:var(--fg);background:var(--bg);b
 button{background:var(--fg);color:var(--bg);border:0;padding:8px 16px;cursor:pointer}
 .ref{font-size:.75rem;color:var(--muted);margin:8px 0 0;word-break:break-all}
 @media (max-width:560px){.cols{grid-template-columns:1fr}}
-</style></head><body><main>${body}</main></body></html>`;
+</style></head><body><nav style="max-width:860px;margin:0 auto;padding:12px 16px 0;display:flex;gap:16px;font:14px system-ui,sans-serif"><a href="/admin/catalog">Templates and categories</a><a href="/admin/orders" aria-current="page">Orders</a></nav><main>${body}</main></body></html>`;
   return new Response(html, {
     headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'x-frame-options': 'DENY' },
   });
 }
 
-/** /admin and /admin/*. Returns null for paths it doesn't own. */
+const isAdminPath = (p: string) => p === '/admin' || p.startsWith('/admin/') || p === '/api/admin' || p.startsWith('/api/admin/');
+
+/** /admin, /admin/* and /api/admin/*. Returns null for paths it doesn't own. */
 export async function handleAdmin(request: Request, env: Env): Promise<Response | null> {
   const url = new URL(request.url);
-  if (url.pathname !== '/admin' && !url.pathname.startsWith('/admin/')) return null;
+  if (!isAdminPath(url.pathname)) return null;
   const password = env.ADMIN_PASSWORD?.trim();
   const db = env.ORDERS;
   if (!password || !db) return NOT_FOUND();
   if (!(await authorized(request, password))) {
-    return new Response('Sign in to see orders.', {
+    return new Response('Sign in to the Butterlu admin.', {
       status: 401,
-      headers: { 'www-authenticate': 'Basic realm="Butterlu orders", charset="UTF-8"', 'cache-control': 'no-store' },
+      headers: { 'www-authenticate': 'Basic realm="Butterlu admin", charset="UTF-8"', 'cache-control': 'no-store' },
     });
   }
 
-  if (url.pathname === '/admin' || url.pathname === '/admin/') return Response.redirect(new URL('/admin/orders', url).toString(), 303);
+  if (url.pathname.startsWith('/api/admin/')) return handleCatalogAdmin(request, env, db, signedInName(request));
+
+  if (url.pathname === '/admin' || url.pathname === '/admin/') return Response.redirect(new URL('/admin/catalog', url).toString(), 303);
+
+  if ((url.pathname === '/admin/catalog' || url.pathname === '/admin/catalog.html') && request.method === 'GET') {
+    // The editor is a static page; only the sign-in above lets it out.
+    const res = await env.ASSETS.fetch(new Request(new URL('/admin/catalog', url), { headers: request.headers }));
+    const headers = new Headers(res.headers);
+    headers.set('cache-control', 'no-store');
+    headers.set('x-robots-tag', 'noindex, nofollow');
+    headers.set('x-frame-options', 'DENY');
+    return new Response(res.body, { status: res.status, headers });
+  }
 
   if (url.pathname === '/admin/orders' && request.method === 'GET') {
     const orders = await listOrders(db);

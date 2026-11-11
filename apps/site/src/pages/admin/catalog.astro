@@ -1,0 +1,96 @@
+---
+// The store editor (docs/13). Built like any page, but the Worker serves it only after
+// the admin sign-in (worker/admin.ts) and it is never in the sitemap. All content
+// loads from /api/admin/catalog after sign-in, so the built file holds no catalog data.
+import '../../styles/global.css';
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Store admin · Butterlu</title>
+    <meta name="description" content="Butterlu's private store editor for designs, categories and search copy." />
+    <link rel="canonical" href="https://www.butterlu.com/admin/catalog" />
+    <meta name="robots" content="noindex, nofollow" />
+  </head>
+  <body>
+    <div id="admin"><p class="loading">Loading the store…</p></div>
+    <p id="toast" role="status" hidden></p>
+    <script>
+      import '../../admin/app';
+    </script>
+    <style is:global>
+      body { margin: 0; background: var(--muted); color: var(--foreground); font: 15px/1.45 var(--font-sans); }
+      #admin { max-width: 1200px; margin: 0 auto; padding: 0 16px 64px; }
+      .loading { padding: 32px 0; }
+      .nav { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; }
+      .nav a { color: var(--foreground); text-decoration: none; padding: 6px 10px; border-radius: 99px; }
+      .nav a[aria-current='page'] { background: var(--background); font-weight: 600; }
+      .nav .me { margin-left: auto; }
+      h1 { font-size: 1.4rem; margin: 0; }
+      .toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin: 8px 0 12px; }
+      .row { display: flex; flex-wrap: wrap; align-items: end; gap: 8px; }
+      .hint { color: var(--muted-foreground); font-size: 0.85rem; margin: 4px 0; }
+      .error { color: var(--destructive); white-space: pre-line; }
+      .label { font-weight: 600; margin: 12px 0 4px; }
+      .field { display: flex; flex-direction: column; gap: 2px; margin: 0 0 10px; min-width: 0; flex: 1 1 160px; }
+      .field label { font-weight: 600; font-size: 0.85rem; }
+      input[type='text'], input[type='search'], select, textarea {
+        font: inherit; color: var(--foreground); background: var(--background); border: 1px solid var(--border);
+        border-radius: 10px; padding: 7px 10px; width: 100%; box-sizing: border-box;
+      }
+      input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible, a:focus-visible { outline: 2px solid var(--ring); outline-offset: 2px; }
+      input:disabled { opacity: 0.7; }
+      .btn { font: inherit; border: 1px solid var(--border); background: var(--background); color: var(--foreground); border-radius: 99px; padding: 7px 14px; cursor: pointer; }
+      .btn.primary { background: var(--primary); color: var(--primary-foreground); border-color: transparent; font-weight: 600; }
+      .btn:disabled { opacity: 0.55; cursor: default; }
+      .badge { display: inline-block; font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 99px; background: var(--border); }
+      .badge.ok { background: color-mix(in oklch, var(--primary) 35%, var(--background)); }
+      .badge.warn { background: color-mix(in oklch, var(--destructive) 18%, var(--background)); color: var(--foreground); }
+      .filters { display: flex; flex-wrap: wrap; gap: 8px 12px; }
+      .grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+      .card { display: flex; flex-direction: column; gap: 6px; width: 100%; text-align: left; font: inherit; color: inherit; background: var(--background); border: 1px solid var(--border); border-radius: 14px; padding: 10px; cursor: pointer; }
+      .card:hover { border-color: var(--ring); }
+      .card-name { font-weight: 600; }
+      .preview svg { display: block; width: 100%; height: auto; }
+      .big-preview { background: var(--background); border-radius: 14px; padding: 12px; }
+      .two { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px; align-items: start; }
+      .sticky { position: sticky; top: 12px; }
+      .card-box { background: var(--background); border: 1px solid var(--border); border-radius: 14px; padding: 12px 14px; margin: 0 0 12px; }
+      .card-box > legend { font-weight: 700; padding: 0 4px; }
+      .idea, .side { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; margin: 0 0 8px; }
+      .checks { border: 0; padding: 0; margin: 0 0 10px; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+      .checks legend { font-weight: 600; font-size: 0.85rem; margin-bottom: 4px; }
+      .inline { display: flex; align-items: center; gap: 6px; }
+      .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 6px; margin-bottom: 10px; }
+      .swatch { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 0.72rem; text-align: center; cursor: pointer; border-radius: 8px; padding: 4px; border: 2px solid transparent; }
+      .swatch input { position: absolute; opacity: 0; pointer-events: none; }
+      .swatch img { width: 64px; height: 48px; object-fit: cover; border-radius: 6px; }
+      .swatch:has(input:checked) { border-color: var(--ring); }
+      .swatch:has(input:focus-visible) { outline: 2px solid var(--ring); outline-offset: 2px; }
+      .seo-field { border-top: 1px solid var(--border); padding-top: 10px; margin-top: 10px; }
+      .seo-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 4px; }
+      .seo-head label { font-weight: 600; }
+      .count { margin-left: auto; font-size: 0.8rem; color: var(--muted-foreground); font-variant-numeric: tabular-nums; }
+      .count.over { color: var(--destructive); font-weight: 700; }
+      .seo-field .row { margin-top: 6px; }
+      .options { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+      .option { display: flex; gap: 8px; text-align: left; font: inherit; color: inherit; background: var(--muted); border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; cursor: pointer; }
+      .option:hover { border-color: var(--ring); }
+      .serp { background: var(--muted); border-radius: 10px; padding: 10px 12px; }
+      .serp p { margin: 2px 0; }
+      .serp-url { font-size: 0.8rem; color: var(--muted-foreground); }
+      .serp-title { color: #1a0dab; font-size: 1.1rem; }
+      .issues { margin-top: 10px; }
+      .issues ul { margin: 4px 0; padding-left: 18px; }
+      .list { list-style: none; padding: 0; margin: 0; }
+      .list > li { background: var(--background); border: 1px solid var(--border); border-radius: 10px; padding: 8px 12px; margin: 0 0 6px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+      .order { padding: 0; list-style: none; margin: 0; }
+      .order li { display: grid; grid-template-columns: 72px 1fr auto auto; align-items: center; gap: 8px; padding: 4px 0; border-bottom: 1px solid var(--border); }
+      #toast { position: fixed; left: 50%; bottom: 20px; transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px)); background: var(--foreground); color: var(--background); padding: 10px 16px; border-radius: 12px; white-space: pre-line; z-index: 10; }
+      #toast[data-tone='bad'] { background: var(--destructive); color: #fff; }
+      @media (max-width: 800px) { .two { grid-template-columns: 1fr; } .sticky { position: static; } .nav .me { margin-left: 0; width: 100%; } }
+    </style>
+  </body>
+</html>

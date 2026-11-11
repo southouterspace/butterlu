@@ -1,6 +1,6 @@
 # 13. Store admin for Asli
 
-Status: PLAN, 2026-11-11. Asked for by Justin (main chat, 2026-11-11): Asli gets a back
+Status: BUILDING, 2026-11-11. Editor, drafts and Claude SEO are on stage; publishing waits on the catalog handover. Asked for by Justin (main chat, 2026-11-11): Asli gets a back
 office shaped to her business where she defines the ready-made designs ("templates"),
 files them under the store's categories, and gets Claude's help with SEO copy that she
 approves. Each background's scale on a frame must be adjustable with proper controls.
@@ -24,10 +24,10 @@ approves. Each background's scale on a frame must be adjustable with proper cont
    limits, and avoids titles already in use. She sees them with character counts and a
    search-result preview, picks or edits one and saves it. **Nothing Claude writes is
    used until she approves it**; publish refuses a field still marked as a suggestion.
-4. **Background scale.** A zoom control (slider with minus, plus and reset, keyboard
-   operable, read out as a percentage) and a position control for when it's zoomed. She
-   sets a default scale per background and can override it per template. Shoppers get the
-   same control in the customizer.
+4. **Background scale.** Built as its own task (thread "Adjustable background scale"),
+   which owns the zoom controls, `packages/frame` and the print PDF. The admin stores each
+   template's preset through `parseDesign`, so the scale field is kept as soon as the frame
+   code knows it, and the editor gets the control then.
 5. **Orders.** The existing order list stays, in the same admin.
 
 ## How it works
@@ -45,18 +45,26 @@ approves. Each background's scale on a frame must be adjustable with proper cont
   `taxonomy.ts` and `copy.json`, which the storefront session edits. The first step copies
   them into `store.json` unchanged (the build checks the site comes out identical) and
   those modules then read the file. After that, catalog content changes go through the
-  admin; code still changes in code. Agreed with the storefront session before it lands.
+  admin; code still changes in code. **On hold** until the storefront session confirms,
+  through the coordinator, which files the admin takes over. The hand-set "Best selling"
+  rank the storefront is adding to Shop all moves over then as a field she can reorder.
 - **Tables create themselves.** The admin Worker creates its D1 tables on first use
   (`CREATE TABLE IF NOT EXISTS`), so no one runs migrations by hand.
 - **The admin UI** is Astro pages under `/admin` (noindex, outside the sitemap) that reuse
   the store's frame preview and pickers. The Worker signs a request in before serving
   any `/admin` page or `/api/admin/*` call.
-- **Background scale in the design.** `FrameSpec` gains optional `backgroundScale` (1 to 3,
-  where 1 is today's fill) and `backgroundOffset` (x and y, each -1 to 1, used only when
-  zoomed). Both are optional, so existing orders, Stripe metadata and the frame MCP keep
-  working. The print PDF, the SVG preview and the raster cards apply the same maths.
-  Shrinking a pattern below 100% would need the file to tile without a seam; that waits
-  on Asli saying which backgrounds are seamless tiles.
+- **Where it lives.** `src/catalog/doc.ts` (the catalog as one document, built from the
+  live modules), `src/catalog/check.ts` (the rules), `worker/catalog-admin.ts` (the
+  `/api/admin/*` API and the D1 drafts), `worker/seo-draft.ts` (Claude), and
+  `src/pages/admin/catalog.astro` with `src/admin/app.ts` (the editor at `/admin/catalog`).
+- **Label rule (Justin, 2026-11-11).** Store labels are always Title Case and use "&" for
+  "and", as in "Baptisms & Christenings". `toLabel` in `check.ts` applies it; the editor
+  fixes design names, category names and shop-by labels as she leaves a field, and the
+  checks refuse a label off the rule.
+- **SEO approval rule.** A field picked from Claude's options is saved with status
+  `draft`; saving it again unchanged keeps it a draft, and only Approve (logged with her
+  name) makes it `approved`. Text she types or edits counts as hers. A publish refuses any
+  field still marked `draft`.
 
 ## Sign-in
 
@@ -79,16 +87,16 @@ the SEO fields are hand-written only.
 
 ## Build order (each step ships to stage on its own)
 
-1. Background scale in `packages/frame`, the previews and the print PDF, with tests.
-2. Admin shell, sign-in, D1 tables, and the catalog handover into `store.json`.
-3. Template library and editor with live preview.
-4. Category and shop-by list editor.
-5. Claude SEO drafts with approval.
-6. Publish to git, with a diff of what will change.
-7. Background scale control in the shopper's customizer (with the storefront session).
+1. Done: admin shell, sign-in, D1 drafts.
+2. Done: template library and editor with live preview.
+3. Done: category and shop-by list editor.
+4. Done: Claude SEO drafts with approval (switches on with `ANTHROPIC_API_KEY`).
+5. Waiting: catalog handover into `store.json` (storefront session), with the Best
+   selling rank.
+6. Waiting on 5: Publish to git, with a diff of what will change.
+7. Background scale control in the editor, once the scale task lands.
 
 ## Open questions
 
-- Which backgrounds tile seamlessly (for scales below 100%)? Asli.
 - Should anything besides SEO copy need a second person's approval before publish? Default:
   no, Justin's release is the gate to production.

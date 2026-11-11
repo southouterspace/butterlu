@@ -118,6 +118,17 @@ test('the order list is private: no sign-in, no orders', async ({ app }) => {
   expect([401, 404].includes(post.status)).toBe(true);
 });
 
+test('the store editor and its API are private too', async ({ app }) => {
+  // Encoded spellings must not reach the built page around the Worker's sign-in either.
+  for (const path of ['/admin/catalog', '/admin/catalog.html', '/api/admin/catalog', '/%61dmin/catalog', '/admin%2Fcatalog', '/ADMIN/catalog']) {
+    const res = await fetch(new URL(path, app.baseUrl));
+    expect([401, 404].includes(res.status)).toBe(true);
+    expect((await res.text()).includes('Store admin')).toBe(false);
+  }
+  const put = await fetch(new URL('/api/admin/templates/x', app.baseUrl), { method: 'PUT', body: '{}', headers: { 'content-type': 'application/json' } });
+  expect([401, 404].includes(put.status)).toBe(true);
+});
+
 test('a ready-made design goes into the cart as shown in one tap', async ({ app, screen }) => {
   await app.open('/collections/grandparent-frames');
   await screen.getByRole('button', 'Add to cart: Nana picture frame, as shown').click();

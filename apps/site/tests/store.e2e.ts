@@ -2,7 +2,7 @@ import { test } from '@e2e-dev/web';
 import { expect } from 'e2e';
 
 const PRODUCT = '/products/grandparent-pregnancy-announcement-frame';
-const NAME = 'Grandparent pregnancy announcement frame';
+const NAME = 'Grandparent Pregnancy Announcement Frame';
 
 test('the home page lists frames that link to their pages', async ({ app, screen }) => {
   await app.open('/');
@@ -14,12 +14,12 @@ test('a category offers its designs, then a blank frame to create your own, and 
   await app.open('/collections/baby-frames');
   await expect(screen.getByRole('heading', 'Ready-made designs')).toBeVisible();
   await expect(screen.getByRole('heading', 'Create your own frame')).toBeVisible();
-  await expect(screen.getByRole('link', 'Start your own frame')).toBeVisible();
+  await expect(screen.getByRole('link', 'Start Your Own Frame')).toBeVisible();
 
   await app.open(PRODUCT);
   await screen.getByRole('button', /Grandparents/).first().click();
   await expect(screen.getByRole('status').getByText('Wording idea added. Edit any line to make it yours.')).toBeVisible();
-  await screen.getByRole('button', 'Undo, bring my words back').click();
+  await screen.getByRole('button', 'Undo, Bring My Words Back').click();
   await expect(screen.getByRole('status').getByText('Your words are back.')).toBeVisible();
 });
 
@@ -28,17 +28,17 @@ test('shoppers can filter designs by who it is for and occasion', async ({ app, 
   await app.open('/collections/grandparent-frames?for=grandpa');
   await expect(screen.getByRole('button', /^Grandpa/)).toHaveAttribute('aria-pressed', 'true');
   await expect(screen.getByRole('status').getByText(/^Showing \d+ of \d+ designs$/)).toBeVisible();
-  await expect(screen.getByRole('link', /^Grandpa Christmas frame/)).toBeVisible();
-  await expect(screen.getByRole('link', /^Mimi picture frame/)).toBeHidden();
-  await screen.getByRole('button', 'Clear filters').click();
-  await expect(screen.getByRole('link', /^Mimi picture frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Grandpa Christmas Frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Mimi Picture Frame/)).toBeHidden();
+  await screen.getByRole('button', 'Clear Filters').click();
+  await expect(screen.getByRole('link', /^Mimi Picture Frame/)).toBeVisible();
 
   // Shop all combines an occasion with who it's for. Shape is not a filter.
   await app.open('/collections/all?occasion=birthday');
-  await expect(screen.getByRole('link', /^Godmother baptism frame/)).toBeVisible();
-  await screen.getByRole('button', /^Aunts and uncles/).click();
-  await expect(screen.getByRole('link', /^Godmother baptism frame/)).toBeHidden();
-  await expect(screen.getByRole('link', /^Aunt and uncle picture frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Godmother Baptism Frame/)).toBeVisible();
+  await screen.getByRole('button', /^Aunts & Uncles/).click();
+  await expect(screen.getByRole('link', /^Godmother Baptism Frame/)).toBeHidden();
+  await expect(screen.getByRole('link', /^Aunt & Uncle Picture Frame/)).toBeVisible();
   await expect(screen.getByRole('button', /^Rounded/)).toHaveCount(0);
 });
 
@@ -50,10 +50,10 @@ test('the customizer previews new words and refuses a frame with none', async ({
 
   for (const side of ['Top', 'Right', 'Bottom', 'Left']) await screen.getByRole('textbox', new RegExp(`^${side}`)).fill('');
   await expect(screen.getByRole('status').getByText('Add words to at least one side.')).toBeVisible();
-  await expect(screen.getByRole('button', /^Add to cart/)).toBeDisabled();
+  await expect(screen.getByRole('button', /^Add to Cart/)).toBeDisabled();
 
-  await screen.getByRole('button', 'Start over with our design').click();
-  await expect(screen.getByRole('button', /^Add to cart/)).toBeEnabled();
+  await screen.getByRole('button', 'Start Over with Our Design').click();
+  await expect(screen.getByRole('button', /^Add to Cart/)).toBeEnabled();
 });
 
 // Stage runs with or without Stripe test keys, so these read the switch first.
@@ -62,7 +62,7 @@ const checkoutOn = async (baseUrl: string | URL | undefined) => (await (await fe
 test('a designed frame goes in the cart, and checkout says when it is off', async ({ app, screen }) => {
   await app.open(PRODUCT);
   await screen.getByRole('textbox', /^Top/).fill('Promoted to Nana');
-  await screen.getByRole('button', /^Add to cart/).click();
+  await screen.getByRole('button', /^Add to Cart/).click();
   await expect(screen.getByText('Added to your cart.', { exact: false })).toBeVisible();
 
   await app.open('/cart');
@@ -70,7 +70,7 @@ test('a designed frame goes in the cart, and checkout says when it is off', asyn
   await expect(screen.getByText('Top: "Promoted to Nana"', { exact: false })).toBeVisible();
   // With test keys on, a click leaves for Stripe; the API test below covers that path.
   if ((await checkoutOn(app.baseUrl)).enabled) return;
-  await screen.getByRole('button', 'Check out').click();
+  await screen.getByRole('button', 'Check Out').click();
   await expect(screen.getByText('Checkout is not switched on yet', { exact: false })).toBeVisible();
 });
 
@@ -131,18 +131,18 @@ test('the store editor and its API are private too', async ({ app }) => {
 
 test('a ready-made design goes into the cart as shown in one tap', async ({ app, screen }) => {
   await app.open('/collections/grandparent-frames');
-  await screen.getByRole('button', 'Add to cart: Nana picture frame, as shown').click();
+  await screen.getByRole('button', 'Add to Cart: Nana Picture Frame, as shown').click();
   await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
   await app.open('/cart');
-  await expect(screen.getByRole('heading', 'Nana picture frame')).toBeVisible();
+  await expect(screen.getByRole('heading', 'Nana Picture Frame')).toBeVisible();
   await expect(screen.getByText('Top: "I Love My Nana"', { exact: false })).toBeVisible();
 });
 
 test('the background can be made bigger and moved, from the keyboard, and the cart keeps it', async ({ app, screen }) => {
   await app.open(PRODUCT);
-  await screen.getByText('Background size and position').click();
+  await screen.getByText('Background Size & Position').click();
   const size = screen.getByRole('slider', 'Size');
-  const across = screen.getByRole('slider', 'Side to side');
+  const across = screen.getByRole('slider', 'Side to Side');
   // At its smallest the sheet just fills the frame's width, so it can't move sideways yet.
   await expect(across).toBeDisabled();
   await expect(screen.getByText('Make it bigger first to move it side to side.')).toBeVisible();
@@ -154,12 +154,12 @@ test('the background can be made bigger and moved, from the keyboard, and the ca
   await expect(across).toHaveAttribute('aria-valuetext', '100 percent toward the left');
   await expect(screen.getByText('Zoomed to 200%, toward the left')).toBeVisible();
 
-  await screen.getByRole('button', /^Add to cart/).click();
+  await screen.getByRole('button', /^Add to Cart/).click();
   await expect(screen.getByText('Added to your cart.', { exact: false })).toBeVisible();
-  await screen.getByRole('button', 'Reset size and position').click();
+  await screen.getByRole('button', 'Reset Size & Position').click();
   await expect(screen.getByRole('status').getByText('Background size and position reset.')).toBeVisible();
   await expect(size).toHaveAttribute('aria-valuetext', '100 percent');
-  await expect(screen.getByRole('button', 'Reset size and position')).toBeHidden();
+  await expect(screen.getByRole('button', 'Reset Size & Position')).toBeHidden();
 
   await app.open('/cart');
   await expect(screen.getByText('(zoomed to 200%, toward the left)', { exact: false })).toBeVisible();

@@ -11,10 +11,10 @@ import { facetsFor } from '../../catalog/taxonomy';
 export function getStaticPaths() {
   const all: Collection = {
     handle: 'all',
-    name: 'All frames',
+    name: 'All Frames',
     seoTitle: 'Personalized Picture Frames: Shop All',
     seoDescription: 'Every Butterlu frame: grandparents, godparents, weddings, new babies and pet memorials. Add their names and your words, and see it before you buy.',
-    intro: 'Frames for the people and moments you celebrate. Add a design as shown, make it yours with their names and your words, or create your own from scratch.',
+    intro: 'Ready to give, or make it yours.',
   };
   return [all, ...COLLECTIONS].map((collection) => ({ params: { handle: collection.handle }, props: { collection } }));
 }
@@ -57,8 +57,7 @@ if (copy?.faq.length) {
   <h1 class="text-2xl md:text-3xl">{collection.name}</h1>
   <p class="mt-2 max-w-[60ch] text-muted-foreground">{collection.intro}</p>
   <section aria-labelledby="designs" class="mt-8">
-    <h2 id="designs" class="text-lg md:text-xl">Ready-made designs</h2>
-    <p class="mt-1 mb-4 text-sm text-muted-foreground">Add a ready one in one tap, or open any design to change the words, background or shape. Know exactly what you want to say? <a href="#create" class="text-foreground underline underline-offset-4">Create your own frame</a>.</p>
+    <h2 id="designs" class="mb-4 text-lg md:text-xl">Ready-made designs</h2>
     <FilterBar facets={facets} total={products.length} />
     <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{products.map((p, i) => <ProductCard product={p} eager={i < 2} />)}</ul>
     {/* Applies a menu link's filter before first paint, so the full grid doesn't flash. filters.ts takes over once loaded. */}

@@ -102,7 +102,7 @@ export function mountCustomizer(root: HTMLElement) {
     if (moreSummary) {
       const fonts = [...new Set(SIDES.filter((s) => value(`text-${s}`).trim()).map((s) => fontName(value(`font-${s}`))))];
       const color = value('color');
-      const colorName = color === 'auto' ? 'Best for the background' : (TEXT_COLORS.find((c) => c.hex === color)?.name ?? color);
+      const colorName = color === 'auto' ? 'Best for the Background' : (TEXT_COLORS.find((c) => c.hex === color)?.name ?? color);
       moreSummary.textContent = [fonts.join(', '), colorName].filter(Boolean).join(' · ');
     }
     // Only sides with words get a font choice; an empty side has nothing to style.

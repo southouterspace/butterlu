@@ -85,9 +85,9 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
         <a class="font-brand text-2xl font-bold tracking-tight text-foreground no-underline" href="/" aria-label="Butterlu home">Butterlu</a>
         <nav class="ml-6 hidden lg:block" aria-label="Shop">
           <ul class="flex items-center gap-1">
-            <li><button type="button" class={triggerClass} popovertarget="menu-for">Who it’s for <Icon name="chevron-down" class="size-4" /></button></li>
+            <li><button type="button" class={triggerClass} popovertarget="menu-for">Who It’s For <Icon name="chevron-down" class="size-4" /></button></li>
             <li><button type="button" class={triggerClass} popovertarget="menu-occasion">Occasion <Icon name="chevron-down" class="size-4" /></button></li>
-            <li><a class={cn(triggerClass, 'aria-[current=page]:bg-muted aria-[current=page]:text-foreground')} href="/collections/all" aria-current={current('/collections/all')}>Shop all</a></li>
+            <li><a class={cn(triggerClass, 'aria-[current=page]:bg-muted aria-[current=page]:text-foreground')} href="/collections/all" aria-current={current('/collections/all')}>Shop All</a></li>
           </ul>
         </nav>
         <a class={cn(buttonVariants({ variant: 'ghost', size: 'default' }), 'ml-auto -mr-2')} href="/cart">
@@ -98,7 +98,7 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
       </div>
     </header>
     <nav id="menu-for" popover class="shop-panel" aria-labelledby="menu-for-title">
-      <p id="menu-for-title" class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Who it’s for</p>
+      <p id="menu-for-title" class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Who It’s For</p>
       <ul class="grid gap-x-6 gap-y-5 sm:grid-cols-3">
         {MENU_GROUPS.map((g) => (
           <li>
@@ -119,8 +119,8 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
           <ul class="grid gap-0.5 text-sm sm:grid-cols-2">{OCCASIONS.map((o) => <li><a class={menuLink} href={occasionHref(o)} aria-current={current(occasionHref(o))}>{o.label}</a></li>)}</ul>
         </div>
         <div>
-          <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Your own words</p>
-          <ul class="grid gap-0.5 text-sm"><li><a class={menuLink} href={CREATE_HREF}>Create your own frame</a></li></ul>
+          <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Your Own Words</p>
+          <ul class="grid gap-0.5 text-sm"><li><a class={menuLink} href={CREATE_HREF}>Create Your Own Frame</a></li></ul>
         </div>
       </div>
     </nav>
@@ -132,9 +132,9 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
         </button>
       </div>
       <nav aria-label="Shop (menu)" class="px-2">
-        <a class="flex h-11 items-center rounded-2xl px-3 text-base font-medium text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted" href="/collections/all" aria-current={current('/collections/all')}>Shop all</a>
+        <a class="flex h-11 items-center rounded-2xl px-3 text-base font-medium text-foreground no-underline hover:bg-muted aria-[current=page]:bg-muted" href="/collections/all" aria-current={current('/collections/all')}>Shop All</a>
         <details open class="menu-section">
-          <summary>Who it’s for <Icon name="chevron-down" class="size-4" /></summary>
+          <summary>Who It’s For <Icon name="chevron-down" class="size-4" /></summary>
           <ul class="grid gap-0.5 pb-2">
             {MENU_GROUPS.map((g) => (
               <li>
@@ -155,7 +155,7 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
           </ul>
         </details>
         <ul class="mt-4 grid gap-0.5 border-t pt-4">
-          <li><a class="flex h-10 items-center rounded-2xl px-3 text-sm text-muted-foreground no-underline hover:bg-muted" href="/pages/shipping-returns">Shipping and returns</a></li>
+          <li><a class="flex h-10 items-center rounded-2xl px-3 text-sm text-muted-foreground no-underline hover:bg-muted" href="/pages/shipping-returns">Shipping & Returns</a></li>
           <li><a class="flex h-10 items-center rounded-2xl px-3 text-sm text-muted-foreground no-underline hover:bg-muted" href="/pages/faq">Questions</a></li>
           <li><a class="flex h-10 items-center rounded-2xl px-3 text-sm text-muted-foreground no-underline hover:bg-muted" href="/pages/about">About Butterlu</a></li>
         </ul>
@@ -177,7 +177,7 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
         <nav aria-label="Help">
           <h2 class="mb-3 text-xs font-medium tracking-wide text-foreground uppercase">Help</h2>
           <ul class="grid gap-2">
-            <li><a class="no-underline hover:text-foreground hover:underline" href="/pages/shipping-returns">Shipping and returns</a></li>
+            <li><a class="no-underline hover:text-foreground hover:underline" href="/pages/shipping-returns">Shipping & Returns</a></li>
             <li><a class="no-underline hover:text-foreground hover:underline" href="/pages/faq">Questions</a></li>
             <li><a class="no-underline hover:text-foreground hover:underline" href="/pages/about">About Butterlu</a></li>
           </ul>

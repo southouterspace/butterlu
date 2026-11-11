@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "bun run assets && astro check && astro build && node scripts/lint-dist.mjs",
+    "build": "bun run assets && astro check && astro build && bun scripts/lint-dist.mjs",
     "check:worker": "tsc --noEmit -p worker",
     "serve": "wrangler dev --port 8787 --ip 127.0.0.1",
     "test:e2e": "e2e run",

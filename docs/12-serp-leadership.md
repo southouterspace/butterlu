@@ -141,18 +141,23 @@ Shoppers browse an organized tree instead of one long list of designs. The sourc
 `apps/site/src/catalog/taxonomy.ts`; the build fails on an untagged design or a tag that
 contradicts its category.
 
-- **Who it's for** (first menu): Grandparents (Grandma, Grandpa, Both grandparents,
-  Great-grandparents), Godparents (Godmother, Godfather, Both godparents), Parents of
-  the bride or groom, Aunts and uncles, New baby, Pet memorial gifts (Asli's labels,
+- **Who It’s For** (first menu): Grandparents (Grandma, Grandpa, Both Grandparents,
+  Great-Grandparents), Godparents (Godmother, Godfather, Both Godparents), Parents of
+  the Bride or Groom, Aunts & Uncles, New Baby, Pet Memorial Gifts (Asli's labels,
   2026-11-11). Each group opens its existing category page; a person opens it filtered
   (`?for=grandma`). Parents of the bride or groom share the wedding page with couple
   frames, so that link opens it filtered. Couple frames sit under the Wedding and
   Engagement occasions only, in a group kept out of the menus.
-- **Occasion** (second menu): only occasions with a design. Pregnancy announcements,
-  Baptisms, Weddings and Pet memorials open the category page that holds those designs (the
-  build checks each tagged design is on it); the rest open Shop all filtered (`?occasion=christmas`). Pet memorials becomes
-  "In memory" once other memorial designs exist.
+- **Occasion** (second menu): only occasions with a design. Pregnancy Announcements,
+  Baptisms & Christenings, Weddings and Pet Memorials open the category page that holds those designs (the
+  build checks each tagged design is on it); the rest open Shop all filtered (`?occasion=christmas`). Pet Memorials becomes
+  "In Memory" once other memorial designs exist.
 - **Shape is not a filter** (owner, 2026-11-11): every design can switch shape in the editor.
+- **Labels are Title Case and use "&" for "and"** (owner, 2026-11-11), as in "Baptisms & Christenings".
+  This covers menu and chip labels, buttons and button links, nav and footer links and form labels.
+  Product and category names (so their h1s) follow it too, PROPOSED to match the admin's check; descriptive headings like "Ready-made designs" stay
+  in sentence case. One `toLabel` in `src/catalog/check.ts` defines it for the store and the admin, and
+  `scripts/lint-dist.mjs` fails the build on a label that breaks it.
 - Each design is tagged once with a person and with the occasions in its "good for" list.
 - **No new indexed pages.** A filtered view keeps its category's canonical URL and is
   built from the same HTML, so filters never split ranking. A new indexable category is
@@ -211,3 +216,4 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | 2026-11-11 (stage only) | Asli's menu labels (§4c): Pets renamed Pet memorial gifts; Weddings leaves Who it's for and stays an occasion; Parents of the bride or groom becomes its own group. Feed product_type follows; home tiles drop their design counts (owner). No new indexed URLs. | menus, home, feed |
 | 2026-11-11 (stage only) | Category pages lead with "Ready-made designs"; each card adds the design as shown in one tap (designs with no names or dates, PROPOSED list in products.ts) or opens it to personalize; the blank frames follow as "Create your own frame". Cards show the $39 price. | all collections, home, design pages |
 | 2026-11-11 (stage only) | The scalloped and rounded frames merge into one Personalized picture frame (owner); the old pages 301 to it. Shape is no longer a filter chip on Shop all. | frame page, Shop all, feed |
+| 2026-11-11 (stage only) | Labels go Title Case with "&" (owner), checked at build. Product and category names follow it too (PROPOSED, to match the admin), so product h1s, Product markup `name`, cart and Stripe line items, and the feed's `product_type` change case (e.g. "Aunts & Uncles"). Collection and design intros cut to one line; the home hero becomes three short items. No URL or page title changes. | menus, chips, buttons, home, all collections and designs |

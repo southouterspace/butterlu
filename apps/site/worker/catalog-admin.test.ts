@@ -76,10 +76,9 @@ test('the migration file and the statements the Worker runs agree', () => {
 });
 
 test('the live catalog passes the checks the admin applies', () => {
-  // Labels on the live site are moving to the Title Case rule in the storefront's own
-  // work; the admin reports any that haven't yet and holds new ones to it.
+  // The live site's names and labels follow the Title Case rule too.
   const r = checkCatalog(liveCatalog());
-  expect(r.errors.filter((e) => !e.includes('Title Case'))).toEqual([]);
+  expect(r.errors).toEqual([]);
 });
 
 test('labels are Title Case with "&" for "and"', () => {
@@ -88,6 +87,7 @@ test('labels are Title Case with "&" for "and"', () => {
   expect(toLabel('for the bride')).toBe('For the Bride');
   expect(toLabel('Mother’s day')).toBe('Mother’s Day');
   expect(toLabel('great-grandparents  frames')).toBe('Great-Grandparents Frames');
+  expect(toLabel('babies and parents-to-be')).toBe('Babies & Parents-to-Be');
   expect(toLabel('Just Because')).toBe('Just Because');
   expect(toLabel('what to do with')).toBe('What to Do With');
 });

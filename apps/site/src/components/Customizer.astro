@@ -7,7 +7,7 @@
 // selected, so the page reads and works before the script runs.
 import { BACKGROUNDS, BACKGROUND_SCALE, DEFAULT_BACKGROUND_FIT, FONTS, SHAPES, SIDES, backgroundSlack } from '@butterlu/frame';
 import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS, describeFit, parseFit } from '@butterlu/frame/design';
-import { type Product, SHOP, formatPrice, isFrame } from '../catalog/products';
+import { type Product, SHOP, formatPrice } from '../catalog/products';
 import { type Idea, productIdeas } from '../catalog/copy';
 import { productMedia } from '../catalog/media';
 import { groupedBackgrounds } from '../lib/background-groups';
@@ -26,15 +26,11 @@ const svg = frameSvg(preset, placementsAtBuild(preset), { idPrefix: 'pdp', label
 const presetColor = Object.values(preset.sides).find((s) => s?.color)?.color ?? 'auto';
 const presetBackground = BACKGROUNDS.find((b) => b.id === preset.backgroundId)!;
 const shapeName = { 'rounded-rectangle': 'Rounded', scalloped: 'Scalloped' } as const;
-const sideHelp = {
-  top: 'across the top',
-  bottom: 'across the bottom',
-  left: 'reads upward',
-  right: 'reads downward',
-};
+// Only the sides need a hint: their text runs up or down.
+const sideHelp: Partial<Record<(typeof SIDES)[number], string>> = { left: 'Reads upward', right: 'Reads downward' };
 const fontName = (id: string) => FONTS.find((f) => f.id === id)?.name.replace(/ (Bold|SemiBold)$/, '') ?? id;
 const usedFonts = [...new Set(SIDES.flatMap((s) => (preset.sides[s] ? [fontName(preset.sides[s]!.fontId)] : [])))];
-const colorName = presetColor === 'auto' ? 'Best for the background' : (TEXT_COLORS.find((c) => c.hex === presetColor)?.name ?? presetColor);
+const colorName = presetColor === 'auto' ? 'Best for the Background' : (TEXT_COLORS.find((c) => c.hex === presetColor)?.name ?? presetColor);
 const groups = groupedBackgrounds();
 const pickerId = `bg-picker-${product.handle}`;
 const config = { handle: product.handle, preset };
@@ -66,33 +62,33 @@ const rangeClass = 'range w-full';
       <h1 class="text-2xl md:text-3xl">{product.name}</h1>
       <p class="mt-1 text-lg font-semibold">{price}</p>
       <p class="mt-2 text-muted-foreground">{product.intro}</p>
-      {!isFrame(product) && (
-        <p class="mt-2 text-sm text-muted-foreground">Change the words, background or shape, and the price stays the same.</p>
-      )}
     </div>
 
     {media.length > 0 && <ProductGallery media={media} name={product.name} />}
 
     <fieldset>
-      <legend class={legend}>Your words</legend>
+      <legend class={legend}>Your Words</legend>
       <p class="mb-3 text-sm text-muted-foreground">Keep ours, change them, or leave a side blank. Text shrinks to fit.</p>
       {/* Hidden until the script mounts it: the buttons only work with it. */}
       {ideas.length > 0 && (
         <div class="mb-4" data-ideas hidden>
-          <p class="mb-2 text-sm font-medium" id="ideas-label">Wording ideas <span class="font-normal text-muted-foreground">· tap one to try it in place of your words</span></p>
+          <p class="mb-2 text-sm font-medium" id="ideas-label">Wording Ideas <span class="font-normal text-muted-foreground">· tap one to try it in place of your words</span></p>
           <ul class="flex flex-wrap gap-2" aria-labelledby="ideas-label">
             {ideas.map((idea) => (
               <li><button type="button" class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-9 max-w-full py-1.5 text-left whitespace-normal')} data-idea={JSON.stringify(idea)}>{ideaLabel(idea)}</button></li>
             ))}
           </ul>
-          <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'mt-1 px-0')} data-idea-undo hidden>Undo, bring my words back</button>
+          <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'mt-1 px-0')} data-idea-undo hidden>Undo, Bring My Words Back</button>
         </div>
       )}
       <div class="grid gap-3">
         {SIDES.map((side) => (
           <div class="grid gap-1.5">
-            <label for={`text-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]} <span class="font-normal text-muted-foreground">· {sideHelp[side]}</span></label>
-            <input id={`text-${side}`} name={`text-${side}`} type="text" maxlength={MAX_SIDE_CHARS} autocomplete="off" enterkeyhint="done" value={preset.sides[side]?.text ?? ''} aria-describedby={`warn-${side}`} class={inputClass} />
+            <div class="flex items-baseline gap-1.5">
+              <label for={`text-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]}</label>
+              {sideHelp[side] && <span class="text-sm text-muted-foreground"><span aria-hidden="true">· </span><span id={`help-${side}`}>{sideHelp[side]}</span></span>}
+            </div>
+            <input id={`text-${side}`} name={`text-${side}`} type="text" maxlength={MAX_SIDE_CHARS} autocomplete="off" enterkeyhint="done" value={preset.sides[side]?.text ?? ''} aria-describedby={sideHelp[side] ? `help-${side} warn-${side}` : `warn-${side}`} class={inputClass} />
             <p class="text-sm text-amber-800 empty:hidden" id={`warn-${side}`} data-warn={side}></p>
           </div>
         ))}
@@ -121,7 +117,6 @@ const rangeClass = 'range w-full';
           <span class="block text-xs text-muted-foreground">Background</span>
           <span class="block truncate font-medium" data-background-name>{presetBackground.name}</span>
         </span>
-        <span class="text-sm text-muted-foreground">44 options</span>
         <Icon name="chevron-right" class="size-4 text-muted-foreground" />
       </button>
 
@@ -157,7 +152,7 @@ const rangeClass = 'range w-full';
     <details class="group rounded-3xl bg-muted/60" data-fit-box>
       <summary class="flex cursor-pointer list-none items-center gap-3 rounded-3xl px-4 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
         <span class="min-w-0 flex-1">
-          <span class="block text-sm font-medium">Background size and position</span>
+          <span class="block text-sm font-medium">Background Size & Position</span>
           <span class="block truncate text-xs text-muted-foreground" data-fit-summary>{fitSummary(fit)}</span>
         </span>
         <Icon name="chevron-down" class="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
@@ -176,19 +171,19 @@ const rangeClass = 'range w-full';
           </div>
         </div>
         <div class="grid gap-1.5">
-          <label for="bg-x" class="text-sm font-medium">Side to side</label>
+          <label for="bg-x" class="text-sm font-medium">Side to Side</label>
           <input id="bg-x" name="bg-x" type="range" min="-100" max="100" step="5" value={pct(fit.x)} disabled={presetSlack.x < 1e-6} aria-describedby="bg-x-hint" class={rangeClass} style={`--fill:${(fit.x + 1) * 50}%`} />
           <div class="flex justify-between text-xs text-muted-foreground" aria-hidden="true"><span>Show the left</span><span>Show the right</span></div>
           <p id="bg-x-hint" class="text-xs text-muted-foreground" data-fit-hint="x" hidden={presetSlack.x >= 1e-6}>Make it bigger first to move it side to side.</p>
         </div>
         <div class="grid gap-1.5">
-          <label for="bg-y" class="text-sm font-medium">Up and down</label>
+          <label for="bg-y" class="text-sm font-medium">Up & Down</label>
           <input id="bg-y" name="bg-y" type="range" min="-100" max="100" step="5" value={pct(fit.y)} disabled={presetSlack.y < 1e-6} aria-describedby="bg-y-hint" class={rangeClass} style={`--fill:${(fit.y + 1) * 50}%`} />
           <div class="flex justify-between text-xs text-muted-foreground" aria-hidden="true"><span>Show the top</span><span>Show the bottom</span></div>
           <p id="bg-y-hint" class="text-xs text-muted-foreground" data-fit-hint="y" hidden={presetSlack.y >= 1e-6}>Make it bigger first to move it up and down.</p>
         </div>
         <button type="button" class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'justify-self-start')} data-fit-reset hidden>
-          <Icon name="rotate-ccw" class="size-3.5" />Reset size and position
+          <Icon name="rotate-ccw" class="size-3.5" />Reset Size & Position
         </button>
       </div>
     </details>
@@ -196,7 +191,7 @@ const rangeClass = 'range w-full';
     <details class="group rounded-3xl bg-muted/60" data-more>
       <summary class="flex cursor-pointer list-none items-center gap-3 rounded-3xl px-4 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
         <span class="min-w-0 flex-1">
-          <span class="block text-sm font-medium">Fonts and color</span>
+          <span class="block text-sm font-medium">Fonts & Color</span>
           <span class="block truncate text-xs text-muted-foreground" data-more-summary>{usedFonts.join(', ')} · {colorName}</span>
         </span>
         <Icon name="chevron-down" class="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
@@ -204,16 +199,16 @@ const rangeClass = 'range w-full';
       <div class="grid gap-3 px-4 pt-1 pb-4 sm:grid-cols-2">
         {SIDES.map((side) => (
           <div class="grid gap-1.5" data-font-row={side} hidden={!preset.sides[side]?.text}>
-            <label for={`font-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]} font</label>
+            <label for={`font-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]} Font</label>
             <select id={`font-${side}`} name={`font-${side}`} class={nativeSelectClass}>
               {FONTS.map((f) => <option value={f.id} selected={(preset.sides[side]?.fontId ?? 'playfair-display-bold') === f.id}>{fontName(f.id)}</option>)}
             </select>
           </div>
         ))}
         <div class="grid gap-1.5 sm:col-span-2">
-          <label for="text-color" class="text-sm font-medium">Text color</label>
+          <label for="text-color" class="text-sm font-medium">Text Color</label>
           <select id="text-color" name="color" class={nativeSelectClass}>
-            <option value="auto" selected={presetColor === 'auto'}>Best for the background</option>
+            <option value="auto" selected={presetColor === 'auto'}>Best for the Background</option>
             {TEXT_COLORS.map((c) => <option value={c.hex} selected={presetColor === c.hex}>{c.name}</option>)}
           </select>
         </div>
@@ -221,13 +216,13 @@ const rangeClass = 'range w-full';
     </details>
 
     <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'self-start px-0')} data-reset hidden>
-      <Icon name="rotate-ccw" class="size-3.5" />Start over with our design
+      <Icon name="rotate-ccw" class="size-3.5" />Start Over with Our Design
     </button>
 
     <!-- Always in reach: the frame is buyable as designed. A bar on phones, a floating card from md up. -->
     <div class="sticky bottom-0 z-20 -mx-4 border-t bg-background/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-sm md:bottom-4 md:mx-0 md:rounded-4xl md:border-0 md:p-3 md:shadow-lg md:ring-1 md:ring-foreground/5">
       <p class="text-sm font-medium [&:not(:empty)]:mb-2 [&_a]:underline" role="status" aria-live="polite" data-status></p>
-      <button type="submit" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-add>Add to cart · {price}</button>
+      <button type="submit" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-add>Add to Cart · {price}</button>
     </div>
 
     <ul class="grid gap-2 text-sm text-muted-foreground">

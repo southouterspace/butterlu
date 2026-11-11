@@ -6,8 +6,15 @@ import { FEATURED, SHOP, productByHandle } from '../catalog/products';
 import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from '../catalog/taxonomy';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
-import { buttonVariants, cn } from '../components/ui/variants';
+import Icon from '../components/ui/Icon.astro';
+import { buttonVariants, cn, itemClass, itemContentClass, itemDescriptionClass, itemMediaIconClass, itemTitleClass } from '../components/ui/variants';
 
+// The hero's value props, as shadcn Items.
+const props = [
+  { icon: 'heart', title: 'Made for Them', text: 'Grandma, a godmother, a new baby and more.' },
+  { icon: 'pen-line', title: 'Your Words', text: 'Keep ours or write your own.' },
+  { icon: 'gift', title: 'Ready to Give', text: `Add a 4x6 photo. ${SHOP.shipping}.` },
+] as const;
 const featured = FEATURED.map((h) => productByHandle(h)!);
 const hero = featured[0]!;
 const heroSvg = frameSvg(hero.preset, placementsAtBuild(hero.preset), { idPrefix: 'hero', label: `${hero.name}, as designed` });
@@ -29,9 +36,19 @@ const jsonLd = [
   <section class="grid items-center gap-6 md:grid-cols-[1fr_1.1fr] md:gap-10">
     <div class="order-2 md:order-1">
       <h1 class="text-3xl md:text-5xl">Butterlu Gifts</h1>
-      <p class="mt-3 max-w-[52ch] text-lg text-muted-foreground">Personalized frames for the people you want to celebrate and remember. Pick a design for grandma, a godmother or a new baby, add their names and your words, and slip in your favorite 4x6 photo.</p>
-      <p class="mt-6"><a class={cn(buttonVariants({ size: 'xl' }), 'w-full sm:w-auto')} href="/collections/all">Shop all frames</a></p>
-      <p class="mt-3 text-sm text-muted-foreground">{SHOP.shipping}. {SHOP.dispatch}.</p>
+      <p class="mt-2 text-lg text-muted-foreground">Personalized picture frames.</p>
+      <ul class="mt-5 grid gap-3" aria-label="Why Butterlu">
+        {props.map((p) => (
+          <li class={itemClass}>
+            <span class={itemMediaIconClass}><Icon name={p.icon} /></span>
+            <span class={itemContentClass}>
+              <span class={itemTitleClass}>{p.title}</span>
+              <span class={itemDescriptionClass}>{p.text}</span>
+            </span>
+          </li>
+        ))}
+      </ul>
+      <p class="mt-6"><a class={cn(buttonVariants({ size: 'xl' }), 'w-full sm:w-auto')} href="/collections/all">Shop All Frames</a></p>
     </div>
     <a class="order-1 block rounded-4xl bg-muted p-4 md:order-2 md:p-9" href={`/products/${hero.handle}`} set:html={heroSvg} />
   </section>
@@ -59,15 +76,6 @@ const jsonLd = [
   <section aria-labelledby="best" class="mt-14">
     <h2 id="best" class="mb-4 text-xl md:text-2xl">Most loved designs</h2>
     <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{featured.map((p, i) => <ProductCard product={p} eager={i < 4} />)}</ul>
-  </section>
-
-  <section aria-labelledby="how" class="mt-14">
-    <h2 id="how" class="mb-4 text-xl md:text-2xl">Made the way you want it</h2>
-    <ol class="grid gap-3 sm:grid-cols-3">
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Made for them</strong><span class="text-sm text-muted-foreground">Grandparents, godparents, the parents of the bride, a new baby or a pet you miss.</span></li>
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Their names, your words</strong><span class="text-sm text-muted-foreground">Keep our wording or write your own, pick the colors, and see it before you buy.</span></li>
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Ready to give</strong><span class="text-sm text-muted-foreground">Made to order with a spot for your 4x6 photo. {SHOP.shipping}.</span></li>
-    </ol>
   </section>
 </Layout>
 

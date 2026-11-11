@@ -40,8 +40,10 @@ export function toLabel(text: string): string {
       if (w === '&') return w;
       const lower = w.toLowerCase();
       if (i > 0 && i < words.length - 1 && SMALL.has(lower)) return lower;
-      // Each part of a hyphenated word: "Great-Grandparents".
-      return w.split('-').map(capWord).join('-');
+      // Each part of a hyphenated word, small words inside it kept low: "Great-Grandparents",
+      // "Parents-to-Be".
+      const parts = w.split('-');
+      return parts.map((p, j) => (j > 0 && j < parts.length - 1 && SMALL.has(p.toLowerCase()) ? p.toLowerCase() : capWord(p))).join('-');
     })
     .join(' ');
 }

@@ -14,7 +14,7 @@ const catalog = Object.fromEntries(PRODUCTS.map((p) => [p.handle, { name: p.name
     <div class="grid gap-3 rounded-4xl bg-card p-5 shadow-sm ring-1 ring-foreground/5 md:sticky md:top-6" data-summary hidden>
       <p class="flex justify-between text-base font-semibold">Subtotal <span data-subtotal></span></p>
       <p class="text-sm text-muted-foreground">{SHOP.shipping}. Tax, if any, is added at checkout.</p>
-      <button type="button" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-checkout>Check out</button>
+      <button type="button" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-checkout>Check Out</button>
       <p class="text-sm" role="status" aria-live="polite" data-status></p>
     </div>
   </div>

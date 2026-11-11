@@ -77,10 +77,10 @@ test('every page carries the shop-by menus, and filtered views keep the category
   expect(/<link rel="canonical" href="https:\/\/www\.butterlu\.com\/collections\/grandparent-frames">/.test(html)).toBe(true);
 });
 
-test("Who it's for uses Asli's labels and keeps weddings under Occasion", async ({ app }) => {
+test("Who It’s For uses Asli's labels and keeps weddings under Occasion", async ({ app }) => {
   const html = await (await fetch(new URL('/', app.baseUrl))).text();
   const menu = html.slice(html.indexOf('id="menu-for"'), html.indexOf('id="menu-occasion"'));
-  expect(menu.includes('Pet memorial gifts')).toBe(true);
+  expect(menu.includes('Pet Memorial Gifts')).toBe(true);
   expect(menu.includes('href="/collections/wedding-thank-you-frames?for=parents-of-the-couple"')).toBe(true);
   expect(menu.includes('Weddings')).toBe(false);
   expect(menu.includes('Couples')).toBe(false);
@@ -89,7 +89,7 @@ test("Who it's for uses Asli's labels and keeps weddings under Occasion", async 
   const phone = html.slice(html.indexOf('id="site-menu"'));
   const tiles = html.slice(html.indexOf('id="for-who"'));
   for (const list of [phone.slice(0, phone.indexOf('Occasion')), tiles.slice(0, tiles.indexOf('Or by occasion'))]) {
-    expect(list.includes('Pet memorial gifts')).toBe(true);
+    expect(list.includes('Pet Memorial Gifts')).toBe(true);
     expect(list.includes('Couples')).toBe(false);
     expect(list.includes('>Weddings<')).toBe(false);
   }

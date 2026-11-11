@@ -48,17 +48,17 @@ const titleId = `card-title-${product.handle}`;
           class={cn(buttonVariants({ size: 'sm' }), 'flex-1')}
           data-add-as-shown={product.handle}
           data-spec={JSON.stringify(product.preset)}
-          aria-label={`Add to cart: ${product.name}, as shown`}
+          aria-label={`Add to Cart: ${product.name}, as shown`}
         >
-          Add to cart
+          Add to Cart
         </button>
       )}
       <a
         href={href}
         class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-8 flex-1 py-1 text-center whitespace-normal')}
-        aria-label={`${quick ? 'Personalize' : 'Add your words'}: ${product.name}`}
+        aria-label={`${quick ? 'Personalize' : 'Add Your Words'}: ${product.name}`}
       >
-        {quick ? 'Personalize' : 'Add your words'}
+        {quick ? 'Personalize' : 'Add Your Words'}
       </a>
       {/* Rendered from the start, so screen readers announce the update. */}
       {quick && <p class="w-full text-xs text-muted-foreground" role="status" data-added-status></p>}

@@ -69,8 +69,8 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
     children: [
       { key: 'grandma', label: 'Grandma', hint: 'Mimi, Nana, Gigi, Abuela' },
       { key: 'grandpa', label: 'Grandpa', hint: 'Papa, Pop, Grandad' },
-      { key: 'both-grandparents', label: 'Both grandparents' },
-      { key: 'great-grandparents', label: 'Great-grandparents' },
+      { key: 'both-grandparents', label: 'Both Grandparents' },
+      { key: 'great-grandparents', label: 'Great-Grandparents' },
     ],
   },
   {
@@ -80,7 +80,7 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
     children: [
       { key: 'godmother', label: 'Godmother' },
       { key: 'godfather', label: 'Godfather' },
-      { key: 'both-godparents', label: 'Both godparents' },
+      { key: 'both-godparents', label: 'Both Godparents' },
     ],
   },
   // Asli's taxonomy (2026-11-11): weddings are an occasion, and the parents of the couple
@@ -88,20 +88,20 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
   // filtered to the group.
   {
     key: 'wedding-parents',
-    label: 'Parents of the bride or groom',
+    label: 'Parents of the Bride or Groom',
     collection: 'wedding-thank-you-frames',
-    children: [{ key: 'parents-of-the-couple', label: 'Parents of the bride or groom' }],
+    children: [{ key: 'parents-of-the-couple', label: 'Parents of the Bride or Groom' }],
   },
-  { key: 'aunts-and-uncles', label: 'Aunts and uncles', collection: 'aunt-uncle-frames', children: [{ key: 'aunt-uncle', label: 'Aunt and uncle' }] },
-  { key: 'new-baby', label: 'New baby', collection: 'baby-frames', children: [{ key: 'baby', label: 'Babies and parents-to-be' }] },
-  { key: 'pets', label: 'Pet memorial gifts', collection: 'pet-loss-memorial', children: [{ key: 'pet', label: 'Dogs and cats' }] },
+  { key: 'aunts-and-uncles', label: 'Aunts & Uncles', collection: 'aunt-uncle-frames', children: [{ key: 'aunt-uncle', label: 'Aunt & Uncle' }] },
+  { key: 'new-baby', label: 'New Baby', collection: 'baby-frames', children: [{ key: 'baby', label: 'Babies & Parents-to-Be' }] },
+  { key: 'pets', label: 'Pet Memorial Gifts', collection: 'pet-loss-memorial', children: [{ key: 'pet', label: 'Dogs & Cats' }] },
   // Couple frames are found under the Wedding and Engagement occasions, not in Who it's
   // for. The group stays so the wedding page can still split parents from couples.
   {
     key: 'couples',
     label: 'Couples',
     collection: 'wedding-thank-you-frames',
-    children: [{ key: 'couple', label: 'The couple' }],
+    children: [{ key: 'couple', label: 'The Couple' }],
     inMenus: false,
   },
 ];
@@ -111,18 +111,18 @@ export const MENU_GROUPS = RECIPIENT_GROUPS.filter((g) => g.inMenus !== false);
 
 /** Menu order. Only occasions with at least one design are shown anywhere. */
 const ALL_OCCASIONS: Occasion[] = [
-  { key: 'pregnancy-announcement', label: 'Pregnancy announcements', collection: 'new-grandparent-to-be' },
-  { key: 'baptism', label: 'Baptisms and christenings', collection: 'godparent-frames' },
+  { key: 'pregnancy-announcement', label: 'Pregnancy Announcements', collection: 'new-grandparent-to-be' },
+  { key: 'baptism', label: 'Baptisms & Christenings', collection: 'godparent-frames' },
   { key: 'wedding', label: 'Weddings', collection: 'wedding-thank-you-frames' },
   { key: 'engagement', label: 'Engagements' },
   { key: 'christmas', label: 'Christmas' },
   { key: 'birthday', label: 'Birthdays' },
   { key: 'mothers-day', label: 'Mother’s Day' },
   { key: 'fathers-day', label: 'Father’s Day' },
-  { key: 'baby-shower', label: 'Baby showers' },
+  { key: 'baby-shower', label: 'Baby Showers' },
   // Only a pet design so far; rename to "In memory" when other memorial designs exist.
-  { key: 'memorial', label: 'Pet memorials', collection: 'pet-loss-memorial' },
-  { key: 'everyday', label: 'Just because' },
+  { key: 'memorial', label: 'Pet Memorials', collection: 'pet-loss-memorial' },
+  { key: 'everyday', label: 'Just Because' },
 ];
 
 
@@ -259,7 +259,7 @@ export function facetsFor(products: Product[], level: 'group' | 'recipient'): Fa
       ? count(MENU_GROUPS, (t) => [t.group], (g) => g.key, (g) => g.label)
       : count(RECIPIENT_GROUPS.flatMap((g) => g.children), (t) => [t.for], (r) => r.key, (r) => r.label);
   const facets: Facet[] = [
-    { param: 'for', label: 'Who it’s for', options: forOptions },
+    { param: 'for', label: 'Who It’s For', options: forOptions },
     { param: 'occasion', label: 'Occasion', options: count(OCCASIONS, (t) => t.occasions, (o) => o.key, (o) => o.label) },
   ];
   return facets.filter((f) => f.options.length > 1 && f.options.some((o) => o.count < tags.length));

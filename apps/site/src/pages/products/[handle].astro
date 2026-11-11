@@ -38,7 +38,7 @@ const faq = productFaq(product.handle);
 const tags = tagsFor(product);
 const shopMore = tags
   ? [
-      { href: recipientHref(tags.for), label: `For ${tags.for.label.toLowerCase()}`, count: recipientCount(tags.for) },
+      { href: recipientHref(tags.for), label: `For ${tags.for.label}`, count: recipientCount(tags.for) },
       ...tags.occasions.map((o) => ({ href: occasionHref(o), label: o.label, count: occasionCount(o) })),
     ].filter((l, i, all) => l.count > 1 && all.findIndex((m) => m.href === l.href) === i)
   : [];

@@ -3,7 +3,6 @@
 // want to say. On category pages it follows the designs, which come first (Asli's
 // feedback, owner 2026-11-11). It sells the personalization, not the frame's shape or
 // options (owner, 2026-11-11); shape is a plain choice inside the editor.
-import { SHOP, formatPrice, FRAME_PRICE_CENTS } from '../catalog/products';
 import { CREATE_HREF } from '../catalog/taxonomy';
 import { buttonVariants } from './ui/variants';
 
@@ -16,7 +15,7 @@ const { id = 'frames' } = Astro.props;
 <section id="create" aria-labelledby={id} class="scroll-mt-24 rounded-4xl bg-muted/60 p-4 sm:p-6">
   <h2 id={id} class="text-lg md:text-xl">Create your own frame</h2>
   <p class="mt-1 mb-4 max-w-[60ch] text-sm text-muted-foreground">
-    Know exactly what you want to say? Start from a plain frame and write it all: their names, a date, a line only your family would get. You see it before you buy. {formatPrice(FRAME_PRICE_CENTS)}. {SHOP.shipping}.
+    Your words, start to finish.
   </p>
-  <a class={buttonVariants({ size: 'lg' })} href={CREATE_HREF}>Start your own frame</a>
+  <a class={buttonVariants({ size: 'lg' })} href={CREATE_HREF}>Start Your Own Frame</a>
 </section>

@@ -42,6 +42,34 @@ test('shoppers can filter designs by who it is for and occasion', async ({ app, 
   await expect(screen.getByRole('button', /^Rounded/)).toHaveCount(0);
 });
 
+test('on a phone, filters open in a sheet and the designs come first', async ({ app, browser, screen }) => {
+  await browser.setViewport({ width: 390, height: 844 });
+  try {
+    await app.open('/collections/all');
+    // Chips wait in the sheet; the grid is what shows.
+    await expect(screen.getByRole('button', /^Godparents/)).toBeHidden();
+    await screen.getByRole('button', 'Filter').click();
+    await expect(screen.getByRole('dialog', 'Filter Designs')).toBeVisible();
+    await screen.getByRole('button', /^Godparents/).click();
+    // Filtering is live behind the sheet; the button says how many are left.
+    await expect(screen.getByRole('button', /^Show \d+ Designs?$/)).toBeVisible();
+    await screen.getByRole('button', /^Show \d+ Designs?$/).click();
+    await expect(screen.getByRole('dialog', 'Filter Designs')).toBeHidden();
+    await expect(screen.getByRole('button', 'Filter, 1 selected')).toBeVisible();
+    await expect(screen.getByRole('link', /^Godmother Baptism Frame/)).toBeVisible();
+    await expect(screen.getByRole('link', /^Mimi Picture Frame/)).toBeHidden();
+    // Opening again, the sheet's Clear empties the filters; Escape closes it.
+    await screen.getByRole('button', 'Filter, 1 selected').click();
+    await screen.getByRole('button', 'Clear').click();
+    await expect(screen.getByRole('button', /^Godparents/)).toHaveAttribute('aria-pressed', 'false');
+    await browser.keyboard.press('Escape');
+    await expect(screen.getByRole('dialog', 'Filter Designs')).toBeHidden();
+    await expect(screen.getByRole('link', /^Mimi Picture Frame/)).toBeVisible();
+  } finally {
+    await browser.setViewport({ width: 1280, height: 800 });
+  }
+});
+
 test('the customizer previews new words and refuses a frame with none', async ({ app, screen }) => {
   await app.open(PRODUCT);
   const top = screen.getByRole('textbox', /^Top/);

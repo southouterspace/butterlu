@@ -98,3 +98,11 @@ test("Who It’s For uses Asli's labels and keeps weddings under Occasion", asyn
   expect(page.includes('data-filter="for" data-value="parents-of-the-couple"')).toBe(true);
   expect(/<link rel="canonical" href="https:\/\/www\.butterlu\.com\/collections\/wedding-thank-you-frames">/.test(page)).toBe(true);
 });
+
+test('Shop All lists designs best selling first', async ({ app }) => {
+  const html = await (await fetch(new URL('/collections/all', app.baseUrl))).text();
+  const at = (h: string) => html.indexOf(`href="/products/${h}"`);
+  const order = ['grandparent-pregnancy-announcement-frame', 'godmother-proposal-frame', 'personalized-grandma-frame', 'pet-memorial-frame'].map(at);
+  expect(order.every((i) => i > 0)).toBe(true);
+  expect([...order].sort((a, b) => a - b)).toEqual(order);
+});

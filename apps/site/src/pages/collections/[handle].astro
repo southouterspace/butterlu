@@ -4,6 +4,7 @@ import FilterBar from '../../components/FilterBar.astro';
 import FrameChoice from '../../components/FrameChoice.astro';
 import ProductCard from '../../components/ProductCard.astro';
 import { buttonVariants } from '../../components/ui/variants';
+import { byBestSelling } from '../../catalog/best-selling';
 import { COLLECTIONS, type Collection, DESIGNS, collectionProducts } from '../../catalog/products';
 import { collectionCopy } from '../../catalog/copy';
 import { facetsFor } from '../../catalog/taxonomy';
@@ -24,7 +25,8 @@ interface Props {
 }
 const { collection } = Astro.props;
 // Designs only: the plain frame follows the grid as "Create your own frame".
-const products = collection.handle === 'all' ? DESIGNS : collectionProducts(collection.handle);
+// Shop All opens best selling first (catalog/best-selling.ts, set by hand for now).
+const products = collection.handle === 'all' ? byBestSelling(DESIGNS) : collectionProducts(collection.handle);
 // Shop all filters by who-it's-for group; a category by the people on it (docs/12 §4c).
 const facets = facetsFor(products, collection.handle === 'all' ? 'group' : 'recipient');
 // Copy, FAQ and sibling links below the grid (docs/12-serp-leadership.md §5).
@@ -79,6 +81,11 @@ if (copy?.faq.length) {
         for (const b of document.querySelectorAll('[data-filter]')) b.setAttribute('aria-pressed', String(s[b.dataset.filter] === b.dataset.value));
         const status = document.querySelector('[data-filter-status]');
         if (status) status.textContent = `Showing ${shown} of ${cards.length} designs`;
+        const count = document.querySelector('[data-filter-count]');
+        if (count) {
+          count.hidden = false;
+          count.textContent = String(Object.keys(s).length);
+        }
       })();
     </script>
   </section>

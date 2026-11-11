@@ -18,7 +18,7 @@ import {
   type TaxonomyDoc,
   type TemplateDoc,
 } from '../src/catalog/doc';
-import { PAGE_KEYS, checkPage, pageFrom, type PageDoc } from '../src/catalog/pages';
+import { PAGE_KEYS, checkPage, checkQuestions, pageFrom, questionsFrom, type PageDoc, type QuestionDoc } from '../src/catalog/pages';
 import { signInMode } from './admin-auth';
 import type { Env } from './env';
 import { draftSeo, seoReady } from './seo-draft';
@@ -45,7 +45,7 @@ export function ensureSchema(db: D1Database): Promise<unknown> {
   return p;
 }
 
-type Kind = 'template' | 'category' | 'taxonomy' | 'page';
+type Kind = 'template' | 'category' | 'taxonomy' | 'page' | 'questions';
 interface DraftRow {
   kind: Kind;
   id: string;
@@ -113,6 +113,9 @@ export function mergeDrafts(live: CatalogDoc, rows: DraftRow[]): { doc: CatalogD
       const p = { ...(data as PageDoc), key: row.id, name: doc.pages[i]!.name };
       doc.pages[i] = p;
       changes.push({ kind: 'page', id: row.id, name: p.name, isNew: false, stale: stale(row, live.pages[i]), at, by });
+    } else if (row.kind === 'questions' && row.id === 'all') {
+      doc.questions = data as QuestionDoc[];
+      changes.push({ kind: 'questions', id: 'all', name: 'Questions', isNew: false, stale: stale(row, live.questions), at, by });
     }
   }
   // A category lists every template filed under it: drop ones moved away, append new ones.
@@ -227,15 +230,11 @@ export function templateFrom(raw: unknown, before: TemplateDoc | undefined, by: 
 
 export function categoryFrom(raw: unknown, before: CategoryDoc, by: string, now: string, claude?: Map<string, Set<string>>): CategoryDoc {
   const r = isRecord(raw) ? raw : {};
-  const faq = Array.isArray(r.faq)
-    ? r.faq.filter((f): f is unknown[] => Array.isArray(f)).slice(0, 12).map((f) => [str(f[0], 200).trim(), str(f[1], 800).trim()] as const)
-    : before.faq;
   return {
     handle: before.handle,
     name: str(r.name, 80).trim(),
     intro: str(r.intro, 500).trim(),
     body: strList(r.body, 8, 1500).map((s) => s.trim()).filter(Boolean),
-    faq,
     related: strList(r.related, 10, 100),
     order: strList(r.order, 200, 100),
     seo: seoFrom(r.seo, CATEGORY_SEO, before.seo, by, now, claude) as CategoryDoc['seo'],
@@ -369,7 +368,16 @@ export async function handleCatalogAdmin(request: Request, env: Env, db: D1Datab
       return json({ ok: true, page });
     }
 
-    m = /^\/drafts\/(template|category|taxonomy|page)\/([a-z0-9-]{1,100})$/.exec(path);
+    if (path === '/questions' && method === 'PUT') {
+      const { live } = await loadDoc(db);
+      const questions = questionsFrom(await readJson(request));
+      const blocking = checkQuestions(questions);
+      if (blocking.length) return fail(422, 'Fix these first', blocking);
+      await save(db, 'questions', 'all', questions, live.questions, by, now);
+      return json({ ok: true, questions });
+    }
+
+    m = /^\/drafts\/(template|category|taxonomy|page|questions)\/([a-z0-9-]{1,100})$/.exec(path);
     if (m && method === 'DELETE') {
       await ensureSchema(db);
       await db.batch([

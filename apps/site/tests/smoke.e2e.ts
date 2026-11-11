@@ -52,11 +52,18 @@ test('hashed build assets are cached for a year', async ({ app }) => {
   expect(res.headers.get('cache-control')).toBe('public, max-age=31536000, immutable');
 });
 
-test('collection pages list their products as an ItemList and show their questions', async ({ app }) => {
-  const html = await (await fetch(new URL('/collections/godparent-frames', app.baseUrl))).text();
-  expect(html.includes('"@type":"ItemList"')).toBe(true);
-  expect(html.includes('"@type":"FAQPage"')).toBe(true);
-  expect(/<h2 id="faq">Questions<\/h2>/.test(html)).toBe(true);
+test('collection and product pages show the shared questions; only the Questions page marks them up', async ({ app }) => {
+  const get = async (path: string) => (await fetch(new URL(path, app.baseUrl))).text();
+  const [collection, product, faq] = await Promise.all([get('/collections/godparent-frames'), get('/products/mimi-picture-frame'), get('/pages/faq')]);
+  expect(collection.includes('"@type":"ItemList"')).toBe(true);
+  const first = 'Will I see a proof before you make it?';
+  for (const html of [collection, product]) {
+    expect(/<h2 id="faq">Questions<\/h2>/.test(html)).toBe(true);
+    expect(html.includes(first)).toBe(true);
+    expect(html.includes('"@type":"FAQPage"')).toBe(false);
+  }
+  expect(faq.includes('"@type":"FAQPage"')).toBe(true);
+  expect(faq.includes(`<h2>${first}</h2>`)).toBe(true);
 });
 
 test('the Merchant Center feed lists every product with price and free US shipping', async ({ app }) => {

@@ -1,27 +1,22 @@
 ---
+// The Questions page: the store's shared questions (src/catalog/pages.json), the same
+// list collection and product pages show, edited under Questions in the admin.
 import Layout from '../../Layout.astro';
-import { SHOP } from '../../catalog/products';
+import Questions from '../../components/sections/Questions.astro';
+import { liveQuestions } from '../../catalog/pages';
 
-const faqs = [
-  ['How big is the frame?', 'About 8.4 by 6.4 inches, with an opening for a 4x6 photo. It has glass and an easel back to stand on a shelf.'],
-  ['Does it come with a photo?', SHOP.photoNote],
-  ['Do I have to change the wording?', 'No. Every design is ready to buy as shown. Keep our words, or change them to fit the people in your photo.'],
-  ['What if my words are long?', 'Text shrinks to fit its side. The preview shows exactly how it prints, and warns you if it gets small.'],
-  ['When will it arrive?', `${SHOP.dispatch}. ${SHOP.shipping}.`],
-  ['Can I return it?', 'Personalized frames can’t be returned, but if one arrives damaged or wrong we’ll make it right.'],
-  ['How do I reach you?', 'Reply to your order receipt and it comes straight to us.'],
-] as const;
+// FAQPage markup goes on this page only: the list is the same everywhere else.
 const jsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'FAQPage',
-    mainEntity: faqs.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
+    mainEntity: liveQuestions().map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })),
   },
 ];
 ---
-<Layout title="Questions | Butterlu" description="Frame size, photos, wording, shipping and returns: answers to common questions about Butterlu frames." jsonLd={jsonLd}>
+<Layout title="Questions | Butterlu" description="Proofs, changes after you order, delivery, photos, gifting and returns: what to know before you order a Butterlu frame." jsonLd={jsonLd}>
   <div class="prose">
     <h1>Questions</h1>
-    {faqs.map(([q, a]) => (<><h2>{q}</h2><p>{a}</p></>))}
+    <Questions />
   </div>
 </Layout>

@@ -5,9 +5,9 @@
 //
 // Plain TypeScript with no Astro imports: the admin Worker and the build both read it.
 import type { FrameSpec } from '@butterlu/frame';
-import { collectionCopy, productIdeas, type Faq, type Idea } from './copy';
+import { collectionCopy, productIdeas, type Idea } from './copy';
 import { COLLECTIONS, DESIGNS, collectionProducts, readyAsShown } from './products';
-import { livePages, type PageDoc } from './pages';
+import { livePages, liveQuestions, type PageDoc, type QuestionDoc } from './pages';
 import { OCCASIONS, RECIPIENT_GROUPS, tagsFor } from './taxonomy';
 
 export type SeoStatus = 'approved' | 'draft' | 'empty';
@@ -57,7 +57,6 @@ export interface CategoryDoc {
   intro: string;
   /** Paragraphs under the grid. */
   body: string[];
-  faq: Faq[];
   related: string[];
   /** Template handles in the order the page shows them. */
   order: string[];
@@ -95,6 +94,8 @@ export interface CatalogDoc {
   taxonomy: TaxonomyDoc;
   /** Pages built from components (src/catalog/pages.ts): the homepage so far. */
   pages: PageDoc[];
+  /** The questions and answers every page shares (one list, src/catalog/pages.json). */
+  questions: QuestionDoc[];
 }
 
 const field = (value: string | undefined): SeoField =>
@@ -133,7 +134,6 @@ export function liveCatalog(): CatalogDoc {
       name: c.name,
       intro: c.intro,
       body: [...(copy?.body ?? [])],
-      faq: (copy?.faq ?? []).map(([q, a]) => [q, a] as const),
       related: [...(copy?.related ?? [])],
       order: collectionProducts(c.handle).map((p) => p.handle),
       seo: { seoTitle: field(c.seoTitle), seoDescription: field(c.seoDescription) },
@@ -149,5 +149,5 @@ export function liveCatalog(): CatalogDoc {
     })),
     occasions: OCCASIONS.map((o) => ({ key: o.key, label: o.label, ...(o.collection ? { collection: o.collection } : {}) })),
   };
-  return { templates, categories, taxonomy, pages: livePages() };
+  return { templates, categories, taxonomy, pages: livePages(), questions: liveQuestions() };
 }

@@ -1,10 +1,13 @@
 ---
 // A frame or design tile in the shadcn Card shape, rendered as static HTML.
-import { type Product, formatPrice, frameFor, isFrame } from '../catalog/products';
+// A design card offers the ways in that every category has (owner, 2026-11-11): add it
+// to the cart exactly as shown in one tap when its wording needs no names or dates, or
+// open it to personalize. Making a frame from scratch is the FrameChoice block.
+import { type Product, formatPrice, isFrame, readyAsShown } from '../catalog/products';
 import { tagsFor } from '../catalog/taxonomy';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
-import { cardClass, cn } from './ui/variants';
+import { buttonVariants, cardClass, cn } from './ui/variants';
 
 interface Props {
   product: Product;
@@ -17,20 +20,68 @@ const Heading = headingLevel;
 // Category filters read these (src/scripts/filters.ts); the two frames carry none.
 const tags = tagsFor(product);
 const svg = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: `card-${product.handle}`, photoHint: false, size: 'card', lazy: !eager });
+const frame = isFrame(product);
+const quick = !frame && readyAsShown(product);
+const href = `/products/${product.handle}`;
+const titleId = `card-title-${product.handle}`;
 ---
 <li
-  class={cn(cardClass, 'shadow-sm transition-shadow hover:shadow-md')}
+  class={cn(cardClass, 'flex flex-col shadow-sm transition-shadow hover:shadow-md')}
   data-card={tags ? '' : undefined}
   data-for={tags ? `${tags.group.key} ${tags.for.key}` : undefined}
   data-occasion={tags?.occasions.map((o) => o.key).join(' ')}
   data-frame={tags?.frame.key}
 >
-  <a href={`/products/${product.handle}`} class="group flex h-full flex-col text-foreground no-underline">
+  <a href={href} class="group flex flex-1 flex-col text-foreground no-underline">
     <div class="bg-muted p-3 sm:p-5" set:html={svg} />
     <div class="grid gap-1 p-3 sm:p-4">
-      <Heading class="text-sm leading-snug font-medium tracking-normal group-hover:underline sm:text-base">{product.name}</Heading>
-      {/* A design is a starting point on one of the two frames, not a product of its own, so it shows no price. */}
-      <span class="text-sm text-muted-foreground">{isFrame(product) ? `${formatPrice(product.priceCents)}, any words` : `${frameFor(product).name.replace(' picture frame', '')} frame design`}</span>
+      <Heading id={titleId} class="text-sm leading-snug font-medium tracking-normal group-hover:underline sm:text-base">{product.name}</Heading>
+      <span class="text-sm text-muted-foreground">
+        {formatPrice(product.priceCents)}
+      </span>
     </div>
   </a>
+  {!frame && (
+    <div class="flex flex-wrap gap-2 px-3 pb-3 sm:px-4 sm:pb-4">
+      {quick && (
+        <button
+          type="button"
+          class={cn(buttonVariants({ size: 'sm' }), 'flex-1')}
+          data-add-as-shown={product.handle}
+          data-spec={JSON.stringify(product.preset)}
+          aria-label={`Add to cart: ${product.name}, as shown`}
+        >
+          Add to cart
+        </button>
+      )}
+      <a
+        href={href}
+        class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-8 flex-1 py-1 text-center whitespace-normal')}
+        aria-label={`${quick ? 'Personalize' : 'Add your words'}: ${product.name}`}
+      >
+        {quick ? 'Personalize' : 'Add your words'}
+      </a>
+      {/* Rendered from the start, so screen readers announce the update. */}
+      {quick && <p class="w-full text-xs text-muted-foreground" role="status" data-added-status></p>}
+    </div>
+  )}
 </li>
+<script>
+  import type { FrameSpec } from '@butterlu/frame';
+  import { addToCart, cartLines } from '../scripts/cart';
+  import { track } from '../scripts/track';
+
+  // One listener for every card on the page. The checkout Worker re-checks each line.
+  document.addEventListener('click', (e) => {
+    const button = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-add-as-shown]');
+    if (!button) return;
+    const spec = JSON.parse(button.dataset.spec ?? 'null') as FrameSpec | null;
+    if (!spec) return;
+    const handle = button.dataset.addAsShown!;
+    addToCart(handle, spec, 1);
+    track('add_to_cart', { d: 'as_shown_card', h: handle });
+    const status = button.parentElement?.querySelector<HTMLElement>('[data-added-status]');
+    const n = cartLines().filter((l) => l.handle === handle).reduce((sum, l) => sum + l.quantity, 0);
+    if (status) status.innerHTML = `Added to your cart${n > 1 ? ` (${n} of these)` : ''}. <a href="/cart" class="underline underline-offset-4">View cart</a>`;
+  });
+</script>

@@ -43,9 +43,9 @@ const shopMore = tags
     ].filter((l, i, all) => l.count > 1 && all.findIndex((m) => m.href === l.href) === i)
   : [];
 const related = isFrame(product)
-  ? DESIGNS.filter((d) => d.preset.shape === product.preset.shape)
+  ? DESIGNS
   : collectionProducts(primary!.handle).filter((p) => p.handle !== product.handle).slice(0, 4);
-const relatedTitle = isFrame(product) ? `Designs on the ${product.name.toLowerCase()}` : `More ${primary!.name.toLowerCase().replace(/ frames$/, '')} designs`;
+const relatedTitle = isFrame(product) ? 'Or start from a ready-made design' : `More ${primary!.name.toLowerCase().replace(/ frames$/, '')} designs`;
 
 // Product, Offer, shipping and returns markup: what Google's free listings and AI
 // shopping agents read (docs/09-seo-shape.md §3). No review markup until native reviews exist.
@@ -138,8 +138,8 @@ const jsonLd = [
     <div>
       <h2 class="mb-3 text-lg">How it works</h2>
       <ol class="grid list-decimal gap-1.5 pl-5 text-muted-foreground">
-        <li>Pick a shape and a background. Every frame comes in all 44.</li>
-        <li>Keep our words or write your own on any side.</li>
+        <li>Keep our words or make them yours: their names, a date, a line only your family would get.</li>
+        <li>See exactly how it prints before you buy.</li>
         <li>We print it, build it and ship it. You add your 4x6 photo.</li>
       </ol>
     </div>

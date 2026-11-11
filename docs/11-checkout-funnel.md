@@ -59,7 +59,7 @@ Worker itself (`worker/events.ts`).
 |---|---|---|---|
 | Landing and browsing | `view` | browser, every page | page type (`home`, `collection`, `product`, `cart`, `success`, `content`, `not_found`), handle, referrer host on landing |
 | Customize | `customize` | browser, first edit on a product page | handle |
-| Add to cart | `add_to_cart` | browser | `customized` or `as_designed` (the Etsy lesson: most buy as designed) |
+| Add to cart | `add_to_cart` | browser | `customized` or `as_designed` from the product page, `as_shown_card` from a card's one-tap add (h is the design added) (the Etsy lesson: most buy as designed) |
 | Start checkout | `checkout_click` | browser | cart subtotal in cents |
 | Checkout failed to open | `checkout_error`, `checkout_refused` | browser and Worker | `http_503`, `checkout_off`, `cart_invalid`, `stripe_error` |
 | Checkout opened | `checkout_created` | Worker | order amount, Stripe mode |

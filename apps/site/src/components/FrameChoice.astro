@@ -1,19 +1,22 @@
 ---
-// The two frames Butterlu sells, shown above every list of designs so the page reads
-// as two products with many starting points, not a grid of look-alike products.
-import { FRAMES, SHOP, formatPrice, FRAME_PRICE_CENTS } from '../catalog/products';
-import ProductCard from './ProductCard.astro';
+// The "create your own" path: a plain frame for a shopper who already knows what they
+// want to say. On category pages it follows the designs, which come first (Asli's
+// feedback, owner 2026-11-11). It sells the personalization, not the frame's shape or
+// options (owner, 2026-11-11); shape is a plain choice inside the editor.
+import { SHOP, formatPrice, FRAME_PRICE_CENTS } from '../catalog/products';
+import { CREATE_HREF } from '../catalog/taxonomy';
+import { buttonVariants } from './ui/variants';
 
 interface Props {
-  /** Heading id, unique on the page. Shown once per page, as an h2 with h3 cards. */
+  /** Heading id, unique on the page. Shown once per page, as an h2. */
   id?: string;
 }
 const { id = 'frames' } = Astro.props;
 ---
-<section aria-labelledby={id} class="rounded-4xl bg-muted/60 p-4 sm:p-6">
-  <h2 id={id} class="text-lg md:text-xl">Two frames, your words</h2>
-  <p class="mt-1 mb-4 text-sm text-muted-foreground">
-    Every design comes on one of these. {formatPrice(FRAME_PRICE_CENTS)} either way. {SHOP.shipping}. Start blank or from a design.
+<section id="create" aria-labelledby={id} class="scroll-mt-24 rounded-4xl bg-muted/60 p-4 sm:p-6">
+  <h2 id={id} class="text-lg md:text-xl">Create your own frame</h2>
+  <p class="mt-1 mb-4 max-w-[60ch] text-sm text-muted-foreground">
+    Know exactly what you want to say? Start from a plain frame and write it all: their names, a date, a line only your family would get. You see it before you buy. {formatPrice(FRAME_PRICE_CENTS)}. {SHOP.shipping}.
   </p>
-  <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:max-w-xl">{FRAMES.map((f) => <ProductCard product={f} headingLevel="h3" eager />)}</ul>
+  <a class={buttonVariants({ size: 'lg' })} href={CREATE_HREF}>Start your own frame</a>
 </section>

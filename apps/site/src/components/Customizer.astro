@@ -7,7 +7,7 @@
 // selected, so the page reads and works before the script runs.
 import { BACKGROUNDS, FONTS, SHAPES, SIDES } from '@butterlu/frame';
 import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS } from '@butterlu/frame/design';
-import { type Product, SHOP, formatPrice, frameFor, isFrame } from '../catalog/products';
+import { type Product, SHOP, formatPrice, isFrame } from '../catalog/products';
 import { type Idea, productIdeas } from '../catalog/copy';
 import { productMedia } from '../catalog/media';
 import { groupedBackgrounds } from '../lib/background-groups';
@@ -39,7 +39,6 @@ const groups = groupedBackgrounds();
 const pickerId = `bg-picker-${product.handle}`;
 const config = { handle: product.handle, preset };
 const price = formatPrice(product.priceCents);
-const frame = frameFor(product);
 // Wording ideas load into the text fields with one tap; the frame stays the same product.
 const ideas: Idea[] = productIdeas(product.handle);
 const ideaLabel = (i: Idea) => SIDES.flatMap((s) => (i[s] ? [i[s]] : [])).join(' · ');
@@ -59,7 +58,7 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
       <p class="mt-1 text-lg font-semibold">{price}</p>
       <p class="mt-2 text-muted-foreground">{product.intro}</p>
       {!isFrame(product) && (
-        <p class="mt-2 text-sm text-muted-foreground">A design for our <a href={`/products/${frame.handle}`}>{frame.name.toLowerCase()}</a>. Change the shape, background or words and the price stays the same.</p>
+        <p class="mt-2 text-sm text-muted-foreground">Change the words, background or shape, and the price stays the same.</p>
       )}
     </div>
 

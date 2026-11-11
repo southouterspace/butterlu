@@ -5,7 +5,7 @@
 // category's canonical URL, so filtering adds no pages to the index.
 //
 // Plain TypeScript with no Astro imports, like products.ts.
-import { COLLECTIONS, DESIGNS, type Product, collectionProducts, isFrame } from './products';
+import { COLLECTIONS, DESIGNS, FRAMES, type Product, collectionProducts, isFrame } from './products';
 
 export type RecipientKey =
   | 'grandma'
@@ -222,6 +222,9 @@ export const OCCASIONS: Occasion[] = ALL_OCCASIONS.filter((o) => DESIGNS.some((p
 
 /** A group that shares its page with another opens it filtered to its one person. */
 const sharesPage = (g: RecipientGroup) => RECIPIENT_GROUPS.some((o) => o !== g && o.collection === g.collection);
+/** "Create your own frame": the plain frame the editor opens on. Shape is a choice there. */
+export const CREATE_HREF = `/products/${FRAMES[0]!.handle}`;
+
 export const groupHref = (g: RecipientGroup) =>
   sharesPage(g) ? `/collections/${g.collection}?for=${g.children[0]!.key}` : `/collections/${g.collection}`;
 /** A person in a group of one opens the group's link: its page, filtered only when shared. */

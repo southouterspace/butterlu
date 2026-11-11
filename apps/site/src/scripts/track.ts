@@ -1,7 +1,8 @@
 // Funnel beacons (docs/11). Anonymous by design: a random per-tab id kept in
 // sessionStorage (gone when the tab closes), the page type and a product handle.
 // No cookies, no third-party script. Shoppers with Global Privacy Control on send nothing.
-type Props = { v?: number; d?: string; r?: string };
+/** h overrides the page's product handle, for an add from a card on another page. */
+type Props = { v?: number; d?: string; r?: string; h?: string };
 
 const KEY = 'butterlu.fid';
 const optedOut = () => (navigator as { globalPrivacyControl?: boolean }).globalPrivacyControl === true;

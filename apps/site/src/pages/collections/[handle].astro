@@ -13,8 +13,8 @@ export function getStaticPaths() {
     handle: 'all',
     name: 'All frames',
     seoTitle: 'Personalized Picture Frames: Shop All',
-    seoDescription: 'Every Butterlu frame: grandparents, godparents, weddings, baby and pet memorials. Personalized wording, two shapes, 44 backgrounds.',
-    intro: 'Butterlu makes two frames, scalloped and rounded. Start with a blank one, or pick the design closest to your occasion and make it yours.',
+    seoDescription: 'Every Butterlu frame: grandparents, godparents, weddings, new babies and pet memorials. Add their names and your words, and see it before you buy.',
+    intro: 'Frames for the people and moments you celebrate. Add a design as shown, make it yours with their names and your words, or create your own from scratch.',
   };
   return [all, ...COLLECTIONS].map((collection) => ({ params: { handle: collection.handle }, props: { collection } }));
 }
@@ -23,7 +23,7 @@ interface Props {
   collection: Collection;
 }
 const { collection } = Astro.props;
-// Designs only: the two frames sit above them, so the grid isn't look-alike products.
+// Designs only: the two blank frames follow the grid as "Create your own frame".
 const products = collection.handle === 'all' ? DESIGNS : collectionProducts(collection.handle);
 // Shop all filters by who-it's-for group; a category by the people on it (docs/12 §4c).
 const facets = facetsFor(products, collection.handle === 'all' ? 'group' : 'recipient');
@@ -56,10 +56,9 @@ if (copy?.faq.length) {
 <Layout title={`${collection.seoTitle} | Butterlu`} description={collection.seoDescription} jsonLd={jsonLd}>
   <h1 class="text-2xl md:text-3xl">{collection.name}</h1>
   <p class="mt-2 max-w-[60ch] text-muted-foreground">{collection.intro}</p>
-  <div class="mt-6"><FrameChoice /></div>
-  <section aria-labelledby="designs" class="mt-10">
-    <h2 id="designs" class="text-lg md:text-xl">Designs to start from</h2>
-    <p class="mt-1 mb-4 text-sm text-muted-foreground">Each one opens with its wording and background filled in. Change anything, including the shape.</p>
+  <section aria-labelledby="designs" class="mt-8">
+    <h2 id="designs" class="text-lg md:text-xl">Ready-made designs</h2>
+    <p class="mt-1 mb-4 text-sm text-muted-foreground">Add a ready one in one tap, or open any design to change the words, background or shape. Know exactly what you want to say? <a href="#create" class="text-foreground underline underline-offset-4">Create your own frame</a>.</p>
     <FilterBar facets={facets} total={products.length} />
     <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{products.map((p, i) => <ProductCard product={p} eager={i < 2} />)}</ul>
     {/* Applies a menu link's filter before first paint, so the full grid doesn't flash. filters.ts takes over once loaded. */}
@@ -84,6 +83,7 @@ if (copy?.faq.length) {
       })();
     </script>
   </section>
+  <div class="mt-10"><FrameChoice /></div>
   {copy && (
     <div class="mt-12 grid gap-10 border-t pt-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:gap-14">
       <section class="prose" aria-label={`About ${collection.name.toLowerCase()}`}>{copy.body.map((para) => <p>{para}</p>)}</section>

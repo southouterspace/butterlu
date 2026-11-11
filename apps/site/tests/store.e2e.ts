@@ -10,11 +10,11 @@ test('the home page lists frames that link to their pages', async ({ app, screen
   await expect(screen.getByRole('link', new RegExp(NAME)).first()).toBeVisible();
 });
 
-test('a category leads with the two frames, and a wording idea fills the frame', async ({ app, screen }) => {
+test('a category offers its designs, then a blank frame to create your own, and a wording idea fills the frame', async ({ app, screen }) => {
   await app.open('/collections/baby-frames');
-  await expect(screen.getByRole('heading', 'Two frames, your words')).toBeVisible();
-  await expect(screen.getByRole('link', /Scalloped picture frame/).first()).toBeVisible();
-  await expect(screen.getByRole('link', /Rounded picture frame/).first()).toBeVisible();
+  await expect(screen.getByRole('heading', 'Ready-made designs')).toBeVisible();
+  await expect(screen.getByRole('heading', 'Create your own frame')).toBeVisible();
+  await expect(screen.getByRole('link', 'Start your own frame')).toBeVisible();
 
   await app.open(PRODUCT);
   await screen.getByRole('button', /Grandparents/).first().click();
@@ -28,17 +28,17 @@ test('shoppers can filter designs by who it is for, occasion and frame', async (
   await app.open('/collections/grandparent-frames?for=grandpa');
   await expect(screen.getByRole('button', /^Grandpa/)).toHaveAttribute('aria-pressed', 'true');
   await expect(screen.getByRole('status').getByText(/^Showing \d+ of \d+ designs$/)).toBeVisible();
-  await expect(screen.getByRole('link', /Grandpa Christmas frame/)).toBeVisible();
-  await expect(screen.getByRole('link', /Mimi picture frame/)).toBeHidden();
+  await expect(screen.getByRole('link', /^Grandpa Christmas frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Mimi picture frame/)).toBeHidden();
   await screen.getByRole('button', 'Clear filters').click();
-  await expect(screen.getByRole('link', /Mimi picture frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Mimi picture frame/)).toBeVisible();
 
   // Shop all combines an occasion with a frame shape.
   await app.open('/collections/all?occasion=christmas');
-  await expect(screen.getByRole('link', /Gigi Christmas frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Gigi Christmas frame/)).toBeVisible();
   await screen.getByRole('button', /^Rounded/).click();
-  await expect(screen.getByRole('link', /Gigi Christmas frame/)).toBeHidden();
-  await expect(screen.getByRole('link', /Grandpa Christmas frame/)).toBeVisible();
+  await expect(screen.getByRole('link', /^Gigi Christmas frame/)).toBeHidden();
+  await expect(screen.getByRole('link', /^Grandpa Christmas frame/)).toBeVisible();
 });
 
 test('the customizer previews new words and refuses a frame with none', async ({ app, screen }) => {
@@ -115,4 +115,13 @@ test('the order list is private: no sign-in, no orders', async ({ app }) => {
   expect((await res.text()).includes('session_id')).toBe(false);
   const post = await fetch(new URL('/admin/orders/cs_test_x', app.baseUrl), { method: 'POST', body: new URLSearchParams({ status: 'shipped' }) });
   expect([401, 404].includes(post.status)).toBe(true);
+});
+
+test('a ready-made design goes into the cart as shown in one tap', async ({ app, screen }) => {
+  await app.open('/collections/grandparent-frames');
+  await screen.getByRole('button', 'Add to cart: Nana picture frame, as shown').click();
+  await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+  await app.open('/cart');
+  await expect(screen.getByRole('heading', 'Nana picture frame')).toBeVisible();
+  await expect(screen.getByText('Top: "I Love My Nana"', { exact: false })).toBeVisible();
 });

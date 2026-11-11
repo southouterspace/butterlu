@@ -1,6 +1,6 @@
 ---
-import { COLLECTIONS, FRAMES } from './catalog/products';
-import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from './catalog/taxonomy';
+import { COLLECTIONS } from './catalog/products';
+import { CREATE_HREF, OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from './catalog/taxonomy';
 import Icon from './components/ui/Icon.astro';
 import { badgeVariants, buttonVariants, cn } from './components/ui/variants';
 import './styles/global.css';
@@ -119,8 +119,8 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
           <ul class="grid gap-0.5 text-sm sm:grid-cols-2">{OCCASIONS.map((o) => <li><a class={menuLink} href={occasionHref(o)} aria-current={current(occasionHref(o))}>{o.label}</a></li>)}</ul>
         </div>
         <div>
-          <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Start from a frame</p>
-          <ul class="grid gap-0.5 text-sm">{FRAMES.map((f) => <li><a class={menuLink} href={`/products/${f.handle}`}>{f.name}</a></li>)}</ul>
+          <p class="mb-3 text-xs font-medium tracking-wide text-muted-foreground uppercase">Your own words</p>
+          <ul class="grid gap-0.5 text-sm"><li><a class={menuLink} href={CREATE_HREF}>Create your own frame</a></li></ul>
         </div>
       </div>
     </nav>
@@ -168,7 +168,7 @@ const pageHandle = pageType === 'product' || pageType === 'collection' ? slug : 
       <div class="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 md:grid-cols-[2fr_1fr_1fr]">
         <div class="col-span-2 md:col-span-1">
           <p class="font-brand text-xl font-bold text-foreground">Butterlu</p>
-          <p class="mt-2 max-w-sm">Personalized picture frames, made to order in two shapes and 44 backgrounds.</p>
+          <p class="mt-2 max-w-sm">Personalized frames for the people you want to celebrate and remember, made to order.</p>
         </div>
         <nav aria-label="Collections">
           <h2 class="mb-3 text-xs font-medium tracking-wide text-foreground uppercase">Shop</h2>

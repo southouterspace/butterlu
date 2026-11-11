@@ -69,7 +69,7 @@ export const COLLECTIONS: Collection[] = [
     handle: 'grandparent-frames',
     name: 'Grandparent frames',
     seoTitle: 'Personalized Grandparent Picture Frames',
-    seoDescription: 'Personalized picture frames for grandma and grandpa: birthdays, Christmas, Father’s Day and pregnancy reveals. Your words, 44 backgrounds.',
+    seoDescription: 'Personalized picture frames for grandma and grandpa: birthdays, Christmas, Father’s Day and pregnancy reveals. With their names and your words.',
     intro: 'Frames for Mimi, Gigi, Papa and every name in between. Pick a design, change the words, and add your favorite 4x6 photo when it arrives.',
   },
   {
@@ -83,7 +83,7 @@ export const COLLECTIONS: Collection[] = [
     handle: 'godparent-frames',
     name: 'Godparent frames',
     seoTitle: 'Godparent Frames for Baptisms and Proposals',
-    seoDescription: 'Godmother and godfather picture frames for baptisms, christenings and asking the question. Personalized wording on 44 backgrounds.',
+    seoDescription: 'Godmother and godfather picture frames for baptisms, christenings and asking the question. Add the baby’s name, your wording and the date.',
     intro: 'Ask them to be godparents, or thank them on the day. Each frame is made to order with your wording.',
   },
   {
@@ -97,14 +97,14 @@ export const COLLECTIONS: Collection[] = [
     handle: 'aunt-uncle-frames',
     name: 'Aunt and uncle frames',
     seoTitle: 'Personalized Aunt and Uncle Picture Frames',
-    seoDescription: 'Personalized picture frames for aunts and uncles: birthdays, new nieces and nephews, and just because. Your words on 44 backgrounds.',
+    seoDescription: 'Personalized picture frames for aunts and uncles: birthdays, new nieces and nephews, and just because. Their names, your words.',
     intro: 'For the aunt and uncle who show up for everything. Change the words to their names, nicknames or an inside joke.',
   },
   {
     handle: 'baby-frames',
     name: 'Baby frames',
     seoTitle: 'Personalized Baby and Ultrasound Picture Frames',
-    seoDescription: 'Baby name frames, twin ultrasound frames and newborn keepsakes. Personalized wording, both frame shapes, 44 backgrounds.',
+    seoDescription: 'Baby name frames, twin ultrasound frames and newborn keepsakes. Add the name, birth date or due date, and see it before you buy.',
     intro: 'From the first sonogram to the first photo home. Every frame is made to order with your wording.',
   },
   {
@@ -125,8 +125,8 @@ const FRAME_PAGES: Product[] = [
     clusterId: 'F01',
     name: 'Scalloped picture frame',
     seoTitle: 'Personalized Scalloped Picture Frame',
-    seoDescription: 'A personalized scalloped picture frame for a 4x6 photo. Write your own words on any side, pick from 44 backgrounds, free US shipping.',
-    intro: 'Our scalloped frame with your words on any side. Start from scratch here, or pick one of the designs below.',
+    seoDescription: 'A personalized scalloped picture frame for a 4x6 photo, for any person or occasion. Add names, a date or your own words. Free US shipping.',
+    intro: 'Start from a blank frame for any person or occasion. Add their names, a date or your own words, or pick one of the designs below.',
     goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a blank frame'],
     priceCents: FRAME_PRICE_CENTS,
     preset: {
@@ -143,8 +143,8 @@ const FRAME_PAGES: Product[] = [
     clusterId: 'F02',
     name: 'Rounded picture frame',
     seoTitle: 'Personalized Rounded Picture Frame',
-    seoDescription: 'A personalized rounded picture frame for a 4x6 photo. Write your own words on any side, pick from 44 backgrounds, free US shipping.',
-    intro: 'Our rounded frame with your words on any side. Start from scratch here, or pick one of the designs below.',
+    seoDescription: 'A personalized rounded picture frame for a 4x6 photo, for any person or occasion. Add names, a date or your own words. Free US shipping.',
+    intro: 'Start from a blank frame for any person or occasion. Add their names, a date or your own words, or pick one of the designs below.',
     goodFor: ['Any occasion, in your own words', 'Family, friends and home', 'Starting from a blank frame'],
     priceCents: FRAME_PRICE_CENTS,
     preset: {
@@ -164,7 +164,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 693902312,
     name: 'Grandparent pregnancy announcement frame',
     seoTitle: 'Grandparent Pregnancy Announcement Frame',
-    seoDescription: 'Tell them they’re going to be grandparents. A personalized ultrasound picture frame with your wording, in two shapes and 44 backgrounds.',
+    seoDescription: 'Tell them they’re going to be grandparents. A personalized ultrasound picture frame with your wording, the due date and the names they’ll go by.',
     intro: 'The reveal that ends in happy tears. Put the ultrasound photo in the frame, wrap it, and watch them read it.',
     goodFor: ['Telling your parents the news', 'First grandchild reveals', 'Ultrasound or sonogram photos'],
     priceCents: FRAME_PRICE_CENTS,
@@ -182,7 +182,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 512288952,
     name: 'Father of the bride wedding frame',
     seoTitle: 'Father of the Bride Wedding Picture Frame',
-    seoDescription: 'A personalized wedding picture frame for dad, mom or the parents of the couple. Your words, both frame shapes, 44 backgrounds.',
+    seoDescription: 'A personalized father of the bride picture frame, or one for mom or both sets of parents. Your words and your wedding date, made to order.',
     intro: 'A thank-you for the people who got you here. Change the words for mom, the groom’s parents or both sets of parents.',
     goodFor: ['Father or mother of the bride', 'Parents of the groom', 'Wedding thank-you gifts'],
     priceCents: FRAME_PRICE_CENTS,
@@ -218,7 +218,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 506350688,
     name: 'Godmother proposal frame',
     seoTitle: 'Will You Be My Godmother Proposal Frame',
-    seoDescription: 'Ask her to be godmother with a personalized picture frame. Add a photo of the baby and your own wording. Two shapes, 44 backgrounds.',
+    seoDescription: 'A godmother proposal frame that asks the question for you. Add the baby’s name, your own wording and a photo of the baby. Made to order.',
     intro: 'The sweetest way to ask. Add a photo of the baby and let the frame pop the question.',
     goodFor: ['Asking a godmother', 'Baptism and christening plans', 'A keepsake she’ll keep'],
     priceCents: FRAME_PRICE_CENTS,
@@ -236,8 +236,8 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 503492874,
     name: 'Godfather baptism frame',
     seoTitle: 'Godfather Picture Frame: Baptism Gift',
-    seoDescription: 'A personalized godfather picture frame for a baptism or christening day. Your wording on two frame shapes and 44 backgrounds.',
-    intro: 'A thank-you for standing up on the big day. A photo from the baptism looks perfect in it.',
+    seoDescription: 'A personalized godfather picture frame for a baptism or christening day. Add the godchild’s name, the date and a thank-you in your words.',
+    intro: 'A thank-you for standing up on the big day. Frame a photo from the baptism and sign it from the godchild.',
     goodFor: ['Baptism and christening gifts', 'From the baby or the parents', 'Godfather proposals too'],
     priceCents: FRAME_PRICE_CENTS,
     preset: {
@@ -254,7 +254,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 525640447,
     name: 'Godmother baptism frame',
     seoTitle: 'Godmother Picture Frame: Baptism Gift',
-    seoDescription: 'A personalized godmother picture frame from the baby, for a baptism or christening. Your wording, two shapes, 44 backgrounds.',
+    seoDescription: 'A personalized godmother picture frame from the baby, for a baptism or christening. Add the godchild’s name, the date and your own words.',
     intro: 'From the baby to the godmother who will always be there. Frame a photo from the day.',
     goodFor: ['Baptism and christening gifts', 'From the baby or the parents', 'Godmother birthdays'],
     priceCents: FRAME_PRICE_CENTS,
@@ -290,7 +290,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 723490021,
     name: 'Grandpa birthday frame',
     seoTitle: 'Personalized Grandpa Birthday Picture Frame',
-    seoDescription: 'A personalized birthday picture frame for grandpa or papa from the grandkids. Your words, two shapes, 44 backgrounds.',
+    seoDescription: 'A personalized birthday picture frame for grandpa or papa from the grandkids. Add their names and a birthday wish in your own words.',
     intro: 'Happy birthday from the people who call him Papa. Add the grandkids’ names or a favorite saying.',
     goodFor: ['Birthdays', 'Gifts from the grandkids', 'Father’s Day too'],
     priceCents: FRAME_PRICE_CENTS,
@@ -326,7 +326,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 227714499,
     name: 'Aunt and uncle picture frame',
     seoTitle: 'Personalized Aunt and Uncle Picture Frame',
-    seoDescription: 'A personalized picture frame for an aunt or uncle: birthdays, new nieces and nephews, or just because. Two shapes, 44 backgrounds.',
+    seoDescription: 'A personalized picture frame for an aunt or uncle: birthdays, new nieces and nephews, or just because. Use the name the kids call them.',
     intro: 'For the fun aunt, the favorite uncle, or both. Change the wording to their names or a nickname only the kids use.',
     goodFor: ['Birthdays', 'From a niece or nephew', 'New aunt and uncle announcements'],
     priceCents: FRAME_PRICE_CENTS,
@@ -344,7 +344,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 226797672,
     name: 'Love at first sight ultrasound frame',
     seoTitle: 'Love at First Sight Ultrasound Picture Frame',
-    seoDescription: 'A personalized ultrasound picture frame for a pregnancy reveal or a new grandma. Add the due date. Two shapes, 44 backgrounds.',
+    seoDescription: 'A personalized ultrasound picture frame for a pregnancy reveal or a new grandma. Add the due date, or the baby’s name if you know it.',
     intro: 'For the first photo of the newest family member. Add the due date, or a name if you know it.',
     goodFor: ['Pregnancy reveals', 'Gifts for a grandma-to-be', 'Sonogram keepsakes'],
     priceCents: FRAME_PRICE_CENTS,
@@ -362,7 +362,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 805343785,
     name: 'Grandpa Father’s Day frame',
     seoTitle: 'Personalized Grandpa Father’s Day Picture Frame',
-    seoDescription: 'A personalized Father’s Day picture frame for grandpa from the grandkids. Your wording on two frame shapes and 44 backgrounds.',
+    seoDescription: 'A personalized Father’s Day picture frame for grandpa from the grandkids. Add their names and a line in your own words.',
     intro: 'Father’s Day for the man who did it twice. Add the grandkids’ names along the sides.',
     goodFor: ['Father’s Day', 'A first Father’s Day as grandpa', 'From the grandkids'],
     priceCents: FRAME_PRICE_CENTS,
@@ -398,7 +398,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 796124933,
     name: 'Gigi Christmas frame',
     seoTitle: 'Personalized Gigi Christmas Picture Frame',
-    seoDescription: 'A personalized Christmas picture frame for Gigi, Mimi or Nana from the grandkids. Your wording, two shapes, 44 backgrounds.',
+    seoDescription: 'A personalized Christmas picture frame for Gigi, Mimi or Nana from the grandkids. Use her name, sign it from the kids, add the year.',
     intro: 'A Christmas keepsake from the grandkids. Change Gigi to whatever they call her.',
     goodFor: ['Christmas from the grandkids', 'Any grandma name', 'A first Christmas as grandma'],
     priceCents: FRAME_PRICE_CENTS,
@@ -416,7 +416,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 506697625,
     name: 'Twins ultrasound frame',
     seoTitle: 'Twins Ultrasound Frame: Twin Pregnancy Gift',
-    seoDescription: 'A personalized twin pregnancy ultrasound frame. Add the due date or the babies’ names. Two frame shapes, 44 backgrounds.',
+    seoDescription: 'A personalized twin pregnancy ultrasound frame. Add the due date or both babies’ names, and see every word before you buy.',
     intro: 'Two heartbeats, one frame. Add the due date or both names.',
     goodFor: ['Twin pregnancy reveals', 'Gifts for expecting parents', 'Sonogram keepsakes'],
     priceCents: FRAME_PRICE_CENTS,
@@ -434,8 +434,8 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 551630150,
     name: 'Baby name frame',
     seoTitle: 'Personalized Baby Name Picture Frame',
-    seoDescription: 'A personalized newborn picture frame with the baby’s name and birth date. Baby shower and new baby gift. Two shapes, 44 backgrounds.',
-    intro: 'For the first photo home. Add the baby’s name, birth date or weight along any side.',
+    seoDescription: 'A personalized newborn picture frame with the baby’s name and birth date. Add the weight or time too. A sweet baby shower or new baby gift.',
+    intro: 'For the first photo home. Add the baby’s name, birth date and weight around the photo.',
     goodFor: ['New baby gifts', 'Baby showers', 'Nursery decor'],
     priceCents: FRAME_PRICE_CENTS,
     preset: {
@@ -452,7 +452,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 483294076,
     name: 'Great-grandparent announcement frame',
     seoTitle: 'Great Grandma Pregnancy Announcement Frame',
-    seoDescription: 'Tell great-grandma or great-grandpa the news with a personalized ultrasound picture frame. Your wording, two shapes, 44 backgrounds.',
+    seoDescription: 'Tell great-grandma or great-grandpa the news with a personalized ultrasound picture frame. Add the due date and your own words.',
     intro: 'Another generation on the way. Change it to great-grandpa, or both of them.',
     goodFor: ['Pregnancy reveals', 'Great-grandma and great-grandpa', 'Ultrasound photos'],
     priceCents: FRAME_PRICE_CENTS,
@@ -470,7 +470,7 @@ const DESIGN_PAGES: Product[] = [
     etsyListingId: 733842083,
     name: 'Godparents baptism frame',
     seoTitle: 'Godparents Picture Frame: Baptism Gift',
-    seoDescription: 'A personalized picture frame for both godparents, for a baptism or christening. Your wording, two shapes, 44 backgrounds.',
+    seoDescription: 'A personalized picture frame for both godparents, for a baptism or christening. Add their names, the godchild’s name and the date.',
     intro: 'One frame for both of them. Add their names and the baptism date.',
     goodFor: ['Baptism and christening gifts', 'For a godparent couple', 'From the baby or the parents'],
     priceCents: FRAME_PRICE_CENTS,
@@ -607,6 +607,29 @@ export function frameFor(p: Product): Product {
   return FRAME_PAGES.find((f) => f.preset.shape === p.preset.shape)!;
 }
 export const isFrame = (p: Product) => p.kind === 'frame';
+
+/**
+ * Designs whose wording needs no names or dates, so a card can add them to the cart
+ * exactly as shown in one tap. The rest carry sample names or years and open the
+ * editor instead. PROPOSED pick (2026-11-11); the owner can move any design.
+ */
+const READY_AS_SHOWN = new Set([
+  'father-of-the-bride-frame',
+  'personalized-grandma-frame',
+  'godmother-proposal-frame',
+  'godfather-baptism-frame',
+  'godmother-baptism-frame',
+  'grandpa-birthday-frame',
+  'aunt-uncle-picture-frame',
+  'grandpa-fathers-day-frame',
+  'grandpa-picture-frame',
+  'gigi-christmas-frame',
+  'baby-name-frame',
+  'nana-picture-frame',
+  'abuela-picture-frame',
+]);
+for (const h of READY_AS_SHOWN) if (!DESIGN_PAGES.some((p) => p.handle === h)) throw new Error(`READY_AS_SHOWN: unknown design ${h}`);
+export const readyAsShown = (p: Product) => READY_AS_SHOWN.has(p.handle);
 
 /** Design handles in the order the home page features them (most favourited first). */
 export const FEATURED = DESIGN_PAGES.slice(0, 8).map((p) => p.handle);

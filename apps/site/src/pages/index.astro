@@ -25,11 +25,11 @@ const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: 'Butterlu', url: Astro.site?.href },
 ];
 ---
-<Layout title="Personalized Picture Frames and Keepsake Gifts | Butterlu" description="Personalized picture frames for grandparents, godparents, weddings and new babies. Your words, two frame shapes, 44 backgrounds. Made to order." jsonLd={jsonLd} image={{ src: `/products/${hero.handle}.jpg`, width: 1200, height: 1200, alt: hero.name }}>
+<Layout title="Personalized Picture Frames and Keepsake Gifts | Butterlu" description="Personalized picture frames for grandparents, godparents, weddings, new babies and pet memorials. Add their names and your words, and see it first." jsonLd={jsonLd} image={{ src: `/products/${hero.handle}.jpg`, width: 1200, height: 1200, alt: hero.name }}>
   <section class="grid items-center gap-6 md:grid-cols-[1fr_1.1fr] md:gap-10">
     <div class="order-2 md:order-1">
       <h1 class="text-3xl md:text-5xl">Butterlu Gifts</h1>
-      <p class="mt-3 max-w-[52ch] text-lg text-muted-foreground">Two personalized picture frames, scalloped and rounded, with your words on any side. Start blank or from one of our designs, and add your favorite 4x6 photo.</p>
+      <p class="mt-3 max-w-[52ch] text-lg text-muted-foreground">Personalized frames for the people you want to celebrate and remember. Pick a design for grandma, a godmother or a new baby, add their names and your words, and slip in your favorite 4x6 photo.</p>
       <p class="mt-6"><a class={cn(buttonVariants({ size: 'xl' }), 'w-full sm:w-auto')} href="/collections/all">Shop all frames</a></p>
       <p class="mt-3 text-sm text-muted-foreground">{SHOP.shipping}. {SHOP.dispatch}.</p>
     </div>
@@ -64,9 +64,9 @@ const jsonLd = [
   <section aria-labelledby="how" class="mt-14">
     <h2 id="how" class="mb-4 text-xl md:text-2xl">Made the way you want it</h2>
     <ol class="grid gap-3 sm:grid-cols-3">
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Two shapes</strong><span class="text-sm text-muted-foreground">Scalloped or rounded, both about 8.4 by 6.4 inches.</span></li>
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">44 backgrounds</strong><span class="text-sm text-muted-foreground">Stripes, checks, toile, bows, shiplap, wood and solids.</span></li>
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Your words on any side</strong><span class="text-sm text-muted-foreground">Keep our wording or write your own. We size it to fit.</span></li>
+      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Made for them</strong><span class="text-sm text-muted-foreground">Grandparents, godparents, the parents of the bride, a new baby or a pet you miss.</span></li>
+      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Their names, your words</strong><span class="text-sm text-muted-foreground">Keep our wording or write your own, pick the colors, and see it before you buy.</span></li>
+      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Ready to give</strong><span class="text-sm text-muted-foreground">Made to order with a spot for your 4x6 photo. {SHOP.shipping}.</span></li>
     </ol>
   </section>
 </Layout>

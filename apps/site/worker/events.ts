@@ -9,12 +9,12 @@
 import type { Env } from './env';
 
 /** Steps the browser may send. Anything else is dropped. */
-export const CLIENT_EVENTS = ['view', 'customize', 'add_to_cart', 'checkout_click', 'checkout_error'] as const;
+export const CLIENT_EVENTS = ['view', 'personalize_click', 'customize', 'add_to_cart', 'checkout_click', 'checkout_error'] as const;
 /** Steps only the Worker records. */
 export const SERVER_EVENTS = ['checkout_created', 'checkout_refused', 'order_paid', 'checkout_expired'] as const;
 export type EventName = (typeof CLIENT_EVENTS)[number] | (typeof SERVER_EVENTS)[number];
 
-export const PAGE_TYPES = ['home', 'collection', 'product', 'cart', 'success', 'content', 'not_found', 'other'] as const;
+export const PAGE_TYPES = ['home', 'collection', 'product', 'personalize', 'cart', 'success', 'content', 'not_found', 'other'] as const;
 
 export interface FunnelEvent {
   name: EventName;

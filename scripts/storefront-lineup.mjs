@@ -17,7 +17,7 @@ const decisions = await read('decisions.json');
 // The first page for a pageKey is its main page; later ones are extra exact-search pages.
 const built = new Map();
 const extras = new Map();
-// The two frame pages aren't clusters.json pages; only designs map to clusters.
+// The frame page isn't a clusters.json page; only designs map to clusters.
 for (const p of PRODUCTS.filter((p) => p.kind !== 'frame')) {
   if (!built.has(p.pageKey)) built.set(p.pageKey, p);
   else extras.set(p.pageKey, [...(extras.get(p.pageKey) ?? []), p.handle]);

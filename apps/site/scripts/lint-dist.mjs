@@ -1,6 +1,7 @@
 // Checks what the content schemas cannot see: the HTML a crawler receives.
 import { readdir, readFile } from 'node:fs/promises';
 import { join, relative } from 'node:path';
+import { toLabel } from '../src/catalog/check.ts';
 
 const DIST = new URL('../dist/', import.meta.url).pathname;
 const MAX_TITLE = 60;
@@ -17,7 +18,37 @@ async function htmlFiles(dir) {
   return nested.flat();
 }
 
+const labelFailures = new Set();
 const count = (html, re) => (html.match(re) ?? []).length;
+
+// Labels (buttons and button-styled links, menu and footer links, form labels, filter chips,
+// product and category names) are Title Case and write "and" as "&" (owner, 2026-11-11).
+// One rule for the storefront and the admin: toLabel in src/catalog/check.ts. Wording ideas
+// are the customer's words, so they aren't checked.
+const decode = (s) => s.replace(/&amp;/g, '&').replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"').replace(/&nbsp;/g, ' ');
+// A tag, with quoted attributes that may hold ">" (class names like [&>svg]).
+const TAG = /<(?:[^>"']|"[^"]*"|'[^']*')*>/g;
+const plain = (inner) =>
+  decode(inner.replace(/<span class="sr-only">[\s\S]*?<\/span>/g, '').replace(/<svg[\s\S]*?<\/svg>/g, '').replace(TAG, ' '))
+    .replace(/\s+/g, ' ')
+    .trim();
+export function labelProblem(label) {
+  const want = toLabel(label);
+  return want === label ? null : `"${label}" should read "${want}"`;
+}
+function labels(html) {
+  const out = [];
+  const attrs = String.raw`((?:[^>"']|"[^"]*"|'[^']*')*)`;
+  for (const m of html.matchAll(new RegExp(String.raw`<button\b${attrs}>([\s\S]*?)<\/button>`, 'g'))) if (!/\sdata-idea=/.test(m[1])) out.push(plain(m[2]));
+  for (const m of html.matchAll(new RegExp(String.raw`<(label|legend|summary)\b${attrs}>([\s\S]*?)<\/\1>`, 'g'))) out.push(plain(m[3]));
+  for (const m of html.matchAll(new RegExp(String.raw`<a\b${attrs}>([\s\S]*?)<\/a>`, 'g'))) {
+    if (/class="(?:[^"]*\s)?(?:group\/button|button)\b/.test(m[1])) out.push(plain(m[2]));
+  }
+  for (const block of html.matchAll(/<(nav|footer)\b[\s\S]*?<\/\1>/g)) {
+    for (const m of block[0].matchAll(new RegExp(String.raw`<a\b${attrs}>([\s\S]*?)<\/a>`, 'g'))) out.push(plain(m[2]));
+  }
+  return out.filter(Boolean);
+}
 
 const rules = [
   ['has <html lang>', (html) => /<html[^>]*\slang="[a-z-]+"/i.test(html)],
@@ -29,8 +60,25 @@ const rules = [
   ['canonical and og:url have no .html', (html) => !/<link rel="canonical" href="[^"]*\.html"/.test(html) && !/<meta property="og:url" content="[^"]*\.html"/.test(html)],
   ['meta description at most 160 chars', (html) => (html.match(/<meta name="description" content="([^"]*)"/i)?.[1] ?? '').length <= 160],
   // Merchant listings need a product image; link previews need og:image.
-  ['product page: og:image and Product markup image', (html, file) => !file.startsWith('products/') || (/<meta property="og:image" content="https:/.test(html) && /"@type":"Product"[^<]*"image":\["https:/.test(html))],
+  ['product page: og:image and Product markup image', (html, file) => !/^products\/[^/]+\.html$/.test(file) || (/<meta property="og:image" content="https:/.test(html) && /"@type":"Product"[^<]*"image":\["https:/.test(html))],
   ['product page: one h1', (html, file) => !file.startsWith('products/') || count(html, /<h1[\s>]/gi) === 1],
+  // The editor screen points search at its product page and carries no Product markup of its own.
+  ['personalize page: canonical is its product page, with og:image', (html, file) => {
+    const handle = file.match(/^products\/([^/]+)\/personalize\.html$/)?.[1];
+    if (!handle) return true;
+    return html.includes(`<link rel="canonical" href="https://www.butterlu.com/products/${handle}">`) && /<meta property="og:image" content="https:/.test(html) && !html.includes('"@type":"Product"');
+  }],
+  // Personalize is the one way into the editor (owner, 2026-11-11): never "Add Your Words".
+  ['no "Add Your Words" (it is Personalize)', (html) => !/add\s+your\s+words/i.test(html)],
+  // Image placeholders hold empty photo slots on stage and previews only; production never
+  // shows a blank box (owner, 2026-11-11). They are decorative, so screen readers skip them.
+  ['image placeholders only where BUTTERLU_PLACEHOLDERS=1', (html) => process.env.BUTTERLU_PLACEHOLDERS === '1' || !html.includes('data-placeholder')],
+  ['image placeholders are aria-hidden', (html) => (html.match(/<div\b[^>]*\bdata-placeholder\b[^>]*>/g) ?? []).every((tag) => tag.includes('aria-hidden="true"'))],
+  ['labels are Title Case with &', (html, file) => {
+    const bad = labels(html).map(labelProblem).find(Boolean);
+    if (bad) labelFailures.add(`${file}: ${bad}`);
+    return !bad;
+  }],
 ];
 
 const files = await htmlFiles(DIST);
@@ -50,6 +98,7 @@ for (const path of files) {
 
 if (failures.length > 0) {
   console.error(`lint-dist: ${failures.length} failure(s)\n${failures.join('\n')}`);
+  if (labelFailures.size) console.error([...labelFailures].slice(0, 20).join('\n'));
   process.exit(1);
 }
 console.log(`lint-dist: ${files.length} page(s) pass ${rules.length} rules`);

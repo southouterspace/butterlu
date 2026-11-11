@@ -57,14 +57,23 @@ Worker itself (`worker/events.ts`).
 
 | Step | Event | Recorded by | Detail / value |
 |---|---|---|---|
-| Landing and browsing | `view` | browser, every page | page type (`home`, `collection`, `product`, `cart`, `success`, `content`, `not_found`), handle, referrer host on landing |
-| Customize | `customize` | browser, first edit on a product page | handle |
-| Add to cart | `add_to_cart` | browser | `customized` or `as_designed` from the product page, `as_shown_card` from a card's one-tap add (h is the design added) (the Etsy lesson: most buy as designed) |
+| Landing and browsing | `view` | browser, every page | page type (`home`, `collection`, `product`, `personalize`, `cart`, `success`, `content`, `not_found`), handle, referrer host on landing |
+| Open the editor | `personalize_click` | browser, a Personalize tap | `product` (product page), `card` (a design card), `create` (Start Your Own Frame); h is the design. Followed by a `view` of page type `personalize` |
+| Customize | `customize` | browser, first edit in the editor | handle |
+| Add to cart | `add_to_cart` | browser | `customized` or `as_designed` from the editor, `as_shown` from the product page's Add to Cart, `as_shown_card` from a card's one-tap add, `as_shown_home` from the homepage hero's Add to Cart (h is the design added) (the Etsy lesson: most buy as designed) |
 | Start checkout | `checkout_click` | browser | cart subtotal in cents |
 | Checkout failed to open | `checkout_error`, `checkout_refused` | browser and Worker | `http_503`, `checkout_off`, `cart_invalid`, `stripe_error` |
 | Checkout opened | `checkout_created` | Worker | order amount, Stripe mode |
 | Paid | `order_paid` | Stripe webhook, only once the order is read and `payment_status` is paid | amount; `recovered`, `opted_in` or `direct` |
 | Abandoned | `checkout_expired` | Stripe webhook | recovery decision (section 3) |
+
+The product page and the editor are two screens (owner, 2026-11-11). The product page
+sells the design as shown, with Personalize and Add to Cart side by side, Personalize first on every design ("anything can be personalized", owner), and keeps room
+below for photos and, later, reviews. Personalize opens `/products/<handle>/personalize`,
+whose canonical is the product page. The editor ends in its own Add to Cart and then
+offers View Cart & Check Out in place, never a trip back. Its changes are kept on the
+device (`localStorage`, `butterlu.draft.v1:<handle>`, 30 days) and dropped once the
+form is back to our design or the frame goes in the cart; nothing of it is sent anywhere.
 
 **Privacy.** No cookies and no third-party script. A random funnel id lives in
 `sessionStorage`, so it is per tab and gone when the tab closes; it rides to Stripe as

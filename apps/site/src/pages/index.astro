@@ -2,15 +2,26 @@
 import Layout from '../Layout.astro';
 import FrameChoice from '../components/FrameChoice.astro';
 import ProductCard from '../components/ProductCard.astro';
-import { FEATURED, SHOP, productByHandle } from '../catalog/products';
+import ImagePlaceholder from '../components/media/ImagePlaceholder.astro';
+import { Picture } from 'astro:assets';
+import { HOME_PHOTO_SLOTS, homeMedia } from '../catalog/media';
+import { BEST_SELLING } from '../catalog/best-selling';
+import { FEATURED, productByHandle } from '../catalog/products';
+import { livePage } from '../catalog/pages';
+import PageSections from '../components/sections/PageSections.astro';
+import { SHOW_PLACEHOLDERS } from '../lib/placeholders';
 import { OCCASIONS, MENU_GROUPS, groupHref, occasionHref, recipientHref } from '../catalog/taxonomy';
-import { frameSvg } from '../lib/frame-svg';
-import { placementsAtBuild } from '../lib/layout-build';
-import { buttonVariants, cn } from '../components/ui/variants';
+import { buttonVariants } from '../components/ui/variants';
 
+const homePage = livePage('home');
 const featured = FEATURED.map((h) => productByHandle(h)!);
-const hero = featured[0]!;
-const heroSvg = frameSvg(hero.preset, placementsAtBuild(hero.preset), { idPrefix: 'hero', label: `${hero.name}, as designed` });
+// The link preview shows the top of the hand-kept best selling list (src/catalog/best-selling.ts).
+const hero = productByHandle(BEST_SELLING[0]!)!;
+// The finished gift in a home: Asli's photos once they're in (HOME_MEDIA in
+// src/catalog/media.ts). Stage holds the empty slots with placeholders; production
+// shows only real photos, and no section at all until there is one.
+const homePhotos = homeMedia();
+const homeSlots = SHOW_PLACEHOLDERS ? HOME_PHOTO_SLOTS : homePhotos.length;
 const jsonLd = [
   {
     '@context': 'https://schema.org',
@@ -26,15 +37,26 @@ const jsonLd = [
 ];
 ---
 <Layout title="Personalized Picture Frames and Keepsake Gifts | Butterlu" description="Personalized picture frames for grandparents, godparents, weddings, new babies and pet memorials. Add their names and your words, and see it first." jsonLd={jsonLd} image={{ src: `/products/${hero.handle}.jpg`, width: 1200, height: 1200, alt: hero.name }}>
-  <section class="grid items-center gap-6 md:grid-cols-[1fr_1.1fr] md:gap-10">
-    <div class="order-2 md:order-1">
-      <h1 class="text-3xl md:text-5xl">Butterlu Gifts</h1>
-      <p class="mt-3 max-w-[52ch] text-lg text-muted-foreground">Personalized frames for the people you want to celebrate and remember. Pick a design for grandma, a godmother or a new baby, add their names and your words, and slip in your favorite 4x6 photo.</p>
-      <p class="mt-6"><a class={cn(buttonVariants({ size: 'xl' }), 'w-full sm:w-auto')} href="/collections/all">Shop all frames</a></p>
-      <p class="mt-3 text-sm text-muted-foreground">{SHOP.shipping}. {SHOP.dispatch}.</p>
-    </div>
-    <a class="order-1 block rounded-4xl bg-muted p-4 md:order-2 md:p-9" href={`/products/${hero.handle}`} set:html={heroSvg} />
-  </section>
+  {/* The top of the homepage is Asli's page components (src/catalog/pages.json),
+      edited in the store admin: a Hero Image, then Value Props by default. */}
+  <PageSections page={homePage} />
+
+  {homeSlots > 0 && (
+    <section aria-labelledby="in-home" class="mt-14" data-home-photos>
+      <h2 id="in-home" class="mb-4 text-xl md:text-2xl">In their home</h2>
+      <ul class="grid grid-cols-3 gap-2 sm:gap-4">
+        {Array.from({ length: homeSlots }, (_, i) => homePhotos[i]).map((photo) => (
+          <li>
+            {photo ? (
+              <Picture src={photo.image} alt={photo.alt} formats={['avif', 'webp']} widths={[240, 480, 720, 960].filter((w) => w <= photo.image.width)} sizes="(min-width: 80rem) 24rem, 33vw" loading="lazy" decoding="async" class="aspect-[4/5] w-full rounded-2xl object-cover" />
+            ) : (
+              <ImagePlaceholder ratio="4 / 5" />
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 
   <section aria-labelledby="for-who" class="mt-14">
     <h2 id="for-who" class="mb-4 text-xl md:text-2xl">Who is it for?</h2>
@@ -60,14 +82,7 @@ const jsonLd = [
     <h2 id="best" class="mb-4 text-xl md:text-2xl">Most loved designs</h2>
     <ul class="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">{featured.map((p, i) => <ProductCard product={p} eager={i < 4} />)}</ul>
   </section>
-
-  <section aria-labelledby="how" class="mt-14">
-    <h2 id="how" class="mb-4 text-xl md:text-2xl">Made the way you want it</h2>
-    <ol class="grid gap-3 sm:grid-cols-3">
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Made for them</strong><span class="text-sm text-muted-foreground">Grandparents, godparents, the parents of the bride, a new baby or a pet you miss.</span></li>
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Their names, your words</strong><span class="text-sm text-muted-foreground">Keep our wording or write your own, pick the colors, and see it before you buy.</span></li>
-      <li class="rounded-4xl bg-muted/60 p-5"><strong class="mb-1 block font-medium">Ready to give</strong><span class="text-sm text-muted-foreground">Made to order with a spot for your 4x6 photo. {SHOP.shipping}.</span></li>
-    </ol>
-  </section>
 </Layout>
-
+<script>
+  import '../scripts/shop-actions';
+</script>

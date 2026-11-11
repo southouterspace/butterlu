@@ -1,0 +1,34 @@
+---
+// The editor, on its own screen (owner, 2026-11-11): the product page sells the design
+// as shown and its Personalize button opens this. It ends in its own Add to Cart and
+// never sends the shopper back. The product page is the canonical, so search shows
+// that one; this page stays out of the sitemap.
+import Layout from '../../../Layout.astro';
+import Customizer from '../../../components/Customizer.astro';
+import { COLLECTIONS, PRODUCTS, type Product } from '../../../catalog/products';
+
+export function getStaticPaths() {
+  return PRODUCTS.map((product) => ({ params: { handle: product.handle }, props: { product } }));
+}
+
+interface Props {
+  product: Product;
+}
+const { product } = Astro.props;
+const primary = COLLECTIONS.find((c) => c.handle === product.collections[0]);
+const full = `Personalize ${product.name} | Butterlu`;
+const title = full.length <= 60 ? full : `Personalize ${product.name}`;
+---
+<Layout
+  title={title}
+  description={product.seoDescription}
+  canonicalPath={`/products/${product.handle}`}
+  image={{ src: `/products/${product.handle}.jpg`, width: 1200, height: 1200, alt: product.name }}
+>
+  <nav class="mb-2 text-sm text-muted-foreground md:mb-6" aria-label="Breadcrumb">
+    <a class="no-underline hover:text-foreground hover:underline" href="/collections/all">Shop</a>
+    {primary && (<><span aria-hidden="true">/</span> <a class="no-underline hover:text-foreground hover:underline" href={`/collections/${primary.handle}`}>{primary.name}</a></>)}
+    <span aria-hidden="true">/</span> <a class="no-underline hover:text-foreground hover:underline" href={`/products/${product.handle}`}>{product.name}</a>
+  </nav>
+  <Customizer product={product} />
+</Layout>

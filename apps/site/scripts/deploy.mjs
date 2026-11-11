@@ -108,11 +108,13 @@ const ENVIRONMENTS = {
       return git('status', '--porcelain', '--', '.') ? 'apps/site has uncommitted changes; the Preview must match a commit' : null;
     },
     check: 'build',
+    placeholders: true,
     deploy: () => workersDev(wrangler(['preview', '--name', previewName()], 'preview')?.preview_urls),
   },
   stage: {
     precondition: onCleanSyncedMain,
     check: 'validate',
+    placeholders: true,
     mustReach: true,
     before: () => clearDashboardMark('butterlu-site-stage'),
     deploy: () => workersDev(wrangler(['deploy', '--env='], 'deploy')?.targets),
@@ -154,6 +156,10 @@ process.env.CLOUDFLARE_ACCOUNT_ID = account.pinned;
 const blocked = env.precondition();
 if (blocked) fail(blocked);
 
+// Empty photo slots show placeholders on stage and previews only (src/lib/placeholders.ts).
+// Set on process.env so the build, its checks and the e2e run against the deployed URL agree.
+if (env.placeholders) process.env.BUTTERLU_PLACEHOLDERS = '1';
+else delete process.env.BUTTERLU_PLACEHOLDERS;
 run('bun', ['run', env.check]);
 await env.before?.();
 const url = env.deploy();

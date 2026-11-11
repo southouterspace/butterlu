@@ -115,22 +115,25 @@ February; godparent spring season by January; first Father's Day by early March;
 Christmas 2027 by September; pregnancy announcement pages for the January peak by
 October 2027.
 
-## 4b. Two products, many designs (Justin, 2026-11-08)
+## 4b. One product, many designs (Justin, 2026-11-08; one frame since 2026-11-11)
 
-Butterlu sells two products: the scalloped frame and the rounded frame, each with any
-words and any of 44 backgrounds. The store is shaped around that:
+Butterlu sells one product: a personalized picture frame. Shape, background and the
+words are choices on it, not things the store sells (owner, 2026-11-11). The store is
+shaped around that:
 
-- **Two frame pages** (`/products/scalloped-picture-frame`, `/products/rounded-picture-frame`):
-  the customizer from blank-ish wording, one price, and the designs drawn on that frame.
-  Marked up as a `ProductGroup` (`variesBy` pattern) whose variants are its designs.
+- **One frame page** (`/products/personalized-picture-frame`, shown as "Create your own
+  frame"): the customizer from plain wording, one price, and every design below it.
+  Marked up as a `ProductGroup` (`variesBy` pattern) whose variants are the designs. The
+  old `/products/scalloped-picture-frame` and `/products/rounded-picture-frame` 301 here
+  (`src/catalog/retired.ts`), and a cart saved under either still checks out.
 - **Design pages** keep one page per exact search (godmother, Mimi, ultrasound), because
-  those are what rank. Each opens its frame with the design loaded, offers 8 wording
-  ideas to tap, says which frame it is, and shows the two frames below. Marked up as a
-  `Product` with `isVariantOf` its frame's group and `pattern` set to the design.
-- **Categories are hubs**: the two frames first, then "Designs to start from" (cards show
-  the frame, not a price), then the copy and questions.
-- **One price** for both frames and every design (`FRAME_PRICE_CENTS`, $39 with free US shipping, set by the owner 2026-11-08).
-- **Shopping feed**: one item per page, `item_group_id` = its frame, `pattern` = the design.
+  those are what rank. Each opens the frame with the design loaded and offers 8 wording
+  ideas to tap. Marked up as a `Product` with `isVariantOf` the frame's group and
+  `pattern` set to the design.
+- **Categories are hubs**: "Ready-made designs" first, then "Create your own frame",
+  then the copy and questions.
+- **One price** for the frame and every design (`FRAME_PRICE_CENTS`, $39 with free US shipping, set by the owner 2026-11-08).
+- **Shopping feed**: one item per page, `item_group_id` = the frame, `pattern` = the design.
 
 ## 4c. Shop-by taxonomy (owner said build it, 2026-11-08)
 
@@ -138,18 +141,24 @@ Shoppers browse an organized tree instead of one long list of designs. The sourc
 `apps/site/src/catalog/taxonomy.ts`; the build fails on an untagged design or a tag that
 contradicts its category.
 
-- **Who it's for** (first menu): Grandparents (Grandma, Grandpa, Both grandparents,
-  Great-grandparents), Godparents (Godmother, Godfather, Both godparents), Parents of
-  the bride or groom, Aunts and uncles, New baby, Pet memorial gifts (Asli's labels,
+- **Who It’s For** (first menu): Grandparents (Grandma, Grandpa, Both Grandparents,
+  Great-Grandparents), Godparents (Godmother, Godfather, Both Godparents), Parents of
+  the Bride or Groom, Aunts & Uncles, New Baby, Pet Memorial Gifts (Asli's labels,
   2026-11-11). Each group opens its existing category page; a person opens it filtered
   (`?for=grandma`). Parents of the bride or groom share the wedding page with couple
   frames, so that link opens it filtered. Couple frames sit under the Wedding and
   Engagement occasions only, in a group kept out of the menus.
-- **Occasion** (second menu): only occasions with a design. Pregnancy announcements,
-  Baptisms, Weddings and Pet memorials open the category page that holds those designs (the
-  build checks each tagged design is on it); the rest open Shop all filtered (`?occasion=christmas`). Pet memorials becomes
-  "In memory" once other memorial designs exist.
-- **Frame** is the third filter (`?frame=scalloped`), from each design's preset shape.
+- **Occasion** (second menu): only occasions with a design. Pregnancy Announcements,
+  Baptisms & Christenings, Weddings and Pet Memorials open the category page that holds those designs (the
+  build checks each tagged design is on it); the rest open Shop all filtered (`?occasion=christmas`). Pet Memorials becomes
+  "In Memory" once other memorial designs exist.
+- **Shape is not a filter** (owner, 2026-11-11): every design can switch shape in the editor.
+- **Labels are Title Case and use "&" for "and"** (owner, 2026-11-11), as in "Baptisms & Christenings".
+  This covers menu and chip labels, buttons and button links, nav and footer links and form labels.
+  Product and category names (so their h1s) follow it too (owner, 2026-11-11), matching the admin's check; descriptive headings like "Ready-made designs" stay
+  in sentence case. One `toLabel` in `src/catalog/check.ts` defines it for the store and the admin, and
+  `scripts/lint-dist.mjs` fails the build on a label that breaks it.
+- **Personalize is the only way into the editor** (owner, 2026-11-11): every design card, product page and create-your-own block says Personalize, never "Add Your Words". `scripts/lint-dist.mjs` fails the build on that phrase in any case. Headings and helper text frame it as the whole design, not just the words ("Your design, start to finish").
 - Each design is tagged once with a person and with the occasions in its "good for" list.
 - **No new indexed pages.** A filtered view keeps its category's canonical URL and is
   built from the same HTML, so filters never split ranking. A new indexable category is
@@ -207,3 +216,10 @@ Record each change that could move rankings, so the next snapshot can be read ag
 | 2026-11-08 (stage only) | Shop-by taxonomy (§4c): who-it's-for and occasion menus, filter chips on categories, home page block, design-page links, feed product_type. No new indexed URLs. | all pages, feed |
 | 2026-11-11 (stage only) | Asli's menu labels (§4c): Pets renamed Pet memorial gifts; Weddings leaves Who it's for and stays an occasion; Parents of the bride or groom becomes its own group. Feed product_type follows; home tiles drop their design counts (owner). No new indexed URLs. | menus, home, feed |
 | 2026-11-11 (stage only) | Category pages lead with "Ready-made designs"; each card adds the design as shown in one tap (designs with no names or dates, PROPOSED list in products.ts) or opens it to personalize; the blank frames follow as "Create your own frame". Cards show the $39 price. | all collections, home, design pages |
+| 2026-11-11 (stage only) | The scalloped and rounded frames merge into one Personalized picture frame (owner); the old pages 301 to it. Shape is no longer a filter chip on Shop all. | frame page, Shop all, feed |
+| 2026-11-11 (stage only) | Labels go Title Case with "&" (owner), checked at build. Product and category names follow it too (owner), so product h1s, Product markup `name`, cart and Stripe line items, and the feed's `product_type` change case (e.g. "Aunts & Uncles"). Collection and design intros cut to one line; the home hero becomes three short items. No URL or page title changes. | menus, chips, buttons, home, all collections and designs |
+| 2026-11-11 (stage only) | The editor moves to its own screen, `/products/<handle>/personalize`, canonical to the product page and left out of the sitemap. Product pages lose the editor and "How it works", and gain a preview with Add to Cart and Personalize side by side, plus room for photos and reviews. No URL, title or markup change on product pages. | all design and frame pages |
+| 2026-11-11 (stage only) | Personalize is the first, main button on every product page and design card (owner: "anything can be personalized"); Add to Cart as shown sits beside it where offered. | all design pages, all collections, home |
+| 2026-11-11 (stage only) | Add to Cart as shown is on every product card and product page, the blank frame included (owner: "the design may fit their needs"); a cart line still printing our example names or year says so. The editor folds sides with no words to one "+ Side" button each (owner: progressive disclosure). | all design and frame pages, all collections, home, cart |
+| 2026-11-11 (stage only) | The second button reads "Add to Cart" everywhere (owner), and adding from a card or product page shows a shadcn-style toast with View Cart instead of an inline line. Cart lines left as designed drop the shape, background and words list; phones stack each cart line with the mockup full width (owner). | all design pages, all collections, home, cart |
+| 2026-11-11 (stage only) | The homepage leads with the best seller as a finished gift: its mockup, name, price, Personalize and Add to Cart, with Shop All Frames second. An "In their home" photo row and product page photos take Asli's photos once they're in (src/catalog/media.ts); until then stage shows image placeholders and production hides the empty slots (owner). | home, all design pages |

@@ -1,17 +1,17 @@
 ---
-// The product page's purchase area: live preview plus the options the print
+// The editor on the Personalize screen: live preview plus the options the print
 // file is made from. Defaults first: the frame arrives fully designed and can go in the
-// cart untouched. Words are the common change, so they sit open; shape is a
-// two-way toggle; backgrounds open in a bottom sheet on phones (inline from md up);
-// fonts and text color wait behind one disclosure. Server-rendered with the preset
-// selected, so the page reads and works before the script runs.
+// cart untouched. Words are the common change, so they sit open, with wording ideas
+// drawn as small frames and a note on any side that still holds an example name;
+// shape is a two-way toggle; backgrounds open in a bottom sheet on phones (inline
+// from md up); fonts and text color wait behind one disclosure. Server-rendered with
+// the preset selected, so the page reads and works before the script runs.
 import { BACKGROUNDS, BACKGROUND_SCALE, DEFAULT_BACKGROUND_FIT, FONTS, SHAPES, SIDES, backgroundSlack } from '@butterlu/frame';
-import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS, describeFit, parseFit } from '@butterlu/frame/design';
-import { type Product, SHOP, formatPrice, isFrame } from '../catalog/products';
+import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS, describeFit, parseDesign, parseFit } from '@butterlu/frame/design';
+import { type Product, SHOP, formatPrice } from '../catalog/products';
 import { type Idea, productIdeas } from '../catalog/copy';
-import { productMedia } from '../catalog/media';
+import { standInNote } from '../catalog/example-names';
 import { groupedBackgrounds } from '../lib/background-groups';
-import ProductGallery from './media/ProductGallery.astro';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
 import Icon from './ui/Icon.astro';
@@ -26,15 +26,11 @@ const svg = frameSvg(preset, placementsAtBuild(preset), { idPrefix: 'pdp', label
 const presetColor = Object.values(preset.sides).find((s) => s?.color)?.color ?? 'auto';
 const presetBackground = BACKGROUNDS.find((b) => b.id === preset.backgroundId)!;
 const shapeName = { 'rounded-rectangle': 'Rounded', scalloped: 'Scalloped' } as const;
-const sideHelp = {
-  top: 'across the top',
-  bottom: 'across the bottom',
-  left: 'reads upward',
-  right: 'reads downward',
-};
+// Only the sides need a hint: their text runs up or down.
+const sideHelp: Partial<Record<(typeof SIDES)[number], string>> = { left: 'Reads upward', right: 'Reads downward' };
 const fontName = (id: string) => FONTS.find((f) => f.id === id)?.name.replace(/ (Bold|SemiBold)$/, '') ?? id;
 const usedFonts = [...new Set(SIDES.flatMap((s) => (preset.sides[s] ? [fontName(preset.sides[s]!.fontId)] : [])))];
-const colorName = presetColor === 'auto' ? 'Best for the background' : (TEXT_COLORS.find((c) => c.hex === presetColor)?.name ?? presetColor);
+const colorName = presetColor === 'auto' ? 'Best for the Background' : (TEXT_COLORS.find((c) => c.hex === presetColor)?.name ?? presetColor);
 const groups = groupedBackgrounds();
 const pickerId = `bg-picker-${product.handle}`;
 const config = { handle: product.handle, preset };
@@ -42,7 +38,21 @@ const price = formatPrice(product.priceCents);
 // Wording ideas load into the text fields with one tap; the frame stays the same product.
 const ideas: Idea[] = productIdeas(product.handle);
 const ideaLabel = (i: Idea) => SIDES.flatMap((s) => (i[s] ? [i[s]] : [])).join(' · ');
-const media = productMedia(product.handle);
+// Each idea drawn as a small frame in the preset's shape, background and fonts, the way
+// the script would set it, so the shopper sees where the words go before trying one.
+const ideaSvg = (idea: Idea, i: number) => {
+  const sides = Object.fromEntries(
+    SIDES.flatMap((side) => {
+      const text = idea[side];
+      if (!text) return [];
+      const p = preset.sides[side];
+      return [[side, { text, fontId: p?.fontId ?? 'playfair-display-bold', ...(p?.rotation !== undefined ? { rotation: p.rotation } : {}), ...(presetColor !== 'auto' ? { color: presetColor } : {}) }]];
+    }),
+  );
+  const r = parseDesign({ shape: preset.shape, backgroundId: preset.backgroundId, backgroundFit: preset.backgroundFit, sides });
+  return r.ok ? frameSvg(r.spec, placementsAtBuild(r.spec), { idPrefix: `idea-${i}`, photoHint: false, size: 'card', lazy: true }) : '';
+};
+const exampleNote = (side: (typeof SIDES)[number]) => standInNote(preset.sides[side]?.text ?? '');
 const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
 // Background size and position: sliders in whole percents, read into a BackgroundFit.
 const fit = parseFit(preset.backgroundFit, preset.shape) ?? DEFAULT_BACKGROUND_FIT;
@@ -58,48 +68,64 @@ const rangeClass = 'range w-full';
   <!-- Sticky on phones too, so every change shows while the shopper is choosing. -->
   <div class="sticky top-0 z-20 -mx-4 min-w-0 bg-background px-4 pt-2 pb-3 md:top-6 md:mx-0 md:bg-transparent md:p-0">
     <div class="preview rounded-4xl bg-muted p-3 md:p-8" data-preview set:html={svg} />
-    <p class="mt-3 hidden text-sm text-muted-foreground md:block">Text is sized to fit, exactly as it prints. {SHOP.photoNote}</p>
   </div>
 
   <form class="flex min-w-0 flex-col gap-6" data-form novalidate autocomplete="off">
     <div>
       <h1 class="text-2xl md:text-3xl">{product.name}</h1>
       <p class="mt-1 text-lg font-semibold">{price}</p>
-      <p class="mt-2 text-muted-foreground">{product.intro}</p>
-      {!isFrame(product) && (
-        <p class="mt-2 text-sm text-muted-foreground">Change the words, background or shape, and the price stays the same.</p>
-      )}
     </div>
 
-    {media.length > 0 && <ProductGallery media={media} name={product.name} />}
-
-    <fieldset>
-      <legend class={legend}>Your words</legend>
-      <p class="mb-3 text-sm text-muted-foreground">Keep ours, change them, or leave a side blank. Text shrinks to fit.</p>
+    <fieldset class="min-w-0">
+      <legend class={legend}>Your Words</legend>
       {/* Hidden until the script mounts it: the buttons only work with it. */}
       {ideas.length > 0 && (
         <div class="mb-4" data-ideas hidden>
-          <p class="mb-2 text-sm font-medium" id="ideas-label">Wording ideas <span class="font-normal text-muted-foreground">· tap one to try it in place of your words</span></p>
-          <ul class="flex flex-wrap gap-2" aria-labelledby="ideas-label">
-            {ideas.map((idea) => (
-              <li><button type="button" class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-9 max-w-full py-1.5 text-left whitespace-normal')} data-idea={JSON.stringify(idea)}>{ideaLabel(idea)}</button></li>
-            ))}
+          <p class="mb-2 text-sm font-medium" id="ideas-label">Wording Ideas</p>
+          <ul class="-mx-4 flex snap-x scroll-px-4 gap-2 overflow-x-auto overscroll-x-contain px-4 pb-2 md:mx-0 md:scroll-px-0 md:px-0" aria-labelledby="ideas-label">
+            {ideas.map((idea, i) => {
+              const art = ideaSvg(idea, i);
+              return (
+                <li class="shrink-0 snap-start">
+                  {art ? (
+                    <button type="button" class="idea block w-28 rounded-2xl bg-muted p-1.5 ring-1 ring-foreground/10 transition-shadow outline-none hover:ring-foreground/30 focus-visible:ring-3 focus-visible:ring-ring sm:w-32" aria-label={ideaLabel(idea)} data-idea={JSON.stringify(idea)} set:html={art} />
+                  ) : (
+                    <button type="button" class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'h-auto min-h-9 max-w-56 py-1.5 text-left whitespace-normal')} data-idea={JSON.stringify(idea)}>{ideaLabel(idea)}</button>
+                  )}
+                </li>
+              );
+            })}
           </ul>
-          <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'mt-1 px-0')} data-idea-undo hidden>Undo, bring my words back</button>
+          <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'mt-1 px-0')} data-idea-undo hidden>Undo, Bring My Words Back</button>
         </div>
       )}
+      {/* Sides with no words start folded to one tap each, so the form shows only what the
+          design uses. The script opens a side when it gets words (an idea, a saved draft).
+          Without script nothing can be added to the cart, so nothing is lost by the fold. */}
       <div class="grid gap-3">
         {SIDES.map((side) => (
-          <div class="grid gap-1.5">
-            <label for={`text-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]} <span class="font-normal text-muted-foreground">· {sideHelp[side]}</span></label>
-            <input id={`text-${side}`} name={`text-${side}`} type="text" maxlength={MAX_SIDE_CHARS} autocomplete="off" enterkeyhint="done" value={preset.sides[side]?.text ?? ''} aria-describedby={`warn-${side}`} class={inputClass} />
+          <div class="grid gap-1.5" data-side-row={side} hidden={!preset.sides[side]?.text}>
+            <div class="flex items-baseline gap-1.5">
+              <label for={`text-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]}</label>
+              {sideHelp[side] && <span class="text-sm text-muted-foreground"><span aria-hidden="true">· </span><span id={`help-${side}`}>{sideHelp[side]}</span></span>}
+            </div>
+            <input id={`text-${side}`} name={`text-${side}`} type="text" maxlength={MAX_SIDE_CHARS} autocomplete="off" enterkeyhint="done" value={preset.sides[side]?.text ?? ''} aria-describedby={[sideHelp[side] ? `help-${side}` : '', `example-${side}`, `warn-${side}`].filter(Boolean).join(' ')} class={inputClass} />
+            <p class="text-sm font-medium text-foreground/80 empty:hidden" id={`example-${side}`} data-example={side}>{exampleNote(side)}</p>
             <p class="text-sm text-amber-800 empty:hidden" id={`warn-${side}`} data-warn={side}></p>
           </div>
         ))}
       </div>
+      {/* Hidden until the script mounts it, like the ideas: the buttons only work with it. */}
+      <div class="mt-3 flex flex-wrap gap-2" data-side-adds hidden>
+        {SIDES.map((side) => (
+          <button type="button" class={buttonVariants({ variant: 'outline', size: 'sm' })} aria-controls={`text-${side}`} data-side-add={side} hidden={!!preset.sides[side]?.text}>
+            <Icon name="plus" /><span class="sr-only">Add Text to the </span>{SIDE_LABEL[side]} Side
+          </button>
+        ))}
+      </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset class="min-w-0">
       <legend class={legend}>Shape</legend>
       <div class="flex rounded-full bg-muted p-1">
         {Object.entries(SHAPES).map(([id, s]) => (
@@ -112,7 +138,7 @@ const rangeClass = 'range w-full';
       </div>
     </fieldset>
 
-    <fieldset>
+    <fieldset class="min-w-0">
       <legend class={cn(legend, 'max-md:sr-only')}>Background <span class="font-normal text-muted-foreground" data-background-name>{presetBackground.name}</span></legend>
       <!-- Phones: one row shows the current choice; tapping opens the sheet. -->
       <button type="button" class="flex w-full items-center gap-3 rounded-3xl bg-input/50 p-2 pr-4 text-left transition-colors outline-none hover:bg-input/80 focus-visible:ring-3 focus-visible:ring-ring md:hidden" aria-haspopup="dialog" aria-controls={pickerId} data-bg-open>
@@ -121,7 +147,6 @@ const rangeClass = 'range w-full';
           <span class="block text-xs text-muted-foreground">Background</span>
           <span class="block truncate font-medium" data-background-name>{presetBackground.name}</span>
         </span>
-        <span class="text-sm text-muted-foreground">44 options</span>
         <Icon name="chevron-right" class="size-4 text-muted-foreground" />
       </button>
 
@@ -157,13 +182,12 @@ const rangeClass = 'range w-full';
     <details class="group rounded-3xl bg-muted/60" data-fit-box>
       <summary class="flex cursor-pointer list-none items-center gap-3 rounded-3xl px-4 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
         <span class="min-w-0 flex-1">
-          <span class="block text-sm font-medium">Background size and position</span>
+          <span class="block text-sm font-medium">Background Size & Position</span>
           <span class="block truncate text-xs text-muted-foreground" data-fit-summary>{fitSummary(fit)}</span>
         </span>
         <Icon name="chevron-down" class="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
       </summary>
       <div class="grid gap-4 px-4 pt-1 pb-4">
-        <p class="text-sm text-muted-foreground">Make the background bigger, then slide it to show the part you like. It prints exactly as the preview shows.</p>
         <div class="grid gap-1.5">
           <div class="flex items-baseline justify-between gap-3">
             <label for="bg-scale" class="text-sm font-medium">Size</label>
@@ -176,19 +200,19 @@ const rangeClass = 'range w-full';
           </div>
         </div>
         <div class="grid gap-1.5">
-          <label for="bg-x" class="text-sm font-medium">Side to side</label>
+          <label for="bg-x" class="text-sm font-medium">Side to Side</label>
           <input id="bg-x" name="bg-x" type="range" min="-100" max="100" step="5" value={pct(fit.x)} disabled={presetSlack.x < 1e-6} aria-describedby="bg-x-hint" class={rangeClass} style={`--fill:${(fit.x + 1) * 50}%`} />
           <div class="flex justify-between text-xs text-muted-foreground" aria-hidden="true"><span>Show the left</span><span>Show the right</span></div>
           <p id="bg-x-hint" class="text-xs text-muted-foreground" data-fit-hint="x" hidden={presetSlack.x >= 1e-6}>Make it bigger first to move it side to side.</p>
         </div>
         <div class="grid gap-1.5">
-          <label for="bg-y" class="text-sm font-medium">Up and down</label>
+          <label for="bg-y" class="text-sm font-medium">Up & Down</label>
           <input id="bg-y" name="bg-y" type="range" min="-100" max="100" step="5" value={pct(fit.y)} disabled={presetSlack.y < 1e-6} aria-describedby="bg-y-hint" class={rangeClass} style={`--fill:${(fit.y + 1) * 50}%`} />
           <div class="flex justify-between text-xs text-muted-foreground" aria-hidden="true"><span>Show the top</span><span>Show the bottom</span></div>
           <p id="bg-y-hint" class="text-xs text-muted-foreground" data-fit-hint="y" hidden={presetSlack.y >= 1e-6}>Make it bigger first to move it up and down.</p>
         </div>
         <button type="button" class={cn(buttonVariants({ variant: 'outline', size: 'sm' }), 'justify-self-start')} data-fit-reset hidden>
-          <Icon name="rotate-ccw" class="size-3.5" />Reset size and position
+          <Icon name="rotate-ccw" class="size-3.5" />Reset Size & Position
         </button>
       </div>
     </details>
@@ -196,7 +220,7 @@ const rangeClass = 'range w-full';
     <details class="group rounded-3xl bg-muted/60" data-more>
       <summary class="flex cursor-pointer list-none items-center gap-3 rounded-3xl px-4 py-3 outline-none focus-visible:ring-3 focus-visible:ring-ring [&::-webkit-details-marker]:hidden">
         <span class="min-w-0 flex-1">
-          <span class="block text-sm font-medium">Fonts and color</span>
+          <span class="block text-sm font-medium">Fonts & Color</span>
           <span class="block truncate text-xs text-muted-foreground" data-more-summary>{usedFonts.join(', ')} · {colorName}</span>
         </span>
         <Icon name="chevron-down" class="size-4 text-muted-foreground transition-transform group-open:rotate-180" />
@@ -204,16 +228,16 @@ const rangeClass = 'range w-full';
       <div class="grid gap-3 px-4 pt-1 pb-4 sm:grid-cols-2">
         {SIDES.map((side) => (
           <div class="grid gap-1.5" data-font-row={side} hidden={!preset.sides[side]?.text}>
-            <label for={`font-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]} font</label>
+            <label for={`font-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]} Font</label>
             <select id={`font-${side}`} name={`font-${side}`} class={nativeSelectClass}>
               {FONTS.map((f) => <option value={f.id} selected={(preset.sides[side]?.fontId ?? 'playfair-display-bold') === f.id}>{fontName(f.id)}</option>)}
             </select>
           </div>
         ))}
         <div class="grid gap-1.5 sm:col-span-2">
-          <label for="text-color" class="text-sm font-medium">Text color</label>
+          <label for="text-color" class="text-sm font-medium">Text Color</label>
           <select id="text-color" name="color" class={nativeSelectClass}>
-            <option value="auto" selected={presetColor === 'auto'}>Best for the background</option>
+            <option value="auto" selected={presetColor === 'auto'}>Best for the Background</option>
             {TEXT_COLORS.map((c) => <option value={c.hex} selected={presetColor === c.hex}>{c.name}</option>)}
           </select>
         </div>
@@ -221,19 +245,22 @@ const rangeClass = 'range w-full';
     </details>
 
     <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'self-start px-0')} data-reset hidden>
-      <Icon name="rotate-ccw" class="size-3.5" />Start over with our design
+      <Icon name="rotate-ccw" class="size-3.5" />Start Over with Our Design
     </button>
 
     <!-- Always in reach: the frame is buyable as designed. A bar on phones, a floating card from md up. -->
     <div class="sticky bottom-0 z-20 -mx-4 border-t bg-background/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-sm md:bottom-4 md:mx-0 md:rounded-4xl md:border-0 md:p-3 md:shadow-lg md:ring-1 md:ring-foreground/5">
       <p class="text-sm font-medium [&:not(:empty)]:mb-2 [&_a]:underline" role="status" aria-live="polite" data-status></p>
-      <button type="submit" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-add>Add to cart · {price}</button>
+      <button type="submit" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-add>Add to Cart · {price}</button>
+      {/* After an add the shopper stays here; the next step is checkout, not the product page. */}
+      <a href="/cart" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-added hidden>View Cart & Check Out</a>
     </div>
 
-    <ul class="grid gap-2 text-sm text-muted-foreground">
+    <ul class="grid gap-2 text-sm text-muted-foreground [&_svg]:shrink-0">
       <li class="flex items-center gap-2"><Icon name="clock" />{SHOP.dispatch}</li>
       <li class="flex items-center gap-2"><Icon name="truck" />{SHOP.shipping}</li>
       <li class="flex items-center gap-2"><Icon name="frame" />8.4 × 6.4 inch wood frame with glass and an easel back</li>
+      <li class="flex items-center gap-2"><Icon name="heart" />{SHOP.photoNote}</li>
     </ul>
   </form>
 </div>
@@ -244,6 +271,11 @@ const rangeClass = 'range w-full';
 </script>
 
 <style>
+  .idea :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
   /* Phones: cap the sticky preview so the options stay in view under it. */
   .preview :global(svg) {
     height: min(30svh, 68vw);

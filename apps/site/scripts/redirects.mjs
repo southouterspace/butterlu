@@ -7,6 +7,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { COLLECTIONS, PRODUCTS } from '../src/catalog/products.ts';
+import { RETIRED_HANDLES } from '../src/catalog/retired.ts';
 
 const siteDir = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const plans = (f) => JSON.parse(readFileSync(join(siteDir, '../../plans', f), 'utf8'));
@@ -55,6 +56,10 @@ for (const row of listingMap.rows) {
 for (const c of catalog.collections) {
   if (newCollections.has(c.handle) || c.handle === 'all') continue;
   lines.push(`/collections/${c.handle} ${COLLECTION_MAP[c.handle] ?? '/collections/all'} 301`);
+}
+// Pages this store had and merged away.
+for (const [from, to] of Object.entries(RETIRED_HANDLES)) {
+  lines.push(`/products/${from} /products/${to} 301`, `/products/${from}.jpg /products/${to}.jpg 301`);
 }
 // Shopify's own pages that searchers and old links may still carry.
 lines.push('/collections /collections/all 301', '/products /collections/all 301', '/pages/contact /pages/faq 301');

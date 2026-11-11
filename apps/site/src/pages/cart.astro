@@ -1,10 +1,27 @@
 ---
 import Layout from '../Layout.astro';
 import { PRODUCTS, SHOP } from '../catalog/products';
+import { productIdeas } from '../catalog/copy';
+import { designKey } from '@butterlu/frame/design';
 import { buttonVariants, cn } from '../components/ui/variants';
 
 // Names and prices for display only. The checkout Worker prices every line itself.
-const catalog = Object.fromEntries(PRODUCTS.map((p) => [p.handle, { name: p.name, priceCents: p.priceCents }]));
+// `words` are our words per side (the design's and its wording ideas'), so a line still
+// printing our example names or year can say so.
+const ourWords = (p: (typeof PRODUCTS)[number]) => {
+  const words: Record<string, string[]> = {};
+  const add = (side: string, text: string | undefined) => {
+    if (text && !words[side]?.includes(text)) (words[side] ??= []).push(text);
+  };
+  for (const [side, t] of Object.entries(p.preset.sides)) add(side, t?.text);
+  for (const idea of productIdeas(p.handle)) for (const [side, text] of Object.entries(idea)) add(side, text);
+  return words;
+};
+// `asShown` is the design's own key: a line that matches it wasn't personalized, so the
+// cart shows it without the details (owner, 2026-11-11).
+const catalog = Object.fromEntries(
+  PRODUCTS.map((p) => [p.handle, { name: p.name, priceCents: p.priceCents, words: ourWords(p), asShown: designKey(p.preset) }]),
+);
 ---
 <Layout title="Your Cart | Butterlu" description="Review your personalized frames and check out." noindex>
   <h1 class="text-2xl md:text-3xl">Your cart</h1>
@@ -14,7 +31,7 @@ const catalog = Object.fromEntries(PRODUCTS.map((p) => [p.handle, { name: p.name
     <div class="grid gap-3 rounded-4xl bg-card p-5 shadow-sm ring-1 ring-foreground/5 md:sticky md:top-6" data-summary hidden>
       <p class="flex justify-between text-base font-semibold">Subtotal <span data-subtotal></span></p>
       <p class="text-sm text-muted-foreground">{SHOP.shipping}. Tax, if any, is added at checkout.</p>
-      <button type="button" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-checkout>Check out</button>
+      <button type="button" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-checkout>Check Out</button>
       <p class="text-sm" role="status" aria-live="polite" data-status></p>
     </div>
   </div>

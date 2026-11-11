@@ -1,7 +1,8 @@
 // How shoppers browse the designs (docs/12 §4c). Each design is tagged once with who
-// it's for and with the occasions it suits; its frame shape comes from its preset.
+// it's for and with the occasions it suits. Shape is a choice on the frame, not a
+// way to browse (owner, 2026-11-11).
 // The header menu, the filter chips on category pages, the home page and the feed
-// all read these lists. A filtered view (?for=, ?occasion=, ?frame=) keeps its
+// all read these lists. A filtered view (?for=, ?occasion=) keeps its
 // category's canonical URL, so filtering adds no pages to the index.
 //
 // Plain TypeScript with no Astro imports, like products.ts.
@@ -33,8 +34,6 @@ export type OccasionKey =
   | 'baby-shower'
   | 'memorial'
   | 'everyday';
-
-export type FrameKey = 'scalloped' | 'rounded';
 
 export interface Recipient {
   key: RecipientKey;
@@ -70,8 +69,8 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
     children: [
       { key: 'grandma', label: 'Grandma', hint: 'Mimi, Nana, Gigi, Abuela' },
       { key: 'grandpa', label: 'Grandpa', hint: 'Papa, Pop, Grandad' },
-      { key: 'both-grandparents', label: 'Both grandparents' },
-      { key: 'great-grandparents', label: 'Great-grandparents' },
+      { key: 'both-grandparents', label: 'Both Grandparents' },
+      { key: 'great-grandparents', label: 'Great-Grandparents' },
     ],
   },
   {
@@ -81,7 +80,7 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
     children: [
       { key: 'godmother', label: 'Godmother' },
       { key: 'godfather', label: 'Godfather' },
-      { key: 'both-godparents', label: 'Both godparents' },
+      { key: 'both-godparents', label: 'Both Godparents' },
     ],
   },
   // Asli's taxonomy (2026-11-11): weddings are an occasion, and the parents of the couple
@@ -89,20 +88,20 @@ export const RECIPIENT_GROUPS: RecipientGroup[] = [
   // filtered to the group.
   {
     key: 'wedding-parents',
-    label: 'Parents of the bride or groom',
+    label: 'Parents of the Bride or Groom',
     collection: 'wedding-thank-you-frames',
-    children: [{ key: 'parents-of-the-couple', label: 'Parents of the bride or groom' }],
+    children: [{ key: 'parents-of-the-couple', label: 'Parents of the Bride or Groom' }],
   },
-  { key: 'aunts-and-uncles', label: 'Aunts and uncles', collection: 'aunt-uncle-frames', children: [{ key: 'aunt-uncle', label: 'Aunt and uncle' }] },
-  { key: 'new-baby', label: 'New baby', collection: 'baby-frames', children: [{ key: 'baby', label: 'Babies and parents-to-be' }] },
-  { key: 'pets', label: 'Pet memorial gifts', collection: 'pet-loss-memorial', children: [{ key: 'pet', label: 'Dogs and cats' }] },
+  { key: 'aunts-and-uncles', label: 'Aunts & Uncles', collection: 'aunt-uncle-frames', children: [{ key: 'aunt-uncle', label: 'Aunt & Uncle' }] },
+  { key: 'new-baby', label: 'New Baby', collection: 'baby-frames', children: [{ key: 'baby', label: 'Babies & Parents-to-Be' }] },
+  { key: 'pets', label: 'Pet Memorial Gifts', collection: 'pet-loss-memorial', children: [{ key: 'pet', label: 'Dogs & Cats' }] },
   // Couple frames are found under the Wedding and Engagement occasions, not in Who it's
   // for. The group stays so the wedding page can still split parents from couples.
   {
     key: 'couples',
     label: 'Couples',
     collection: 'wedding-thank-you-frames',
-    children: [{ key: 'couple', label: 'The couple' }],
+    children: [{ key: 'couple', label: 'The Couple' }],
     inMenus: false,
   },
 ];
@@ -112,24 +111,20 @@ export const MENU_GROUPS = RECIPIENT_GROUPS.filter((g) => g.inMenus !== false);
 
 /** Menu order. Only occasions with at least one design are shown anywhere. */
 const ALL_OCCASIONS: Occasion[] = [
-  { key: 'pregnancy-announcement', label: 'Pregnancy announcements', collection: 'new-grandparent-to-be' },
-  { key: 'baptism', label: 'Baptisms and christenings', collection: 'godparent-frames' },
+  { key: 'pregnancy-announcement', label: 'Pregnancy Announcements', collection: 'new-grandparent-to-be' },
+  { key: 'baptism', label: 'Baptisms & Christenings', collection: 'godparent-frames' },
   { key: 'wedding', label: 'Weddings', collection: 'wedding-thank-you-frames' },
   { key: 'engagement', label: 'Engagements' },
   { key: 'christmas', label: 'Christmas' },
   { key: 'birthday', label: 'Birthdays' },
   { key: 'mothers-day', label: 'Mother’s Day' },
   { key: 'fathers-day', label: 'Father’s Day' },
-  { key: 'baby-shower', label: 'Baby showers' },
+  { key: 'baby-shower', label: 'Baby Showers' },
   // Only a pet design so far; rename to "In memory" when other memorial designs exist.
-  { key: 'memorial', label: 'Pet memorials', collection: 'pet-loss-memorial' },
-  { key: 'everyday', label: 'Just because' },
+  { key: 'memorial', label: 'Pet Memorials', collection: 'pet-loss-memorial' },
+  { key: 'everyday', label: 'Just Because' },
 ];
 
-export const FRAME_SHAPES: { key: FrameKey; label: string; shape: Product['preset']['shape'] }[] = [
-  { key: 'scalloped', label: 'Scalloped', shape: 'scalloped' },
-  { key: 'rounded', label: 'Rounded', shape: 'rounded-rectangle' },
-];
 
 /** Every design, tagged from its own "good for" list. The build fails on a gap. */
 const TAGS: Record<string, { for: RecipientKey; occasions: OccasionKey[] }> = {
@@ -163,7 +158,6 @@ export interface Tags {
   for: Recipient;
   group: RecipientGroup;
   occasions: Occasion[];
-  frame: (typeof FRAME_SHAPES)[number];
 }
 
 const groupOf = new Map<RecipientKey, RecipientGroup>();
@@ -171,7 +165,7 @@ for (const g of RECIPIENT_GROUPS) for (const r of g.children) groupOf.set(r.key,
 const occasionByKey = new Map(ALL_OCCASIONS.map((o) => [o.key, o]));
 const collectionHandles = new Set(COLLECTIONS.map((c) => c.handle));
 
-/** Who it's for, occasions and frame for a design; undefined for the two frames. */
+/** Who it's for and occasions for a design; undefined for the frame. */
 export function tagsFor(p: Product): Tags | undefined {
   if (isFrame(p)) return undefined;
   const t = TAGS[p.handle];
@@ -181,7 +175,6 @@ export function tagsFor(p: Product): Tags | undefined {
     for: r.children.find((c) => c.key === t.for)!,
     group: r,
     occasions: t.occasions.map((k) => occasionByKey.get(k)!),
-    frame: FRAME_SHAPES.find((f) => f.shape === p.preset.shape)!,
   };
 }
 
@@ -246,7 +239,7 @@ export const occasionCount = (o: Occasion) =>
 
 export interface Facet {
   /** URL parameter. */
-  param: 'for' | 'occasion' | 'frame';
+  param: 'for' | 'occasion';
   label: string;
   options: { key: string; label: string; count: number }[];
 }
@@ -266,9 +259,8 @@ export function facetsFor(products: Product[], level: 'group' | 'recipient'): Fa
       ? count(MENU_GROUPS, (t) => [t.group], (g) => g.key, (g) => g.label)
       : count(RECIPIENT_GROUPS.flatMap((g) => g.children), (t) => [t.for], (r) => r.key, (r) => r.label);
   const facets: Facet[] = [
-    { param: 'for', label: 'Who it’s for', options: forOptions },
+    { param: 'for', label: 'Who It’s For', options: forOptions },
     { param: 'occasion', label: 'Occasion', options: count(OCCASIONS, (t) => t.occasions, (o) => o.key, (o) => o.label) },
-    { param: 'frame', label: 'Frame', options: count(FRAME_SHAPES, (t) => [t.frame], (f) => f.key, (f) => f.label) },
   ];
   return facets.filter((f) => f.options.length > 1 && f.options.some((o) => o.count < tags.length));
 }

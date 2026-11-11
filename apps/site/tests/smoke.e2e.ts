@@ -77,10 +77,10 @@ test('every page carries the shop-by menus, and filtered views keep the category
   expect(/<link rel="canonical" href="https:\/\/www\.butterlu\.com\/collections\/grandparent-frames">/.test(html)).toBe(true);
 });
 
-test("Who it's for uses Asli's labels and keeps weddings under Occasion", async ({ app }) => {
+test("Who It’s For uses Asli's labels and keeps weddings under Occasion", async ({ app }) => {
   const html = await (await fetch(new URL('/', app.baseUrl))).text();
   const menu = html.slice(html.indexOf('id="menu-for"'), html.indexOf('id="menu-occasion"'));
-  expect(menu.includes('Pet memorial gifts')).toBe(true);
+  expect(menu.includes('Pet Memorial Gifts')).toBe(true);
   expect(menu.includes('href="/collections/wedding-thank-you-frames?for=parents-of-the-couple"')).toBe(true);
   expect(menu.includes('Weddings')).toBe(false);
   expect(menu.includes('Couples')).toBe(false);
@@ -89,7 +89,7 @@ test("Who it's for uses Asli's labels and keeps weddings under Occasion", async 
   const phone = html.slice(html.indexOf('id="site-menu"'));
   const tiles = html.slice(html.indexOf('id="for-who"'));
   for (const list of [phone.slice(0, phone.indexOf('Occasion')), tiles.slice(0, tiles.indexOf('Or by occasion'))]) {
-    expect(list.includes('Pet memorial gifts')).toBe(true);
+    expect(list.includes('Pet Memorial Gifts')).toBe(true);
     expect(list.includes('Couples')).toBe(false);
     expect(list.includes('>Weddings<')).toBe(false);
   }
@@ -97,4 +97,23 @@ test("Who it's for uses Asli's labels and keeps weddings under Occasion", async 
   const page = await (await fetch(new URL('/collections/wedding-thank-you-frames?for=parents-of-the-couple', app.baseUrl))).text();
   expect(page.includes('data-filter="for" data-value="parents-of-the-couple"')).toBe(true);
   expect(/<link rel="canonical" href="https:\/\/www\.butterlu\.com\/collections\/wedding-thank-you-frames">/.test(page)).toBe(true);
+});
+
+test('Shop All lists designs best selling first', async ({ app }) => {
+  const html = await (await fetch(new URL('/collections/all', app.baseUrl))).text();
+  const at = (h: string) => html.indexOf(`href="/products/${h}"`);
+  const order = ['grandparent-pregnancy-announcement-frame', 'godmother-proposal-frame', 'personalized-grandma-frame', 'pet-memorial-frame'].map(at);
+  expect(order.every((i) => i > 0)).toBe(true);
+  expect([...order].sort((a, b) => a - b)).toEqual(order);
+});
+
+test('the editor screen points search at its product page and stays out of the sitemap', async ({ app }) => {
+  const html = await (await fetch(new URL('/products/nana-picture-frame/personalize', app.baseUrl))).text();
+  expect(html.includes('<link rel="canonical" href="https://www.butterlu.com/products/nana-picture-frame">')).toBe(true);
+  expect(html.includes('data-page-type="personalize"')).toBe(true);
+  const sitemap = await (await fetch(new URL('/sitemap.xml', app.baseUrl))).text();
+  expect(sitemap.includes('/personalize<')).toBe(false);
+  // Cards and the product page open the editor directly.
+  const pdp = await (await fetch(new URL('/products/nana-picture-frame', app.baseUrl))).text();
+  expect(pdp.includes('href="/products/nana-picture-frame/personalize"')).toBe(true);
 });

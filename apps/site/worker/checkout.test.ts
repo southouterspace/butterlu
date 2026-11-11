@@ -25,6 +25,10 @@ describe('checkCart', () => {
     if (!r.ok) expect(r.errors.length).toBe(3);
   });
   test('rejects an empty cart', () => expect(checkCart({ items: [] }).ok).toBe(false));
+  test('a cart saved under a merged-away frame checks out as the frame that replaced it', () => {
+    const r = checkCart({ items: [{ ...item, handle: 'rounded-picture-frame' }] });
+    expect(r.ok && r.lines[0]!.handle).toBe('personalized-picture-frame');
+  });
 });
 
 describe('checkKey', () => {

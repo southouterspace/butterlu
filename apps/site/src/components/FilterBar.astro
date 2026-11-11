@@ -1,11 +1,14 @@
 ---
-// Filter chips over a grid of design cards: who it's for, occasion and frame. Shown from
-// the first paint so nothing shifts; hidden only for visitors without script, who see the
-// full grid. src/scripts/filters.ts makes the chips work.
+// Filters over a grid of design cards: who it's for and occasion. Shown from the first
+// paint so nothing shifts; hidden only for visitors without script, who see the full grid.
+// src/scripts/filters.ts makes them work.
+// From md up the chips sit inline over the grid. On phones one Filter button opens them
+// in a bottom sheet (the same <dialog>, shown as a modal), so the designs come first.
 // The chosen filters live in the query string (?for=grandma&occasion=christmas) and
 // the page's canonical stays the category, so a filtered view is never indexed.
 import type { Facet } from '../catalog/taxonomy';
-import { cn } from './ui/variants';
+import Icon from './ui/Icon.astro';
+import { buttonVariants, cn } from './ui/variants';
 
 interface Props {
   facets: Facet[];
@@ -15,22 +18,41 @@ interface Props {
 const { facets, total } = Astro.props;
 const chip =
   'inline-flex h-9 items-center gap-1.5 rounded-full border px-3.5 text-sm font-medium text-foreground transition-colors hover:bg-muted aria-pressed:border-foreground aria-pressed:bg-foreground aria-pressed:text-background';
+const sheetId = 'filter-sheet';
 ---
 {facets.length > 0 && (
   <div data-filters class="mb-5 grid gap-3">
-    {facets.map((f) => (
-      <div role="group" aria-label={f.label} class="flex flex-wrap items-center gap-2">
-        <span class="w-full text-xs font-medium tracking-wide text-muted-foreground uppercase sm:w-28">{f.label}</span>
-        {f.options.map((o) => (
-          <button type="button" class={chip} data-filter={f.param} data-value={o.key} aria-pressed="false">
-            {o.label}
-          </button>
+    <div class="md:hidden">
+      <button type="button" class={buttonVariants({ variant: 'outline', size: 'lg' })} aria-haspopup="dialog" aria-controls={sheetId} data-filter-open>
+        <Icon name="sliders-horizontal" />
+        Filter
+        <span data-filter-count hidden class="ml-0.5 inline-flex size-5 items-center justify-center rounded-full bg-foreground text-xs text-background"></span>
+      </button>
+    </div>
+    <dialog id={sheetId} class="filter-sheet" aria-labelledby={`${sheetId}-title`} data-filter-sheet>
+      <div class="mx-auto mt-3 h-1.5 w-[100px] shrink-0 rounded-full bg-muted md:hidden" aria-hidden="true"></div>
+      <h3 id={`${sheetId}-title`} class="px-5 pt-3 pb-1 text-base font-medium md:sr-only">Filter Designs</h3>
+      <div class="grid min-h-0 flex-1 gap-4 overflow-y-auto overscroll-contain px-5 py-3 md:gap-3 md:overflow-visible md:p-0">
+        {facets.map((f) => (
+          <div role="group" aria-label={f.label} class="flex flex-wrap items-center gap-2">
+            <span class="w-full text-xs font-medium tracking-wide text-muted-foreground uppercase md:w-28">{f.label}</span>
+            {f.options.map((o) => (
+              <button type="button" class={chip} data-filter={f.param} data-value={o.key} aria-pressed="false">
+                {o.label}
+              </button>
+            ))}
+          </div>
         ))}
       </div>
-    ))}
+      <div class="grid grid-cols-[auto_1fr] gap-2 border-t px-5 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))] md:hidden">
+        <button type="button" class={buttonVariants({ variant: 'outline', size: 'lg' })} data-filter-clear="sheet" disabled>Clear</button>
+        <button type="button" class={buttonVariants({ size: 'lg' })} data-filter-done>Show {total} Designs</button>
+      </div>
+      <span class="sr-only" role="status" data-filter-sheet-status></span>
+    </dialog>
     <p class="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground">
       <span data-filter-status role="status" tabindex="-1">Showing all {total} designs</span>
-      <button type="button" data-filter-clear hidden class={cn('underline underline-offset-4 hover:text-foreground')}>Clear filters</button>
+      <button type="button" data-filter-clear hidden class={cn('underline underline-offset-4 hover:text-foreground')}>Clear Filters</button>
     </p>
   </div>
 )}

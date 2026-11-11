@@ -1,12 +1,22 @@
-import { describeDesign } from '@butterlu/frame/design';
+import { SIDES, describeDesign, designKey } from '@butterlu/frame/design';
+import { asShownNote } from '../catalog/example-names';
 import { frameSvg } from '../lib/frame-svg';
 import { MAX_QUANTITY, cartLines, clearCart, onCartChange, removeLine, setQuantity } from './cart';
 import { fontsReady, placementsInBrowser } from './measure';
 import { funnelId, track } from './track';
 
-type Catalog = Record<string, { name: string; priceCents: number }>;
+type Catalog = Record<string, { name: string; priceCents: number; words?: Record<string, string[]>; asShown?: string }>;
 const money = (c: number) => `$${(c / 100).toFixed(2)}`;
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
+// A line added as shown can still print our example names or year. Only words that are
+// still ours count: a shopper who typed "Ava" meant it.
+function stillOurs(design: { sides: Partial<Record<string, { text: string } | undefined>> }, words: Record<string, string[]> = {}, handle: string) {
+  const note = asShownNote(SIDES.flatMap((s) => (design.sides[s]?.text && words[s]?.includes(design.sides[s]!.text) ? [design.sides[s]!.text] : [])));
+  return note
+    ? `<p class="text-sm font-medium text-foreground/80"><span>${esc(note)}</span> <a class="underline underline-offset-4" href="/products/${esc(handle)}/personalize">Personalize</a></p>`
+    : '';
+}
 
 export function mountCart(root: HTMLElement) {
   const catalog = JSON.parse(root.dataset.catalog ?? '{}') as Catalog;
@@ -32,11 +42,15 @@ export function mountCart(root: HTMLElement) {
         const qty = Array.from({ length: MAX_QUANTITY }, (_, n) => n + 1)
           .map((n) => `<option value="${n}"${n === l.quantity ? ' selected' : ''}>${n}</option>`)
           .join('');
-        return `<li class="grid grid-cols-[6.5rem_minmax(0,1fr)] gap-4 rounded-4xl bg-card p-3 shadow-sm ring-1 ring-foreground/5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:p-4" data-key="${esc(l.key)}">
-          <a class="block self-start rounded-3xl bg-muted p-2" href="/products/${esc(l.handle)}" aria-hidden="true" tabindex="-1">${svg}</a>
-          <div class="flex min-w-0 flex-col gap-1">
+        // A line as designed shows no details; a personalized one lists what changed hands.
+        const personalized = p.asShown !== designKey(l.design);
+        const details = personalized ? `<p class="text-sm break-words text-muted-foreground">${esc(describeDesign(l.design))}</p>` : '';
+        // Phones stack the card so the mockup shows full width; from sm up it sits beside.
+        return `<li class="grid gap-4 rounded-4xl bg-card p-3 shadow-sm ring-1 ring-foreground/5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:p-4" data-key="${esc(l.key)}">
+          <a class="block self-start rounded-3xl bg-muted p-4 sm:p-2" href="/products/${esc(l.handle)}" aria-hidden="true" tabindex="-1">${svg}</a>
+          <div class="flex min-w-0 flex-col gap-1 px-1 pb-1 sm:p-0">
             <h2 class="text-base leading-snug font-medium tracking-normal">${esc(p.name)}</h2>
-            <p class="text-sm break-words text-muted-foreground">${esc(describeDesign(l.design))}</p>
+            ${details}${stillOurs(l.design, p.words, l.handle)}
             <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-2">
               <label class="flex items-center gap-2 text-sm">Qty
                 <select class="select-chevron h-9 appearance-none rounded-3xl border border-transparent bg-input/50 pr-8 pl-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring md:text-sm" data-qty aria-label="Quantity of ${esc(p.name)}">${qty}</select>

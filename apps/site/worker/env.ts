@@ -19,6 +19,19 @@ export interface Env {
   RECOVERY_EMAILS?: string;
   /** Orders database (migrations/0001_orders.sql). Stage only for now; without it orders are only logged. */
   ORDERS?: D1Database;
-  /** Password for the private order list at /admin/orders. Without it /admin is a 404. */
+  /** Older shared-password sign-in for /admin. Ignored once Google sign-in is set up. */
   ADMIN_PASSWORD?: string;
+  /** WorkOS AuthKit sign-in for /admin (admin-auth.ts): the environment's client ID and API key. */
+  WORKOS_CLIENT_ID?: string;
+  WORKOS_API_KEY?: string;
+  /** The Google accounts allowed into /admin, comma separated. Kept as a secret because the repo is public. */
+  ADMIN_EMAILS?: string;
+  /** Optional key for signing admin sessions; defaults to one made from WORKOS_API_KEY. Changing it signs everyone out. */
+  ADMIN_SESSION_SECRET?: string;
+  /** Anthropic API key for Claude's SEO drafts in the store admin (docs/13). Without it the fields are hand-written only. */
+  ANTHROPIC_API_KEY?: string;
+  /** Model for SEO drafts. Default claude-opus-5-5. */
+  SEO_MODEL?: string;
+  /** Fine-grained GitHub token (Contents read and write on this repo) for Publish. Not used until the catalog handover. */
+  GITHUB_CATALOG_TOKEN?: string;
 }

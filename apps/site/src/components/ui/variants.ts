@@ -61,4 +61,15 @@ export const nativeSelectClass =
 export const cardClass =
   'group/card flex flex-col overflow-hidden rounded-4xl bg-card text-sm text-card-foreground shadow-md ring-1 ring-foreground/5';
 
+/**
+ * shadcn's Item (item, item-media variant icon, item-content, item-title,
+ * item-description), rounder to match the preset. For short feature lines.
+ */
+export const itemClass = 'group/item flex items-center gap-3 rounded-3xl text-sm';
+export const itemMediaIconClass =
+  "flex size-9 shrink-0 items-center justify-center self-start rounded-2xl border bg-muted text-foreground [&_svg:not([class*='size-'])]:size-4";
+export const itemContentClass = 'flex flex-1 flex-col gap-0.5';
+export const itemTitleClass = 'text-sm leading-snug font-medium';
+export const itemDescriptionClass = 'text-sm leading-normal text-muted-foreground text-balance';
+
 export { cn };

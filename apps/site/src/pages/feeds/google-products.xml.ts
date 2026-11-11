@@ -1,7 +1,7 @@
 // Google Merchant Center product feed (RSS 2.0 with the g: namespace), built with the
 // site. Merchant Center fetches it on a schedule once the owner adds it as a data source:
-// https://www.butterlu.com/feeds/google-products.xml. Butterlu sells two frames; each
-// design page is a variant of one of them, so items share item_group_id with their frame
+// https://www.butterlu.com/feeds/google-products.xml. Butterlu sells one frame; each
+// design page is a variant of it, so items share item_group_id with the frame
 // and differ by pattern (the design). Items share material, size, price and shipping.
 // docs/12-serp-leadership.md §3.1.
 import type { APIRoute } from 'astro';

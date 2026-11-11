@@ -37,6 +37,15 @@ export type ProductMedia =
 /** Keyed by product handle; first entry is the first photo after the live preview. */
 export const MEDIA: Record<string, MediaEntry[]> = {};
 
+/**
+ * Homepage photos of a finished frame in someone's home, in the order shown (up to
+ * HOME_PHOTO_SLOTS). Drop the files in src/assets/media/home/ and list them here, e.g.
+ * { kind: 'photo', file: 'home/01-mantel.jpg', alt: 'Grandma frame on a mantel' }.
+ * Until then stage shows placeholders and production hides the section.
+ */
+export const HOME_MEDIA: PhotoEntry[] = [];
+export const HOME_PHOTO_SLOTS = 3;
+
 const files = import.meta.glob<{ default: ImageMetadata }>('../assets/media/**/*.{jpg,jpeg,png,webp,avif}', { eager: true });
 
 function image(file: string): ImageMetadata {
@@ -55,4 +64,19 @@ export function resolveMedia(entries: MediaEntry[]): ProductMedia[] {
 
 export function productMedia(handle: string): ProductMedia[] {
   return resolveMedia(MEDIA[handle] ?? []);
+}
+
+export function homeMedia(): Extract<ProductMedia, { kind: 'photo' }>[] {
+  return HOME_MEDIA.slice(0, HOME_PHOTO_SLOTS).map((e) => ({ kind: 'photo', image: image(e.file), alt: e.alt }));
+}
+
+/** Every photo under src/assets/media/, as the path a page component names it by (e.g. "home/01-mantel.jpg"). */
+export const PHOTO_FILES: readonly string[] = Object.keys(files)
+  .map((k) => k.replace('../assets/media/', ''))
+  .filter((f) => !/-poster\.[a-z]+$/i.test(f))
+  .sort();
+
+/** One photo by its path under src/assets/media/; a missing file fails the build. */
+export function photo(file: string): ImageMetadata {
+  return image(file);
 }

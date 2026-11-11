@@ -99,9 +99,12 @@ const rangeClass = 'range w-full';
           <button type="button" class={cn(buttonVariants({ variant: 'link', size: 'sm' }), 'mt-1 px-0')} data-idea-undo hidden>Undo, Bring My Words Back</button>
         </div>
       )}
+      {/* Sides with no words start folded to one tap each, so the form shows only what the
+          design uses. The script opens a side when it gets words (an idea, a saved draft).
+          Without script nothing can be added to the cart, so nothing is lost by the fold. */}
       <div class="grid gap-3">
         {SIDES.map((side) => (
-          <div class="grid gap-1.5">
+          <div class="grid gap-1.5" data-side-row={side} hidden={!preset.sides[side]?.text}>
             <div class="flex items-baseline gap-1.5">
               <label for={`text-${side}`} class="text-sm font-medium">{SIDE_LABEL[side]}</label>
               {sideHelp[side] && <span class="text-sm text-muted-foreground"><span aria-hidden="true">· </span><span id={`help-${side}`}>{sideHelp[side]}</span></span>}
@@ -110,6 +113,14 @@ const rangeClass = 'range w-full';
             <p class="text-sm font-medium text-foreground/80 empty:hidden" id={`example-${side}`} data-example={side}>{exampleNote(side)}</p>
             <p class="text-sm text-amber-800 empty:hidden" id={`warn-${side}`} data-warn={side}></p>
           </div>
+        ))}
+      </div>
+      {/* Hidden until the script mounts it, like the ideas: the buttons only work with it. */}
+      <div class="mt-3 flex flex-wrap gap-2" data-side-adds hidden>
+        {SIDES.map((side) => (
+          <button type="button" class={buttonVariants({ variant: 'outline', size: 'sm' })} aria-controls={`text-${side}`} data-side-add={side} hidden={!!preset.sides[side]?.text}>
+            <Icon name="plus" /><span class="sr-only">Add Text to the </span>{SIDE_LABEL[side]} Side
+          </button>
         ))}
       </div>
     </fieldset>

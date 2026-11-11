@@ -79,12 +79,21 @@ test('the customizer previews new words and refuses a frame with none', async ({
   await top.fill('Best Nana Ever');
   await expect(screen.getByText('Best Nana Ever')).toBeVisible();
 
+  // Sides the design leaves empty start folded; each opens with one tap.
+  await expect(screen.getByRole('textbox', /^Right/)).toBeHidden();
+  await screen.getByRole('button', 'Add Text to the Right Side').click();
+  await expect(screen.getByRole('textbox', /^Right/)).toBeFocused();
+  await expect(screen.getByRole('button', 'Add Text to the Right Side')).toBeHidden();
+  await screen.getByRole('button', 'Add Text to the Left Side').click();
   for (const side of ['Top', 'Right', 'Bottom', 'Left']) await screen.getByRole('textbox', new RegExp(`^${side}`)).fill('');
   await expect(screen.getByRole('status').getByText('Add words to at least one side.')).toBeVisible();
   await expect(screen.getByRole('button', /^Add to Cart/)).toBeDisabled();
 
   await screen.getByRole('button', 'Start Over with Our Design').click();
   await expect(screen.getByRole('button', /^Add to Cart/)).toBeEnabled();
+  // Starting over folds the empty sides away again.
+  await expect(screen.getByRole('textbox', /^Right/)).toBeHidden();
+  await expect(screen.getByRole('button', 'Add Text to the Right Side')).toBeVisible();
 });
 
 // Stage runs with or without Stripe test keys, so these read the switch first.
@@ -165,6 +174,9 @@ test('the store editor and its API are private too', async ({ app }) => {
 
 test('a ready-made design goes into the cart as shown in one tap', async ({ app, screen }) => {
   await app.open('/collections/grandparent-frames');
+  // Every card offers both, even a design that prints example names (owner, 2026-11-11).
+  await expect(screen.getByRole('button', 'Add to Cart: Mimi Picture Frame, as shown')).toBeVisible();
+  await expect(screen.getByRole('link', 'Personalize: Mimi Picture Frame')).toBeVisible();
   await screen.getByRole('button', 'Add to Cart: Nana Picture Frame, as shown').click();
   await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
   await app.open('/cart');
@@ -208,6 +220,13 @@ test('the product page sells the design as shown or opens the editor', async ({ 
   await app.open('/products/mimi-picture-frame');
   await expect(screen.getByRole('button', 'Add to Cart as Shown')).toBeVisible();
   await expect(screen.getByText('As shown, it prints the example names.')).toBeVisible();
+  // Added as shown, the cart line spells out the words and says they are examples.
+  await screen.getByRole('button', 'Add to Cart as Shown').click();
+  await expect(screen.getByRole('status').getByText(/^Added to your cart/)).toBeVisible();
+  await app.open('/cart');
+  await expect(screen.getByText('Bottom: "Ava, Noah and Mia"', { exact: false })).toBeVisible();
+  await expect(screen.getByText('As shown, it prints the example names.')).toBeVisible();
+  await app.open('/products/mimi-picture-frame');
   await screen.getByRole('link', 'Personalize').click();
   await expect(screen.getByRole('heading', 'Mimi Picture Frame')).toBeVisible();
   await expect(screen.getByText('Example names: swap in yours.')).toBeVisible();
@@ -245,8 +264,10 @@ test('on a phone, every choice in the editor is what the order prints', async ({
   try {
     await app.open(EDITOR);
     await screen.getByRole('textbox', /^Top/).fill('Promoted to Nana & Pop');
+    await screen.getByRole('button', 'Add Text to the Right Side').click();
     await screen.getByRole('textbox', /^Right/).fill('Est. 2027');
     await screen.getByRole('textbox', /^Bottom/).fill('See You in June');
+    await screen.getByRole('button', 'Add Text to the Left Side').click();
     await screen.getByRole('textbox', /^Left/).fill('Love You Already');
     await expect(screen.getByText('See You in June')).toBeVisible();
 

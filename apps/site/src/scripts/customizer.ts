@@ -127,6 +127,39 @@ export function mountCustomizer(root: HTMLElement) {
     saveDraft(designed);
   }
 
+  // Sides with no words stay folded to an "Add Text" button until the shopper opens one.
+  // A side opens whenever it gets words; it folds again only on a fresh start (load,
+  // an idea, undo, reset), never while the shopper is typing in it.
+  const sideAdds = root.querySelector<HTMLElement>('[data-side-adds]');
+  const sideRow = (side: Side) => root.querySelector<HTMLElement>(`[data-side-row="${side}"]`);
+  const sideAdd = (side: Side) => root.querySelector<HTMLButtonElement>(`[data-side-add="${side}"]`);
+  // With no words anywhere, the design's first side stays open so there's a field to type in.
+  const firstSide = SIDES.find((s) => config.preset.sides[s]?.text) ?? 'top';
+  function syncSides(foldEmpty: boolean) {
+    const anyWords = SIDES.some((side) => value(`text-${side}`).trim());
+    for (const side of SIDES) {
+      const row = sideRow(side);
+      const add = sideAdd(side);
+      if (!row || !add) continue;
+      if (value(`text-${side}`).trim() || (!anyWords && side === firstSide)) row.hidden = false;
+      else if (foldEmpty && !row.contains(document.activeElement)) row.hidden = true;
+      add.hidden = !row.hidden;
+    }
+    if (sideAdds) sideAdds.hidden = SIDES.every((side) => !sideRow(side)?.hidden);
+  }
+  sideAdds?.addEventListener('click', (e) => {
+    const side = (e.target as Element | null)?.closest<HTMLButtonElement>('[data-side-add]')?.dataset.sideAdd as Side | undefined;
+    if (!side) return;
+    const row = sideRow(side);
+    if (row) row.hidden = false;
+    syncSides(false);
+    (field(`text-${side}`) as HTMLInputElement | null)?.focus();
+  });
+  const firstOpenInput = () => {
+    const side = SIDES.find((s) => !sideRow(s)?.hidden) ?? firstSide;
+    return field(`text-${side}`) as HTMLInputElement;
+  };
+
   // The draft: every field, kept on this device for 30 days, and dropped once the
   // form is back to our design or the frame goes in the cart.
   const DRAFT = `butterlu.draft.v1:${config.handle}`;
@@ -344,8 +377,9 @@ export function mountCustomizer(root: HTMLElement) {
     if (fitInput('bg-scale')) setFit(presetFit);
     edited();
     render();
+    syncSides(true);
     // The button hides itself now, so put focus somewhere useful and say what happened.
-    (field('text-top') as HTMLInputElement).focus();
+    firstOpenInput().focus();
     status.textContent = 'Back to our design.';
   }
 
@@ -433,6 +467,7 @@ export function mountCustomizer(root: HTMLElement) {
     customized = true;
     edited();
     render();
+    syncSides(true);
     if (undoIdea) undoIdea.hidden = false;
     status.textContent = 'Wording idea added. Edit any line to make it yours.';
   });
@@ -445,8 +480,9 @@ export function mountCustomizer(root: HTMLElement) {
     undoIdea.hidden = true;
     edited();
     render();
+    syncSides(true);
     status.textContent = 'Your words are back.';
-    (field('text-top') as HTMLInputElement).focus();
+    firstOpenInput().focus();
   });
   // Typing makes the current words the shopper's own, so there's nothing to undo.
   form.addEventListener('input', () => {
@@ -515,10 +551,14 @@ export function mountCustomizer(root: HTMLElement) {
   // Words left here earlier come back. The preview redraws from them at once.
   const restored = restoreDraft();
   restoring = false;
+  syncSides(true);
   if (restored) {
     render();
-    status.dataset.kind = 'restored';
-    status.textContent = 'Your changes from last time are back.';
+    // A draft with no words keeps render's "Add words" message instead.
+    if (current) {
+      status.dataset.kind = 'restored';
+      status.textContent = 'Your changes from last time are back.';
+    }
   }
   // The server drew the preset with the print renderer's metrics; redraw once the
   // fonts are in so later edits and the first frame agree.

@@ -12,7 +12,7 @@ import { buttonVariants, cn } from '../../components/ui/variants';
 import { frameSvg } from '../../lib/frame-svg';
 import { placementsAtBuild } from '../../lib/layout-build';
 import { occasionCount, occasionHref, recipientCount, recipientHref, tagsFor } from '../../catalog/taxonomy';
-import { COLLECTIONS, CURRENCY, DESIGNS, PRODUCTS, type Product, SHOP, collectionProducts, formatPrice, frameFor, isFrame, readyAsShown } from '../../catalog/products';
+import { COLLECTIONS, CURRENCY, DESIGNS, PRODUCTS, type Product, SHOP, collectionProducts, formatPrice, frameFor, isFrame } from '../../catalog/products';
 
 export function getStaticPaths() {
   return PRODUCTS.map((product) => ({ params: { handle: product.handle }, props: { product } }));
@@ -41,11 +41,11 @@ const faq = productFaq(product.handle);
 // The page sells the design as shown and hands changes to its own editor screen
 // (/products/<handle>/personalize), so photos, questions and, later, reviews have room
 // here. Both buttons sit side by side, Personalize first on every design: "anything can
-// be personalized" (owner, 2026-11-11). The blank frame only opens the editor.
+// be personalized" (owner, 2026-11-11), and Add to Cart on every page, the blank frame's
+// too, since the design as shown may fit (owner, 2026-11-11). A design with example
+// names or a year says so beside the button, and again in the cart.
 const media = productMedia(product.handle);
 const preview = frameSvg(product.preset, placementsAtBuild(product.preset), { idPrefix: 'pdp', label: `${product.name}, as shown` });
-const frameOnly = isFrame(product);
-const quick = !frameOnly && readyAsShown(product);
 const asShown = asShownNote(Object.values(product.preset.sides).flatMap((s) => (s ? [s.text] : [])));
 const price = formatPrice(product.priceCents);
 const personalizeHref = `/products/${product.handle}/personalize`;
@@ -152,40 +152,34 @@ const jsonLd = [
         <p class="mt-2 text-muted-foreground">{product.intro}</p>
       </div>
       <div class="grid gap-2">
-        {frameOnly ? (
-          <a class={cn(buttonVariants({ size: 'xl' }), 'w-full')} href={personalizeHref} data-personalize="product" data-handle={product.handle}>
-            <Icon name="pen-line" />Personalize
-          </a>
-        ) : (
-          <div class="grid grid-cols-2 gap-2">
-            {(['edit', 'add'] as const).map((k, i) =>
-              k === 'add' ? (
-                <button
-                  type="button"
-                  class={cn(buttonVariants({ size: 'xl', variant: i === 0 ? 'default' : 'outline' }), 'h-auto min-h-12 py-2 whitespace-normal')}
-                  data-add-as-shown={product.handle}
-                  data-from="product"
-                  data-spec={JSON.stringify(product.preset)}
-                  aria-describedby={asShown ? 'as-shown-note' : undefined}
-                >
-                  {quick ? `Add to Cart · ${price}` : 'Add to Cart as Shown'}
-                </button>
-              ) : (
-                <a
-                  class={cn(buttonVariants({ size: 'xl', variant: i === 0 ? 'default' : 'outline' }), 'h-auto min-h-12 py-2 whitespace-normal')}
-                  href={personalizeHref}
-                  data-personalize="product"
-                  data-handle={product.handle}
-                >
-                  <Icon name="pen-line" />Personalize
-                </a>
-              ),
-            )}
-          </div>
-        )}
-        {!frameOnly && asShown && <p id="as-shown-note" class="text-sm text-muted-foreground">{asShown}</p>}
+        <div class="grid grid-cols-2 gap-2">
+          {(['edit', 'add'] as const).map((k, i) =>
+            k === 'add' ? (
+              <button
+                type="button"
+                class={cn(buttonVariants({ size: 'xl', variant: i === 0 ? 'default' : 'outline' }), 'h-auto min-h-12 py-2 whitespace-normal')}
+                data-add-as-shown={product.handle}
+                data-from="product"
+                data-spec={JSON.stringify(product.preset)}
+                aria-describedby={asShown ? 'as-shown-note' : undefined}
+              >
+                {asShown ? 'Add to Cart as Shown' : `Add to Cart · ${price}`}
+              </button>
+            ) : (
+              <a
+                class={cn(buttonVariants({ size: 'xl', variant: i === 0 ? 'default' : 'outline' }), 'h-auto min-h-12 py-2 whitespace-normal')}
+                href={personalizeHref}
+                data-personalize="product"
+                data-handle={product.handle}
+              >
+                <Icon name="pen-line" />Personalize
+              </a>
+            ),
+          )}
+        </div>
+        {asShown && <p id="as-shown-note" class="text-sm text-muted-foreground">{asShown}</p>}
         {/* Rendered from the start, so screen readers announce the update. */}
-        {!frameOnly && <p class="text-sm font-medium empty:hidden" role="status" data-added-status></p>}
+        <p class="text-sm font-medium empty:hidden" role="status" data-added-status></p>
       </div>
       <ul class="grid gap-2 text-sm text-muted-foreground [&_svg]:shrink-0">
         <li class="flex items-center gap-2"><Icon name="clock" />{SHOP.dispatch}</li>

@@ -591,9 +591,10 @@ export function frameFor(_p: Product): Product {
 export const isFrame = (p: Product) => p.kind === 'frame';
 
 /**
- * Designs whose wording needs no names or dates, so a card can add them to the cart
- * exactly as shown in one tap. The rest carry sample names or years and open the
- * editor instead. PROPOSED pick (2026-11-11); the owner can move any design.
+ * Designs whose wording needs no names or dates. Since 2026-11-11 every card and
+ * product page offers Add to Cart (owner's call), so the storefront no longer reads
+ * this list; the product page labels its button from the example-name check instead.
+ * The catalog doc and the admin's "ready as shown" box still carry it.
  */
 const READY_AS_SHOWN = new Set([
   'father-of-the-bride-frame',

@@ -1,10 +1,22 @@
 ---
 import Layout from '../Layout.astro';
 import { PRODUCTS, SHOP } from '../catalog/products';
+import { productIdeas } from '../catalog/copy';
 import { buttonVariants, cn } from '../components/ui/variants';
 
 // Names and prices for display only. The checkout Worker prices every line itself.
-const catalog = Object.fromEntries(PRODUCTS.map((p) => [p.handle, { name: p.name, priceCents: p.priceCents }]));
+// `words` are our words per side (the design's and its wording ideas'), so a line still
+// printing our example names or year can say so.
+const ourWords = (p: (typeof PRODUCTS)[number]) => {
+  const words: Record<string, string[]> = {};
+  const add = (side: string, text: string | undefined) => {
+    if (text && !words[side]?.includes(text)) (words[side] ??= []).push(text);
+  };
+  for (const [side, t] of Object.entries(p.preset.sides)) add(side, t?.text);
+  for (const idea of productIdeas(p.handle)) for (const [side, text] of Object.entries(idea)) add(side, text);
+  return words;
+};
+const catalog = Object.fromEntries(PRODUCTS.map((p) => [p.handle, { name: p.name, priceCents: p.priceCents, words: ourWords(p) }]));
 ---
 <Layout title="Your Cart | Butterlu" description="Review your personalized frames and check out." noindex>
   <h1 class="text-2xl md:text-3xl">Your cart</h1>

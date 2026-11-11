@@ -37,9 +37,26 @@ jobs:
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version-file: package.json
-      - run: bun install --frozen-lockfile
-      - run: bunx e2e-web install chromium --with-deps
+      - name: Install packages
+        run: |
+          for i in 1 2 3; do bun install --frozen-lockfile && break; [ "$i" = 3 ] && exit 1; sleep $((i * 10)); done
+      # The test browser itself comes from Playwright's CDN, not Ubuntu's mirrors.
+      - name: Install the test browser (same as stage.yml)
         working-directory: apps/site
+        run: |
+          for i in 1 2 3; do bunx e2e-web install chromium && break; [ "$i" = 3 ] && exit 1; sleep $((i * 10)); done
+          # GitHub's Ubuntu image ships Google Chrome, so the system libraries Chromium needs
+          # are already there. apt (Ubuntu's mirrors, which go down on their own schedule)
+          # runs only for a library that is actually missing, and never for long.
+          bins=$(find "${PLAYWRIGHT_BROWSERS_PATH:-$HOME/.cache/ms-playwright}" -type f \( -name chrome -o -name chrome-headless-shell \) 2>/dev/null || true)
+          missing=$(for b in $bins; do ldd "$b"; done 2>/dev/null | grep 'not found' | sort -u || true)
+          if [ -z "$bins" ] || [ -n "$missing" ]; then
+            echo "Chromium is missing system libraries:"
+            echo "$missing"
+            timeout 600 bunx e2e-web install chromium --with-deps
+          else
+            echo "Chromium has every system library it needs; skipping apt."
+          fi
       - id: deploy
         name: Validate, deploy, smoke-test production
         working-directory: apps/site

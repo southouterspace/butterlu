@@ -1,7 +1,7 @@
 // POST /api/checkout. The cart lives in the browser, so nothing in the request is
 // trusted: each line is priced from the catalog and its design re-checked with the
-// same rules the frame MCP prints from. The design rides to Stripe as line-item
-// product metadata, where the webhook and the MCP's plan_site_order read it back.
+// same rules the print file is made from. The design rides to Stripe as line-item
+// product metadata, where the webhook reads it back.
 import { describeDesign, designToMetadata, parseDesign } from '@butterlu/frame/design';
 import type { FrameSpec } from '@butterlu/frame';
 import { CURRENCY, PRODUCTS } from '../src/catalog/products';

@@ -53,7 +53,7 @@ approves. Each background's scale on a frame must be adjustable with proper cont
   any `/admin` page or `/api/admin/*` call.
 - **Background scale in the design.** `FrameSpec` gains optional `backgroundScale` (1 to 3,
   where 1 is today's fill) and `backgroundOffset` (x and y, each -1 to 1, used only when
-  zoomed). Both are optional, so existing orders, Stripe metadata and the frame MCP keep
+  zoomed). Both are optional, so existing orders, Stripe metadata and print files keep
   working. The print PDF, the SVG preview and the raster cards apply the same maths.
   Shrinking a pattern below 100% would need the file to tile without a seam; that waits
   on Asli saying which backgrounds are seamless tiles.

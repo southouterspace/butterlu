@@ -32,7 +32,7 @@ describe('parseDesign', () => {
     expect(r.errors.join('\n')).toContain('unknown font');
   });
 
-  test('needs text on at least one side, like render_frame', () => {
+  test('needs text on at least one side', () => {
     const r = parseDesign({ shape: 'scalloped', backgroundId: 'blue-toile', sides: { top: { text: '   ', fontId: 'great-vibes' } } });
     expect(r).toEqual({ ok: false, errors: ['give text for at least one side'] });
   });

@@ -1,6 +1,6 @@
 // Live customizer on the product page. Reads the form into a FrameSpec, checks it
 // with the shared design rules, fits the text with the shared layout rules, and
-// redraws the preview. The spec it adds to the cart is what the frame MCP prints.
+// redraws the preview. The spec it adds to the cart is what the print file is made from.
 import {
   BACKGROUND_SCALE,
   type BackgroundFit,

@@ -14,7 +14,7 @@ on Etsy (docs/08): many listings for one frame, each worded for a recipient and 
 
 - **Two shapes:** scalloped and rounded rectangle (`packages/frame` SHAPES).
 - **44 backgrounds:** the list in `assets/`, the updated set for the site.
-- **Text on any side**, a font per side, an optional text colour. These are the frame MCP's
+- **Text on any side**, a font per side, an optional text colour. These are the
   FrameSpec rules (`packages/frame/src/design.ts`), so the site, checkout and print files
   share one rulebook.
 - **Ships without a photo** and sells as designed. Changing the wording is optional.
@@ -64,7 +64,7 @@ quantity and FrameSpec.
   that message.
 - `GET /api/checkout/status` reports whether checkout is on, and in which mode.
 
-## Order flow into the frame MCP
+## Order flow
 
 Stripe `checkout.session.completed` → `POST /api/stripe/webhook`:
 
@@ -80,23 +80,21 @@ Stripe `checkout.session.completed` → `POST /api/stripe/webhook`:
    secret; without it `/admin` is a 404. Cloudflare Access replaces it once butterlu.com
    is on the account.
 5. Next steps:
-   - An agent calls the frame MCP: `plan_site_order` with the line's metadata, then
-     `render_frame` for the print PDF.
+   - Render the print PDF from the line's design with `@butterlu/frame/pdf`. (The frame
+     MCP server that was meant to do this was removed on 2026-11-11.)
    - The proof goes to Asli for review, then to print.
-
-The frame MCP now requires a bearer token (`MCP_TOKEN`, fail-closed).
 
 ## Agent-run operations
 
 - **Catalog updates:** an agent edits `products.ts`, reruns the line-up script and commits
   to `main`. Stage is the review surface. Nothing reaches production without the owner's
   Release.
-- **Order handling:** the webhook queues the order, and an agent plans and renders it
-  through the MCP. A human approves each proof until the fonts and backgrounds are final.
+- **Order handling:** the webhook queues the order, and an agent renders it
+  with `@butterlu/frame/pdf`. A human approves each proof until the fonts and backgrounds are final.
 - **Customer messages:** an agent drafts replies (shipping, wording fixes) for approval.
   Sending uses Resend later, and only after the owner says yes.
 - **Feeds for agents:** `/products.json` lists every page, price and preset in the
-  FrameSpec shape `render_frame` takes.
+  FrameSpec shape the print renderer takes.
 
 ## Defaults to confirm (customers will notice these)
 
@@ -122,8 +120,6 @@ Etsy OAuth. The line-up ranks by favourites and listing counts instead.
   (deployment branches: `main` only), never a repository secret. It must be a Butterlu
   Account API token scoped to **Specified Workers: `butterlu-site-stage`**, role **Editor**,
   so code running on stage can never deploy production (`apps/site/README.md`, step 4a).
-- Set up the frame MCP: its print PDFs go to Google Drive, not R2 (`apps/frame-mcp/README.md`,
-  Google Drive), and `MCP_TOKEN` is set by the same setup script.
 - Set Stripe **test** keys on the site Worker: `STRIPE_SECRET_KEY` and
   `STRIPE_WEBHOOK_SECRET`. Point a test webhook at `/api/stripe/webhook`.
 - Confirm the defaults above, then mark G2 decided.
@@ -139,7 +135,6 @@ On `main` and passing root `bun run validate`:
 - worker unit tests (13)
 - store e2e (`apps/site/tests/store.e2e.ts`) plus smoke
 - frame package tests
-- frame MCP validate
 
 The repo now works push-to-main (CLAUDE.md 6a). Next steps:
 
@@ -154,7 +149,7 @@ The repo now works push-to-main (CLAUDE.md 6a). Next steps:
    - the owner's answers on the defaults above
    - Asli's real fonts
    - the D1 order table
-   - the agent step that runs `plan_site_order` and `render_frame` for each paid order
+   - the step that renders the print PDF for each paid order
 4. Before any push, have a second agent review the diff.
 
 Limits for whoever picks this up:

@@ -26,13 +26,13 @@ repo is for.
 Bun workspaces (`apps/*`, `packages/*`), one root `bun.lock`, `bun install` at the root.
 
 - `apps/site/` is the butterlu.com storefront (Astro + Worker), the walking skeleton from `docs/07`.
-- `apps/frame-mcp/` is the MCP server that renders sublimation print files for the frames. In progress.
-- `packages/frame/` is the shared frame geometry, safe zones and text fitting. The MCP server uses it now and the site's editor will later.
+- `packages/frame/` is the shared frame geometry, safe zones, text fitting and the print PDF renderer (`@butterlu/frame/pdf`). The site uses it.
+- The frame MCP server (`apps/frame-mcp/`, a Cloudflare Worker for Etsy order fulfilment) was removed on 2026-11-11 at the owner's request. It is in git history if it is ever wanted back.
 - `assets/`, `docs/`, `plans/`, `prompts/` and `scripts/` stay at the root. They are business data and research, not workspaces.
 
 A new tool goes in `apps/<name>`. Shared code goes in `packages/<name>`. Each workspace has its own `validate` script, and root `bun run validate` runs all of them, so the push gate covers a workspace the day it exists.
 
-There is no Turborepo or Nx. Two apps and one package do not need a task cache, and `bun run --filter` already fans out. Revisit if validate time becomes the bottleneck. Bun's `catalog` is also skipped: only one workspace has dependencies so far, so there is no shared version to centralize.
+There is no Turborepo or Nx. One app and one package do not need a task cache, and `bun run --filter` already fans out. Revisit if validate time becomes the bottleneck. Bun's `catalog` is also skipped: only one workspace has dependencies so far, so there is no shared version to centralize.
 
 ## Layout
 

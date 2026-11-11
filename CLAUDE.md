@@ -39,7 +39,8 @@ search-intent pages, each a preset of the one configurable frame, not separate p
 Options are in `plans/product-options.json`. The opening takes a 4x6 photo (owner, not
 yet measured). The 44 uploaded backgrounds are the website's set; Etsy's numbered colour
 chart is not carried over to the site. Etsy orders still name chart numbers (1–41,
-`assets/etsy-color-chart/`), so fulfilment maps them in `apps/frame-mcp/src/etsy-color-chart.json`:
+`assets/etsy-color-chart/`), so fulfilment maps them in `assets/etsy-color-chart/chart-to-background.json`
+(`scripts/etsy-color-chart.mjs`):
 21 chart colours match a background file, 20 have no file yet. The two plain rectangles in the drawing are out of scope for now. About
 80 Etsy listings are other products (brag boards, a $62 large frame, car coasters and
 charms, add-ons).
@@ -178,13 +179,13 @@ Loops are `L1`–`L8`, gates `G1`–`G5`. Use the same identifiers in manifests,
 Bun workspaces (`apps/*`, `packages/*`), one root `bun.lock`, `bun install` at the root.
 
 - `apps/site/` is the butterlu.com storefront (Astro + Worker), the walking skeleton from `docs/07`.
-- `apps/frame-mcp/` is the MCP server that renders sublimation print files for the frames. In progress.
-- `packages/frame/` is the shared frame geometry, safe zones and text fitting. The MCP server uses it now and the site's editor will later.
+- `packages/frame/` is the shared frame geometry, safe zones, text fitting and the print PDF renderer (`@butterlu/frame/pdf`). The site uses it.
+- The frame MCP server (`apps/frame-mcp/`, a Cloudflare Worker for Etsy order fulfilment) was removed on 2026-11-11 at the owner's request. It is in git history if it is ever wanted back.
 - `assets/`, `docs/`, `plans/`, `prompts/` and `scripts/` stay at the root. They are business data and research, not workspaces.
 
 A new tool goes in `apps/<name>`. Shared code goes in `packages/<name>`. Each workspace has its own `validate` script, and root `bun run validate` runs all of them, so the push gate covers a workspace the day it exists.
 
-There is no Turborepo or Nx. Two apps and one package do not need a task cache, and `bun run --filter` already fans out. Revisit if validate time becomes the bottleneck. Bun's `catalog` is also skipped: only one workspace has dependencies so far, so there is no shared version to centralize.
+There is no Turborepo or Nx. One app and one package do not need a task cache, and `bun run --filter` already fans out. Revisit if validate time becomes the bottleneck. Bun's `catalog` is also skipped: only one workspace has dependencies so far, so there is no shared version to centralize.
 
 ---
 

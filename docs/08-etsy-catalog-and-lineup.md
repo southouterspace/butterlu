@@ -14,7 +14,7 @@ What was decided, measured and built on 2026-10-12, so the next session starts f
 - The 44 uploaded backgrounds are the set. Etsy's numbered colour chart is not carried
   over to the website. (2026-11-04: Etsy orders still arrive with chart numbers, so the
   chart is in `assets/etsy-color-chart/` and mapped for fulfilment in
-  `apps/frame-mcp/src/etsy-color-chart.json`. Backgrounds 23–43 are chart colours in
+  `assets/etsy-color-chart/chart-to-background.json`. Backgrounds 23–43 are chart colours in
   reverse order; 20 chart colours have no file.)
 - The opening takes a 4x6 photo. The owner believes this, but it has not been measured.
 - The two plain rectangles in `assets/frame-drawing.pdf` are out of scope for now.

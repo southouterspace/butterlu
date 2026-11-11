@@ -1,5 +1,5 @@
 // POST /api/stripe/webhook. Verifies Stripe's signature, then turns each paid line
-// back into the FrameSpec the frame MCP prints from, and saves the order to D1
+// back into the FrameSpec the print file is made from, and saves the order to D1
 // (orders.ts) for the private order list. docs/10 has the next steps (proof
 // review, print files).
 import { describeDesign, designFromMetadata } from '@butterlu/frame/design';

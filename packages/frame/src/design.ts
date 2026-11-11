@@ -1,5 +1,5 @@
 // A customer's design: the FrameSpec the site's customizer builds, checked the
-// same way everywhere it travels (browser, checkout Worker, Stripe, frame MCP).
+// same way everywhere it travels (browser, checkout Worker, Stripe, print PDF).
 // No photo travels with it: the frame ships empty and the buyer adds their own.
 import {
   BACKGROUNDS,
@@ -99,7 +99,7 @@ export function parseFit(raw: unknown, shape: ShapeId | undefined, errors: strin
 /**
  * Checks a design from an untrusted source and returns it normalised: whitespace
  * collapsed, empty sides dropped, colours lower-cased. At least one side must
- * carry text, the same rule render_frame applies.
+ * carry text, the same rule the print renderer applies.
  */
 export function parseDesign(input: unknown): DesignResult {
   const errors: string[] = [];

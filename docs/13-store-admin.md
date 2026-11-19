@@ -139,6 +139,9 @@ the SEO fields are hand-written only.
 6. Waiting on 5: Publish to git, with a diff of what will change.
 7. Done: WorkOS sign-in with Google, for Justin and Asli only.
 8. Done: background size and position on each design (reads the scale task's `backgroundFit`).
+   Only here: the shopper's editor has no control for it, and checkout takes the fit from
+   the design, so a design keeps its fit on its own background and prints any other
+   background at 100%, centred (Justin, 2026-11-19).
 
 ## Open questions
 

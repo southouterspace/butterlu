@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { MAX_SIDE_CHARS, describeDesign, designFromMetadata, designKey, designToMetadata, parseDesign } from '../src/design';
+import { MAX_SIDE_CHARS, describeDesign, designFromMetadata, designKey, designToMetadata, parseDesign, shopperFit } from '../src/design';
 import { FONTS, FONT_IDS } from '../src/index';
 
 const good = {
@@ -118,4 +118,17 @@ test('describeDesign names the shape, background and every line', () => {
 test('the font list is shared and every id is unique', () => {
   expect(new Set(FONT_IDS).size).toBe(FONTS.length);
   expect(FONT_IDS).toContain('great-vibes');
+});
+
+describe('shopperFit', () => {
+  const preset = { backgroundId: 'blue-toile' as const, backgroundFit: { scale: 1.5, x: 0.5, y: -0.5 } };
+  test("keeps the design's own fit on its own background", () => {
+    expect(shopperFit(preset, 'rounded-rectangle', 'blue-toile')?.scale).toBe(1.5);
+  });
+  test('any other background prints at 100%, centred', () => {
+    expect(shopperFit(preset, 'rounded-rectangle', 'white-linen')).toBeUndefined();
+  });
+  test('a design with no fit gives none', () => {
+    expect(shopperFit({ backgroundId: 'blue-toile' }, 'scalloped', 'blue-toile')).toBeUndefined();
+  });
 });

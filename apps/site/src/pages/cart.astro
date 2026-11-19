@@ -18,9 +18,20 @@ const ourWords = (p: (typeof PRODUCTS)[number]) => {
   return words;
 };
 // `asShown` is the design's own key: a line that matches it wasn't personalized, so the
-// cart shows it without the details (owner, 2026-11-11).
+// cart shows it without the details (owner, 2026-11-11). `fit` is the design's own
+// background and its size and position (set in admin), so a saved line shows what
+// checkout will print even if the design's fit changed after it went in the cart.
 const catalog = Object.fromEntries(
-  PRODUCTS.map((p) => [p.handle, { name: p.name, priceCents: p.priceCents, words: ourWords(p), asShown: designKey(p.preset) }]),
+  PRODUCTS.map((p) => [
+    p.handle,
+    {
+      name: p.name,
+      priceCents: p.priceCents,
+      words: ourWords(p),
+      asShown: designKey(p.preset),
+      fit: { backgroundId: p.preset.backgroundId, ...(p.preset.backgroundFit ? { backgroundFit: p.preset.backgroundFit } : {}) },
+    },
+  ]),
 );
 ---
 <Layout title="Your Cart | Butterlu" description="Review your personalized frames and check out." noindex>

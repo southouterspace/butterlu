@@ -264,31 +264,12 @@ test('a ready-made design goes into the cart as shown in one tap', async ({ app,
   await expect(screen.getByText('Top: "I Love My Nana"', { exact: false })).toBeHidden();
 });
 
-test('the background can be made bigger and moved, from the keyboard, and the cart keeps it', async ({ app, screen }) => {
+test('background size and position are not the shopper\'s to change', async ({ app, screen }) => {
+  // They are set per design in the store admin; the editor offers no control for them.
   await app.open(EDITOR);
-  await screen.getByText('Background Size & Position').click();
-  const size = screen.getByRole('slider', 'Size');
-  const across = screen.getByRole('slider', 'Side to Side');
-  // At its smallest the sheet just fills the frame's width, so it can't move sideways yet.
-  await expect(across).toBeDisabled();
-  await expect(screen.getByText('Make it bigger first to move it side to side.')).toBeVisible();
-
-  await size.press('End');
-  await expect(size).toHaveAttribute('aria-valuetext', '200 percent');
-  await expect(across).toBeEnabled();
-  await across.press('Home');
-  await expect(across).toHaveAttribute('aria-valuetext', '100 percent toward the left');
-  await expect(screen.getByText('Zoomed to 200%, toward the left')).toBeVisible();
-
-  await screen.getByRole('button', /^Add to Cart/).click();
-  await expect(screen.getByText('Added to your cart.', { exact: false })).toBeVisible();
-  await screen.getByRole('button', 'Reset Size & Position').click();
-  await expect(screen.getByRole('status').getByText('Background size and position reset.')).toBeVisible();
-  await expect(size).toHaveAttribute('aria-valuetext', '100 percent');
-  await expect(screen.getByRole('button', 'Reset Size & Position')).toBeHidden();
-
-  await app.open('/cart');
-  await expect(screen.getByText('(zoomed to 200%, toward the left)', { exact: false })).toBeVisible();
+  await expect(screen.getByRole('button', /^Add to Cart/)).toBeVisible();
+  await expect(screen.getByText('Background Size & Position')).toBeHidden();
+  await expect(screen.getByRole('slider', 'Size')).toBeHidden();
 });
 
 test('the product page sells the design as shown or opens the editor', async ({ app, screen }) => {
@@ -364,11 +345,6 @@ test('on a phone, every choice in the editor is what the order prints', async ({
     await screen.getByRole('button', 'Done').click();
     await expect(screen.getByRole('dialog', 'Background')).toBeHidden();
 
-    await screen.getByText('Background Size & Position').click();
-    await screen.getByRole('button', 'Make bigger').click();
-    await screen.getByRole('button', 'Make bigger').click();
-    await expect(screen.getByRole('slider', 'Size')).toHaveAttribute('aria-valuetext', '120 percent');
-
     await screen.getByText('Fonts & Color').click();
     await screen.getByRole('combobox', 'Right Font').selectOption('Montserrat');
     await screen.getByRole('combobox', 'Text Color').selectOption('Navy');
@@ -377,7 +353,7 @@ test('on a phone, every choice in the editor is what the order prints', async ({
     await screen.getByRole('link', 'View Cart & Check Out').click();
     await expect(screen.getByRole('heading', NAME)).toBeVisible();
     await expect(
-      screen.getByText('Rounded frame · Blue Toile (zoomed to 120%) · Top: "Promoted to Nana & Pop" · Right: "Est. 2027" · Bottom: "See You in June" · Left: "Love You Already"'),
+      screen.getByText('Rounded frame · Blue Toile · Top: "Promoted to Nana & Pop" · Right: "Est. 2027" · Bottom: "See You in June" · Left: "Love You Already"'),
     ).toBeVisible();
 
     await screen.getByRole('button', 'Check Out').click();
@@ -392,7 +368,6 @@ test('on a phone, every choice in the editor is what the order prints', async ({
         bottom: { text: 'See You in June', fontId: 'montserrat-semibold', color: navy },
         left: { text: 'Love You Already', fontId: 'playfair-display-bold', color: navy },
       },
-      backgroundFit: { scale: 1.2, x: 0, y: 0 },
     };
     expect(posted?.items).toEqual([{ handle: 'grandparent-pregnancy-announcement-frame', quantity: 1, design }]);
     // The checkout Worker accepts it unchanged, and the paid order reads it back the same.

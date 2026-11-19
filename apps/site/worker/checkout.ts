@@ -1,8 +1,9 @@
 // POST /api/checkout. The cart lives in the browser, so nothing in the request is
 // trusted: each line is priced from the catalog and its design re-checked with the
-// same rules the print file is made from. The design rides to Stripe as line-item
+// same rules the print file is made from. Background size and position come from the
+// product's own design (admin sets them), never from the cart. The design rides to Stripe as line-item
 // product metadata, where the webhook reads it back.
-import { describeDesign, designToMetadata, parseDesign } from '@butterlu/frame/design';
+import { describeDesign, designToMetadata, parseDesign, shopperFit } from '@butterlu/frame/design';
 import type { FrameSpec } from '@butterlu/frame';
 import { CURRENCY, PRODUCTS } from '../src/catalog/products';
 import { currentHandle } from '../src/catalog/retired';
@@ -38,9 +39,14 @@ export function checkCart(body: unknown): CartResult {
     if (typeof quantity !== 'number' || !Number.isInteger(quantity) || quantity < 1 || quantity > MAX_QUANTITY) {
       return void errors.push(`line ${i + 1}: quantity must be 1 to ${MAX_QUANTITY}`);
     }
-    const design = parseDesign(item.design);
+    // Any size and position the cart sent are dropped before the check, never judged.
+    const given = item.design;
+    const sent = given && typeof given === 'object' && !Array.isArray(given) ? { ...(given as Record<string, unknown>), backgroundFit: undefined } : given;
+    const design = parseDesign(sent);
     if (!design.ok) return void errors.push(...design.errors.map((e) => `line ${i + 1}: ${e}`));
-    lines.push({ handle: product.handle, name: product.name, quantity, unitAmount: product.priceCents, design: design.spec });
+    const spec = design.spec;
+    const fit = shopperFit(product.preset, spec.shape, spec.backgroundId);
+    lines.push({ handle: product.handle, name: product.name, quantity, unitAmount: product.priceCents, design: fit ? { ...spec, backgroundFit: fit } : spec });
   });
   return errors.length ? { ok: false, errors } : { ok: true, lines };
 }

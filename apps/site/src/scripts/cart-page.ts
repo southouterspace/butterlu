@@ -1,11 +1,15 @@
-import { SIDES, describeDesign, designKey } from '@butterlu/frame/design';
+import type { FrameSpec } from '@butterlu/frame';
+import { SIDES, describeDesign, designKey, shopperFit } from '@butterlu/frame/design';
 import { asShownNote } from '../catalog/example-names';
 import { frameSvg } from '../lib/frame-svg';
 import { MAX_QUANTITY, cartLines, clearCart, onCartChange, removeLine, setQuantity } from './cart';
 import { fontsReady, placementsInBrowser } from './measure';
 import { funnelId, track } from './track';
 
-type Catalog = Record<string, { name: string; priceCents: number; words?: Record<string, string[]>; asShown?: string }>;
+type Catalog = Record<
+  string,
+  { name: string; priceCents: number; words?: Record<string, string[]>; asShown?: string; fit?: Pick<FrameSpec, 'backgroundId' | 'backgroundFit'> }
+>;
 const money = (c: number) => `$${(c / 100).toFixed(2)}`;
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -16,6 +20,14 @@ function stillOurs(design: { sides: Partial<Record<string, { text: string } | un
   return note
     ? `<p class="text-sm font-medium text-foreground/80"><span>${esc(note)}</span> <a class="underline underline-offset-4" href="/products/${esc(handle)}/personalize">Personalize</a></p>`
     : '';
+}
+
+// Background size and position are the design's, as checkout prints them, whatever a
+// line saved earlier carries.
+function asPrinted(design: FrameSpec, fit: Catalog[string]['fit']): FrameSpec {
+  const { backgroundFit: _saved, ...rest } = design;
+  const f = fit ? shopperFit(fit, design.shape, design.backgroundId) : undefined;
+  return f ? { ...rest, backgroundFit: f } : rest;
 }
 
 export function mountCart(root: HTMLElement) {
@@ -38,19 +50,20 @@ export function mountCart(root: HTMLElement) {
     list.innerHTML = lines
       .map((l, i) => {
         const p = catalog[l.handle]!;
-        const svg = frameSvg(l.design, placementsInBrowser(l.design), { idPrefix: `line-${i}`, photoHint: false, size: 'card' });
+        const design = asPrinted(l.design, p.fit);
+        const svg = frameSvg(design, placementsInBrowser(design), { idPrefix: `line-${i}`, photoHint: false, size: 'card' });
         const qty = Array.from({ length: MAX_QUANTITY }, (_, n) => n + 1)
           .map((n) => `<option value="${n}"${n === l.quantity ? ' selected' : ''}>${n}</option>`)
           .join('');
         // A line as designed shows no details; a personalized one lists what changed hands.
-        const personalized = p.asShown !== designKey(l.design);
-        const details = personalized ? `<p class="text-sm break-words text-muted-foreground">${esc(describeDesign(l.design))}</p>` : '';
+        const personalized = p.asShown !== designKey(design);
+        const details = personalized ? `<p class="text-sm break-words text-muted-foreground">${esc(describeDesign(design))}</p>` : '';
         // Phones stack the card so the mockup shows full width; from sm up it sits beside.
         return `<li class="grid gap-4 rounded-4xl bg-card p-3 shadow-sm ring-1 ring-foreground/5 sm:grid-cols-[9rem_minmax(0,1fr)] sm:p-4" data-key="${esc(l.key)}">
           <a class="block self-start rounded-3xl bg-muted p-4 sm:p-2" href="/products/${esc(l.handle)}" aria-hidden="true" tabindex="-1">${svg}</a>
           <div class="flex min-w-0 flex-col gap-1 px-1 pb-1 sm:p-0">
             <h2 class="text-base leading-snug font-medium tracking-normal">${esc(p.name)}</h2>
-            ${details}${stillOurs(l.design, p.words, l.handle)}
+            ${details}${stillOurs(design, p.words, l.handle)}
             <div class="mt-auto flex flex-wrap items-center justify-between gap-3 pt-2">
               <label class="flex items-center gap-2 text-sm">Qty
                 <select class="select-chevron h-9 appearance-none rounded-3xl border border-transparent bg-input/50 pr-8 pl-3 text-base outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring md:text-sm" data-qty aria-label="Quantity of ${esc(p.name)}">${qty}</select>

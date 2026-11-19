@@ -97,6 +97,20 @@ export function parseFit(raw: unknown, shape: ShapeId | undefined, errors: strin
 }
 
 /**
+ * The background fit a shopper's frame prints with. Size and position are the store's
+ * call, set per design in admin, never the shopper's: a design keeps its own fit while
+ * it stays on its own background (normalised for the shape chosen), and any other
+ * background prints at 100%, centred. Checkout applies this whatever the cart sent.
+ */
+export function shopperFit(
+  preset: Pick<FrameSpec, 'backgroundId' | 'backgroundFit'>,
+  shape: ShapeId,
+  backgroundId: string,
+): BackgroundFit | undefined {
+  return backgroundId === preset.backgroundId ? parseFit(preset.backgroundFit, shape) : undefined;
+}
+
+/**
  * Checks a design from an untrusted source and returns it normalised: whitespace
  * collapsed, empty sides dropped, colours lower-cased. At least one side must
  * carry text, the same rule the print renderer applies.

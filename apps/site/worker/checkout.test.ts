@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'bun:test';
+import { BACKGROUNDS } from '@butterlu/frame';
 import { PRODUCTS } from '../src/catalog/products';
 import { checkCart, checkKey, createCheckout, expiresAt, sessionParams } from './checkout';
 import type { Env } from './env';
@@ -23,6 +24,28 @@ describe('checkCart', () => {
     });
     expect(r.ok).toBe(false);
     if (!r.ok) expect(r.errors.length).toBe(3);
+  });
+  test('background size and position come from the design, not the cart', () => {
+    const zoomed = { scale: 1.6, x: 0, y: -0.5 };
+    const sent = checkCart({ items: [{ ...item, design: { ...product.preset, backgroundFit: zoomed } }] });
+    expect(sent.ok && sent.lines[0]!.design.backgroundFit).toEqual(product.preset.backgroundFit);
+    // Not even judged: a value no slider could make doesn't fail the cart.
+    expect(checkCart({ items: [{ ...item, design: { ...product.preset, backgroundFit: { scale: 3 } } }] }).ok).toBe(true);
+    const before = product.preset.backgroundFit;
+    product.preset.backgroundFit = zoomed;
+    try {
+      // The design's own fit prints even when the cart sent none, or another one.
+      for (const design of [{ ...product.preset, backgroundFit: undefined }, { ...product.preset, backgroundFit: { scale: 2, x: 1, y: 1 } }]) {
+        const r = checkCart({ items: [{ ...item, design }] });
+        expect(r.ok && r.lines[0]!.design.backgroundFit).toEqual(zoomed);
+      }
+      // A background the shopper picked themselves prints at 100%, centred.
+      const other = BACKGROUNDS.find((b) => b.id !== product.preset.backgroundId)!.id;
+      const r = checkCart({ items: [{ ...item, design: { ...product.preset, backgroundId: other, backgroundFit: zoomed } }] });
+      expect(r.ok && r.lines[0]!.design.backgroundFit).toBeUndefined();
+    } finally {
+      product.preset.backgroundFit = before;
+    }
   });
   test('rejects an empty cart', () => expect(checkCart({ items: [] }).ok).toBe(false));
   test('a cart saved under a merged-away frame checks out as the frame that replaced it', () => {

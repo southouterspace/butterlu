@@ -74,7 +74,8 @@ Stripe `checkout.session.completed` → `POST /api/stripe/webhook`:
    Checkout Session. A failed save answers 500 so Stripe retries. A bank debit that
    settles later updates `payment_status` (`async_payment_succeeded` / `_failed`), and the
    order list shows unpaid orders on hold. Stage only: production has no database yet.
-4. The private order list at `/admin/orders` shows each order's design, address and
+4. The private order list, Orders in the admin page (`/admin/catalog#/orders`; the old
+   `/admin/orders` address redirects there), shows each order's design, address and
    customer, and Asli sets its status (new, proofing, printing, shipped, cancelled),
    carrier, tracking and a note. Sign-in is HTTP Basic with the `ADMIN_PASSWORD` Worker
    secret; without it `/admin` is a 404. Cloudflare Access replaces it once butterlu.com

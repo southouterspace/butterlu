@@ -1,5 +1,5 @@
 // Orders in D1 (docs/10, migrations/0001_orders.sql). The Stripe webhook is the
-// only writer of new orders; the admin page only changes status, tracking and notes.
+// only writer of new orders; the admin page only changes status, tracking and notes (worker/admin.ts).
 import type { FrameSpec } from '@butterlu/frame';
 import type { Env } from './env';
 
@@ -166,12 +166,15 @@ export interface OrderUpdate {
   note: string | null;
 }
 
-/** Reads the admin form. Returns null when it isn't valid. */
-export function parseOrderUpdate(form: FormData): OrderUpdate | null {
-  const status = String(form.get('status') ?? '');
-  if (!(ORDER_STATUSES as readonly string[]).includes(status)) return null;
+/** Reads an order update from the admin page (JSON) or a form. Returns null when it isn't valid. */
+export function parseOrderUpdate(input: FormData | unknown): OrderUpdate | null {
+  const get = (key: string): unknown =>
+    input instanceof FormData ? input.get(key) : input && typeof input === 'object' ? (input as Record<string, unknown>)[key] : undefined;
+  const status = get('status');
+  if (typeof status !== 'string' || !(ORDER_STATUSES as readonly string[]).includes(status)) return null;
   const text = (key: string, max: number) => {
-    const v = String(form.get(key) ?? '').trim();
+    const raw = get(key);
+    const v = typeof raw === 'string' ? raw.trim() : '';
     return v ? v.slice(0, max) : null;
   };
   return { status: status as OrderStatus, tracking_number: text('tracking_number', 60), carrier: text('carrier', 30), note: text('note', 1000) };

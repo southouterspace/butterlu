@@ -51,6 +51,19 @@ test('the admin form only takes known statuses and trims its fields', () => {
   expect(parseOrderUpdate(bad)).toBeNull();
 });
 
+test('the admin page sends the same update as JSON', () => {
+  expect(parseOrderUpdate({ status: 'printing', carrier: ' USPS ', tracking_number: '', note: 'x'.repeat(1200) })).toEqual({
+    status: 'printing',
+    tracking_number: null,
+    carrier: 'USPS',
+    note: 'x'.repeat(1000),
+  });
+  expect(parseOrderUpdate({ status: 'shipped', carrier: 7 })).toEqual({ status: 'shipped', tracking_number: null, carrier: null, note: null });
+  expect(parseOrderUpdate({ status: 'gone' })).toBeNull();
+  expect(parseOrderUpdate(null)).toBeNull();
+  expect(parseOrderUpdate('shipped')).toBeNull();
+});
+
 const basic = (user: string, pass: string) => ({ authorization: `Basic ${btoa(`${user}:${pass}`)}` });
 
 test('only the admin password opens the order list', async () => {
@@ -72,10 +85,17 @@ test('/admin is a 404 until the password and database exist, then asks for a sig
 
 test('a saved change from another site is refused', async () => {
   const env = { ASSETS: {} as Fetcher, ADMIN_PASSWORD: 'pw', ORDERS: {} as D1Database } as Env;
-  const req = new Request('https://s.test/admin/orders/cs_test_1', {
+  const req = new Request('https://s.test/api/admin/orders/cs_test_1', {
     method: 'POST',
-    headers: { ...basic('a', 'pw'), origin: 'https://evil.test' },
-    body: new URLSearchParams({ status: 'shipped' }),
+    headers: { ...basic('a', 'pw'), origin: 'https://evil.test', 'content-type': 'application/json' },
+    body: JSON.stringify({ status: 'shipped' }),
   });
   expect((await handleAdmin(req, env))!.status).toBe(403);
+});
+
+test('the old orders address opens the orders in the admin page', async () => {
+  const env = { ASSETS: {} as Fetcher, ADMIN_PASSWORD: 'pw', ORDERS: {} as D1Database } as Env;
+  const res = (await handleAdmin(new Request('https://s.test/admin/orders', { headers: basic('a', 'pw') }), env))!;
+  expect(res.status).toBe(303);
+  expect(res.headers.get('location')).toBe('https://s.test/admin/catalog#/orders');
 });

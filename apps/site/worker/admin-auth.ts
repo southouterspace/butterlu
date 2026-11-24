@@ -108,14 +108,20 @@ function signInPage(status: number, message: string, next: string, extraHeaders:
   const href = `/admin/auth/google?next=${encodeURIComponent(next)}`;
   const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow"><title>Sign in · Butterlu admin</title>
-<style>:root{color-scheme:light dark;--fg:#1f1a17;--muted:#6b625c;--bg:#faf7f4;--card:#fff;--line:#e7dfd8}
-@media (prefers-color-scheme:dark){:root{--fg:#f2ece6;--muted:#b1a79f;--bg:#1b1816;--card:#25211e;--line:#3a332e}}
-body{margin:0;font:16px/1.45 system-ui,sans-serif;color:var(--fg);background:var(--bg)}
-main{max-width:380px;margin:12vh auto 0;padding:24px;background:var(--card);border:1px solid var(--line);border-radius:14px}
-h1{font-size:1.25rem;margin:0 0 8px}p{margin:0 0 16px;color:var(--muted)}
-a.btn{display:inline-block;background:var(--fg);color:var(--bg);text-decoration:none;padding:10px 18px;border-radius:99px;font-weight:600}
-a.btn:focus-visible{outline:2px solid currentColor;outline-offset:3px}</style></head>
-<body><main><h1>Butterlu admin</h1><p>${esc(message)}</p><a class="btn" href="${esc(href)}">Sign in with Google</a></main></body></html>`;
+<style>
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:16px;font:14px/1.45 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,system-ui,sans-serif;color:#303030;background:#f1f1f1}
+main{width:100%;max-width:400px;background:#fff;border-radius:12px;padding:32px;box-shadow:0 1px 0 0 rgb(26 26 26/.07),0 0 0 1px rgb(26 26 26/.07)}
+.brand{display:flex;align-items:center;gap:8px;margin:0 0 24px;font-weight:650}
+.mark{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#3f5145;color:#fff;font-weight:700}
+h1{font-size:20px;line-height:28px;font-weight:650;margin:0 0 4px}
+p{margin:0 0 24px;color:#616161}
+a.btn{display:flex;justify-content:center;align-items:center;min-height:40px;background:#303030;color:#fff;text-decoration:none;padding:8px 16px;border-radius:8px;font-weight:650;box-shadow:inset 0 -1px 0 0 #000}
+a.btn:hover{background:#1a1a1a}
+a.btn:focus-visible{outline:2px solid #005bd3;outline-offset:2px}
+.foot{margin:16px 0 0;font-size:12px;color:#616161}
+</style></head>
+<body><main><p class="brand"><span class="mark" aria-hidden="true">B</span>Butterlu</p><h1>Sign in to the store admin</h1><p>${esc(message)}</p><a class="btn" href="${esc(href)}">Sign in with Google</a><p class="foot">Only the store’s own Google accounts can get in.</p></main></body></html>`;
   return new Response(html, { status, headers: { ...HEADERS, ...extraHeaders } });
 }
 

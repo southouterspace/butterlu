@@ -1,8 +1,8 @@
-// Asli's back office (docs/07 "Admin", docs/10, docs/13). GET /admin/orders lists
-// recent orders with each frame's design; POST /admin/orders/<session> updates
-// status, tracking and a note. /admin/catalog is the store editor (templates,
-// categories, shop-by lists, SEO), a static page served only after sign-in, and
-// /api/admin/* is its JSON API (catalog-admin.ts).
+// Asli's back office (docs/07 "Admin", docs/10, docs/13). /admin/catalog is the admin
+// page (designs, categories, shop-by lists, pages, questions, orders), a static page
+// served only after sign-in. /api/admin/* is its JSON API: the orders here
+// (GET /api/admin/orders, POST /api/admin/orders/<session> for status, tracking and a
+// note) and the catalog in catalog-admin.ts. /admin/orders redirects into the page.
 //
 // Sign-in: WorkOS AuthKit with Google, for the accounts in ADMIN_EMAILS only
 // (admin-auth.ts), once WORKOS_CLIENT_ID, WORKOS_API_KEY and ADMIN_EMAILS are set. Until then the older
@@ -57,15 +57,6 @@ export async function authorized(request: Request, password: string): Promise<bo
   return safeEqual(await digest(given), await digest(password));
 }
 
-const esc = (v: unknown) =>
-  String(v ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]!);
-
-const money = (cents: number, currency: string) =>
-  new Intl.NumberFormat('en-US', { style: 'currency', currency: currency.toUpperCase() }).format(cents / 100);
-
-const when = (iso: string) =>
-  new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'America/Chicago' }).format(new Date(iso));
-
 function addressLines(json: string | null): string[] {
   if (!json) return [];
   try {
@@ -78,64 +69,69 @@ function addressLines(json: string | null): string[] {
   }
 }
 
-function lineHtml(l: LineRow): string {
-  const errors = l.design_errors ? (JSON.parse(l.design_errors) as string[]) : [];
-  return `<li><strong>${esc(l.quantity)} × ${esc(l.name ?? l.handle ?? 'Frame')}</strong>
-    <div>${esc(l.summary ?? 'Design could not be read')}</div>
-    ${errors.length ? `<div class="warn">Check by hand: ${esc(errors.join('; '))}</div>` : ''}</li>`;
+function designErrors(json: string | null): string[] {
+  if (!json) return [];
+  try {
+    const v = JSON.parse(json) as unknown;
+    return Array.isArray(v) ? v.map(String) : [];
+  } catch {
+    return [];
+  }
 }
 
-function orderHtml(o: OrderRow, lines: LineRow[]): string {
-  const ship = addressLines(o.ship_address);
-  const held = o.payment_status !== 'paid' && o.payment_status !== 'no_payment_required';
-  const options = ORDER_STATUSES.map((s) => `<option value="${s}"${s === o.status ? ' selected' : ''}>${s}</option>`).join('');
-  return `<article class="order status-${esc(o.status)}">
-  <header>
-    <h2>${esc(o.ship_name ?? o.name ?? 'No name')} <span class="pill">${esc(o.status)}</span>${o.livemode ? '' : ' <span class="pill test">test</span>'}</h2>
-    <p>${esc(when(o.created_at))} · ${esc(money(o.amount_total, o.currency))}${o.payment_status !== 'paid' ? ` · <span class="warn">payment ${esc(o.payment_status)}</span>` : ''}</p>
-  </header>
-  <ul class="lines">${lines.map(lineHtml).join('')}</ul>
-  <div class="cols">
-    <div><h3>Ship to</h3><p>${[o.ship_name, ...ship].filter(Boolean).map(esc).join('<br>') || 'No address'}</p></div>
-    <div><h3>Customer</h3><p>${[o.name, o.email, o.phone].filter(Boolean).map(esc).join('<br>') || 'None given'}</p></div>
-  </div>
-  ${held ? `<p class="warn"><strong>Hold: payment is ${esc(o.payment_status)}.</strong> Don't make this frame until the payment clears.</p>` : ''}
-  <form method="post" action="/admin/orders/${encodeURIComponent(o.session_id)}">
-    <label>Status <select name="status">${options}</select></label>
-    <label>Carrier <input name="carrier" value="${esc(o.carrier)}" maxlength="30" placeholder="USPS"></label>
-    <label>Tracking <input name="tracking_number" value="${esc(o.tracking_number)}" maxlength="60"></label>
-    <label class="wide">Note <textarea name="note" maxlength="1000" rows="2">${esc(o.note)}</textarea></label>
-    <button type="submit">Save</button>
-  </form>
-  <p class="ref">Stripe ${esc(o.session_id)}</p>
-</article>`;
+/** One order as the admin page reads it (src/admin/app.ts AdminOrder). */
+export function orderJson(o: OrderRow, lines: LineRow[]) {
+  return {
+    id: o.session_id,
+    createdAt: o.created_at,
+    livemode: !!o.livemode,
+    paymentStatus: o.payment_status,
+    status: o.status,
+    amountTotal: o.amount_total,
+    currency: o.currency,
+    email: o.email,
+    name: o.name,
+    phone: o.phone,
+    shipName: o.ship_name,
+    shipAddress: addressLines(o.ship_address),
+    marketingOptIn: !!o.marketing_opt_in,
+    trackingNumber: o.tracking_number,
+    carrier: o.carrier,
+    shippedAt: o.shipped_at,
+    note: o.note,
+    lines: lines.map((l) => ({ name: l.name, handle: l.handle, quantity: l.quantity, amountTotal: l.amount_total, summary: l.summary, errors: designErrors(l.design_errors) })),
+  };
 }
 
-function page(body: string, email: string | null): Response {
-  const html = `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow"><title>Orders · Butterlu</title>
-<style>
-:root{color-scheme:light dark;--fg:#1f1a17;--muted:#6b625c;--bg:#faf7f4;--card:#fff;--line:#e7dfd8;--warn:#a2410f;--accent:#7a8f6a}
-@media (prefers-color-scheme:dark){:root{--fg:#f2ece6;--muted:#b1a79f;--bg:#1b1816;--card:#25211e;--line:#3a332e;--warn:#f0a070;--accent:#a9c09a}}
-*{box-sizing:border-box}body{margin:0;font:16px/1.45 system-ui,sans-serif;color:var(--fg);background:var(--bg)}
-main{max-width:860px;margin:0 auto;padding:16px}h1{font-size:1.4rem;margin:8px 0 16px}
-.order{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:0 0 16px}
-.order h2{font-size:1.1rem;margin:0}.order header p{margin:4px 0 8px;color:var(--muted)}
-.pill{font-size:.75rem;font-weight:600;padding:2px 8px;border-radius:99px;background:var(--line);vertical-align:middle}
-.pill.test{background:transparent;border:1px dashed var(--muted);color:var(--muted)}
-.status-new .pill:first-of-type{background:var(--accent);color:#fff}
-.lines{padding-left:18px;margin:8px 0}.lines li{margin:0 0 6px}.warn{color:var(--warn)}
-.cols{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cols h3{font-size:.8rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);margin:8px 0 2px}.cols p{margin:0}
-form{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:end;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
-label{display:flex;flex-direction:column;font-size:.8rem;color:var(--muted);gap:2px}label.wide{flex:1 1 100%}
-input,select,textarea,button{font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:6px 8px}
-button{background:var(--fg);color:var(--bg);border:0;padding:8px 16px;cursor:pointer}
-.ref{font-size:.75rem;color:var(--muted);margin:8px 0 0;word-break:break-all}
-@media (max-width:560px){.cols{grid-template-columns:1fr}}
-</style></head><body><nav style="max-width:860px;margin:0 auto;padding:12px 16px 0;display:flex;gap:16px;font:14px system-ui,sans-serif"><a href="/admin/catalog">Templates and categories</a><a href="/admin/orders" aria-current="page">Orders</a>${email ? `<form method="post" action="/admin/sign-out" style="margin:0 0 0 auto;padding:0;border:0;display:block"><button type="submit" style="font:inherit;background:none;color:inherit;border:0;padding:0;text-decoration:underline;cursor:pointer">Sign out ${esc(email)}</button></form>` : ''}</nav><main>${body}</main></body></html>`;
-  return new Response(html, {
-    headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow', 'x-frame-options': 'DENY' },
-  });
+const json = (body: unknown, status = 200) =>
+  Response.json(body, { status, headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } });
+
+/** GET /api/admin/orders and POST /api/admin/orders/<session>. Null for other paths. */
+async function handleOrdersApi(request: Request, db: D1Database): Promise<Response | null> {
+  const url = new URL(request.url);
+  if (url.pathname === '/api/admin/orders' && request.method === 'GET') {
+    const orders = await listOrders(db);
+    return json({ orders: orders.map(({ order, lines }) => orderJson(order, lines)), statuses: ORDER_STATUSES });
+  }
+  const m = /^\/api\/admin\/orders\/(cs_[A-Za-z0-9_]{1,200})$/.exec(url.pathname);
+  if (!m) return null;
+  if (request.method !== 'POST') return json({ error: 'not found' }, 404);
+  // Browsers resend Basic credentials to any site that posts here, so only accept our own pages.
+  // (The Google session cookie is SameSite=Lax, which blocks that too.)
+  if (request.headers.get('origin') !== url.origin) return json({ error: 'forbidden' }, 403);
+  if (!(request.headers.get('content-type') ?? '').startsWith('application/json')) return json({ error: 'send JSON' }, 400);
+  let body: unknown;
+  try {
+    const text = await request.text();
+    if (text.length > 8 * 1024) return json({ error: 'too large' }, 400);
+    body = JSON.parse(text);
+  } catch {
+    return json({ error: 'not JSON' }, 400);
+  }
+  const update = parseOrderUpdate(body);
+  if (!update) return json({ error: 'Pick a status from the list.' }, 400);
+  if (!(await updateOrder(db, m[1]!, update))) return json({ error: 'That order was not found.' }, 404);
+  return json({ ok: true });
 }
 
 const isAdminPath = (p: string) => p === '/admin' || p.startsWith('/admin/') || p === '/api/admin' || p.startsWith('/api/admin/');
@@ -163,7 +159,7 @@ export async function handleAdmin(request: Request, env: Env): Promise<Response 
     who = signedInName(request);
   }
 
-  if (url.pathname.startsWith('/api/admin/')) return handleCatalogAdmin(request, env, db, who);
+  if (url.pathname.startsWith('/api/admin/')) return (await handleOrdersApi(request, db)) ?? handleCatalogAdmin(request, env, db, who);
 
   if (url.pathname === '/admin' || url.pathname === '/admin/') return Response.redirect(new URL('/admin/catalog', url).toString(), 303);
 
@@ -177,22 +173,7 @@ export async function handleAdmin(request: Request, env: Env): Promise<Response 
     return new Response(res.body, { status: res.status, headers });
   }
 
-  if (url.pathname === '/admin/orders' && request.method === 'GET') {
-    const orders = await listOrders(db);
-    const saved = url.searchParams.get('saved') ? '<p role="status">Saved.</p>' : '';
-    const list = orders.length ? orders.map(({ order, lines }) => orderHtml(order, lines)).join('') : '<p>No orders yet.</p>';
-    return page(`<h1>Orders</h1>${saved}${list}`, auth.mode === 'workos' ? who : null);
-  }
-
-  const m = /^\/admin\/orders\/(cs_[A-Za-z0-9_]{1,200})$/.exec(url.pathname);
-  if (m && request.method === 'POST') {
-    // Browsers resend Basic credentials to any site that posts here, so only accept our own pages.
-    // (The Google session cookie is SameSite=Lax, which blocks that too.)
-    if (request.headers.get('origin') !== url.origin) return new Response('Forbidden', { status: 403 });
-    const update = parseOrderUpdate(await request.formData());
-    if (!update) return new Response('Bad request', { status: 400 });
-    if (!(await updateOrder(db, m[1]!, update))) return NOT_FOUND();
-    return Response.redirect(new URL('/admin/orders?saved=1', url).toString(), 303);
-  }
+  // Orders live in the admin page now. The old address still works.
+  if (url.pathname === '/admin/orders' && request.method === 'GET') return Response.redirect(new URL('/admin/catalog#/orders', url).toString(), 303);
   return NOT_FOUND();
 }

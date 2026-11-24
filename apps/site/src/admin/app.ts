@@ -181,6 +181,9 @@ function input(value: string, attrs: Attrs = {}): HTMLInputElement {
 /** A label input: Title Case and "&" for "and" are applied when she leaves the field (Justin's rule). */
 function labelInput(value: string, attrs: Attrs = {}, onFix?: (v: string) => void): HTMLInputElement {
   const el = input(value, attrs);
+  // The raw value goes in as she types, so the save bar and the leave-page guard see it;
+  // the rule is applied when she leaves the field.
+  el.addEventListener('input', () => onFix?.(el.value));
   el.addEventListener('change', () => {
     const fixed = toLabel(el.value);
     if (fixed !== el.value) el.value = fixed;
@@ -223,9 +226,28 @@ function card(title: string | null, ...kids: Kid[]): HTMLElement {
   return h('section', { class: 'card' }, title ? h('h2', { class: 'card-title' }, title) : null, ...kids);
 }
 
-/** A card that groups form controls: a fieldset whose legend reads as the card's title. */
-function fieldCard(legend: string, ...kids: Kid[]): HTMLFieldSetElement {
-  return h('fieldset', { class: 'card' }, h('legend', {}, legend), ...kids);
+/**
+ * A card that groups form controls: a fieldset named by its visible h2, so the title is
+ * both the group's name and a heading screen-reader users can jump between.
+ */
+function fieldCard(title: string, ...kids: Kid[]): HTMLFieldSetElement {
+  const hid = id('card');
+  return h('fieldset', { class: 'card', 'aria-labelledby': hid }, h('h2', { class: 'card-title', id: hid }, title), ...kids);
+}
+
+/** A card with a heading row: the title at the left and actions (move, remove) at the right. */
+function headCard(title: string, data: Record<string, string>, actions: Kid[], ...kids: Kid[]): HTMLFieldSetElement {
+  const hid = id('card');
+  const el = h('fieldset', { class: 'card', 'aria-labelledby': hid }, h('div', { class: 'card-head' }, h('h2', { id: hid }, title), h('span', { class: 'actions' }, ...actions)), ...kids);
+  Object.assign(el.dataset, data);
+  return el;
+}
+
+/** After a remove, focus goes to the item that took its place, or else to `fallback`. */
+function focusAfterRemove(box: HTMLElement, itemSel: string, i: number, fallback: string) {
+  const items = box.querySelectorAll<HTMLElement>(itemSel);
+  const item = items[Math.min(i, items.length - 1)];
+  (item?.querySelector<HTMLElement>('[data-remove]') ?? box.querySelector<HTMLElement>(fallback))?.focus();
 }
 
 function emptyState(iconName: IconName, title: string, text: string, action?: HTMLElement): HTMLElement {
@@ -248,20 +270,29 @@ function pageHeader(title: string, opts: { back?: [string, string]; badges?: Kid
 }
 
 /** An index table. Each row opens one record through its first link, which covers the row. */
-function table(heads: { label: string; cls?: string }[], rows: HTMLTableRowElement[], caption: string): HTMLTableElement {
-  return h(
+function table(heads: { label: string; cls?: string }[], rows: HTMLTableRowElement[], caption: string): HTMLElement {
+  const t = h(
     'table',
     { class: 'table' },
     h('caption', { class: 'visually-hidden' }, caption),
     h('thead', {}, h('tr', {}, ...heads.map((c) => h('th', { scope: 'col', class: c.cls }, c.label)))),
     h('tbody', {}, ...rows),
   );
+  // On a narrow screen the table scrolls sideways rather than being cut off.
+  return h('div', { class: 'table-wrap' }, t);
 }
 function linkedRow(...cells: HTMLTableCellElement[]): HTMLTableRowElement {
   return h('tr', { class: 'linked' }, ...cells);
 }
 const td = (cls: string | undefined, ...kids: Kid[]) => h('td', { class: cls }, ...kids);
 const rowLink = (href: string, text: string, sub?: string): Kid[] => [h('a', { class: 'row-link', href }, text), sub ? h('span', { class: 'cell-sub' }, sub) : null];
+
+/** Says something once to screen readers, without a toast. */
+function say(text: string) {
+  const live = document.getElementById('toast-live')!;
+  live.textContent = '';
+  window.setTimeout(() => (live.textContent = text), 50);
+}
 
 let toastTimer: number | undefined;
 function toast(text: string, tone: 'ok' | 'bad' = 'ok') {
@@ -348,10 +379,16 @@ function track(view: HTMLElement, e: Omit<Editor, 'base'>) {
 }
 
 const saveBar = h('div', { class: 'savebar', hidden: true, role: 'region', 'aria-label': 'Unsaved changes' });
-document.body.append(saveBar);
+// First in the page, so it's near the top for the keyboard as well as on screen.
+document.body.insertBefore(saveBar, root);
 let saving = false;
+let announced: Editor | null = null;
 function paintSaveBar() {
   const show = isDirty();
+  if (show && editor && announced !== editor && !editor.isNew) {
+    announced = editor;
+    say('Unsaved changes. Save is at the top of the page, or press Control S.');
+  }
   const key = `${show}|${saving}|${editor?.isNew ?? ''}`;
   if (saveBar.dataset.key === key) return;
   saveBar.dataset.key = key;
@@ -389,7 +426,9 @@ function discard() {
   else rerender();
 }
 window.addEventListener('beforeunload', (e) => {
-  if (isDirty()) e.preventDefault();
+  if (!isDirty()) return;
+  e.preventDefault();
+  e.returnValue = '';
 });
 /** Ctrl or Cmd + S saves the open form, as it does in most editors. */
 window.addEventListener('keydown', (e) => {
@@ -405,7 +444,7 @@ function showSaveError(slot: HTMLElement, e: unknown) {
   slot.replaceChildren(banner('critical', `Couldn't save: ${first}`, rest.length ? h('ul', {}, ...rest.map((r) => h('li', {}, r))) : null));
   slot.tabIndex = -1;
   slot.focus();
-  toast("Couldn't save. See the message at the top.", 'bad');
+  slot.scrollIntoView({ block: 'center' });
 }
 
 // ---------- frame preview ----------
@@ -722,7 +761,7 @@ function openTemplate(handle: string | null) {
 function templateEditor(handle: string | null): HTMLElement {
   const existing = handle ? data.doc.templates.find((t) => t.handle === handle) : undefined;
   if (handle && !existing) return notFound('That design was not found.', '#/designs', 'Back to designs');
-  const isNew = !existing;
+  let isNew = !existing;
   const isLive = existing ? data.liveHandles.templates.includes(existing.handle) : false;
   const t: TemplateDoc = existing
     ? structuredClone(existing)
@@ -744,7 +783,7 @@ function templateEditor(handle: string | null): HTMLElement {
 
   const errorSlot = h('div', {});
   const previewBox = h('div', { class: 'big-preview' });
-  const issues = h('div', { class: 'issues', 'aria-live': 'polite' });
+  const issues = h('div', { class: 'issues' });
   const repaint = () => {
     previewBox.replaceChildren(preview(t.preset, `Preview of ${t.name || 'this design'}`, 'full'));
     const r = checkTemplate(collect(), data.doc);
@@ -757,7 +796,7 @@ function templateEditor(handle: string | null): HTMLElement {
   };
 
   // Basics
-  const name = labelInput(t.name, { maxlength: 80, autocomplete: 'off' }, (v) => ((t.name = v), repaint()));
+  const name = labelInput(t.name, { maxlength: 80, autocomplete: 'off' });
   const handleIn = input(t.handle, { maxlength: 80, disabled: !isNew, autocomplete: 'off', spellcheck: 'false' });
   let handleTouched = !isNew;
   handleIn.addEventListener('input', () => {
@@ -926,7 +965,15 @@ function templateEditor(handle: string | null): HTMLElement {
               ) as FrameSpec['sides'];
               repaint();
             }),
-            btn('Remove', () => (t.ideas.splice(i, 1), paintIdeas()), { class: 'btn plain danger', 'aria-label': `Remove idea ${i + 1}` }),
+            btn(
+              'Remove',
+              () => {
+                t.ideas.splice(i, 1);
+                paintIdeas();
+                focusAfterRemove(ideasBox, ':scope > fieldset.sub', i, ':scope > div > .btn');
+              },
+              { class: 'btn plain danger', 'aria-label': `Remove idea ${i + 1}`, 'data-remove': true },
+            ),
           ),
         ),
       ),
@@ -986,11 +1033,21 @@ function templateEditor(handle: string | null): HTMLElement {
       await api(`/templates/${encodeURIComponent(doc.handle)}`, { method: 'PUT', body: JSON.stringify(doc) });
       await reload();
       errorSlot.replaceChildren();
+      const wasNew = isNew;
+      if (isNew) {
+        // It exists now: its web address is fixed, and later saves go to the same design.
+        isNew = false;
+        t.handle = doc.handle;
+        handleIn.disabled = true;
+      }
       markClean();
       if (!quiet) {
         toast(doc.status === 'live' ? 'Saved. It goes on the site with the next publish.' : 'Saved as a draft.');
-        if (isNew) location.hash = `#/designs/${doc.handle}`;
+        if (wasNew) location.hash = `#/designs/${doc.handle}`;
         else rerender();
+      } else if (wasNew) {
+        history.replaceState(null, '', `#/designs/${doc.handle}`);
+        currentHash = location.hash;
       }
       return true;
     } catch (e) {
@@ -1066,7 +1123,7 @@ function templateEditor(handle: string | null): HTMLElement {
         h(
           'div',
           { class: 'aside' },
-          fieldCard('Status', field('Status', status, 'Live designs show in the store after a publish.'), h('label', { class: 'inline' }, ready, 'Can be bought as shown in one tap')),
+          fieldCard('Status', field('Shows in the store as', status, 'Live designs show in the store after a publish.'), h('label', { class: 'inline' }, ready, 'Can be bought as shown in one tap')),
           h('section', { class: 'card sticky', 'aria-label': 'Preview' }, h('h2', { class: 'card-title' }, 'Preview'), previewBox, issues),
         ),
       ),
@@ -1288,6 +1345,7 @@ function adder(adderId: string, label: string, button: string, placeholder: stri
     const err = add(toLabel(raw));
     if (err) setFieldError(box, err);
     else document.getElementById(adderId)?.focus();
+    paintSaveBar();
   };
   box.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
@@ -1331,11 +1389,10 @@ function shopBy(): HTMLElement {
             return h('li', {}, field(`Name ${ri + 1}`, rl), movers(ri, g.children.length, r.label, (d) => moveChild(ri, d)));
           }),
         );
-        return h(
-          'fieldset',
-          { class: 'card', 'data-group': g.key },
-          h('legend', { class: 'visually-hidden' }, g.label),
-          h('div', { class: 'card-head' }, h('h2', { 'aria-hidden': 'true' }, g.label), h('span', { class: 'actions' }, movers(gi, tax.groups.length, g.label, (d) => moveGroup(gi, d)))),
+        return headCard(
+          g.label,
+          { group: g.key },
+          [movers(gi, tax.groups.length, g.label, (d) => moveGroup(gi, d))],
           h('div', { class: 'row' }, field('Group name', label), field('Opens the page', page), drawingPicker(g)),
           h('label', { class: 'inline' }, menus, 'Show in the menus'),
           h('p', { class: 'label' }, 'People in this group'),
@@ -1505,7 +1562,18 @@ function pageEditor(key: string): HTMLElement {
           field('Icon', ic),
           field(`Title ${i + 1}`, text(it.title, LIMITS.propTitle, (v) => (it.title = v))),
           field('Text', text(it.text, LIMITS.propText, (v) => (it.text = v))),
-          h('span', { class: 'row center' }, movers(i, s.items.length, nm, (d) => moveProp(i, d), 'horizontal'), btn('Remove', () => (s.items.splice(i, 1), paint()), { class: 'btn plain danger', 'aria-label': `Remove ${nm}` })),
+          h('span', { class: 'row center' }, movers(i, s.items.length, nm, (d) => moveProp(i, d), 'horizontal'), btn(
+              'Remove',
+              () => {
+                s.items.splice(i, 1);
+                paint();
+                const card = box.querySelectorAll<HTMLElement>(':scope > .card[data-section]')[sectionIndex]!;
+                focusAfterRemove(card.querySelector<HTMLElement>('.list')!, ':scope > li', i, '.btn');
+                if (!s.items.length) card.querySelector<HTMLElement>(':scope > div > .btn')?.focus();
+              },
+              { class: 'btn plain danger', 'aria-label': `Remove ${nm}`, 'data-remove': true },
+            ),
+          ),
         );
       }),
     );
@@ -1528,29 +1596,22 @@ function pageEditor(key: string): HTMLElement {
     box.replaceChildren(
       ...page.sections.map((s, i) => {
         const nm = `${label(s)} ${i + 1}`;
-        return h(
-          'fieldset',
-          { class: 'card', 'data-section': s.type },
-          h('legend', { class: 'visually-hidden' }, `${i + 1}. ${label(s)}`),
-          h(
-            'div',
-            { class: 'card-head' },
-            h('h2', { 'aria-hidden': 'true' }, `${i + 1}. ${label(s)}`),
-            h(
-              'span',
-              { class: 'actions' },
-              movers(i, page.sections.length, nm, (d) => moveSection(i, d)),
-              btn(
-                'Remove',
-                () => {
-                  if (!confirm(`Remove this ${label(s)}?`)) return;
-                  page.sections.splice(i, 1);
-                  paint();
-                },
-                { class: 'btn plain danger', 'aria-label': `Remove ${nm}` },
-              ),
+        return headCard(
+          `${i + 1}. ${label(s)}`,
+          { section: s.type },
+          [
+            movers(i, page.sections.length, nm, (d) => moveSection(i, d)),
+            btn(
+              'Remove',
+              () => {
+                if (!confirm(`Remove this ${label(s)}?`)) return;
+                page.sections.splice(i, 1);
+                paint();
+                focusAfterRemove(box, ':scope > .card[data-section]', i, 'select');
+              },
+              { class: 'btn plain danger', 'aria-label': `Remove ${nm}`, 'data-remove': true },
             ),
-          ),
+          ],
           ...(s.type === 'hero-image'
             ? heroFields(s)
             : s.type === 'questions'
@@ -1624,16 +1685,21 @@ function questionsEditor(): HTMLElement {
         const a = textarea(pair[1], { maxlength: LIMITS.answer, rows: 3 });
         q.addEventListener('input', () => (pair[0] = q.value));
         a.addEventListener('input', () => (pair[1] = a.value));
-        return h(
-          'fieldset',
-          { class: 'card', 'data-question': String(i + 1) },
-          h('legend', { class: 'visually-hidden' }, `Question ${i + 1}`),
-          h(
-            'div',
-            { class: 'card-head' },
-            h('h2', { 'aria-hidden': 'true' }, `Question ${i + 1}`),
-            h('span', { class: 'actions' }, movers(i, qs.length, `question ${i + 1}`, (d) => move(i, d)), btn('Remove', () => (qs.splice(i, 1), paint()), { class: 'btn plain danger', 'aria-label': `Remove question ${i + 1}` })),
-          ),
+        return headCard(
+          `Question ${i + 1}`,
+          { question: String(i + 1) },
+          [
+            movers(i, qs.length, `question ${i + 1}`, (d) => move(i, d)),
+            btn(
+              'Remove',
+              () => {
+                qs.splice(i, 1);
+                paint();
+                focusAfterRemove(box, ':scope > .card[data-question]', i, ':scope > div > .btn');
+              },
+              { class: 'btn plain danger', 'aria-label': `Remove question ${i + 1}`, 'data-remove': true },
+            ),
+          ],
           field('Question', q),
           field('Answer', a),
         );
@@ -1862,9 +1928,8 @@ function orderDetail(sessionId: string): HTMLElement {
           ),
           card(
             'Ship to',
-            o.shipAddress.length
-              ? h('address', {}, ...[o.shipName, ...o.shipAddress].filter((x): x is string => !!x).flatMap((x, i) => (i ? [h('br'), x] : [x])))
-              : h('p', { class: 'muted' }, 'No address'),
+            o.shipName || o.shipAddress.length ? h('address', {}, ...[o.shipName, ...o.shipAddress].filter((x): x is string => !!x).flatMap((x, i) => (i ? [h('br'), x] : [x]))) : null,
+            o.shipAddress.length ? null : h('p', { class: 'muted' }, 'No address'),
           ),
           card('Reference', h('p', { class: 'mono' }, `Stripe ${o.id}`), o.shippedAt ? h('p', { class: 'hint' }, `Shipped ${when(o.shippedAt)}`) : null),
         ),
@@ -1875,15 +1940,30 @@ function orderDetail(sessionId: string): HTMLElement {
   return view;
 }
 
+/**
+ * Fetches the orders each time she opens Orders, so new ones show without a reload.
+ * The view repaints only if she's still on Orders, the list changed, and no form there
+ * has unsaved edits.
+ */
 let ordersLoading = false;
+function refreshOrders() {
+  if (ordersLoading) return;
+  ordersLoading = true;
+  const before = orders ? JSON.stringify(orders) : null;
+  loadOrders()
+    .then(() => {
+      const onOrders = location.hash.startsWith('#/orders');
+      if (onOrders && JSON.stringify(orders) !== before && !isDirty()) rerender();
+    })
+    .catch((e) => {
+      if (orders) return toast(`The orders couldn’t refresh: ${(e as Error).message}`, 'bad');
+      if (location.hash.startsWith('#/orders'))
+        document.getElementById('main')?.replaceChildren(h('div', { class: 'page' }, pageHeader('Orders'), banner('critical', 'The orders couldn’t load', h('p', {}, (e as Error).message))));
+    })
+    .finally(() => (ordersLoading = false));
+}
 function loadingOrders(): HTMLElement {
-  if (!ordersLoading) {
-    ordersLoading = true;
-    loadOrders()
-      .then(() => render())
-      .catch((e) => document.getElementById('main')?.replaceChildren(h('div', { class: 'page' }, pageHeader('Orders'), banner('critical', 'The orders couldn’t load', h('p', {}, (e as Error).message)))))
-      .finally(() => (ordersLoading = false));
-  }
+  refreshOrders();
   return h('div', { class: 'page' }, pageHeader('Orders'), h('p', { class: 'loading', role: 'status' }, 'Loading orders…'));
 }
 
@@ -1924,6 +2004,12 @@ function toggleNav(open?: boolean) {
   menuBtn.setAttribute('aria-expanded', String(next));
   if (next) nav.querySelector<HTMLElement>('a')?.focus();
 }
+// On a phone the menu closes on a tap outside it, as well as on Escape.
+document.addEventListener('click', (e) => {
+  const nav = document.getElementById('sidenav');
+  const target = e.target as Element;
+  if (nav?.classList.contains('open') && !nav.contains(target) && !target.closest('.menu-btn')) toggleNav(false);
+});
 window.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && document.getElementById('sidenav')?.classList.contains('open')) {
     toggleNav(false);
@@ -1999,6 +2085,7 @@ window.addEventListener('hashchange', () => {
   document.getElementById('sidenav')?.classList.remove('open');
   render();
   window.scrollTo(0, 0);
+  if (location.hash.startsWith('#/orders') && orders) refreshOrders();
 });
 
 (async () => {

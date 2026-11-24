@@ -159,7 +159,16 @@ export async function handleAdmin(request: Request, env: Env): Promise<Response 
     who = signedInName(request);
   }
 
-  if (url.pathname.startsWith('/api/admin/')) return (await handleOrdersApi(request, db)) ?? handleCatalogAdmin(request, env, db, who);
+  if (url.pathname.startsWith('/api/admin/')) {
+    let orders: Response | null;
+    try {
+      orders = await handleOrdersApi(request, db);
+    } catch (e) {
+      console.error('admin orders', e instanceof Error ? e.message : e);
+      return json({ error: 'The orders database didn’t answer. Try again in a minute.' }, 500);
+    }
+    return orders ?? handleCatalogAdmin(request, env, db, who);
+  }
 
   if (url.pathname === '/admin' || url.pathname === '/admin/') return Response.redirect(new URL('/admin/catalog', url).toString(), 303);
 

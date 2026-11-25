@@ -172,6 +172,12 @@ earlier step produced, so the plan is auditable before a single mutation fires.
 Loops are `L1`–`L8`, gates `G1`–`G5`. Use the same identifiers in manifests, commits and
 `run-log.jsonl`.
 
+**Admin UI.** The store admin (`apps/site/src/admin`) uses UI SDK web components
+(`@ui-sdk/web`) for its confirm dialog, toasts and status filters, and Lucide for every
+icon. Before changing or adding one, follow the ui-sdk skill if it's installed and read
+`node_modules/@ui-sdk/web/docs/llms.txt`, then only the component pages you need. Don't
+hand-roll a `role="dialog"`, `"radiogroup"`, `"tablist"` or similar widget beside it.
+
 ---
 
 ## Repo layout

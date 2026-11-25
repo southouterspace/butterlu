@@ -23,9 +23,7 @@ const illustrationUrls = Object.fromEntries(ILLUSTRATIONS.map((i) => [i.key, ill
   </head>
   <body>
     <div id="admin"><p class="loading">Loading the store…</p></div>
-    <div id="toast" hidden><span class="toast-text"></span><button type="button" aria-label="Dismiss">✕</button></div>
     <p id="toast-live" class="visually-hidden" role="status"></p>
-    <p id="toast-alert" class="visually-hidden" role="alert"></p>
     <script id="photo-files" type="application/json" set:html={JSON.stringify(PHOTO_FILES).replace(/</g, "\\u003c")} />
     <script id="illustration-urls" type="application/json" set:html={JSON.stringify(illustrationUrls).replace(/</g, "\\u003c")} />
     <script>

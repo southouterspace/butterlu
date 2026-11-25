@@ -7,10 +7,17 @@
 // The look follows the patterns of Shopify's admin (admin.css): a top bar and left
 // navigation, a page header with the page's actions at the top right, cards on a grey
 // canvas, index tables that open a record, a save bar while a form has unsaved edits,
-// and toasts for results.
+// and toasts for results. The confirm dialog, the toasts and the status filters are
+// UI SDK elements (@ui-sdk/web), which bring their own keyboard, focus and ARIA.
 //
 // Plain DOM, no framework: every value from the server goes in with textContent or
 // an attribute, never as HTML.
+import { createElement, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, CircleAlert, CircleCheck, CircleHelp, ExternalLink, FileText, Folder, Image as ImageIcon, Inbox, Info, Menu, Search, Tags, TriangleAlert, Upload, X } from 'lucide';
+import '@ui-sdk/web/alert-dialog';
+import '@ui-sdk/web/overlays';
+import '@ui-sdk/web/segmented-control';
+import '@ui-sdk/web/toast';
+import { createConfirm, createOverlays, createToaster, type ConfirmOptions, type UiAlertDialogElement } from '@ui-sdk/web';
 import { BACKGROUND_SCALE, SHAPE_IDS, SIDES, type FrameSpec, type Side } from '@butterlu/frame';
 import { SEO_LABELS, SEO_LIMITS, TITLE_SUFFIX, checkTemplate, slugify, toLabel, type SeoKey } from '../catalog/check';
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from '../catalog/doc';
@@ -108,41 +115,34 @@ function h<K extends keyof HTMLElementTagNameMap>(tag: K, attrs: Attrs = {}, ...
 let uid = 0;
 const id = (p: string) => `${p}-${++uid}`;
 
-// Icons: simple 24-unit strokes drawn for this admin, decorative (aria-hidden).
+// Icons come from Lucide, one library across the admin. They're decorative (aria-hidden):
+// every icon sits beside a visible label or inside a control with an accessible name.
 const ICONS = {
-  designs: 'M4 5h16v14H4z M8 15l3-3 2 2 3-4 4 5 M8.5 9.5h.01',
-  categories: 'M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z',
-  shopby: 'M3 12V4h8l10 10-8 8L3 12z M7.5 7.5h.01',
-  pages: 'M7 3h7l5 5v13H7z M14 3v5h5 M10 13h6 M10 17h6',
-  questions: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .9-1 1.6V14 M12 17.5h.01',
-  orders: 'M4 13l2-8h12l2 8 M4 13v6h16v-6 M4 13h5l1 2h4l1-2h5',
-  changes: 'M12 3v12 M7 8l5-5 5 5 M5 15v4h14v-4',
-  store: 'M14 4h6v6 M20 4l-9 9 M18 14v6H4V6h6',
-  back: 'M19 12H5 M11 6l-6 6 6 6',
-  menu: 'M4 7h16 M4 12h16 M4 17h16',
-  search: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14z M20 20l-4-4',
-  up: 'M12 19V5 M6 11l6-6 6 6',
-  down: 'M12 5v14 M6 13l6 6 6-6',
-  left: 'M19 12H5 M11 6l-6 6 6 6',
-  right: 'M5 12h14 M13 6l6 6-6 6',
-  info: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M12 11v5 M12 8h.01',
-  alert: 'M12 3l10 18H2z M12 10v4 M12 17.5h.01',
-  check: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M8 12l3 3 5-6',
+  designs: ImageIcon,
+  categories: Folder,
+  shopby: Tags,
+  pages: FileText,
+  questions: CircleHelp,
+  orders: Inbox,
+  changes: Upload,
+  store: ExternalLink,
+  back: ArrowLeft,
+  menu: Menu,
+  search: Search,
+  up: ArrowUp,
+  down: ArrowDown,
+  left: ArrowLeft,
+  right: ArrowRight,
+  info: Info,
+  alert: TriangleAlert,
+  check: CircleCheck,
+  error: CircleAlert,
+  close: X,
 } as const;
 type IconName = keyof typeof ICONS;
+/** Stroke width is set in admin.css in rendered pixels, so it tracks the weight of the text beside it. */
 function icon(name: IconName): SVGSVGElement {
-  const NS = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(NS, 'svg');
-  svg.setAttribute('viewBox', '0 0 24 24');
-  svg.setAttribute('class', 'icon');
-  svg.setAttribute('aria-hidden', 'true');
-  svg.setAttribute('focusable', 'false');
-  for (const d of ICONS[name].split(' M')) {
-    const p = document.createElementNS(NS, 'path');
-    p.setAttribute('d', d.startsWith('M') ? d : `M${d}`);
-    svg.append(p);
-  }
-  return svg;
+  return createElement(ICONS[name], { class: 'icon', 'aria-hidden': 'true', focusable: 'false' }) as SVGSVGElement;
 }
 
 function field(label: string, control: HTMLElement, hint?: string, opts: { required?: boolean } = {}): HTMLElement {
@@ -287,6 +287,35 @@ function linkedRow(...cells: HTMLTableCellElement[]): HTMLTableRowElement {
 const td = (cls: string | undefined, ...kids: Kid[]) => h('td', { class: cls }, ...kids);
 const rowLink = (href: string, text: string, sub?: string): Kid[] => [h('a', { class: 'row-link', href }, text), sub ? h('span', { class: 'cell-sub' }, sub) : null];
 
+/**
+ * Status filters over an index table, as a segmented control: one Tab stop, arrow keys move
+ * the choice, and each option carries its count. Only the counts change as the table repaints,
+ * so focus stays on the option she's on.
+ */
+function statusFilter(label: string, options: string[][], current: string, onChange: (value: string) => void) {
+  const ALL = 'all';
+  const counts = new Map<string, HTMLElement>();
+  const el = h(
+    'ui-segmented-control',
+    { class: 'tabs', 'aria-label': label, 'default-value': current || ALL },
+    h('ui-segmented-control-indicator', {}),
+    ...options.map(([value, text]) => {
+      const n = h('span', { class: 'n' });
+      counts.set(value!, n);
+      return h('ui-segmented-control-item', { class: 'tab', value: value || ALL }, text!, n);
+    }),
+  );
+  el.addEventListener('valuechange', (e) => {
+    const v = (e as CustomEvent<{ value: string | null }>).detail.value;
+    onChange(!v || v === ALL ? '' : v);
+  });
+  return {
+    el,
+    setCounts: (count: (value: string) => number) => counts.forEach((n, value) => (n.textContent = String(count(value)))),
+    reset: () => (el.value = ALL),
+  };
+}
+
 /** Says something once to screen readers, without a toast. */
 function say(text: string) {
   const live = document.getElementById('toast-live')!;
@@ -294,24 +323,65 @@ function say(text: string) {
   window.setTimeout(() => (live.textContent = text), 50);
 }
 
-let toastTimer: number | undefined;
+// One overlay host shows both the toasts and the confirm questions.
+const overlays = createOverlays();
+const toaster = createToaster({ overlays });
+const confirmer = createConfirm({ overlays });
+
+/** A result goes after five seconds. An error stays until it's dismissed, so it can be read. */
 function toast(text: string, tone: 'ok' | 'bad' = 'ok') {
-  const el = document.getElementById('toast')!;
-  el.querySelector('.toast-text')!.textContent = text;
-  el.dataset.tone = tone;
-  el.hidden = false;
-  // The visible toast is for sighted people; the live regions say it once to screen readers.
-  const live = document.getElementById(tone === 'bad' ? 'toast-alert' : 'toast-live')!;
-  live.textContent = '';
-  window.setTimeout(() => (live.textContent = text), 50);
-  clearTimeout(toastTimer);
-  // A result goes after five seconds. An error stays until it's dismissed, so it can be read.
-  if (tone === 'ok') toastTimer = window.setTimeout(() => (el.hidden = true), 5000);
+  // One error at a time: a repeat updates it in place, and a later success clears it.
+  if (tone === 'bad') toaster.error(text, { id: 'error', duration: Infinity });
+  else {
+    toaster.dismiss('error');
+    toaster.success(text);
+  }
 }
-document.querySelector('#toast button')?.addEventListener('click', () => {
-  document.getElementById('toast')!.hidden = true;
-  clearTimeout(toastTimer);
-});
+
+function mountOverlays() {
+  const template = document.createElement('template');
+  template.content.append(
+    h(
+      'ui-toast',
+      {},
+      h('span', { class: 'toast-icon', 'data-show': 'success' }, icon('check')),
+      h('span', { class: 'toast-icon', 'data-show': 'error' }, icon('error')),
+      h('ui-toast-title', {}),
+      h('ui-toast-close', {}, h('button', { type: 'button', 'aria-label': 'Dismiss message' }, icon('close'))),
+    ),
+  );
+  const host = Object.assign(document.createElement('ui-overlay-host'), {
+    overlays,
+    toast: { template, attributes: { side: 'bottom', align: 'center', 'aria-label': 'Notifications' } },
+  });
+
+  const cancel = h('button', { type: 'button', class: 'btn' });
+  const agree = h('button', { type: 'button', class: 'btn critical' });
+  const title = h('ui-alert-dialog-title', {});
+  const body = h('ui-alert-dialog-description', {});
+  const dialog = h(
+    'ui-alert-dialog',
+    {},
+    h('ui-alert-dialog-backdrop', { hidden: true }),
+    h(
+      'ui-alert-dialog-content',
+      { hidden: true },
+      title,
+      body,
+      h('div', { class: 'dialog-actions' }, h('ui-alert-dialog-close', {}, cancel), h('ui-alert-dialog-close', { value: 'confirm' }, agree)),
+    ),
+  ) as UiAlertDialogElement<ConfirmOptions>;
+  dialog.controller = confirmer.controller;
+  dialog.addEventListener('payloadchange', (e) => {
+    const q = e.detail.value;
+    title.textContent = q?.title ?? '';
+    body.textContent = q?.description ?? '';
+    cancel.textContent = q?.cancelLabel ?? 'Cancel';
+    agree.textContent = q?.confirmLabel ?? '';
+  });
+  document.body.append(dialog, host);
+}
+mountOverlays();
 
 async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const res = await fetch(`/api/admin${path}`, {
@@ -339,6 +409,16 @@ function rerender() {
   const y = window.scrollY;
   render();
   window.scrollTo(0, y);
+}
+
+// ---------- confirmation ----------
+
+/**
+ * Asks before a step that throws work away, in an alert dialog whose buttons name what they
+ * do. Cancel comes first and takes focus, so Enter never destroys anything; Escape cancels.
+ */
+function ask(o: { title: string; body: string; confirm: string; cancel?: string }): Promise<boolean> {
+  return confirmer({ title: o.title, description: o.body, confirmLabel: o.confirm, cancelLabel: o.cancel ?? 'Cancel' });
 }
 
 // ---------- unsaved edits: the save bar ----------
@@ -400,7 +480,7 @@ function paintSaveBar() {
     h(
       'div',
       { class: 'actions' },
-      btn('Discard', discard, { disabled: saving }),
+      btn('Discard', () => void discard(), { disabled: saving }),
       btn(saving ? 'Saving…' : label, () => void saveNow(), { class: 'btn primary', 'aria-disabled': saving ? 'true' : undefined }),
     ),
   );
@@ -416,9 +496,15 @@ async function saveNow() {
     paintSaveBar();
   }
 }
-function discard() {
+async function discard() {
   if (!editor) return;
-  if (!confirm('Discard all unsaved changes?')) return;
+  const ok = await ask({
+    title: 'Discard all unsaved changes?',
+    body: editor.isNew ? 'This hasn’t been saved yet, so it will be gone.' : 'Your edits since the last save will be lost.',
+    confirm: 'Discard changes',
+    cancel: 'Keep editing',
+  });
+  if (!ok || !editor) return;
   const to = editor.isNew ? editor.discardTo : undefined;
   editor = null;
   paintSaveBar();
@@ -664,7 +750,8 @@ function templateList() {
     );
   };
 
-  const tabs = h('div', { class: 'tabs', role: 'group', 'aria-label': 'Show designs by status' });
+  const status = statusFilter('Show designs by status', [['', 'All'], ...Object.entries(STATUS_LABEL)], filters.status, (v) => ((filters.status = v), paint()));
+  const tabs = status.el;
   const count = h('p', { class: 'result-count', 'aria-live': 'polite' });
   const body = h('div', {});
   const forFilter = select(
@@ -679,6 +766,7 @@ function templateList() {
   search.addEventListener('input', () => ((filters.q = search.value), paint()));
   const clearAll = () => {
     Object.assign(filters, { q: '', for: '', occasion: '', status: '' });
+    status.reset();
     search.value = '';
     forFilter.value = '';
     occFilter.value = '';
@@ -689,16 +777,7 @@ function templateList() {
 
   // Only the tabs, the count and the rows repaint, so the search box keeps focus as she types.
   function paint() {
-    tabs.replaceChildren(
-      ...[['', 'All'], ...Object.entries(STATUS_LABEL)].map(([value, label]) =>
-        h(
-          'button',
-          { type: 'button', class: 'tab', 'aria-pressed': String(filters.status === value), onclick: () => ((filters.status = value!), paint()) },
-          label!,
-          h('span', { class: 'n' }, String(templates.filter((t) => matches(t, value)).length)),
-        ),
-      ),
-    );
+    status.setCounts((value) => templates.filter((t) => matches(t, value)).length);
     const shown = templates.filter((t) => matches(t));
     const filtered = !!(filters.q || filters.for || filters.occasion || filters.status);
     count.textContent = `Showing ${shown.length} of ${templates.length} designs`;
@@ -1062,7 +1141,12 @@ function templateEditor(handle: string | null): HTMLElement {
     ? btn(
         isLive ? 'Undo my edits' : 'Delete draft',
         async () => {
-          if (!confirm(isLive ? 'Throw away your edits and go back to what the site shows?' : 'Delete this unpublished design?')) return;
+          const ok = await ask(
+            isLive
+              ? { title: 'Undo your edits?', body: UNDO_BODY, confirm: 'Undo edits', cancel: 'Keep edits' }
+              : { title: 'Delete this draft design?', body: 'It has never been published, so it can’t be brought back.', confirm: 'Delete draft' },
+          );
+          if (!ok) return;
           try {
             await api(`/drafts/template/${encodeURIComponent(existing!.handle)}`, { method: 'DELETE' });
             await reload();
@@ -1175,10 +1259,12 @@ function categoryList() {
   );
 }
 
+const UNDO_BODY = 'Your saved draft is thrown away and the page goes back to what the store shows now.';
+
 /** "Undo my edits": throws away the saved draft and shows what the site has. */
 function undoButton(path: string): HTMLButtonElement {
   return btn('Undo my edits', async () => {
-    if (!confirm('Throw away your edits and go back to what the site shows?')) return;
+    if (!(await ask({ title: 'Undo your edits?', body: UNDO_BODY, confirm: 'Undo edits', cancel: 'Keep edits' }))) return;
     try {
       await api(path, { method: 'DELETE' });
       await reload();
@@ -1604,7 +1690,6 @@ function pageEditor(key: string): HTMLElement {
             btn(
               'Remove',
               () => {
-                if (!confirm(`Remove this ${label(s)}?`)) return;
                 page.sections.splice(i, 1);
                 paint();
                 focusAfterRemove(box, ':scope > .card[data-section]', i, 'select');
@@ -1809,19 +1894,11 @@ async function loadOrders() {
 function orderList(): HTMLElement {
   if (!orders) return loadingOrders();
   const { orders: all, statuses } = orders;
-  const tabs = h('div', { class: 'tabs', role: 'group', 'aria-label': 'Show orders by status' });
+  const status = statusFilter('Show orders by status', [['', 'All'], ...statuses.map((s) => [s, ORDER_LABEL[s] ?? s])], orderFilter.status, (v) => ((orderFilter.status = v), paint()));
+  const tabs = status.el;
   const body = h('div', {});
   const paint = () => {
-    tabs.replaceChildren(
-      ...[['', 'All'], ...statuses.map((s) => [s, ORDER_LABEL[s] ?? s])].map(([value, label]) =>
-        h(
-          'button',
-          { type: 'button', class: 'tab', 'aria-pressed': String(orderFilter.status === value), onclick: () => ((orderFilter.status = value!), paint()) },
-          label!,
-          h('span', { class: 'n' }, String(all.filter((o) => !value || o.status === value).length)),
-        ),
-      ),
-    );
+    status.setCounts((value) => all.filter((o) => !value || o.status === value).length);
     const shown = all.filter((o) => !orderFilter.status || o.status === orderFilter.status);
     body.replaceChildren(
       !all.length
@@ -2076,17 +2153,35 @@ function render() {
 
 // Leaving a form with unsaved edits asks first. The address goes back if she stays.
 let currentHash = location.hash;
+// While the leave question is open, further navigation waits for its answer.
+let askingToLeave = false;
 window.addEventListener('hashchange', () => {
-  if (isDirty() && !confirm('Leave this page? Your unsaved changes will be lost.')) {
+  if (askingToLeave || isDirty()) {
+    const to = location.hash;
     history.replaceState(null, '', currentHash || '#/designs');
+    if (askingToLeave) return;
+    askingToLeave = true;
+    void ask({ title: 'Leave with unsaved changes?', body: 'Your edits on this page will be lost.', confirm: 'Leave page', cancel: 'Stay on page' }).then((ok) => {
+      askingToLeave = false;
+      if (!ok) return;
+      editor = null;
+      paintSaveBar();
+      // Replace, don't push: the history keeps one entry for the page she leaves.
+      history.replaceState(null, '', to);
+      route();
+    });
     return;
   }
+  route();
+});
+
+function route() {
   currentHash = location.hash;
   document.getElementById('sidenav')?.classList.remove('open');
   render();
   window.scrollTo(0, 0);
   if (location.hash.startsWith('#/orders') && orders) refreshOrders();
-});
+}
 
 (async () => {
   try {

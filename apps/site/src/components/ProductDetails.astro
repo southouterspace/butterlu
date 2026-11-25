@@ -1,0 +1,22 @@
+---
+// The made-to-order, shipping, size and photo notes under the product and in the editor.
+// Each icon sits in a box one line of text tall, aligned to the top, so on an item that
+// wraps the icon lines up with the first line instead of floating between the two.
+import { SHOP } from '../catalog/products';
+import Icon from './ui/Icon.astro';
+
+const ITEMS = [
+  { icon: 'clock', text: SHOP.dispatch },
+  { icon: 'truck', text: SHOP.shipping },
+  { icon: 'frame', text: '8.4 × 6.4 inch wood frame with glass and an easel back' },
+  { icon: 'heart', text: SHOP.photoNote },
+] as const;
+---
+<ul class="grid gap-2 text-sm text-muted-foreground" data-details>
+  {ITEMS.map(({ icon, text }) => (
+    <li class="flex items-start gap-2">
+      <span class="flex h-[1lh] shrink-0 items-center" data-details-icon><Icon name={icon} /></span>
+      {text}
+    </li>
+  ))}
+</ul>

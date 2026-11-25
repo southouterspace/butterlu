@@ -9,13 +9,14 @@
 // the preset selected, so the page reads and works before the script runs.
 import { BACKGROUNDS, FONTS, SHAPES, SIDES } from '@butterlu/frame';
 import { MAX_SIDE_CHARS, SIDE_LABEL, TEXT_COLORS, parseDesign } from '@butterlu/frame/design';
-import { type Product, SHOP, formatPrice } from '../catalog/products';
+import { type Product, formatPrice } from '../catalog/products';
 import { type Idea, productIdeas } from '../catalog/copy';
 import { standInNote } from '../catalog/example-names';
 import { groupedBackgrounds } from '../lib/background-groups';
 import { frameSvg } from '../lib/frame-svg';
 import { placementsAtBuild } from '../lib/layout-build';
 import Icon from './ui/Icon.astro';
+import ProductDetails from './ProductDetails.astro';
 import { buttonVariants, cn, inputClass, nativeSelectClass } from './ui/variants';
 
 interface Props {
@@ -213,18 +214,33 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
       <a href="/cart" class={cn(buttonVariants({ size: 'xl' }), 'w-full')} data-added hidden>View Cart & Check Out</a>
     </div>
 
-    <ul class="grid gap-2 text-sm text-muted-foreground [&_svg]:shrink-0">
-      <li class="flex items-center gap-2"><Icon name="clock" />{SHOP.dispatch}</li>
-      <li class="flex items-center gap-2"><Icon name="truck" />{SHOP.shipping}</li>
-      <li class="flex items-center gap-2"><Icon name="frame" />8.4 × 6.4 inch wood frame with glass and an easel back</li>
-      <li class="flex items-center gap-2"><Icon name="heart" />{SHOP.photoNote}</li>
-    </ul>
+    <ProductDetails />
   </form>
 </div>
 
 <script>
   import { mountCustomizer } from '../scripts/customizer';
   document.querySelectorAll<HTMLElement>('[data-customizer]').forEach(mountCustomizer);
+
+  // Phones: the push (see the styles below) ends when the cart bar's resting spot reaches
+  // the top of the screen, so the page must still scroll that far. Measure how much page
+  // there is below that spot, without the room added for it; the styles turn it into the
+  // missing room, against the tallest the screen gets once the address bar hides. Written
+  // in the next frame so a resize it causes isn't reported back in the same one.
+  const editor = document.querySelector<HTMLElement>('.customizer');
+  const mark = editor?.querySelector<HTMLElement>('.bar-mark');
+  const footer = document.querySelector<HTMLElement>('body > footer');
+  if (editor && mark && footer) {
+    const root = document.documentElement;
+    const measure = () => {
+      const added = parseFloat(getComputedStyle(footer).paddingBottom) - parseFloat(getComputedStyle(footer).paddingTop);
+      const below = root.scrollHeight - Math.max(0, added) - (mark.getBoundingClientRect().top + scrollY);
+      const value = `${Math.floor(below)}px`;
+      if (root.style.getPropertyValue('--below-bar') !== value) root.style.setProperty('--below-bar', value);
+    };
+    measure();
+    new ResizeObserver(() => requestAnimationFrame(measure)).observe(document.body);
+  }
 </script>
 
 <style>
@@ -310,6 +326,13 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
       }
       .bar-mark {
         view-timeline: --bar block;
+      }
+      /* Room at the very end of the page, only as much as it lacks for the push to
+         finish, so the preview can leave the screen entirely. It goes in the footer's own
+         bottom padding, so the page reads as simply ending rather than as a blank gap
+         above the footer. Measured in the script above; the footer's padding is py-10. */
+      :global(body:has(.customizer) > footer) {
+        padding-bottom: calc(2.5rem + max(0px, calc(100lvh - var(--below-bar, 100lvh))));
       }
       .preview-dock {
         animation: dock-push linear both;

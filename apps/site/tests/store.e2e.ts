@@ -355,13 +355,39 @@ test('on a phone, the cart bar pushes the sticky preview off screen instead of c
         const b = bar.getBoundingClientRect();
         if (d.bottom > 0 && d.bottom > b.top + 1) found.push(y);
       }
-      // At the very end too: the bar stops where the page does, and the preview sits above it.
-      scrollTo(0, end);
+      // At the very end too: the page leaves room for the push to finish, so the preview is
+      // all the way off the screen there.
+      scrollTo(0, document.documentElement.scrollHeight - innerHeight);
       await frame();
-      if (dock.getBoundingClientRect().bottom > bar.getBoundingClientRect().top + 1) found.push(end);
-      return found;
+      if (dock.getBoundingClientRect().bottom > bar.getBoundingClientRect().top + 1) found.push(-1);
+      return { found, endBottom: Math.round(dock.getBoundingClientRect().bottom) };
     });
-    expect(overlaps).toEqual([]);
+    expect(overlaps.found).toEqual([]);
+    expect(overlaps.endBottom).toBeLessThanOrEqual(1);
+  } finally {
+    await browser.setViewport({ width: 1280, height: 800 });
+  }
+});
+
+// The product details (made to order, shipping, size, photo): on a phone two of them wrap,
+// and each icon lines up with its item's first line, not the middle of the two.
+test('each product detail icon lines up with the first line of its text', async ({ app, browser }) => {
+  await browser.setViewport({ width: 390, height: 844 });
+  try {
+    for (const path of [EDITOR, PRODUCT]) {
+      await app.open(path);
+      const rows = await browser.evaluate(() =>
+        [...document.querySelectorAll('[data-details] li')].map((li) => {
+          const line = parseFloat(getComputedStyle(li).lineHeight);
+          const box = li.getBoundingClientRect();
+          const icon = li.querySelector('svg')!.getBoundingClientRect();
+          return { lines: Math.round(box.height / line), offset: Math.round(icon.top + icon.height / 2 - (box.top + line / 2)) };
+        }),
+      );
+      expect(rows.length).toBe(4);
+      expect(rows.some((r) => r.lines > 1)).toBe(true);
+      for (const r of rows) expect(Math.abs(r.offset)).toBeLessThanOrEqual(1);
+    }
   } finally {
     await browser.setViewport({ width: 1280, height: 800 });
   }

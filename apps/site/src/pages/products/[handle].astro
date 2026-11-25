@@ -10,6 +10,7 @@ import ProductGallery from '../../components/media/ProductGallery.astro';
 import ImagePlaceholder from '../../components/media/ImagePlaceholder.astro';
 import { SHOW_PLACEHOLDERS } from '../../lib/placeholders';
 import Icon from '../../components/ui/Icon.astro';
+import ProductDetails from '../../components/ProductDetails.astro';
 import { buttonVariants, cn } from '../../components/ui/variants';
 import { frameSvg } from '../../lib/frame-svg';
 import { placementsAtBuild } from '../../lib/layout-build';
@@ -172,12 +173,7 @@ const jsonLd = [
         </div>
         {asShown && <p id="as-shown-note" class="text-sm text-muted-foreground">{asShown}</p>}
       </div>
-      <ul class="grid gap-2 text-sm text-muted-foreground [&_svg]:shrink-0">
-        <li class="flex items-center gap-2"><Icon name="clock" />{SHOP.dispatch}</li>
-        <li class="flex items-center gap-2"><Icon name="truck" />{SHOP.shipping}</li>
-        <li class="flex items-center gap-2"><Icon name="frame" />8.4 × 6.4 inch wood frame with glass and an easel back</li>
-        <li class="flex items-center gap-2"><Icon name="heart" />{SHOP.photoNote}</li>
-      </ul>
+      <ProductDetails />
     </div>
   </div>
 

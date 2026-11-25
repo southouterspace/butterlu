@@ -349,3 +349,17 @@ test("a design's background size and position are kept", async () => {
   expect(r.status).toBe(200);
   expect(r.body.template.preset.backgroundFit).toEqual({ scale: 1.5, x: -0.5, y: 0.25 });
 });
+
+test('a background turned sideways is kept, and a bad direction is refused', async () => {
+  const { call } = setup();
+  const t = newTemplate();
+  t.preset = { ...t.preset, backgroundFit: { scale: 1.2, x: 0.5, y: 0, sideways: true } };
+  const r = await call('PUT', `/api/admin/templates/${t.handle}`, t);
+  expect(r.status).toBe(200);
+  expect(r.body.template.preset.backgroundFit).toEqual({ scale: 1.2, x: 0.5, y: 0, sideways: true });
+  // Sideways at 100% is a fit of its own, not the default, so it is kept too.
+  t.preset = { ...t.preset, backgroundFit: { scale: 1, x: 0, y: 0, sideways: true } };
+  expect((await call('PUT', `/api/admin/templates/${t.handle}`, t)).body.template.preset.backgroundFit).toEqual({ scale: 1, x: 0, y: 0, sideways: true });
+  t.preset = { ...t.preset, backgroundFit: { scale: 1, x: 0, y: 0, sideways: 'yes' } as never };
+  expect((await call('PUT', `/api/admin/templates/${t.handle}`, t)).status).toBe(422);
+});

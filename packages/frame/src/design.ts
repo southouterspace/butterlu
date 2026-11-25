@@ -67,8 +67,9 @@ const round2 = (v: number) => Math.round(v * 100) / 100;
 
 /**
  * A background fit, rounded to hundredths so identical choices merge in the cart.
- * Returns undefined for the default (scale 1, centred), which a spec leaves off.
+ * Returns undefined for the default (scale 1, centred, upright), which a spec leaves off.
  * An axis the zoom leaves no room on is centred, since it can't change the print.
+ * `sideways` is kept only when true.
  */
 export function parseFit(raw: unknown, shape: ShapeId | undefined, errors: string[] = []): BackgroundFit | undefined {
   if (raw === undefined || raw === null) return undefined;
@@ -87,13 +88,18 @@ export function parseFit(raw: unknown, shape: ShapeId | undefined, errors: strin
   const scale = num('scale', BACKGROUND_SCALE.min, BACKGROUND_SCALE.max, 1);
   let x = num('x', -1, 1, 0);
   let y = num('y', -1, 1, 0);
+  const rawSideways = raw.sideways ?? false;
+  if (typeof rawSideways !== 'boolean') errors.push('backgroundFit: sideways must be true or false');
+  const sideways = rawSideways === true;
   if (shape) {
-    const slack = backgroundSlack(shape, scale);
+    const slack = backgroundSlack(shape, scale, sideways);
     if (slack.x < 1e-6) x = 0;
     if (slack.y < 1e-6) y = 0;
   }
-  if (scale === 1 && x === 0 && y === 0) return undefined;
-  return { scale, x: x || 0, y: y || 0 };
+  if (scale === 1 && x === 0 && y === 0 && !sideways) return undefined;
+  const fit: BackgroundFit = { scale, x: x || 0, y: y || 0 };
+  if (sideways) fit.sideways = true;
+  return fit;
 }
 
 /**
@@ -143,7 +149,7 @@ export function parseDesign(input: unknown): DesignResult {
 /** One stable string per design, so the cart can merge identical lines. */
 export function designKey(spec: FrameSpec): string {
   const f = spec.backgroundFit;
-  return JSON.stringify([spec.shape, spec.backgroundId, ...SIDES.map((s) => spec.sides[s] ?? null), f ? [f.scale, f.x, f.y] : null]);
+  return JSON.stringify([spec.shape, spec.backgroundId, ...SIDES.map((s) => spec.sides[s] ?? null), f ? (f.sideways ? [f.scale, f.x, f.y, 1] : [f.scale, f.x, f.y]) : null]);
 }
 
 // Stripe metadata holds at most 50 keys of 500 characters. A design is at most
@@ -195,11 +201,11 @@ export function describeDesign(spec: FrameSpec): string {
   return [`${shape} frame`, fit ? `${background} (${fit})` : background, ...words].join(' · ');
 }
 
-/** "zoomed to 150%, toward the top left", or "centered" for the default. */
+/** "sideways, zoomed to 150%, toward the top left", or "centered" for the default. */
 export function describeFit(fit: BackgroundFit): string {
   const toward = (v: number, lo: string, hi: string) => (Math.abs(v) < 0.005 ? '' : v < 0 ? lo : hi);
   const where = [toward(fit.y, 'top', 'bottom'), toward(fit.x, 'left', 'right')].filter(Boolean).join(' ');
-  const parts = [fit.scale !== 1 ? `zoomed to ${Math.round(fit.scale * 100)}%` : '', where ? `toward the ${where}` : ''].filter(Boolean);
+  const parts = [fit.sideways ? 'sideways' : '', fit.scale !== 1 ? `zoomed to ${Math.round(fit.scale * 100)}%` : '', where ? `toward the ${where}` : ''].filter(Boolean);
   return parts.length ? parts.join(', ') : 'centered';
 }
 

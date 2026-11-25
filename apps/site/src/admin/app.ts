@@ -12,7 +12,7 @@
 //
 // Plain DOM, no framework: every value from the server goes in with textContent or
 // an attribute, never as HTML.
-import { createElement, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, ChevronDown, CircleAlert, CircleCheck, CircleHelp, ExternalLink, FileText, Folder, Image as ImageIcon, Inbox, Info, Menu, Search, Tags, TriangleAlert, Upload, X } from 'lucide';
+import { createElement, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, ChevronDown, CircleAlert, CircleCheck, CircleHelp, ExternalLink, FileText, Folder, Image as ImageIcon, Inbox, Info, Menu, RectangleHorizontal, RectangleVertical, Search, Tags, TriangleAlert, Upload, X } from 'lucide';
 import '@ui-sdk/web/alert-dialog';
 import '@ui-sdk/web/checkbox';
 import '@ui-sdk/web/field';
@@ -25,7 +25,7 @@ import '@ui-sdk/web/slider';
 import '@ui-sdk/web/textarea';
 import '@ui-sdk/web/toast';
 import { createConfirm, createOverlays, createToaster, type ConfirmOptions, type UiAlertDialogElement, type UiCheckboxElement, type UiCheckboxGroupElement, type UiFieldElement, type UiInputElement, type UiRadioGroupElement, type UiSliderElement } from '@ui-sdk/web';
-import { BACKGROUND_SCALE, SHAPE_IDS, SIDES, type FrameSpec, type Side } from '@butterlu/frame';
+import { BACKGROUND_SCALE, SHAPES, SHAPE_IDS, SIDES, backgroundRect, backgroundSlack, type BackgroundFit, type FrameSpec, type Side } from '@butterlu/frame';
 import { SEO_LABELS, SEO_LIMITS, TITLE_SUFFIX, checkTemplate, slugify, toLabel, type SeoKey } from '../catalog/check';
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from '../catalog/doc';
 import {
@@ -45,7 +45,7 @@ import {
   type ValuePropsSection,
 } from '../catalog/pages';
 import { ILLUSTRATIONS } from '../catalog/illustrations';
-import { backgroundUrl, fontCss, frameSvg } from '../lib/frame-svg';
+import { backgroundAttrs, backgroundUrl, fontCss, frameSvg } from '../lib/frame-svg';
 import { fontsReady, placementsInBrowser } from '../scripts/measure';
 
 interface CatalogResponse {
@@ -147,6 +147,8 @@ const ICONS = {
   close: X,
   chevron: ChevronDown,
   tick: Check,
+  upright: RectangleVertical,
+  sideways: RectangleHorizontal,
 } as const;
 type IconName = keyof typeof ICONS;
 /** Stroke width is set in admin.css in rendered pixels, so it tracks the weight of the text beside it. */
@@ -1002,31 +1004,160 @@ function templateEditor(handle: string | null): HTMLElement {
     paintBgName();
     repaint();
   });
-  // Background size and position (packages/frame backgroundFit): 100% fills the frame;
-  // larger zooms in, and the position sliders pick which part of the pattern shows.
-  const fit = () => t.preset.backgroundFit ?? { scale: 1, x: 0, y: 0 };
+  // Background fit (packages/frame BackgroundFit). Every sheet is portrait and the frame is
+  // landscape, so direction comes first: upright fits the frame's width and crops the top and
+  // bottom; sideways lays the sheet landscape, where it fits the width and the height and shows
+  // nearly whole. Then size (100% is the smallest that still covers the frame), then which part
+  // shows, on any axis with room to move, at 100% too. The sheet map shows what's cropped and
+  // can be dragged; it's a pointer shortcut only, and the sliders stay the accessible control.
+  const fit = (): BackgroundFit => t.preset.backgroundFit ?? { scale: 1, x: 0, y: 0 };
   const pct = (v: number) => `${Math.round(v * 100)}%`;
   const side = (v: number, lo: string, hi: string) => (Math.abs(v) < 0.01 ? 'centred' : `${Math.round(Math.abs(v) * 100)}% toward the ${v < 0 ? lo : hi}`);
+  /** Less room than this (inches) isn't worth a slider: sideways at 100% has about 0.04 in up and down. */
+  const ROOM_IN = 0.1;
+  let sideways = fit().sideways === true;
+  const turnIn = h(
+    'ui-segmented-control',
+    { class: 'seg', 'default-value': sideways ? 'sideways' : 'upright' },
+    h('ui-segmented-control-indicator', {}),
+    h('ui-segmented-control-item', { class: 'tab', value: 'upright' }, icon('upright'), 'Upright'),
+    h('ui-segmented-control-item', { class: 'tab', value: 'sideways' }, icon('sideways'), 'Sideways'),
+  );
   const scaleIn = slider(BACKGROUND_SCALE.min, BACKGROUND_SCALE.max, BACKGROUND_SCALE.step, fit().scale, pct);
   const xIn = slider(-1, 1, 0.05, fit().x, (v) => side(v, 'left', 'right'));
   const yIn = slider(-1, 1, 0.05, fit().y, (v) => side(v, 'top', 'bottom'));
   const scaleOut = h('output', { 'aria-hidden': 'true' });
-  const posBox = h('div', { class: 'row' }, field('Left and right', xIn), field('Up and down', yIn));
+  const turnField = field('Pattern direction', turnIn, ' ');
+  const turnHint = turnField.querySelector<HTMLElement>('.hint')!;
+  const xField = field('Left and right', xIn);
+  const yField = field('Up and down', yIn);
+  const mapBox = h('div', { class: 'fit-map' });
+  const mapHint = h('p', { class: 'hint' });
+  // The map is built once; each change moves its parts rather than rebuilding it, so the
+  // pattern doesn't flash while it's dragged. Everything set here is a number or a known path.
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const svgEl = (tag: string, cls?: string) => {
+    const el = document.createElementNS(SVG_NS, tag);
+    if (cls) el.setAttribute('class', cls);
+    return el;
+  };
+  const map = svgEl('svg') as SVGSVGElement;
+  map.setAttribute('focusable', 'false');
+  const mapImg = svgEl('image');
+  mapImg.setAttribute('preserveAspectRatio', 'none');
+  const mapVeil = svgEl('path', 'veil');
+  mapVeil.setAttribute('fill-rule', 'evenodd');
+  const mapCut = svgEl('path', 'cut');
+  const mapHole = svgEl('path', 'hole');
+  const mapSheet = svgEl('rect', 'sheet');
+  map.append(mapImg, mapVeil, mapCut, mapHole, mapSheet);
+  mapBox.append(map);
+  const attrs = (el: Element, a: Record<string, string | number>) => Object.entries(a).forEach(([k, v]) => el.setAttribute(k, String(v)));
+  const paintMap = (f: BackgroundFit, movable: boolean) => {
+    const s = SHAPES[t.preset.shape];
+    const r = backgroundRect(t.preset.shape, f);
+    const img = backgroundAttrs(r, f.sideways);
+    const m = 0.15;
+    const line = r.w / 180;
+    attrs(map, { viewBox: `${(r.x - m).toFixed(4)} ${(r.y - m).toFixed(4)} ${(r.w + 2 * m).toFixed(4)} ${(r.h + 2 * m).toFixed(4)}` });
+    const href = backgroundUrl(t.preset.backgroundId, 'card');
+    if (mapImg.getAttribute('href') !== href) mapImg.setAttribute('href', href);
+    attrs(mapImg, { x: img.x, y: img.y, width: img.width, height: img.height });
+    if (img.transform) mapImg.setAttribute('transform', img.transform);
+    else mapImg.removeAttribute('transform');
+    attrs(mapVeil, { d: `M ${r.x} ${r.y} h ${r.w} v ${r.h} h ${-r.w} Z ${s.outline}` });
+    attrs(mapCut, { d: s.outline, 'stroke-width': (line * 1.6).toFixed(4) });
+    attrs(mapHole, { d: s.opening, 'stroke-width': line.toFixed(4) });
+    attrs(mapSheet, { x: r.x, y: r.y, width: r.w, height: r.h, 'stroke-width': line.toFixed(4), 'stroke-dasharray': `${(line * 4).toFixed(4)} ${(line * 3).toFixed(4)}` });
+    mapBox.classList.toggle('still', !movable);
+    mapHint.textContent = movable ? 'Drag the frame on the sheet, or use the sliders.' : 'The whole sheet shows, so there is nothing to move. Zoom in to choose a part.';
+  };
+  /** Shows the controls for the fit and returns it with any axis that has no room centred. */
+  const paintFitControls = (scale: number): BackgroundFit => {
+    const slack = backgroundSlack(t.preset.shape, scale, sideways);
+    const room = { x: slack.x > ROOM_IN, y: slack.y > ROOM_IN };
+    // An axis without room is centred, slider too, so zooming back in starts from the middle.
+    if (!room.x) xIn.value = 0;
+    if (!room.y) yIn.value = 0;
+    const f: BackgroundFit = { scale, x: Number(xIn.value), y: Number(yIn.value) };
+    if (sideways) f.sideways = true;
+    scaleOut.textContent = pct(scale);
+    turnHint.textContent = sideways ? 'Fits the width and the height, so the whole sheet shows. Toile and bows end up on their side.' : 'Fits the width. The top and bottom are cropped; move up and down to choose the band.';
+    xField.hidden = !room.x;
+    yField.hidden = !room.y;
+    paintMap(f, room.x || room.y);
+    return f;
+  };
   const syncFit = () => {
-    const f = { scale: Number(scaleIn.value), x: Number(xIn.value), y: Number(yIn.value) };
-    if (f.scale <= 1.001) f.x = f.y = 0;
-    if (f.scale <= 1.001 && !f.x && !f.y) delete t.preset.backgroundFit;
+    const f = paintFitControls(Number(scaleIn.value));
+    if (f.scale <= 1.001 && !f.x && !f.y && !f.sideways) delete t.preset.backgroundFit;
     else t.preset.backgroundFit = f;
-    scaleOut.textContent = pct(f.scale);
-    posBox.hidden = f.scale <= 1.001;
     repaint();
   };
+  turnIn.addEventListener('valuechange', (e) => {
+    const v = (e as CustomEvent<{ value: string | null }>).detail.value;
+    if (!v) return;
+    sideways = v === 'sideways';
+    // Position means something else on a turned sheet, so start it centred.
+    xIn.value = 0;
+    yIn.value = 0;
+    syncFit();
+  });
   for (const r of [scaleIn, xIn, yIn]) r.addEventListener('input', syncFit);
-  const resetFit = btn('Reset', () => ((scaleIn.value = 1), (xIn.value = 0), (yIn.value = 0), syncFit()));
-  scaleOut.textContent = pct(fit().scale);
-  posBox.hidden = fit().scale <= 1.001;
-  const sizeField = field('Background size', scaleIn, 'Larger zooms into the pattern; then pick which part shows.');
-  const fitBox = h('fieldset', { class: 'sub fit' }, h('legend', {}, 'Background size and position'), h('div', { class: 'row center' }, sizeField, scaleOut, resetFit), posBox);
+  shape.addEventListener('change', syncFit);
+  bgGrid.addEventListener('change', syncFit);
+
+  // Dragging the frame across the sheet map moves x and y by the same rule backgroundRect uses.
+  let drag: { px: number; py: number; x: number; y: number; inPerPx: number; slack: { x: number; y: number }; moved: boolean } | null = null;
+  mapBox.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    const f = fit();
+    const slack = backgroundSlack(t.preset.shape, f.scale, f.sideways);
+    if (slack.x <= ROOM_IN && slack.y <= ROOM_IN) return;
+    e.preventDefault();
+    drag = { px: e.clientX, py: e.clientY, x: f.x, y: f.y, inPerPx: map.viewBox.baseVal.width / map.getBoundingClientRect().width, slack, moved: false };
+    mapBox.setPointerCapture(e.pointerId);
+    mapBox.classList.add('dragging');
+  });
+  mapBox.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const to = (from: number, dPx: number, slack: number) => Math.round(Math.max(-1, Math.min(1, from + (2 * dPx * drag!.inPerPx) / slack)) / 0.05) * 0.05;
+    const x = drag.slack.x > ROOM_IN ? to(drag.x, e.clientX - drag.px, drag.slack.x) : 0;
+    const y = drag.slack.y > ROOM_IN ? to(drag.y, e.clientY - drag.py, drag.slack.y) : 0;
+    if (Math.abs(x - Number(xIn.value)) < 1e-9 && Math.abs(y - Number(yIn.value)) < 1e-9) return;
+    xIn.value = x;
+    yIn.value = y;
+    drag.moved = true;
+    syncFit();
+  });
+  const endDrag = () => {
+    // Slider values set from script fire no events, so tell the save bar about the change.
+    if (drag?.moved) mapBox.dispatchEvent(new Event('change', { bubbles: true }));
+    drag = null;
+    mapBox.classList.remove('dragging');
+  };
+  mapBox.addEventListener('pointerup', endDrag);
+  mapBox.addEventListener('pointercancel', endDrag);
+
+  const resetFit = btn('Reset', () => {
+    sideways = false;
+    turnIn.value = 'upright';
+    scaleIn.value = 1;
+    xIn.value = 0;
+    yIn.value = 0;
+    syncFit();
+  });
+  const sizeField = field('Size', scaleIn, '100% is the smallest that still covers the frame edge to edge.');
+  const fitBox = h(
+    'fieldset',
+    { class: 'sub fit' },
+    h('legend', {}, 'Background size and position'),
+    turnField,
+    h('div', { class: 'row center' }, sizeField, scaleOut, resetFit),
+    h('div', { class: 'fit-where' }, h('div', { class: 'fit-map-wrap', 'aria-hidden': 'true' }, h('p', { class: 'field-label' }, 'Which part of the sheet shows'), mapBox, mapHint), h('div', { class: 'fit-pos' }, xField, yField)),
+  );
+  // First paint without the full repaint: the preview paints once the form is built.
+  paintFitControls(fit().scale);
 
   const sides = h(
     'div',

@@ -398,6 +398,31 @@ ui-checkbox-indicator .icon { width: 12px; height: 12px; }
 .swatch:has(ui-radio:focus-visible) { outline: 2px solid var(--a-focus); outline-offset: 1px; }
 .sides { display: grid; gap: 12px; }
 .fit output { font-variant-numeric: tabular-nums; min-width: 4ch; font-weight: 550; }
+.seg { position: relative; isolation: isolate; display: inline-flex; align-self: flex-start; gap: 2px; padding: 2px; border-radius: var(--a-radius-sm); background: var(--a-surface-active); }
+.seg .tab { gap: 6px; padding: 4px 12px; }
+.seg .tab svg { width: 16px; height: 16px; }
+@media (hover: hover) { .seg .tab[data-unchecked]:hover { background: none; color: var(--a-text); } }
+.seg .tab:focus-visible { outline: 2px solid var(--a-focus); outline-offset: 0; }
+.seg [data-slot='segmented-control-indicator'] {
+  position: absolute; z-index: -1; border-radius: calc(var(--a-radius-sm) - 2px); background: var(--a-surface); box-shadow: var(--a-shadow);
+  top: var(--segmented-control-indicator-top); left: var(--segmented-control-indicator-left);
+  width: var(--segmented-control-indicator-width); height: var(--segmented-control-indicator-height);
+  transition: left 200ms var(--a-ease-out), width 200ms var(--a-ease-out);
+}
+.seg [data-slot='segmented-control-indicator'][data-activation-direction='none'] { transition: none; }
+@media (prefers-reduced-motion: reduce) { .seg [data-slot='segmented-control-indicator'] { transition: none; } }
+.fit-where { display: grid; grid-template-columns: minmax(160px, 240px) 1fr; gap: 12px 16px; align-items: start; margin-top: 12px; }
+@media (max-width: 640px) { .fit-where { grid-template-columns: 1fr; } }
+.fit-map { margin-top: 6px; border-radius: var(--a-radius-sm); background: var(--a-canvas); touch-action: none; cursor: grab; user-select: none; }
+.fit-map.dragging { cursor: grabbing; }
+.fit-map.still { cursor: default; }
+.fit-map svg { display: block; width: 100%; height: auto; }
+.fit-map .veil { fill: rgb(255 255 255 / 0.62); }
+.fit-map .cut { fill: none; stroke: var(--a-text); }
+.fit-map .hole { fill: rgb(255 255 255 / 0.5); stroke: var(--a-text); stroke-opacity: 0.6; }
+.fit-map .sheet { fill: none; stroke: var(--a-text-2); }
+.fit-pos { display: grid; gap: 8px; }
+.fit-pos .field[hidden] { display: none; }
 .drawing { width: 48px; height: 48px; object-fit: contain; border-radius: var(--a-radius-sm); background: var(--a-surface-2); }
 
 /* SEO and the search preview */

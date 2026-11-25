@@ -59,8 +59,22 @@ describe('background fit', () => {
     expect(flat.ok && flat.spec.backgroundFit).toEqual({ scale: 1, x: 0, y: 0.5 });
   });
 
+  test('keeps sideways only when true, and centres what the turned sheet has no room to move', () => {
+    const turned = parseDesign({ ...good, backgroundFit: { scale: 1, x: 0.8, y: 0.5, sideways: true } });
+    // Turned, the sheet fills the width exactly, so left and right has nothing to move.
+    expect(turned.ok && turned.spec.backgroundFit).toEqual({ scale: 1, x: 0, y: 0.5, sideways: true });
+    const upright = parseDesign({ ...good, backgroundFit: { scale: 1, x: 0, y: 0, sideways: false } });
+    expect(upright.ok && upright.spec.backgroundFit).toBe(undefined);
+    const zoomed = parseDesign({ ...good, backgroundFit: { scale: 1.5, x: -0.5, y: 0.5, sideways: true } });
+    expect(zoomed.ok && zoomed.spec.backgroundFit).toEqual({ scale: 1.5, x: -0.5, y: 0.5, sideways: true });
+    expect(zoomed.ok && describeDesign(zoomed.spec)).toContain('sideways, zoomed to 150%');
+    const a = parseDesign({ ...good, backgroundFit: { scale: 1.5, x: 0, y: 0 } });
+    const b = parseDesign({ ...good, backgroundFit: { scale: 1.5, x: 0, y: 0, sideways: true } });
+    expect(a.ok && b.ok && designKey(a.spec) !== designKey(b.spec)).toBe(true);
+  });
+
   test('refuses values out of range or not numbers', () => {
-    for (const backgroundFit of [{ scale: 0.5 }, { scale: 2.5 }, { scale: 1.5, x: 1.2 }, { scale: '2' }, { scale: 1.5, y: Number.NaN }, 'big']) {
+    for (const backgroundFit of [{ scale: 0.5 }, { scale: 2.5 }, { scale: 1.5, x: 1.2 }, { scale: '2' }, { scale: 1.5, y: Number.NaN }, { scale: 1, sideways: 'yes' }, 'big']) {
       expect(parseDesign({ ...good, backgroundFit }).ok).toBe(false);
     }
   });

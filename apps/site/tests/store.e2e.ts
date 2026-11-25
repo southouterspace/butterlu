@@ -3,6 +3,9 @@ import { expect } from 'e2e';
 import { designFromMetadata, designToMetadata } from '@butterlu/frame/design';
 import { checkCart } from '../worker/checkout';
 import { placementsAtBuild } from '../src/lib/layout-build';
+import { frameSvg } from '../src/lib/frame-svg';
+import { PRODUCTS } from '../src/catalog/products';
+import type { FrameSpec } from '@butterlu/frame';
 import { DEFAULT_MAX_PT } from '@butterlu/frame';
 
 const PRODUCT = '/products/grandparent-pregnancy-announcement-frame';
@@ -219,6 +222,23 @@ test('the funnel beacon takes known events and ignores the rest', async ({ app }
   expect((await send({ n: 'view', p: 'home', f: 'e2etest0000000001' })).status).toBe(204);
   expect((await send({ n: 'order_paid' })).status).toBe(204);
   expect((await fetch(new URL('/api/e', app.baseUrl), { method: 'POST', body: 'nope' })).status).toBe(400);
+});
+
+test('a design set sideways in the admin draws its pattern turned, and the cart line keeps it', async () => {
+  const product = PRODUCTS.find((p) => p.handle === 'grandparent-pregnancy-announcement-frame')!;
+  const image = (spec: FrameSpec) => frameSvg(spec, placementsAtBuild(spec), { idPrefix: 't' }).match(/<image data-bg-image[^>]*>/)![0];
+  const before = product.preset.backgroundFit;
+  try {
+    product.preset.backgroundFit = undefined;
+    expect(image(product.preset)).not.toContain('transform=');
+    product.preset.backgroundFit = { scale: 1, x: 0, y: 0, sideways: true };
+    expect(image(product.preset)).toMatch(/transform="rotate\(90 [\d.-]+ [\d.-]+\)"/);
+    // The shopper never sends a fit; checkout takes the design's own, turned.
+    const r = checkCart({ items: [{ handle: product.handle, quantity: 1, design: { ...product.preset, backgroundFit: undefined } }] });
+    expect(r.ok && r.lines[0]!.design.backgroundFit).toEqual({ scale: 1, x: 0, y: 0, sideways: true });
+  } finally {
+    product.preset.backgroundFit = before;
+  }
 });
 
 test('old URLs redirect to the new pages', async ({ app }) => {

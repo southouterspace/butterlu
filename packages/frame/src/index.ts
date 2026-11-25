@@ -46,6 +46,12 @@ export interface BackgroundFit {
   x: number;
   /** Which part of the sheet shows, -1 to 1: -1 its top edge, 0 the middle, 1 its bottom edge. */
   y: number;
+  /**
+   * The sheet turned a quarter turn clockwise, so a portrait sheet lies landscape like
+   * the frame and shows nearly whole at scale 1. Left off when the sheet is upright.
+   * x and y still mean left/right and top/bottom of the frame, not of the turned sheet.
+   */
+  sideways?: boolean;
 }
 
 export interface FrameSpec {
@@ -141,8 +147,10 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
  * Where the background image goes, in frame-local inches. The print file, the
  * site's preview and the product images all draw it here, so what the shopper
  * sees is what prints. At scale 1 the image just covers the frame plus
- * DEFAULT_BLEED_IN; zooming in grows it about the point x, y picks.
- * `image` is the image's size in any unit (only its aspect counts).
+ * DEFAULT_BLEED_IN; zooming in grows it about the point x, y picks. When the fit
+ * is sideways this is the turned sheet's footprint; backgroundImageBox says how to
+ * draw the image into it.
+ * `image` is the image's size in any unit (only its aspect counts), as stored (upright).
  */
 export function backgroundRect(shape: ShapeId, fit: BackgroundFit = DEFAULT_BACKGROUND_FIT, image: { w: number; h: number } = BACKGROUND_SHEET_IN): Zone {
   const s = SHAPES[shape];
@@ -150,9 +158,11 @@ export function backgroundRect(shape: ShapeId, fit: BackgroundFit = DEFAULT_BACK
   const boxW = s.widthIn + 2 * b;
   const boxH = s.heightIn + 2 * b;
   const scale = clamp(fit.scale, BACKGROUND_SCALE.min, BACKGROUND_SCALE.max);
-  const k = Math.max(boxW / image.w, boxH / image.h) * scale;
-  const w = image.w * k;
-  const h = image.h * k;
+  const iw = fit.sideways ? image.h : image.w;
+  const ih = fit.sideways ? image.w : image.h;
+  const k = Math.max(boxW / iw, boxH / ih) * scale;
+  const w = iw * k;
+  const h = ih * k;
   return {
     x: -b - ((w - boxW) * (1 + clamp(fit.x, -1, 1))) / 2,
     y: -b - ((h - boxH) * (1 + clamp(fit.y, -1, 1))) / 2,
@@ -161,9 +171,22 @@ export function backgroundRect(shape: ShapeId, fit: BackgroundFit = DEFAULT_BACK
   };
 }
 
+/**
+ * The box to draw the upright image into, and the turn that lays it over `r`
+ * (backgroundRect's footprint). Upright, it is `r` with no turn. Sideways, the box
+ * has r's centre with width and height swapped, and turns 90° clockwise about
+ * (cx, cy), so the sheet's top edge ends on the frame's right.
+ */
+export function backgroundImageBox(r: Zone, sideways = false): Zone & { turn: 0 | 90; cx: number; cy: number } {
+  const cx = r.x + r.w / 2;
+  const cy = r.y + r.h / 2;
+  if (!sideways) return { ...r, turn: 0, cx, cy };
+  return { x: cx - r.h / 2, y: cy - r.w / 2, w: r.h, h: r.w, turn: 90, cx, cy };
+}
+
 /** How far the background can move each way at this scale, in inches. 0 means that axis has nothing to show beyond the frame. */
-export function backgroundSlack(shape: ShapeId, scale: number, image: { w: number; h: number } = BACKGROUND_SHEET_IN): { x: number; y: number } {
-  const r = backgroundRect(shape, { scale, x: 0, y: 0 }, image);
+export function backgroundSlack(shape: ShapeId, scale: number, sideways = false, image: { w: number; h: number } = BACKGROUND_SHEET_IN): { x: number; y: number } {
+  const r = backgroundRect(shape, { scale, x: 0, y: 0, sideways }, image);
   const s = SHAPES[shape];
   return { x: r.w - (s.widthIn + 2 * DEFAULT_BLEED_IN), y: r.h - (s.heightIn + 2 * DEFAULT_BLEED_IN) };
 }

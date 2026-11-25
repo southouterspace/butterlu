@@ -160,7 +160,13 @@ export async function renderPdf(spec: FrameSpec, assets: RenderAssets, { variant
   // position print as they saw them. It covers the frame plus DEFAULT_BLEED_IN.
   const img = await doc.embedJpg(assets.background);
   const bg = coverBleed(backgroundRect(spec.shape, spec.backgroundFit, { w: img.width, h: img.height }), shape, bleedIn);
-  page.drawImage(img, { ...toPage(bg.x, bg.y + bg.h), width: bg.w * PT_PER_IN, height: bg.h * PT_PER_IN });
+  if (spec.backgroundFit?.sideways) {
+    // A quarter turn clockwise (-90° in PDF's y-up space) about the footprint's top-left:
+    // the upright image's bottom edge lands on the left, its top edge on the right.
+    page.drawImage(img, { ...toPage(bg.x, bg.y), width: bg.h * PT_PER_IN, height: bg.w * PT_PER_IN, rotate: degrees(-90) });
+  } else {
+    page.drawImage(img, { ...toPage(bg.x, bg.y + bg.h), width: bg.w * PT_PER_IN, height: bg.h * PT_PER_IN });
+  }
 
   if (variant === 'proof') {
     const o = toPage(0, 0);

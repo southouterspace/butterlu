@@ -118,6 +118,24 @@ describe('renderPdf', () => {
     }
   });
 
+  test('a sideways background prints turned a quarter clockwise, where the preview draws it', async () => {
+    const marked = new Uint8Array(fs.readFileSync(path.join(here, 'fixtures/marked-sheet.jpg')));
+    for (const fit of [{ scale: 1, x: 0, y: 0, sideways: true }, { scale: 1.5, x: -0.4, y: 0.7, sideways: true }]) {
+      const spec: FrameSpec = { shape: 'rounded-rectangle', backgroundId: 'white-linen', sides: {}, backgroundFit: fit };
+      const ink = inkBounds((await renderPdf(spec, { background: marked, fonts }, { variant: 'print', bleedIn: BLEED })).bytes);
+      const r = backgroundRect('rounded-rectangle', fit, { w: 170, h: 220 });
+      const tolerance = 3 / DPI;
+      // Clockwise: the sheet's top edge is on the right, its left edge at the top.
+      // The square's rows 80–140 run across from the right; its columns 60–110 run down.
+      const left = r.x + (1 - 140 / 220) * r.w;
+      const right = r.x + (1 - 80 / 220) * r.w;
+      expect(Math.abs(ink.pageW - ink.maxX - BLEED - left)).toBeLessThan(tolerance);
+      expect(Math.abs(ink.pageW - ink.minX - BLEED - right)).toBeLessThan(tolerance);
+      expect(Math.abs(ink.minY - BLEED - (r.y + (60 / 170) * r.h))).toBeLessThan(tolerance);
+      expect(Math.abs(ink.maxY - BLEED - (r.y + (110 / 170) * r.h))).toBeLessThan(tolerance);
+    }
+  });
+
   test('a bleed wider than the default is still covered by the background', async () => {
     const black = new Uint8Array(fs.readFileSync(path.join(here, 'fixtures/black.jpg')));
     for (const backgroundFit of [undefined, { scale: 1.5, x: -1, y: 1 }]) {

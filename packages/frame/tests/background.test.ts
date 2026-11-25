@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import fs from 'node:fs';
 import path from 'node:path';
-import { BACKGROUND_SCALE, BACKGROUND_SHEET_IN, DEFAULT_BLEED_IN, SHAPES, SHAPE_IDS, backgroundRect, backgroundSlack } from '../src/index';
+import { BACKGROUND_SCALE, BACKGROUND_SHEET_IN, DEFAULT_BLEED_IN, SHAPES, SHAPE_IDS, backgroundImageBox, backgroundRect, backgroundSlack } from '../src/index';
 
 const here = path.dirname(new URL(import.meta.url).pathname);
 
@@ -58,6 +58,40 @@ describe('backgroundRect', () => {
       expect(slack.y).toBeGreaterThan(1);
       expect(backgroundSlack(shape, 1.2).x).toBeGreaterThan(0.5);
     }
+  });
+
+  test('sideways, the turned sheet still covers the frame and shows nearly whole at scale 1', () => {
+    const b = DEFAULT_BLEED_IN;
+    for (const shape of SHAPE_IDS) {
+      const s = SHAPES[shape];
+      for (const fit of fits) {
+        const r = backgroundRect(shape, { ...fit, sideways: true });
+        expect(r.x).toBeLessThanOrEqual(-b + 1e-9);
+        expect(r.y).toBeLessThanOrEqual(-b + 1e-9);
+        expect(r.x + r.w).toBeGreaterThanOrEqual(s.widthIn + b - 1e-9);
+        expect(r.y + r.h).toBeGreaterThanOrEqual(s.heightIn + b - 1e-9);
+        // Landscape now: the sheet's long side runs across the frame.
+        expect(r.w / r.h).toBeCloseTo(BACKGROUND_SHEET_IN.h / BACKGROUND_SHEET_IN.w, 9);
+      }
+      // Within 0.1 in of the frame both ways, so almost nothing is cropped.
+      const slack = backgroundSlack(shape, 1, true);
+      expect(slack.x).toBeLessThan(0.1);
+      expect(slack.y).toBeLessThan(0.1);
+      // The pattern prints smaller than upright at the same scale.
+      expect(backgroundRect(shape, { scale: 1, x: 0, y: 0, sideways: true }).h).toBeLessThan(backgroundRect(shape).w);
+    }
+  });
+
+  test('backgroundImageBox draws the upright image turned into the footprint', () => {
+    const r = backgroundRect('scalloped', { scale: 1.4, x: 0.3, y: -0.6, sideways: true });
+    const box = backgroundImageBox(r, true);
+    expect(box.turn).toBe(90);
+    expect(box.w).toBeCloseTo(r.h, 9);
+    expect(box.h).toBeCloseTo(r.w, 9);
+    // Same centre, so a quarter turn about it fills r exactly.
+    expect(box.x + box.w / 2).toBeCloseTo(r.x + r.w / 2, 9);
+    expect(box.y + box.h / 2).toBeCloseTo(r.y + r.h / 2, 9);
+    expect(backgroundImageBox(r)).toMatchObject({ x: r.x, y: r.y, w: r.w, h: r.h, turn: 0 });
   });
 });
 

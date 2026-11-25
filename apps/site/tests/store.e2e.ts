@@ -336,6 +336,37 @@ test('on a phone, the sticky preview fades its bottom edge only once options scr
   }
 });
 
+// At the end of the options on a phone, the cart bar rides up with the page. It pushes
+// the docked preview up and off the screen instead of sliding over it.
+test('on a phone, the cart bar pushes the sticky preview off screen instead of covering it', async ({ app, browser }) => {
+  await browser.setViewport({ width: 390, height: 844 });
+  try {
+    await app.open(EDITOR);
+    const overlaps = await browser.evaluate(async () => {
+      const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const dock = document.querySelector('.preview-dock')!;
+      const bar = document.querySelector('[data-add]')!.parentElement!;
+      const found: number[] = [];
+      const end = document.documentElement.scrollHeight - innerHeight;
+      for (let y = 0; y <= end; y += 40) {
+        scrollTo(0, y);
+        await frame();
+        const d = dock.getBoundingClientRect();
+        const b = bar.getBoundingClientRect();
+        if (d.bottom > 0 && d.bottom > b.top + 1) found.push(y);
+      }
+      // At the very end too: the bar stops where the page does, and the preview sits above it.
+      scrollTo(0, end);
+      await frame();
+      if (dock.getBoundingClientRect().bottom > bar.getBoundingClientRect().top + 1) found.push(end);
+      return found;
+    });
+    expect(overlaps).toEqual([]);
+  } finally {
+    await browser.setViewport({ width: 1280, height: 800 });
+  }
+});
+
 // Order accuracy: on a phone, each choice in the editor reaches the cart summary and the
 // checkout request unchanged, and the server's checks and the order record keep it as is.
 test('on a phone, every choice in the editor is what the order prints', async ({ app, browser, screen }) => {

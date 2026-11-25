@@ -202,6 +202,9 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
       <Icon name="rotate-ccw" class="size-3.5" />Start Over with Our Design
     </button>
 
+    <!-- Marks where the cart bar comes to rest, for the preview to be pushed away from it
+         on phones. Zero height; its negative margin cancels the column gap it adds. -->
+    <div class="bar-mark -mb-6" aria-hidden="true"></div>
     <!-- Always in reach: the frame is buyable as designed. A bar on phones, a floating card from md up. -->
     <div class="sticky bottom-0 z-20 -mx-4 border-t bg-background/95 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur-sm md:bottom-4 md:mx-0 md:rounded-4xl md:border-0 md:p-3 md:shadow-lg md:ring-1 md:ring-foreground/5">
       <p class="text-sm font-medium [&:not(:empty)]:mb-2 [&_a]:underline" role="status" aria-live="polite" data-status></p>
@@ -241,6 +244,17 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
     }
   }
 
+  /* Phones: the docked preview's exact height (padding 0.5 + 0.75 + 0.75 + 0.75rem around
+     the drawing), so the push below moves it one pixel per pixel scrolled. */
+  @media not all and (min-width: 48rem) {
+    .customizer {
+      --dock-h: calc(min(30svh, 68vw) + 2.75rem);
+    }
+    .preview-dock {
+      height: var(--dock-h);
+    }
+  }
+
   /* Phones: the options scroll under the sticky preview. A hard edge cuts a field or a
      line of text in half there, so the preview's bottom edge fades into the page instead.
      The fade only exists once something is under it: it grows from nothing over the
@@ -263,10 +277,46 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
       --dock-fade: 2rem;
     }
   }
+  /* Phones, at the end of the options: the cart bar stops being pinned to the bottom of
+     the screen and rides up with the page. Pinned at the top, the preview used to stay put
+     and the bar slid over its middle, with the last details hidden under it. Now the bar
+     pushes the preview up and off the screen as it arrives, one pixel per pixel scrolled,
+     so the two never overlap. The push is read from where the bar comes to rest (a view
+     timeline on .bar-mark): it starts when that spot meets the preview's bottom and ends
+     when it reaches the top of the screen. The bottom fade goes in the 2rem before, so it
+     never sits on the bar. */
+  @keyframes dock-push {
+    from {
+      translate: 0 0;
+    }
+    to {
+      translate: 0 calc(-1 * var(--dock-h));
+    }
+  }
+  @keyframes dock-fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+
   @supports (animation-timeline: view()) {
     @media not all and (min-width: 48rem) {
       .customizer {
         view-timeline: --editor block;
+        timeline-scope: --bar;
+      }
+      .bar-mark {
+        view-timeline: --bar block;
+      }
+      .preview-dock {
+        animation: dock-push linear both;
+      }
+      .customizer .preview-dock {
+        animation-timeline: --bar;
+        animation-range: cover calc(100% - var(--dock-h)) cover 100%;
       }
       .preview-dock::after {
         content: '';
@@ -280,13 +330,17 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
           transparent
         );
         pointer-events: none;
-        animation: dock-fade linear both;
+        animation:
+          dock-fade linear both,
+          dock-fade-out linear both;
       }
-      /* Its own rule, after the shorthand: the minifier folds a timeline in the same rule
-         into the shorthand, which browsers drop. */
+      /* Timelines in their own rules, after the shorthands: the minifier folds a timeline in
+         the same rule into the shorthand, which browsers drop. */
       .customizer .preview-dock::after {
-        animation-timeline: --editor;
-        animation-range: exit-crossing 0% exit-crossing 3rem;
+        animation-timeline: --editor, --bar;
+        animation-range:
+          exit-crossing 0% exit-crossing 3rem,
+          cover calc(100% - var(--dock-h) - 2rem) cover calc(100% - var(--dock-h));
       }
     }
   }

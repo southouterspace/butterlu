@@ -12,12 +12,19 @@
 //
 // Plain DOM, no framework: every value from the server goes in with textContent or
 // an attribute, never as HTML.
-import { createElement, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, CircleAlert, CircleCheck, CircleHelp, ExternalLink, FileText, Folder, Image as ImageIcon, Inbox, Info, Menu, Search, Tags, TriangleAlert, Upload, X } from 'lucide';
+import { createElement, ArrowDown, ArrowLeft, ArrowRight, ArrowUp, Check, ChevronDown, CircleAlert, CircleCheck, CircleHelp, ExternalLink, FileText, Folder, Image as ImageIcon, Inbox, Info, Menu, Search, Tags, TriangleAlert, Upload, X } from 'lucide';
 import '@ui-sdk/web/alert-dialog';
+import '@ui-sdk/web/checkbox';
+import '@ui-sdk/web/field';
+import '@ui-sdk/web/input';
 import '@ui-sdk/web/overlays';
+import '@ui-sdk/web/radio';
 import '@ui-sdk/web/segmented-control';
+import '@ui-sdk/web/select';
+import '@ui-sdk/web/slider';
+import '@ui-sdk/web/textarea';
 import '@ui-sdk/web/toast';
-import { createConfirm, createOverlays, createToaster, type ConfirmOptions, type UiAlertDialogElement } from '@ui-sdk/web';
+import { createConfirm, createOverlays, createToaster, type ConfirmOptions, type UiAlertDialogElement, type UiCheckboxElement, type UiCheckboxGroupElement, type UiFieldElement, type UiInputElement, type UiRadioGroupElement, type UiSliderElement } from '@ui-sdk/web';
 import { BACKGROUND_SCALE, SHAPE_IDS, SIDES, type FrameSpec, type Side } from '@butterlu/frame';
 import { SEO_LABELS, SEO_LIMITS, TITLE_SUFFIX, checkTemplate, slugify, toLabel, type SeoKey } from '../catalog/check';
 import type { CatalogDoc, CategoryDoc, SeoField, TemplateDoc } from '../catalog/doc';
@@ -38,7 +45,7 @@ import {
   type ValuePropsSection,
 } from '../catalog/pages';
 import { ILLUSTRATIONS } from '../catalog/illustrations';
-import { backgroundUrl, frameSvg } from '../lib/frame-svg';
+import { backgroundUrl, fontCss, frameSvg } from '../lib/frame-svg';
 import { fontsReady, placementsInBrowser } from '../scripts/measure';
 
 interface CatalogResponse {
@@ -138,6 +145,8 @@ const ICONS = {
   check: CircleCheck,
   error: CircleAlert,
   close: X,
+  chevron: ChevronDown,
+  tick: Check,
 } as const;
 type IconName = keyof typeof ICONS;
 /** Stroke width is set in admin.css in rendered pixels, so it tracks the weight of the text beside it. */
@@ -145,31 +154,41 @@ function icon(name: IconName): SVGSVGElement {
   return createElement(ICONS[name], { class: 'icon', 'aria-hidden': 'true', focusable: 'false' }) as SVGSVGElement;
 }
 
-function field(label: string, control: HTMLElement, hint?: string, opts: { required?: boolean } = {}): HTMLElement {
-  const cid = control.id || id('f');
-  control.id = cid;
-  let hintEl: HTMLElement | null = null;
-  if (hint) {
-    hintEl = h('p', { class: 'hint', id: `${cid}-hint` }, hint);
-    control.setAttribute('aria-describedby', [control.getAttribute('aria-describedby'), hintEl.id].filter(Boolean).join(' '));
-  }
-  if (opts.required) control.setAttribute('aria-required', 'true');
-  return h('div', { class: 'field' }, h('label', { for: cid, class: opts.required ? 'req' : undefined }, label), control, hintEl);
+/**
+ * Puts a native text box or text area inside UI SDK's wrapper, which `<ui-field>` looks for.
+ * Anything else (a UI SDK select, checkbox or slider) is already one of its controls.
+ */
+function wrapControl(control: HTMLElement): HTMLElement {
+  if (control.parentElement?.matches('ui-input, ui-textarea')) return control.parentElement;
+  if (control instanceof HTMLTextAreaElement) return h('ui-textarea', { 'auto-resize': true }, control);
+  if (control instanceof HTMLInputElement) return h('ui-input', {}, control);
+  return control;
 }
 
-/** Shows or clears an inline error under a control, wired up for screen readers. */
+/**
+ * A labelled control. `<ui-field>` wires the label, the hint and any error to the control
+ * (id, aria-labelledby, aria-describedby, aria-invalid), so none of that is done by hand here.
+ */
+function field(label: string, control: HTMLElement, hint?: string, opts: { required?: boolean } = {}): HTMLElement {
+  if (opts.required) (control.matches('ui-select') ? control.querySelector('button')! : control).setAttribute('aria-required', 'true');
+  return h(
+    'ui-field',
+    { class: 'field' },
+    h('ui-field-label', { class: opts.required ? 'req' : undefined }, label),
+    wrapControl(control),
+    hint ? h('ui-field-description', { class: 'hint' }, hint) : null,
+  );
+}
+
+/** Shows or clears an inline error under a control. The field marks the control invalid and points it at the message. */
 function setFieldError(control: HTMLElement, message: string | null) {
-  const wrap = control.closest('.field') ?? control.parentElement!;
-  const errId = `${control.id}-error`;
-  document.getElementById(errId)?.remove();
-  const described = (control.getAttribute('aria-describedby') ?? '').split(' ').filter((x) => x && x !== errId);
+  const f = control.closest<UiFieldElement>('ui-field');
+  if (!f) return;
+  f.querySelector(':scope > ui-field-error')?.remove();
   if (message) {
-    wrap.append(h('p', { class: 'field-error', id: errId }, icon('alert'), h('span', {}, message)));
-    control.setAttribute('aria-invalid', 'true');
-    described.unshift(errId);
-  } else control.removeAttribute('aria-invalid');
-  if (described.length) control.setAttribute('aria-describedby', described.join(' '));
-  else control.removeAttribute('aria-describedby');
+    f.append(h('ui-field-error', { class: 'field-error', match: 'true' }, icon('error'), h('span', {}, message)));
+    f.invalid = true;
+  } else f.invalid = undefined;
 }
 
 function input(value: string, attrs: Attrs = {}): HTMLInputElement {
@@ -198,9 +217,73 @@ function textarea(value: string, attrs: Attrs = {}): HTMLTextAreaElement {
   return el;
 }
 
-function select(options: { value: string; label: string }[], value: string, attrs: Attrs = {}): HTMLSelectElement {
-  const el = h('select', attrs, ...options.map((o) => h('option', { value: o.value }, o.label)));
-  el.value = value;
+/** An option in a select. `font` shows the label in that typeface; `swatch` shows a colour dot ('' for "the default"). */
+type Opt = { value: string; label: string; font?: string; swatch?: string };
+/** A UI SDK select whose values are strings. It fires a bubbling change once the value has changed, like a native select. */
+type SelectEl = HTMLElement & { value: string };
+
+function select(options: Opt[], value: string, attrs: Attrs = {}): SelectEl {
+  const fontStyle = (fontId?: string) => {
+    if (!fontId) return undefined;
+    const f = fontCss(fontId);
+    return `font-family: ${f.family}, serif; font-weight: ${f.weight}`;
+  };
+  const shown = h('ui-select-value', {});
+  const el = h(
+    'ui-select',
+    { 'default-value': value, ...attrs, class: ['select', attrs.class].filter(Boolean).join(' ') },
+    h('ui-select-trigger', {}, h('button', { type: 'button', class: 'select-trigger' }, shown, icon('chevron'))),
+    h(
+      'ui-select-content',
+      { 'side-offset': 4, 'collision-padding': 8 },
+      ...options.map((o) =>
+        h(
+          'ui-select-item',
+          { value: o.value, label: o.label.trim() },
+          o.swatch !== undefined ? h('span', { class: o.swatch ? 'dot' : 'dot none', style: o.swatch ? `background: ${o.swatch}` : undefined, 'aria-hidden': 'true' }) : null,
+          h('span', { class: 'item-text', style: fontStyle(o.font) }, o.label),
+          h('ui-select-item-indicator', {}, icon('tick')),
+        ),
+      ),
+    ),
+  ) as unknown as SelectEl;
+  // The closed select shows the chosen font in its own typeface too.
+  if (options.some((o) => o.font)) {
+    // Before the select is in the page it has no value yet, so the first paint uses the starting one.
+    const paint = (current = el.value) => shown.setAttribute('style', fontStyle(options.find((o) => o.value === current)?.font) ?? '');
+    el.addEventListener('change', () => paint());
+    paint(value);
+  }
+  return el;
+}
+
+/** One checkbox with its label. Pressing the label toggles it; `onChange` gets the new state. */
+function checkbox(label: string, checked: boolean, onChange: (checked: boolean) => void): HTMLElement {
+  const box = h('ui-checkbox', { 'default-checked': checked }, h('ui-checkbox-indicator', {}, icon('tick'))) as UiCheckboxElement;
+  box.addEventListener('change', () => onChange(box.checked === true));
+  return h('ui-field', { class: 'inline' }, box, h('ui-field-label', {}, label));
+}
+
+/** A group of checkboxes under a legend. `onChange` gets the values that are ticked, in list order. */
+function checkGroup(legend: string, items: { value: string; label: string }[], chosen: string[], onChange: (values: string[]) => void, opts: { hideLegend?: boolean } = {}): HTMLElement {
+  const group = h(
+    'ui-checkbox-group',
+    { class: 'opts' },
+    ...items.map((it) => h('label', {}, h('ui-checkbox', { value: it.value }, h('ui-checkbox-indicator', {}, icon('tick'))), it.label)),
+  ) as UiCheckboxGroupElement;
+  group.value = items.map((it) => it.value).filter((v) => chosen.includes(v));
+  group.addEventListener('change', () => onChange([...group.value]));
+  return h('ui-field-set', {}, h('fieldset', { class: 'checks scroll' }, h('legend', { class: opts.hideLegend ? 'visually-hidden' : undefined }, legend), group));
+}
+
+/** A one-thumb UI SDK slider. `text` is what screen readers hear for a value, like "120%". */
+function slider(min: number, max: number, step: number, value: number, text: (v: number) => string): UiSliderElement {
+  const el = h(
+    'ui-slider',
+    { class: 'slider', min, max, step, 'default-value': value },
+    h('ui-slider-control', {}, h('ui-slider-track', {}, h('ui-slider-indicator', {}), h('ui-slider-thumb', {}))),
+  ) as UiSliderElement;
+  el.format = text;
   return el;
 }
 
@@ -586,9 +669,8 @@ function seoEditor(kind: 'template' | 'category', key: SeoKey, start: SeoField, 
   let state: SeoField = { ...start };
   const limit = SEO_LIMITS[key];
   const area = key === 'seoTitle' || key === 'feedTitle' ? input(state.value, { maxlength: limit + 40 }) : textarea(state.value, { rows: key === 'feedDescription' ? 5 : 3 });
-  area.id = id('seo');
-  const count = h('span', { class: 'count', id: `${area.id}-count` });
-  area.setAttribute('aria-describedby', count.id);
+  // The count is the field's description, so a screen reader hears it with the field.
+  const count = h('ui-field-description', { class: 'count' });
   const status = h('span', {});
   const options = h('div', { class: 'options', 'aria-live': 'polite' });
   const draftBtn = btn('Draft with Claude', () => void draft());
@@ -673,10 +755,10 @@ function seoEditor(kind: 'template' | 'category', key: SeoKey, start: SeoField, 
 
   paint();
   const el = h(
-    'div',
+    'ui-field',
     { class: 'seo-field' },
-    h('div', { class: 'seo-head' }, h('label', { for: area.id }, SEO_LABELS[key]), status, count),
-    area,
+    h('div', { class: 'seo-head' }, h('ui-field-label', {}, SEO_LABELS[key]), status, count),
+    wrapControl(area),
     h('div', { class: 'row' }, draftBtn, approveBtn),
     options,
   );
@@ -762,12 +844,13 @@ function templateList() {
   const occFilter = select([{ value: '', label: 'Any occasion' }, ...taxonomy.occasions.map((o) => ({ value: o.key, label: o.label }))], filters.occasion, {
     onchange: () => ((filters.occasion = occFilter.value), paint()),
   });
-  const search = input(filters.q, { type: 'search', placeholder: 'Search by name or web address', id: id('q') });
+  const search = input(filters.q, { type: 'search', placeholder: 'Search by name or web address', autocomplete: 'off' });
   search.addEventListener('input', () => ((filters.q = search.value), paint()));
+  const searchBox = h('ui-input', {}, search) as UiInputElement;
   const clearAll = () => {
     Object.assign(filters, { q: '', for: '', occasion: '', status: '' });
     status.reset();
-    search.value = '';
+    searchBox.value = '';
     forFilter.value = '';
     occFilter.value = '';
     paint();
@@ -817,7 +900,12 @@ function templateList() {
   }
   paint();
 
-  const searchField = h('div', { class: 'field search' }, h('label', { for: search.id }, 'Search designs'), h('div', { class: 'search-wrap' }, icon('search'), search));
+  const searchField = h(
+    'ui-field',
+    { class: 'field search' },
+    h('ui-field-label', {}, 'Search designs'),
+    h('ui-input-group', { class: 'search-wrap' }, icon('search'), searchBox, h('ui-input-clear', {}, h('button', { type: 'button', class: 'clear', 'aria-label': 'Clear search' }, icon('close')))),
+  );
   return h(
     'div',
     { class: 'page' },
@@ -891,7 +979,7 @@ function templateEditor(handle: string | null): HTMLElement {
   const status = select(Object.entries(STATUS_LABEL).map(([value, label]) => ({ value, label })), t.status, {
     onchange: () => ((t.status = status.value as TemplateDoc['status']), repaint()),
   });
-  const ready = h('input', { type: 'checkbox', checked: t.readyAsShown, onchange: () => (t.readyAsShown = ready.checked) });
+  const ready = checkbox('Can be bought as shown in one tap', t.readyAsShown, (on) => (t.readyAsShown = on));
 
   // Design
   const shape = select(SHAPE_IDS.map((s) => ({ value: s, label: SHAPE_LABEL[s] ?? s })), t.preset.shape, {
@@ -902,37 +990,26 @@ function templateEditor(handle: string | null): HTMLElement {
   paintBgName();
   const bgLabel = id('bg');
   const bgGrid = h(
-    'div',
-    { class: 'swatches', role: 'radiogroup', 'aria-labelledby': bgLabel },
-    ...data.backgrounds.map((b) => {
-      const r = h('input', {
-        type: 'radio',
-        name: 'bg',
-        value: b.id,
-        checked: t.preset.backgroundId === b.id,
-        onchange: () => {
-          t.preset.backgroundId = b.id as FrameSpec['backgroundId'];
-          paintBgName();
-          repaint();
-        },
-      });
-      return h('label', { class: 'swatch' }, r, h('img', { src: backgroundUrl(b.id, 'card'), alt: '', loading: 'lazy', width: 68, height: 50 }), h('span', {}, b.name));
-    }),
-  );
+    'ui-radio-group',
+    { class: 'swatches', 'aria-labelledby': bgLabel, 'default-value': t.preset.backgroundId },
+    ...data.backgrounds.map((b) =>
+      h('label', { class: 'swatch' }, h('ui-radio', { value: b.id }), h('img', { src: backgroundUrl(b.id, 'card'), alt: '', loading: 'lazy', width: 68, height: 50 }), h('span', {}, b.name)),
+    ),
+  ) as UiRadioGroupElement;
+  bgGrid.addEventListener('change', () => {
+    if (!bgGrid.value) return;
+    t.preset.backgroundId = bgGrid.value as FrameSpec['backgroundId'];
+    paintBgName();
+    repaint();
+  });
   // Background size and position (packages/frame backgroundFit): 100% fills the frame;
   // larger zooms in, and the position sliders pick which part of the pattern shows.
   const fit = () => t.preset.backgroundFit ?? { scale: 1, x: 0, y: 0 };
-  const range = (min: number, max: number, step: number, value: number, text: (v: number) => string) => {
-    const r = h('input', { type: 'range', min, max, step });
-    r.value = String(value);
-    r.setAttribute('aria-valuetext', text(value));
-    return r;
-  };
   const pct = (v: number) => `${Math.round(v * 100)}%`;
   const side = (v: number, lo: string, hi: string) => (Math.abs(v) < 0.01 ? 'centred' : `${Math.round(Math.abs(v) * 100)}% toward the ${v < 0 ? lo : hi}`);
-  const scaleIn = range(BACKGROUND_SCALE.min, BACKGROUND_SCALE.max, BACKGROUND_SCALE.step, fit().scale, pct);
-  const xIn = range(-1, 1, 0.05, fit().x, (v) => side(v, 'left', 'right'));
-  const yIn = range(-1, 1, 0.05, fit().y, (v) => side(v, 'top', 'bottom'));
+  const scaleIn = slider(BACKGROUND_SCALE.min, BACKGROUND_SCALE.max, BACKGROUND_SCALE.step, fit().scale, pct);
+  const xIn = slider(-1, 1, 0.05, fit().x, (v) => side(v, 'left', 'right'));
+  const yIn = slider(-1, 1, 0.05, fit().y, (v) => side(v, 'top', 'bottom'));
   const scaleOut = h('output', { 'aria-hidden': 'true' });
   const posBox = h('div', { class: 'row' }, field('Left and right', xIn), field('Up and down', yIn));
   const syncFit = () => {
@@ -941,14 +1018,11 @@ function templateEditor(handle: string | null): HTMLElement {
     if (f.scale <= 1.001 && !f.x && !f.y) delete t.preset.backgroundFit;
     else t.preset.backgroundFit = f;
     scaleOut.textContent = pct(f.scale);
-    scaleIn.setAttribute('aria-valuetext', pct(f.scale));
-    xIn.setAttribute('aria-valuetext', side(f.x, 'left', 'right'));
-    yIn.setAttribute('aria-valuetext', side(f.y, 'top', 'bottom'));
     posBox.hidden = f.scale <= 1.001;
     repaint();
   };
   for (const r of [scaleIn, xIn, yIn]) r.addEventListener('input', syncFit);
-  const resetFit = btn('Reset', () => ((scaleIn.value = '1'), (xIn.value = '0'), (yIn.value = '0'), syncFit()));
+  const resetFit = btn('Reset', () => ((scaleIn.value = 1), (xIn.value = 0), (yIn.value = 0), syncFit()));
   scaleOut.textContent = pct(fit().scale);
   posBox.hidden = fit().scale <= 1.001;
   const sizeField = field('Background size', scaleIn, 'Larger zooms into the pattern; then pick which part shows.');
@@ -960,8 +1034,8 @@ function templateEditor(handle: string | null): HTMLElement {
     ...SIDES.map((sd) => {
       const s = t.preset.sides[sd];
       const text = input(s?.text ?? '', { maxlength: 60, placeholder: `${SIDE_LABEL[sd]} words` });
-      const font = select(data.fonts.map((f) => ({ value: f.id, label: f.name })), s?.fontId ?? data.fonts[0]!.id);
-      const color = select([{ value: '', label: 'Background default' }, ...data.textColors.map((c) => ({ value: c.hex, label: c.name }))], s?.color ?? '');
+      const font = select(data.fonts.map((f) => ({ value: f.id, label: f.name, font: f.id })), s?.fontId ?? data.fonts[0]!.id);
+      const color = select([{ value: '', label: 'Background default', swatch: '' }, ...data.textColors.map((c) => ({ value: c.hex, label: c.name, swatch: c.hex }))], s?.color ?? '');
       const rot = select(
         [
           { value: '', label: 'Default' },
@@ -990,19 +1064,8 @@ function templateEditor(handle: string | null): HTMLElement {
 
   // Filing
   const forSel = select(recipientOptions(), t.for, { onchange: () => ((t.for = forSel.value), repaint()) });
-  const checks = (items: { value: string; label: string }[], chosen: string[], onChange: (v: string[]) => void, label: string) => {
-    const opts = h('div', { class: 'opts' });
-    const box = h('fieldset', { class: 'checks scroll' }, h('legend', {}, label), opts);
-    for (const it of items) {
-      const c = h('input', { type: 'checkbox', value: it.value, checked: chosen.includes(it.value) });
-      c.addEventListener('change', () => {
-        onChange([...box.querySelectorAll<HTMLInputElement>('input:checked')].map((x) => x.value));
-        repaint();
-      });
-      opts.append(h('label', {}, c, it.label));
-    }
-    return box;
-  };
+  const checks = (items: { value: string; label: string }[], chosen: string[], onChange: (v: string[]) => void, label: string) =>
+    checkGroup(label, items, chosen, (v) => (onChange(v), repaint()));
   const occBox = checks(data.doc.taxonomy.occasions.map((o) => ({ value: o.key, label: o.label })), t.occasions, (v) => (t.occasions = v), 'Occasions');
   const catBox = checks(data.doc.categories.map((c) => ({ value: c.handle, label: c.name })), t.collections, (v) => (t.collections = v), 'Category pages it shows on');
 
@@ -1207,7 +1270,7 @@ function templateEditor(handle: string | null): HTMLElement {
         h(
           'div',
           { class: 'aside' },
-          fieldCard('Status', field('Shows in the store as', status, 'Live designs show in the store after a publish.'), h('label', { class: 'inline' }, ready, 'Can be bought as shown in one tap')),
+          fieldCard('Status', field('Shows in the store as', status, 'Live designs show in the store after a publish.'), ready),
           h('section', { class: 'card sticky', 'aria-label': 'Preview' }, h('h2', { class: 'card-title' }, 'Preview'), previewBox, issues),
         ),
       ),
@@ -1311,14 +1374,13 @@ function categoryEditor(handle: string): HTMLElement {
     );
   paintOrder();
 
-  const relOpts = h('div', { class: 'opts' });
-  const related = h('fieldset', { class: 'checks scroll' }, h('legend', { class: 'visually-hidden' }, 'Links to other categories'), relOpts);
-  for (const o of data.doc.categories) {
-    if (o.handle === c.handle) continue;
-    const box = h('input', { type: 'checkbox', value: o.handle, checked: c.related.includes(o.handle) });
-    box.addEventListener('change', () => (c.related = [...related.querySelectorAll<HTMLInputElement>('input:checked')].map((x) => x.value)));
-    relOpts.append(h('label', {}, box, o.name));
-  }
+  const related = checkGroup(
+    'Links to other categories',
+    data.doc.categories.filter((o) => o.handle !== c.handle).map((o) => ({ value: o.handle, label: o.name })),
+    c.related,
+    (v) => (c.related = v),
+    { hideLegend: true },
+  );
 
   const collect = (): CategoryDoc => {
     const seo = { ...c.seo };
@@ -1465,7 +1527,7 @@ function shopBy(): HTMLElement {
     box.replaceChildren(
       ...tax.groups.map((g, gi) => {
         const label = labelInput(g.label, { maxlength: 60 }, (v) => (g.label = v));
-        const menus = h('input', { type: 'checkbox', checked: g.inMenus, onchange: () => (g.inMenus = menus.checked) });
+        const menus = checkbox('Show in the menus', g.inMenus, (on) => (g.inMenus = on));
         const page = select(catOptions(false), g.collection, { onchange: () => (g.collection = page.value) });
         const people = h('ul', { class: 'list' });
         const moveChild = swapper(g.children, paint, () => box.querySelector<HTMLElement>(`.card[data-group="${CSS.escape(g.key)}"] .list`)!, ':scope > li');
@@ -1480,7 +1542,7 @@ function shopBy(): HTMLElement {
           { group: g.key },
           [movers(gi, tax.groups.length, g.label, (d) => moveGroup(gi, d))],
           h('div', { class: 'row' }, field('Group name', label), field('Opens the page', page), drawingPicker(g)),
-          h('label', { class: 'inline' }, menus, 'Show in the menus'),
+          menus,
           h('p', { class: 'label' }, 'People in this group'),
           people,
           adder(`add-${g.key}`, `Add someone to ${g.label}`, 'Add person', 'For example "Godmother"', (n) => {
@@ -1692,7 +1754,7 @@ function pageEditor(key: string): HTMLElement {
               () => {
                 page.sections.splice(i, 1);
                 paint();
-                focusAfterRemove(box, ':scope > .card[data-section]', i, 'select');
+                focusAfterRemove(box, ':scope > .card[data-section]', i, '.select-trigger');
               },
               { class: 'btn plain danger', 'aria-label': `Remove ${nm}`, 'data-remove': true },
             ),
@@ -1720,7 +1782,7 @@ function pageEditor(key: string): HTMLElement {
                 const added = box.querySelectorAll<HTMLElement>(':scope > .card[data-section]');
                 const last = added[added.length - 1];
                 last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                last?.querySelector<HTMLElement>('input, select, textarea')?.focus({ preventScroll: true });
+                last?.querySelector<HTMLElement>('input, textarea, .select-trigger')?.focus({ preventScroll: true });
               }),
             ),
             addHint,
@@ -1930,11 +1992,15 @@ function orderDetail(sessionId: string): HTMLElement {
   const o = orders.orders.find((x) => x.id === sessionId);
   if (!o) return notFound('That order was not found.', '#/orders', 'Back to orders');
   const errorSlot = h('div', {});
+  // Keep the status in a variable: the select has no value until it is in the page, and the
+  // unsaved-changes snapshot is taken before that.
+  let chosenStatus = o.status;
   const status = select(orders.statuses.map((s) => ({ value: s, label: ORDER_LABEL[s] ?? s })), o.status);
+  status.addEventListener('change', () => (chosenStatus = status.value));
   const carrier = input(o.carrier ?? '', { maxlength: 30, placeholder: 'USPS' });
   const tracking = input(o.trackingNumber ?? '', { maxlength: 60, autocomplete: 'off', spellcheck: 'false' });
   const note = textarea(o.note ?? '', { maxlength: 1000, rows: 3 });
-  const collect = () => ({ status: status.value, carrier: carrier.value.trim(), tracking_number: tracking.value.trim(), note: note.value.trim() });
+  const collect = () => ({ status: chosenStatus, carrier: carrier.value.trim(), tracking_number: tracking.value.trim(), note: note.value.trim() });
   async function doSave() {
     try {
       await api(`/orders/${encodeURIComponent(o!.id)}`, { method: 'POST', body: JSON.stringify(collect()) });

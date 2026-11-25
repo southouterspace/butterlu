@@ -67,6 +67,8 @@
   --a-radius: 12px;
   --a-radius-sm: 8px;
   --a-shadow: 0 0 0 1px rgb(0 0 0 / 0.07), 0 1px 0 0 rgb(0 0 0 / 0.08);
+  /* Lists that open over the page, like a select's options. */
+  --a-shadow-pop: 0 0 0 1px rgb(0 0 0 / 0.08), 0 4px 6px -2px rgb(0 0 0 / 0.1), 0 12px 24px -4px rgb(0 0 0 / 0.14);
   --a-topbar-h: 56px;
   --a-nav-w: 240px;
 }
@@ -186,29 +188,91 @@ p { text-wrap: pretty; }
 .field { display: flex; flex-direction: column; gap: 4px; margin: 0 0 12px; min-width: 0; flex: 1 1 160px; }
 .row > .field { margin-bottom: 0; }
 .row + .row, .field + .row { margin-top: 12px; }
-.field > label, .checks > legend, .field-label { font-weight: 550; font-size: 0.8125rem; color: var(--a-text); }
+.field > ui-field-label, .seo-head > ui-field-label, .checks > legend, .field-label { font-weight: 550; font-size: 0.8125rem; color: var(--a-text); }
+ui-input, ui-textarea, ui-select, ui-slider, ui-input-group { display: block; min-width: 0; }
 .req::after { content: ' *'; color: var(--a-critical); }
-input[type='text'], input[type='search'], input:not([type]), select, textarea {
+input[type='text'], input[type='search'], input:not([type]), textarea {
   font: inherit; color: var(--a-text); background: var(--a-surface);
   border: 1px solid var(--a-control-border); border-radius: var(--a-radius-sm);
   padding: 5px 10px; min-height: 32px; width: 100%;
 }
 textarea { resize: vertical; line-height: 1.45; }
-select { padding-right: 28px; }
-@media (hover: hover) { input:hover, select:hover, textarea:hover { background: var(--a-surface-hover); } }
+/* Auto-resizing text areas grow with their words, from three lines up to most of the screen. */
+ui-textarea[auto-resize] textarea { resize: none; min-height: calc(3lh + 12px); max-height: 60dvh; }
+@media (hover: hover) { input:hover, textarea:hover, .select-trigger:hover { background: var(--a-surface-hover); } }
 input:disabled { background: var(--a-surface-2); color: var(--a-text-2); border-color: var(--a-border-2); }
-input:focus-visible, select:focus-visible, textarea:focus-visible { outline-offset: 0; border-color: var(--a-focus); }
+input:focus-visible, textarea:focus-visible, .select-trigger:focus-visible { outline-offset: 0; border-color: var(--a-focus); }
 [aria-invalid='true'] { border-color: var(--a-critical-fill) !important; background: var(--a-critical-tint) !important; }
 .field-error { display: flex; gap: 6px; align-items: flex-start; color: var(--a-critical); font-size: 0.8125rem; margin: 2px 0 0; }
-.field-error .icon { width: 16px; height: 16px; margin-top: 2px; stroke-width: 1.5; }
-input[type='checkbox'], input[type='radio'] { width: 16px; height: 16px; accent-color: var(--a-primary); margin: 0; flex: none; }
-input[type='range'] { accent-color: var(--a-primary); width: 100%; min-height: 24px; }
+.field-error .icon { width: 16px; height: 16px; margin-top: 2px; stroke-width: 1.5; flex: none; }
+ui-field-label { cursor: default; }
+ui-field:has(> ui-checkbox) > ui-field-label { cursor: pointer; }
+
+/* Select: a button that looks like a text box, with its options in a list that opens over the page. */
+.select-trigger {
+  display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 5px 8px 5px 10px;
+  font: inherit; color: var(--a-text); text-align: start; cursor: pointer;
+  background: var(--a-surface); border: 1px solid var(--a-control-border); border-radius: var(--a-radius-sm);
+}
+.select-trigger ui-select-value { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.select-trigger .icon { width: 16px; height: 16px; flex: none; color: var(--a-text-2); stroke-width: 1.5; transition: rotate 150ms var(--a-ease-out); }
+.select-trigger[aria-expanded='true'] .icon { rotate: 180deg; }
+/* The list is moved to the end of the page while open, so these rules can't sit under .select. */
+[data-slot='select-content'] {
+  box-sizing: border-box; min-width: var(--anchor-width); max-width: min(360px, calc(100vw - 16px)); max-height: min(320px, var(--available-height));
+  padding: 4px; overflow-y: auto; overscroll-behavior: contain;
+  background: var(--a-surface); color: var(--a-text); border: 1px solid transparent; border-radius: var(--a-radius-sm); box-shadow: var(--a-shadow-pop);
+  transform-origin: var(--transform-origin);
+  transition: opacity 150ms var(--a-ease-out), scale 150ms var(--a-ease-out);
+}
+[data-slot='select-content']:is([data-starting-style], [data-ending-style]) { opacity: 0; scale: 0.97; }
+[data-slot='select-content'][data-ending-style] { transition-duration: 100ms; }
+[data-slot='select-item'] {
+  display: flex; align-items: center; gap: 8px; min-height: 32px; padding: 6px 8px; border-radius: 6px;
+  cursor: pointer; user-select: none; outline: none;
+}
+[data-slot='select-item'][data-highlighted] { background: var(--a-surface-active); }
+[data-slot='select-content'][data-modality='keyboard'] [data-slot='select-item'][data-highlighted] { box-shadow: inset 0 0 0 2px var(--a-focus); }
+[data-slot='select-item'][data-selected] { font-weight: 550; }
+[data-slot='select-item'][data-disabled] { color: var(--a-text-disabled); cursor: default; }
+[data-slot='select-item'] .item-text { flex: 1; min-width: 0; }
+[data-slot='select-item-indicator'] { display: inline-flex; margin-inline-start: auto; }
+[data-slot='select-item-indicator'] .icon { width: 16px; height: 16px; stroke-width: 1.5; }
+/* Colour choices show their colour; "Background default" shows an empty ring. */
+.dot { flex: none; width: 14px; height: 14px; border-radius: 50%; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.2); }
+.dot.none { box-shadow: inset 0 0 0 1px var(--a-control-border); background: repeating-linear-gradient(-45deg, transparent 0 3px, var(--a-border) 3px 4px); }
+
+/* Checkbox: a 16px box that fills with the primary colour and a tick. */
+ui-checkbox {
+  display: inline-grid; place-items: center; flex: none; width: 16px; height: 16px; border-radius: 4px; cursor: pointer;
+  background: var(--a-surface); box-shadow: inset 0 0 0 1px var(--a-control-border);
+  transition: background-color 150ms var(--a-ease-out), box-shadow 150ms var(--a-ease-out);
+}
+ui-checkbox[data-checked] { background: var(--a-primary); box-shadow: none; }
+ui-checkbox:focus-visible { outline: 2px solid var(--a-focus); outline-offset: 2px; }
+ui-checkbox[data-disabled] { opacity: 0.5; cursor: default; }
+ui-checkbox-indicator { display: grid; color: var(--a-on-fill); }
+ui-checkbox-indicator .icon { width: 12px; height: 12px; }
+@media (hover: hover) { ui-checkbox:not([data-checked]):hover { background: var(--a-surface-hover); } }
 .inline { display: flex; align-items: center; gap: 8px; min-height: 24px; }
+.inline > ui-field-label { font-weight: 450; }
 .checks { border: 0; padding: 0; margin: 0 0 12px; min-width: 0; }
 .checks > legend { margin-bottom: 6px; padding: 0; }
 .checks .opts { display: flex; flex-direction: column; gap: 6px; }
 .checks.scroll .opts { max-height: 220px; overflow-y: auto; overscroll-behavior: contain; padding: 2px; }
-.checks label { display: flex; align-items: center; gap: 8px; }
+.checks label { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+
+/* Slider: a 4px rail with a filled part and a round thumb. The control's height is the press area. */
+.slider ui-slider-control { display: flex; align-items: center; height: 24px; cursor: pointer; }
+.slider ui-slider-track { flex: 1; height: 4px; border-radius: 2px; background: var(--a-border-2); }
+.slider ui-slider-indicator { border-radius: 2px; background: var(--a-primary); }
+.slider ui-slider-thumb {
+  width: 16px; height: 16px; border-radius: 50%; background: var(--a-surface);
+  box-shadow: 0 0 0 1px var(--a-control-border), 0 1px 2px rgb(0 0 0 / 0.2);
+  transition: scale 150ms var(--a-ease-out);
+}
+.slider ui-slider-thumb:has(:focus-visible) { outline: 2px solid var(--a-focus); outline-offset: 2px; }
+.slider ui-slider-thumb[data-dragging] { scale: 1.15; }
 
 /* ---------- buttons ---------- */
 
@@ -282,7 +346,12 @@ input[type='range'] { accent-color: var(--a-primary); width: 100%; min-height: 2
 .filters .field.search { flex: 3 1 240px; }
 .search-wrap { position: relative; }
 .search-wrap .icon { position: absolute; left: 8px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--a-text-2); pointer-events: none; }
-.search-wrap input { padding-left: 30px; }
+.search-wrap input { padding-left: 30px; padding-right: 32px; }
+.search-wrap input::-webkit-search-cancel-button { display: none; }
+.search-wrap ui-input-clear { position: absolute; right: 4px; top: 50%; translate: 0 -50%; }
+.search-wrap .clear { display: grid; place-items: center; width: 24px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: none; color: var(--a-text-2); cursor: pointer; }
+.search-wrap .clear .icon { position: static; transform: none; pointer-events: auto; }
+@media (hover: hover) { .search-wrap .clear:hover { background: var(--a-surface-active); color: var(--a-text); } }
 .result-count { padding: 8px 16px; color: var(--a-text-2); font-size: 0.8125rem; border-bottom: 1px solid var(--a-border); }
 
 .table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
@@ -318,15 +387,15 @@ input[type='range'] { accent-color: var(--a-primary); width: 100%; min-height: 2
 .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 8px; margin: 0 0 12px; max-height: 340px; overflow-y: auto; overscroll-behavior: contain; padding: 4px; }
 .swatch { position: relative; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.75rem; text-align: center; cursor: pointer; border-radius: var(--a-radius-sm); padding: 6px 4px; box-shadow: inset 0 0 0 1px var(--a-border); }
 @media (hover: hover) { .swatch:hover { background: var(--a-surface-hover); } }
-.swatch input { position: absolute; opacity: 0; pointer-events: none; }
+.swatch ui-radio { position: absolute; inset: 0; opacity: 0; pointer-events: none; }
 .swatch img { width: 68px; height: 50px; object-fit: cover; border-radius: 6px; }
-.swatch:has(input:checked) { box-shadow: inset 0 0 0 2px var(--a-primary); background: var(--a-surface-2); font-weight: 650; }
-.swatch:has(input:checked)::after {
+.swatch:has(ui-radio[data-checked]) { box-shadow: inset 0 0 0 2px var(--a-primary); background: var(--a-surface-2); font-weight: 650; }
+.swatch:has(ui-radio[data-checked])::after {
   content: ''; position: absolute; top: 4px; right: 4px; width: 18px; height: 18px; border-radius: 50%;
   background: var(--a-primary) no-repeat center / 12px var(--check-icon);
 }
 .swatch { --check-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E"); }
-.swatch:has(input:focus-visible) { outline: 2px solid var(--a-focus); outline-offset: 1px; }
+.swatch:has(ui-radio:focus-visible) { outline: 2px solid var(--a-focus); outline-offset: 1px; }
 .sides { display: grid; gap: 12px; }
 .fit output { font-variant-numeric: tabular-nums; min-width: 4ch; font-weight: 550; }
 .drawing { width: 48px; height: 48px; object-fit: contain; border-radius: var(--a-radius-sm); background: var(--a-surface-2); }
@@ -334,7 +403,7 @@ input[type='range'] { accent-color: var(--a-primary); width: 100%; min-height: 2
 /* SEO and the search preview */
 .seo-field { border-top: 1px solid var(--a-border); padding-top: 12px; margin-top: 12px; }
 .seo-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 6px; }
-.seo-head label { font-weight: 550; font-size: 0.8125rem; }
+
 .seo-field .row { margin-top: 8px; }
 .options { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
 .option { display: flex; gap: 8px; text-align: left; font: inherit; color: inherit; background: var(--a-surface-2); border: 0; box-shadow: inset 0 0 0 1px var(--a-border-2); border-radius: var(--a-radius-sm); padding: 8px 10px; cursor: pointer; }
@@ -439,7 +508,8 @@ ui-alert-dialog-description { display: block; color: var(--a-text-2); text-wrap:
   /* Closed, the menu is hidden from the keyboard and screen readers too, not only moved off screen. */
   .sidenav { transform: translateX(-100%); visibility: hidden; transition: transform 200ms var(--a-ease-out), visibility 0s 200ms; box-shadow: none; overscroll-behavior: contain; }
   .sidenav.open { transform: none; visibility: visible; transition: transform 350ms var(--a-ease-out); box-shadow: 0 0 0 100vmax rgb(0 0 0 / 0.35); }
-  input[type='text'], input[type='search'], input:not([type]), select, textarea { font-size: 1rem; }
+  input[type='text'], input[type='search'], input:not([type]), textarea { font-size: 1rem; }
+  [data-slot='select-item'] { min-height: 40px; }
   .main { margin-left: 0; padding: calc(var(--a-topbar-h) + 12px) 12px 80px; }
   .savebar .msg { margin-left: 0; }
   .table .hide-sm { display: none; }
@@ -448,13 +518,19 @@ ui-alert-dialog-description { display: block; color: var(--a-text-2); text-wrap:
 }
 /* Forced colors drops box-shadows, so the shadow-drawn edges get a real border there. */
 @media (forced-colors: active) {
-  .btn, .card, .swatch, .option, .thumb-box, .nav-link[aria-current='page'] { border: 1px solid CanvasText; }
+  .btn, .card, .swatch, .option, .thumb-box, .nav-link[aria-current='page'], [data-slot='select-content'] { border: 1px solid CanvasText; }
+  ui-checkbox, .slider ui-slider-thumb { border: 1px solid CanvasText; }
+  ui-checkbox[data-checked], .slider ui-slider-indicator { background: Highlight; }
+  [data-slot='select-item'][data-highlighted] { outline: 2px solid Highlight; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-property: opacity, background-color, color, visibility !important; }
   .btn:not(:disabled, [aria-disabled='true']):active { transform: none; }
   [data-slot='alert-dialog-content']:is([data-starting-style], [data-ending-style]) { scale: none; }
   ui-toast[data-starting-style] { translate: none; }
+  [data-slot='select-content']:is([data-starting-style], [data-ending-style]) { scale: none; }
+  .slider ui-slider-thumb[data-dragging] { scale: none; }
+  .select-trigger .icon { transition: none; }
 }
 @media (prefers-reduced-motion: reduce) and (max-width: 800px) {
   .sidenav, .sidenav.open { transform: none; transition: opacity 200ms var(--a-ease-out), visibility 0s 200ms; }

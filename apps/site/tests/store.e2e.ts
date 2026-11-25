@@ -313,6 +313,29 @@ test('the editor marks example names until they are swapped, and keeps a draft',
   await expect(screen.getByRole('textbox', /^Bottom/)).toHaveValue('Ava, Noah and Mia');
 });
 
+// The options scroll under the editor's sticky preview on a phone. Its bottom edge fades
+// into the page only once something is under it, so nothing is cut in half at the edge
+// and the page at rest shows no fade over the heading. Desktop has nothing under it.
+test('on a phone, the sticky preview fades its bottom edge only once options scroll under it', async ({ app, browser }) => {
+  await browser.setViewport({ width: 390, height: 844 });
+  const fade = () =>
+    browser.evaluate(async () => {
+      await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+      const dock = document.querySelector('.preview-dock')!;
+      return parseFloat(getComputedStyle(dock, '::after').height) || 0;
+    });
+  try {
+    await app.open(EDITOR);
+    expect(await fade()).toBe(0);
+    expect(await browser.evaluate(() => (scrollTo(0, 600), scrollY))).toBe(600);
+    expect(await fade()).toBe(32);
+    await browser.setViewport({ width: 1280, height: 800 });
+    expect(await fade()).toBe(0);
+  } finally {
+    await browser.setViewport({ width: 1280, height: 800 });
+  }
+});
+
 // Order accuracy: on a phone, each choice in the editor reaches the cart summary and the
 // checkout request unchanged, and the server's checks and the order record keep it as is.
 test('on a phone, every choice in the editor is what the order prints', async ({ app, browser, screen }) => {

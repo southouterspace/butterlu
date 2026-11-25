@@ -58,7 +58,7 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
 ---
 <div class="customizer grid gap-4 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] md:items-start md:gap-10" data-customizer={JSON.stringify(config)}>
   <!-- Sticky on phones too, so every change shows while the shopper is choosing. -->
-  <div class="sticky top-0 z-20 -mx-4 min-w-0 bg-background px-4 pt-2 pb-3 md:top-6 md:mx-0 md:bg-transparent md:p-0">
+  <div class="preview-dock sticky top-0 z-20 -mx-4 min-w-0 bg-background px-4 pt-2 pb-3 md:top-6 md:mx-0 md:bg-transparent md:p-0">
     <div class="preview rounded-4xl bg-muted p-3 md:p-8" data-preview set:html={svg} />
   </div>
 
@@ -238,6 +238,56 @@ const legend = 'mb-2 flex items-baseline gap-2 text-sm font-medium';
   @media (min-width: 48rem) {
     .preview :global(svg) {
       height: auto;
+    }
+  }
+
+  /* Phones: the options scroll under the sticky preview. A hard edge cuts a field or a
+     line of text in half there, so the preview's bottom edge fades into the page instead.
+     The fade only exists once something is under it: it grows from nothing over the
+     first 3rem of scroll after the preview docks (the editor's top edge passing the top
+     of the screen, whatever its height), read from the editor's own scroll
+     position (a view timeline), so the page at rest shows no fade over the heading.
+     Without scroll-driven animation support the edge stays hard, as before. Nothing
+     moves on its own: the fade tracks the shopper's scroll, so it holds under reduced
+     motion too. The overlay takes no taps, so a field half under it still works. */
+  @property --dock-fade {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+  }
+  @keyframes dock-fade {
+    from {
+      --dock-fade: 0px;
+    }
+    to {
+      --dock-fade: 2rem;
+    }
+  }
+  @supports (animation-timeline: view()) {
+    @media not all and (min-width: 48rem) {
+      .customizer {
+        view-timeline: --editor block;
+      }
+      .preview-dock::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        top: 100%;
+        height: var(--dock-fade);
+        background: linear-gradient(
+          var(--background),
+          color-mix(in oklab, var(--background) 60%, transparent) 45%,
+          transparent
+        );
+        pointer-events: none;
+        animation: dock-fade linear both;
+      }
+      /* Its own rule, after the shorthand: the minifier folds a timeline in the same rule
+         into the shorthand, which browsers drop. */
+      .customizer .preview-dock::after {
+        animation-timeline: --editor;
+        animation-range: exit-crossing 0% exit-crossing 3rem;
+      }
     }
   }
 </style>
